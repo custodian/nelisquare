@@ -11,6 +11,7 @@ var accessToken = "";
 
 function doWebRequest(method, url, params, callback) {
     var doc = new XMLHttpRequest();
+    url = "https://api.foursquare.com/v2/" + url
     console.log(method + " " + url);
 
     doc.onreadystatechange = function() {
@@ -67,31 +68,85 @@ function getAccessTokenParameter() {
     return "oauth_token=" + accessToken;
 }
 
+function makeUserName(user) {
+    var username = "unknown";
+    if(typeof(user.firstName)!="undefined") {
+        username = user.firstName;
+    }
+    if(typeof(user.lastName)!="undefined") {
+        username = username + " " + user.lastName[0] + ".";
+    }
+    return username;
+}
+
+function makePhoto(photos, minsize) {
+    var url = "";
+    var width = 1000;
+    for( var i in photos.sizes.items) {
+        var photo = photos.sizes.items[i];
+        if (photo.width < width && photo.width >= minsize ) {
+            width = photo.width;
+            url = photo.url;
+        }
+    }
+    return url;
+}
+
+function processResponse(response) {
+    //TODO: update notification tray
+    var data = eval("[" + response + "]")[0].response;
+    return data;
+}
+
+function addTipToModel(tip) {
+    //console.log("tip: " + tip);
+    tipsModel.append({
+                     "tipID": tip.id,
+                     "tipText": tip.text,
+                     "tipAge": "Added " + makeTime(tip.createdAt)
+    });
+}
+
+function addCommentToModel(comment) {
+    //console.log("CHECKIN COMMENT: " + JSON.stringify(comment));
+    var createdAgo = makeTime(comment.createdAt);
+    var userID = comment.user.id;
+    var userName = makeUserName(comment.user);
+    var userPhoto = comment.user.photo;
+    var text = comment.text;
+    commentsModel.append({
+                             "commentID":comment.id,
+                             "createdAt":createdAgo,
+                             "user":userName,
+                             "userID":userID,
+                             "photo":userPhoto,
+                             "shout":text,
+                             "owner":comment.user.relationship
+                         });
+}
+
 function loadFriendsCheckins() {
-    var url = "https://api.foursquare.com/v2/checkins/recent?" + getAccessTokenParameter();
+    var url = "checkins/recent?" + getAccessTokenParameter();
     doWebRequest("GET", url, "", parseFriendsCheckins);
     waiting.state = "shown";
 }
 
 function loadNearbyFriendsCheckins() {
-    var url = "https://api.foursquare.com/v2/checkins/recent?" +
+    var url = "checkins/recent?" +
         getLocationParameter() + "&" + getAccessTokenParameter();
     doWebRequest("GET", url, "", parseFriendsCheckins);
     waiting.state = "shown";
 }
 
 function parseFriendsCheckins(response) {
-    var data = eval("[" + response + "]")[0].response;
+    var data = processResponse(response);
     var count = 0;
     friendsCheckinsModel.clear();
     for(var i in data.recent) {
         var checkin = data.recent[i];
         //console.log("FRIEND CHECKIN: " + JSON.stringify(checkin));
-        var userName = checkin.user.firstName;
-        if (typeof(checkin.user.lastName)!="undefined")
-            userName = userName + " " + checkin.user.lastName[0] + ".";
-        var createdAt = new Date(parseInt(checkin.createdAt,10)*1000);
-        var createdAgo = prettyDate(createdAt);
+        var userName = makeUserName(checkin.user);
+        var createdAgo = makeTime(checkin.createdAt);
         var venueName = "";
         var venueID = "";
         var venueAddress = "";
@@ -110,6 +165,10 @@ function parseFriendsCheckins(response) {
         if(typeof(checkin.comments)!="undefined"){
             comments = checkin.comments.count;
         }
+        var venuePhoto = "";
+        if (checkin.photos.count > 0) {
+            venuePhoto = makePhoto(checkin.photos.items[0], 300);
+        }
         friendsCheckinsModel.append({
                            "id": checkin.id,
                            "shout": parse(checkin.shout),
@@ -123,13 +182,14 @@ function parseFriendsCheckins(response) {
                            "venueAddress": venueAddress,
                            "venueCity": venueCity,
                            "venueCheckinsCount": venueCheckinsCount,
-                           "venueUsersCount": venueUsersCount
+                           "venueUsersCount": venueUsersCount,
+                           "venuePhoto": venuePhoto
         });
         count++;
     }
     waiting.state = "hidden";
     if(count==0) {
-        //showDone("No visible albums");
+        showDone("No visible checkins");
     }
 }
 
@@ -140,7 +200,7 @@ function getLocationParameter() {
 }
 
 function loadPlaces(query) {
-    var url = "https://api.foursquare.com/v2/venues/search?" +
+    var url = "venues/search?" +
         getLocationParameter();
     if(query!=null && query.length>0) {
         url += "&query=" + query;
@@ -160,7 +220,7 @@ function parse(item) {
 
 function parsePlaces(response) {
     //console.log("Response: " + response);
-    var data = eval("[" + response + "]")[0].response;
+    var data = processResponse(response);
     var count = 0;
     placesModel.clear();
     waiting.state = "hidden";
@@ -187,12 +247,12 @@ function parsePlaces(response) {
         count++;
     }
     if(count==0) {
-        //showDone("No visible albums");
+        showDone("No visible places");
     }
 }
 
 function loadVenue(venueID) {
-    var url = "https://api.foursquare.com/v2/venues/" + venueID + "?" + getAccessTokenParameter();
+    var url = "venues/" + venueID + "?" + getAccessTokenParameter();
     waiting.state = "shown";
     placeDialog.venueID = venueID;
     placeDialog.venueName = "";
@@ -203,8 +263,8 @@ function loadVenue(venueID) {
 }
 
 function parseVenue(response) {
-    //console.log("VENUE: " + response);
-    var data = eval("[" + response + "]")[0].response;
+    var data = processResponse(response);
+    //console.log("VENUE: "+ JSON.stringify(data));
     waiting.state = "hidden";
     var venue = data.venue;
     var icon = "";
@@ -217,7 +277,7 @@ function parseVenue(response) {
     placeDialog.venueCity = parse(venue.location.city);
     placeDialog.venueMajor = "";
     if(typeof(venue.mayor)!="undefined") {
-        placeDialog.venueMajor = venue.mayor.user.firstName + " " + venue.mayor.user.lastName[0] + ".";
+        placeDialog.venueMajor = makeUserName(venue.mayor.user);
         placeDialog.venueMajorPhoto = venue.mayor.user.photo;
     }
     // Parse venue tips
@@ -225,29 +285,62 @@ function parseVenue(response) {
     if(venue.tips.count>0) {
         for(var i in venue.tips.groups[0].items) {
             var tip = venue.tips.groups[0].items[i];
-            //console.log("tip: " + tip);
-            var createdAt = new Date(parseInt(tip.createdAt,10)*1000);
-            var createdAgo = prettyDate(createdAt);
-            tipsModel.append({
-                             "tipID": tip.id,
-                             "tipText": tip.text,
-                             "tipAge": "Added " + createdAgo
-            });
+            addTipToModel(tip);
         }
+    }
+}
+
+function addComment(checkinID, text) {
+    waiting.state = "shown";
+    var url = "checkins/" + checkinID + "/addcomment?"
+    url += "CHECKIN_ID=" + checkinID + "&";
+    url += "text=" + encodeURIComponent(text) + "&";
+    url += getAccessTokenParameter();
+    doWebRequest("POST", url, "", parseAddComment);
+}
+
+function parseAddComment(response) {
+    var data = processResponse(response);
+    waiting.state = "hidden";
+    addCommentToModel(data.comment);
+}
+
+function deleteComment(checkinID, commentID) {
+    waiting.state = "shown";
+    var url = "checkins/" + checkinID + "/deletecomment?"
+    url += "CHECKIN_ID=" + checkinID + "&";
+    url += "commentId=" + commentID + "&";
+    url += getAccessTokenParameter();
+    doWebRequest("POST", url, "", parseDeleteComment);
+}
+
+function parseDeleteComment(response) {
+    var data = processResponse(response);
+    waiting.state = "hidden";
+    commentsModel.clear();
+    for( var i in data.checkin.comments.items) {
+        var comment = data.checkin.comments.items[i];
+        addCommentToModel(comment);
     }
 }
 
 function addTip(venueID, text) {
     waiting.state = "shown";
-    var url = "https://api.foursquare.com/v2/tips/add?";
+    var url = "tips/add?";
     url += "venueId=" + venueID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, "", showDone);
+    doWebRequest("POST", url, "", parseAddTip);
+}
+
+function parseAddTip(response){
+    var data = processResponse(response);
+    waiting.state = "hidden";
+    addTipToModel(data.tip);
 }
 
 function markVenueToDo(venueID, text) {
-    var url = "https://api.foursquare.com/v2/venues/" + venueID + "/marktodo?";
+    var url = "venues/" + venueID + "/marktodo?";
     if(text!="" && text.length>0) {
         url += "text=" + encodeURIComponent(text) + "&";
     }
@@ -256,7 +349,7 @@ function markVenueToDo(venueID, text) {
 }
 
 function addCheckin(venueID, comment, friends, facebook, twitter) {
-    var url = "https://api.foursquare.com/v2/checkins/add?";
+    var url = "checkins/add?";
     if(venueID!=null) {
         url += "venueId=" + venueID;
     }
@@ -301,7 +394,7 @@ function parseAddCheckin(response) {
 }
 
 function loadLeaderBoard() {
-    var url = "https://api.foursquare.com/v2/users/leaderboard?" + getAccessTokenParameter();
+    var url = "users/leaderboard?" + getAccessTokenParameter();
     waiting.state = "shown";
     doWebRequest("GET", url, "", parseLeaderBoard);
 }
@@ -314,7 +407,7 @@ function parseLeaderBoard(response) {
         var ranking = data.response.leaderboard.items[i];
         boardModel.append({
                            "id": ranking.user.id,
-                           "name": ranking.user.firstName + " " + ranking.user.lastName,
+                           "name": makeUserName(ranking.user),
                            "photo": ranking.user.photo,
                            "recent": ranking.scores.recent,
                            "max": ranking.scores.max,
@@ -328,7 +421,7 @@ function parseLeaderBoard(response) {
 }
 
 function loadToDo() {
-    var url = "https://api.foursquare.com/v2/users/self/todos?" +
+    var url = "users/self/todos?" +
         getLocationParameter() + "&" +
         getAccessTokenParameter();
     waiting.state = "shown";
@@ -370,17 +463,18 @@ function loadCheckin(checkin) {
     //var id = "4fa6634ce4b0fd4c3fb0af77"; //points + badges
     //var id = "4fa3ecd8e4b0ace472d9569c"; //comments + points + badge
     var id = checkin.id
-    var url = "https://api.foursquare.com/v2/checkins/" + id + "?" + getAccessTokenParameter();
+    var url = "checkins/" + id + "?" + getAccessTokenParameter();
 
     checkinDetails.scoreTotal = "--";
     scoresModel.clear();
     badgesModel.clear();
     commentsModel.clear();
+    photosModel.clear();
     doWebRequest("GET",url,"",parseCheckin);
 }
 
 function parseCheckin(response) {
-    var data = eval("[" + response + "]")[0].response;
+    var data = processResponse(response);
     //console.log("CHECKIN INFO: " + JSON.stringify(data.checkin) + "\n");
 
     checkinDetails.scoreTotal = data.checkin.score.total;
@@ -405,46 +499,44 @@ function parseCheckin(response) {
     }
     for( var i in data.checkin.comments.items) {
         var comment = data.checkin.comments.items[i];
-        console.log("CHECKIN COMMENT: " + JSON.stringify(comment));
-        var createdAt = new Date(parseInt(comment.createdAt,10)*1000);
-        var createdAgo = prettyDate(createdAt);
-        var userID = comment.user.id;
-        var userName = comment.user.firstName;
-        if (typeof(comment.user.lastName)!="undefined") {
-            userName = userName + " " + comment.user.lastName[0] + ".";
+        addCommentToModel(comment);
+    }
+
+    if (data.checkin.photos.count>0) {
+        for(var i in data.checkin.photos.items) {
+            var photo = data.checkin.photos.items[i];
+            photosModel.append({
+                                   "photoId": photo.id,
+                                   "photoThumb":makePhoto(photo,300)
+                               });
         }
-        var userPhoto = comment.user.photo;
-        var text = comment.text;
-        commentsModel.append({
-                                 "createdAt":createdAgo,
-                                 "user":userName,
-                                 "venueName":"",
-                                 "userID":userID,
-                                 "photo":userPhoto,
-                                 "shout":text});
     }
 
     waiting.state = "hidden";
 }
 
 function loadUser(user) {
-    var url = "https://api.foursquare.com/v2/users/" + user + "?" + getAccessTokenParameter();
+    var url = "users/" + user + "?" + getAccessTokenParameter();
     waiting.state = "shown";
     doWebRequest("GET", url, "", parseUser);
 }
 
 function parseUser(response) {
-    //console.log("USER: " + response);
-    var data = eval("[" + response + "]")[0].response;
+    var data = processResponse(response);
+    console.log("USER: " + JSON.stringify(data))
     waiting.state = "hidden";
     var user = data.user;
-    userDetails.userName = user.firstName + " " + user.lastName;
+    userDetails.userName = makeUserName(user);
     userDetails.userPhoto = user.photo;
     userDetails.userBadgesCount = user.badges.count;
     userDetails.userCheckinsCount = user.checkins.count;
     userDetails.userFriendsCount = user.friends.count;
     userDetails.userID = user.id;
     userDetails.userMayorshipsCount = user.mayorships.count;
+    userDetails.lastVenue = user.checkins.items[0].venue.name;
+    userDetails.lastTime = makeTime(user.checkins.items[0].createdAt);
+    userDetails.scoreRecent = user.scores.recent;
+    userDetails.scoreMax = user.scores.max;
 }
 
 function showError(msg) {
@@ -501,7 +593,7 @@ function showDone(data) {
     }
     waiting.state = "hidden";
     done.status = "";
-    if(typeof(data)!=undefined && data!=null) {
+    if(typeof(data)!="undefined" && data!=null) {
         if(action=="read") {
             done.status = "Marked as read " + data;
         } else if(action=="unread") {
@@ -515,6 +607,11 @@ function showDone(data) {
 
 function doNothing(data) {
     // Nothing...
+}
+
+function makeTime(date) {
+    var pretty = prettyDate(new Date(parseInt(date,10)*1000));
+    return pretty;
 }
 
 function prettyDate(date){

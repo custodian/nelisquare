@@ -5,6 +5,7 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter
     y: 60
     property string label: "Done"
+    property string status: ""
     width: parent.width - 20
     height: doneItems.height+20
     color: "#3B5998"

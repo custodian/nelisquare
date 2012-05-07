@@ -4,6 +4,8 @@ Rectangle {
     id: checkin
     signal venue()
     signal user(string user)
+    signal showAddComment()
+    signal deleteComment(string commentID)
     width: parent.width
     height: parent.height
     color: "#eee"
@@ -98,6 +100,27 @@ Rectangle {
 
                 Text {
                     width: parent.width
+                    visible: photosModel.count>0
+                    text: "Photos:"
+                }
+
+                Repeater {
+                    id: photoRepeater
+                    width: parent.width
+                    model: photosModel
+                    delegate: photoDelegate
+                    visible: photosModel.count>0
+                }
+
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: "#ccc"
+                    visible: photosModel.count>0
+                }
+
+                Text {
+                    width: parent.width
                     visible: commentsModel.count>0
                     text: "Comments:"
                 }
@@ -106,7 +129,7 @@ Rectangle {
                     id: commentRepeater
                     width: parent.width
                     model: commentsModel
-                    delegate: checkinDelegate
+                    delegate: commentDelegate
                     visible: commentsModel.count>0
                 }
 
@@ -115,6 +138,20 @@ Rectangle {
                     height: 1
                     color: "#ccc"
                     visible: commentsModel.count>0
+                }
+
+                BlueButton{
+                    label: "Add comment"
+                    width: parent.width - 5
+                    onClicked: {
+                        checkin.showAddComment();
+                    }
+                }
+
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: "#ccc"
                 }
             }
         }
@@ -137,8 +174,8 @@ Rectangle {
 
                 Rectangle {
                     id: profileImage
-                    x: 4
-                    y: 4
+                    x: 14
+                    y: 14
                     width: 64
                     height: 64
                     color: "#fff"
@@ -165,9 +202,9 @@ Rectangle {
                 Column {
                     id: statusTextArea
                     spacing: 4
-                    x: profileImage.width + 12
+                    x: profileImage.width + 22
                     y: 4
-                    width: parent.width - x - 12
+                    width: parent.width - x - 22
 
                     Text {
                         id: messageText
@@ -214,12 +251,119 @@ Rectangle {
     }
 
     Component {
+        id: commentDelegate
+
+        Item {
+            z: 100
+            id: friendItem
+            width: checkinListView.width
+            height: titleContainer.height + 2
+
+            Rectangle {
+                id: titleContainer
+                y: 1
+                width: parent.width - 20
+                height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
+
+                Rectangle {
+                    id: profileImage
+                    x: 4
+                    y: 4
+                    width: 64
+                    height: 64
+                    color: "#fff"
+                    border.color: "#ccc"
+                    border.width: 1
+
+                    Image {
+                        x: 4
+                        y: 4
+                        source: photo
+                        smooth: true
+                        width: 57
+                        height: 57
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            checkin.user(userID);
+                        }
+                    }
+                }
+
+                Column {
+                    id: statusTextArea
+                    spacing: 4
+                    x: profileImage.width + 12
+                    y: 4
+                    width: parent.width - x - 12
+
+                    Text {
+                        id: messageText
+                        color: theme.toolbarDarkColor
+                        font.pixelSize: 22
+                        font.bold: true
+                        width: parent.width
+                        text: user
+                        wrapMode: Text.Wrap
+                    }
+
+                    Text {
+                        color: "#555"
+                        font.pixelSize: 22
+                        width: parent.width
+                        text: shout
+                        wrapMode: Text.Wrap
+                    }
+
+                    Text {
+                        color: "#888"
+                        font.pixelSize: 20
+                        width: parent.width
+                        text: createdAt
+                        wrapMode: Text.Wrap
+                    }
+                }
+
+                Rectangle {
+                    anchors.right: parent.right
+                    color: "black"
+                    width: 32
+                    height: 32
+                    Image {
+                        source: "../pics/delete.png"
+                        smooth: true
+                    }
+                    visible: owner == "self"
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            checkin.deleteComment(commentID);
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                width: parent.width
+                x: 4
+                y: friendItem.height - 1
+                height: 1
+                color: "#ddd"
+            }
+        }
+    }
+
+    Component {
         id: scoreDelegate
 
         Column {
             width: scoreRepeater.width
             Row {
                 width: scoreRepeater.width
+                spacing: 10
                 Image {
                     source: scoreImage
                     smooth: true
@@ -240,6 +384,16 @@ Rectangle {
                     font.pixelSize: 18
                 }
             }
+        }
+    }
+
+    Component {
+        id: photoDelegate
+
+        Image {
+            source: photoThumb
+            width: 250
+            height: 250
         }
     }
 
