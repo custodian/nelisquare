@@ -7,10 +7,11 @@ refer to http://nelisquare.com for more info.
 
 ### branches
 
-    master - original nelisquare client
+    master - latest easy to use "release"
     topsquare - development branch of nelisquare with improvements
+    nelisquare - original nelisquare client as of 0.2.6
 
-topsquare
----------
+Wiki
+----
 
-check out https://github.com/custodian/nelisquare/tree/topsquare
+check out https://github.com/custodian/nelisquare/wiki/General-information for details
