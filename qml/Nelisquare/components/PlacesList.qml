@@ -172,8 +172,8 @@ Rectangle {
                             color: "#666"
                             font.pixelSize: 16
                             width: parent.width
-                            text: todoText
-                            visible: todoText.length>0
+                            text: todoComment
+                            visible: todoComment.length>0
                             wrapMode: Text.Wrap
                         }
 

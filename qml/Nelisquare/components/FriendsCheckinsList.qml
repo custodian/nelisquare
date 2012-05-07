@@ -168,6 +168,17 @@ Rectangle {
                         width: parent.width
                         text: shout!="" ? shout : venueAddress + " " + venueCity
                         wrapMode: Text.Wrap
+                        visible: venuePhoto.length=0
+                    }
+                    Row {
+                        width: parent.width
+                        Image {
+                            source: venuePhoto
+                            smooth: true
+                            width: 200
+                            height: 200
+                        }
+                        visible: venuePhoto.length>0
                     }
                     Row {
                         width: parent.width

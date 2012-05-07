@@ -96,6 +96,10 @@ Rectangle {
     }
 
     ListModel {
+        id: photosModel
+    }
+
+    ListModel {
         id: friendsCheckinsModel
     }
 
@@ -164,6 +168,16 @@ Rectangle {
                 Script.loadUser(user);
                 hideAll();
                 userDetails.state = "shown";
+            }
+            onShowAddComment: {
+                var checkin = checkinModel.get(0);
+                commentDialog.reset();
+                commentDialog.checkinID = checkin.id;
+                commentDialog.state = "shown";
+            }
+            onDeleteComment: {
+                var checkin = checkinModel.get(0);
+                Script.deleteComment(checkin.id,commentID);
             }
         }
 
@@ -262,6 +276,19 @@ Rectangle {
                 }
                 Script.addCheckin(null, realComment, true, facebook, twitter);
                 shoutDialog.state = "hidden";
+            }
+        }
+
+        CommentDialog {
+            id: commentDialog
+            width: parent.width
+            state: "hidden"
+
+            onCancel: { commentDialog.state = "hidden"; }
+            onShout: {
+                //console.log("COMMENT FOR: " + checkinID + " VALUE: " + comment);
+                Script.addComment(checkinID,comment);
+                commentDialog.state = "hidden";
             }
         }
 

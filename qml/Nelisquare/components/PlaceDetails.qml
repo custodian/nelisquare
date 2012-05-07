@@ -27,27 +27,6 @@ Rectangle {
         anchors.fill: parent
 
         Rectangle {
-            z:100
-            width: parent.width
-            height: 10
-            color: "#A8CB17"
-            y: 160
-
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#A8CB17"
-            }
-
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#888"
-                y: 9
-            }
-        }
-
-        Rectangle {
             z: 100
             width: parent.width
             height: 160
@@ -83,6 +62,26 @@ Rectangle {
                 }
             }
 
+        }
+
+        Rectangle {
+            z:100
+            width: parent.width
+            height: 10
+            color: "#A8CB17"
+
+            Rectangle {
+                width: parent.width
+                height: 1
+                color: "#A8CB17"
+            }
+
+            Rectangle {
+                width: parent.width
+                height: 1
+                color: "#888"
+                y: 9
+            }
         }
 
         Flickable {
