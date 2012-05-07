@@ -1,0 +1,5 @@
+release
+debug
+moc
+*.user
+Makefile*

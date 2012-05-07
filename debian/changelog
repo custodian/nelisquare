@@ -1,0 +1,33 @@
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Fixed adding of tips and todo
+
+ -- Tommi Laukkanen <tlaukkanen@gmail.com>  Wed, 24 Jun 2011 13:41:22 +0300
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Show tip on place details
+  * Add new tip
+  * Add place as todo
+
+ -- Tommi Laukkanen <tlaukkanen@gmail.com>  Wed, 24 Jun 2011 13:41:22 +0300
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Fixed desktop shortcut
+
+ -- unknown <tlaukkanen@gmail.com>  Wed, 25 May 2011 23:23:22 +0300
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Added leader board
+  * Added Shouting support
+  * Added GPS signal indicator
+
+ -- unknown <tlaukkanen@gmail.com>  Tue, 24 May 2011 23:23:22 +0300
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Initial Release.
+
+ -- unknown <tommi@unknown>  Thu, 28 Apr 2011 22:33:22 +0300
