@@ -23,77 +23,160 @@ Rectangle {
         onClicked: { }
     }
 
-    Rectangle {
-        width: parent.width
-        height: 10
-        color: "#A8CB17"
-        y: 160
-
-        Rectangle {
-            width: parent.width
-            height: 1
-            color: "#A8CB17"
-        }
-
-        Rectangle {
-            width: parent.width
-            height: 1
-            color: "#888"
-            y: 9
-        }
-    }
-
     Column {
-        width: parent.width - 20
-        x: 10
-        y: 174
-        spacing: 10
+        anchors.fill: parent
 
-        Text {
-            text: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
-            font.pixelSize: 22
-            font.bold: true
-            color: "#111"
-        }
-        Text {
-            text: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
-            font.pixelSize: 20
-            color: "#888"
-        }
         Rectangle {
+            z:100
             width: parent.width
-            height: 1
-            color: "#ccc"
+            height: 10
+            color: "#A8CB17"
+            y: 160
+
+            Rectangle {
+                width: parent.width
+                height: 1
+                color: "#A8CB17"
+            }
+
+            Rectangle {
+                width: parent.width
+                height: 1
+                color: "#888"
+                y: 9
+            }
         }
-        Repeater {
-            id: tipRepeater
-            width: parent.width
-            model: tipsModel
-            delegate: tipDelegate
-            visible: tipsModel.count>0
-        }
+
         Rectangle {
+            z: 100
             width: parent.width
-            height: 1
-            color: "#ccc"
-            visible: tipsModel.count>0
-        }
-        Row {
-            width: parent.width
-            height: 50
-            spacing: 10
-            BlueButton {
-                label: "Add tip"
-                width: parent.width / 2 - 5
+            height: 160
+            color: theme.toolbarLightColor
+
+            Text {
+                id: venueNameText
+                text: place.venueName
+                font.pixelSize: 24
+                font.bold: true
+                color: "#fff"
+                x: 10
+                y: 10
+            }
+
+            Text {
+                id: venueAddressText
+                text: place.venueAddress
+                font.pixelSize: 20
+                color: "#fff"
+                x: 10
+                y: venueNameText.y + venueNameText.height
+            }
+
+            GreenButton {
+                label: "CHECK IN HERE"
+                width: parent.width - 20
+                x: 10
+                y: venueAddressText.y + venueAddressText.height + 8
+
                 onClicked: {
-                    place.showAddTip();
+                    place.checkin();
                 }
             }
-            BlueButton {
-                label: "Mark to-do"
-                width: parent.width / 2 - 5
-                onClicked: {
-                    place.markToDo();
+
+        }
+
+        Flickable {
+            id: flickableArea
+            width: parent.width
+            contentWidth: parent.width
+            height: place.height - y
+
+            clip: true
+            flickableDirection: Flickable.VerticalFlick
+            boundsBehavior: Flickable.StopAtBounds
+            pressDelay: 100
+
+            Column {
+                onHeightChanged: {
+                    flickableArea.contentHeight = height;
+                }
+
+                width: parent.width - 20
+                x: 10
+                spacing: 10
+
+                Text {
+                    text: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
+                    font.pixelSize: 22
+                    font.bold: true
+                    color: "#111"
+                }
+                Text {
+                    text: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
+                    font.pixelSize: 20
+                    color: "#888"
+                }
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: "#ccc"
+                }
+                Repeater {
+                    id: tipRepeater
+                    width: parent.width
+                    model: tipsModel
+                    delegate: tipDelegate
+                    visible: tipsModel.count>0
+                }
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: "#ccc"
+                    visible: tipsModel.count>0
+                }
+                Row {
+                    width: parent.width
+                    height: 50
+                    spacing: 10
+                    BlueButton {
+                        label: "Add tip"
+                        width: parent.width / 2 - 5
+                        onClicked: {
+                            place.showAddTip();
+                        }
+                    }
+                    BlueButton {
+                        label: "Mark to-do"
+                        width: parent.width / 2 - 5
+                        onClicked: {
+                            place.markToDo();
+                        }
+                    }
+                }
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: "#ccc"
+                    visible: tipsModel.count>0
+                }
+            }
+            Rectangle {
+                id: profileImage
+                x: parent.width - 68
+                visible: place.venueMajor.length>0
+                width: 64
+                height: 64
+                color: "#fff"
+                border.color: "#ccc"
+                border.width: 1
+
+                Image {
+                    x: 4
+                    y: 4
+                    source: place.venueMajorPhoto
+                    smooth: true
+                    width: 57
+                    height: 57
                 }
             }
         }
@@ -117,64 +200,6 @@ Rectangle {
                 text: tipAge
                 color: "#aaa"
                 font.pixelSize: 18
-            }
-        }
-
-    }
-
-    Rectangle {
-        id: profileImage
-        x: parent.width - 68
-        y: 174
-        visible: place.venueMajor.length>0
-        width: 64
-        height: 64
-        color: "#fff"
-        border.color: "#ccc"
-        border.width: 1
-
-        Image {
-            x: 4
-            y: 4
-            source: place.venueMajorPhoto
-            smooth: true
-            width: 57
-            height: 57
-        }
-    }
-
-    Rectangle {
-        width: parent.width
-        height: 160
-        color: theme.toolbarLightColor
-
-        Text {
-            id: venueNameText
-            text: place.venueName
-            font.pixelSize: 24
-            font.bold: true
-            color: "#fff"
-            x: 10
-            y: 10
-        }
-
-        Text {
-            id: venueAddressText
-            text: place.venueAddress
-            font.pixelSize: 20
-            color: "#fff"
-            x: 10
-            y: venueNameText.y + venueNameText.height
-        }
-
-        GreenButton {
-            label: "CHECK IN HERE"
-            width: parent.width - 20
-            x: 10
-            y: venueAddressText.y + venueAddressText.height + 8
-
-            onClicked: {
-                place.checkin();
             }
         }
 

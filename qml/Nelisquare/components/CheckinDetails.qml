@@ -38,12 +38,14 @@ Rectangle {
             pressDelay: 100
 
             Column {
+
                 onHeightChanged: {
                     flickableArea.contentHeight = height;
                 }
 
                 id: columnView
-                width: parent.width
+                x: 10
+                width: parent.width - 20
                 spacing: 10
 
                 Row {
@@ -67,6 +69,12 @@ Rectangle {
                     visible: scoresModel.count>0
                 }
 
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: "#ccc"
+                }
+
                 Text {
                     width: parent.width
                     visible: badgesModel.count>0
@@ -81,6 +89,13 @@ Rectangle {
                     visible: badgesModel.count>0
                 }
 
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: "#ccc"
+                    visible: badgesModel.count>0
+                }
+
                 Text {
                     width: parent.width
                     visible: commentsModel.count>0
@@ -92,6 +107,13 @@ Rectangle {
                     width: parent.width
                     model: commentsModel
                     delegate: checkinDelegate
+                    visible: commentsModel.count>0
+                }
+
+                Rectangle {
+                    width: parent.width
+                    height: 1
+                    color: "#ccc"
                     visible: commentsModel.count>0
                 }
             }
@@ -182,7 +204,7 @@ Rectangle {
             }
 
             Rectangle {
-                width:  parent.width
+                width: parent.width
                 x: 4
                 y: friendItem.height - 1
                 height: 1

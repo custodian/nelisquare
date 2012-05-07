@@ -222,12 +222,10 @@ function parseVenue(response) {
     }
     // Parse venue tips
     tipsModel.clear();
-    console.log("tips: " + venue.tips.count);
     if(venue.tips.count>0) {
-        var tipCounter = 0;
         for(var i in venue.tips.groups[0].items) {
             var tip = venue.tips.groups[0].items[i];
-            console.log("tip: " + tip);
+            //console.log("tip: " + tip);
             var createdAt = new Date(parseInt(tip.createdAt,10)*1000);
             var createdAgo = prettyDate(createdAt);
             tipsModel.append({
@@ -235,10 +233,6 @@ function parseVenue(response) {
                              "tipText": tip.text,
                              "tipAge": "Added " + createdAgo
             });
-            tipCounter++;
-            if(tipCounter>0) {
-                break;
-            }
         }
     }
 }

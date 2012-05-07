@@ -197,7 +197,6 @@ Rectangle {
                 checkinDialog.state = "shown";
             }
             onShowAddTip: {
-                console.log("Show add tip");
                 tipDialog.reset();
                 tipDialog.venueID = placeDialog.venueID;
                 tipDialog.venueName = placeDialog.venueName;
