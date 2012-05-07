@@ -67,30 +67,31 @@ function getAccessTokenParameter() {
     return "oauth_token=" + accessToken;
 }
 
-function loadFriends() {
+function loadFriendsCheckins() {
     var url = "https://api.foursquare.com/v2/checkins/recent?" + getAccessTokenParameter();
-    doWebRequest("GET", url, "", parseFriends);
+    doWebRequest("GET", url, "", parseFriendsCheckins);
     waiting.state = "shown";
 }
 
-function loadNearbyFriends() {
+function loadNearbyFriendsCheckins() {
     var url = "https://api.foursquare.com/v2/checkins/recent?" +
         getLocationParameter() + "&" + getAccessTokenParameter();
-    doWebRequest("GET", url, "", parseFriends);
+    doWebRequest("GET", url, "", parseFriendsCheckins);
     waiting.state = "shown";
 }
 
-function parseFriends(response) {
-    //console.log("Response: " + response);
+function parseFriendsCheckins(response) {
     var data = eval("[" + response + "]")[0].response;
     var count = 0;
-    friendsModel.clear();
+    friendsCheckinsModel.clear();
     for(var i in data.recent) {
         var checkin = data.recent[i];
-        var userName = checkin.user.firstName + " " + checkin.user.lastName[0] + ".";
+        //console.log("FRIEND CHECKIN: " + JSON.stringify(checkin));
+        var userName = checkin.user.firstName;
+        if (typeof(checkin.user.lastName)!="undefined")
+            userName = userName + " " + checkin.user.lastName[0] + ".";
         var createdAt = new Date(parseInt(checkin.createdAt,10)*1000);
         var createdAgo = prettyDate(createdAt);
-        console.log("User checkin: " + userName);
         var venueName = "";
         var venueID = "";
         var venueAddress = "";
@@ -105,12 +106,17 @@ function parseFriends(response) {
             venueCheckinsCount = checkin.venue.stats.checkinsCount;
             venueUsersCount = checkin.venue.stats.usersCount;
         }
-
-        friendsModel.append({
+        var comments = "123";
+        if(typeof(checkin.comments)!="undefined"){
+            comments = checkin.comments.count;
+        }
+        friendsCheckinsModel.append({
                            "id": checkin.id,
                            "shout": parse(checkin.shout),
                            "user": userName,
+                           "userID": checkin.user.id,
                            "photo": checkin.user.photo,
+                           "comments": comments,
                            "venueName": venueName,
                            "venueID": venueID,
                            "createdAt": createdAgo,
@@ -255,11 +261,7 @@ function markVenueToDo(venueID, text) {
     doWebRequest("POST", url, "", showDone);
 }
 
-function loadMyCheckins() {
-    var url = "";
-}
-
-function checkin(venueID, comment, friends, facebook, twitter) {
+function addCheckin(venueID, comment, friends, facebook, twitter) {
     var url = "https://api.foursquare.com/v2/checkins/add?";
     if(venueID!=null) {
         url += "venueId=" + venueID;
@@ -283,10 +285,10 @@ function checkin(venueID, comment, friends, facebook, twitter) {
 
     //console.log("Checkin URL: " + url);
     waiting.state = "shown";
-    doWebRequest("POST", url, "", parseCheckin);
+    doWebRequest("POST", url, "", parseAddCheckin);
 }
 
-function parseCheckin(response) {
+function parseAddCheckin(response) {
     //console.log("CHECKIN ===== " + response);
     waiting.state = "hidden";
     var data = eval("[" + response + "]")[0];
@@ -367,6 +369,70 @@ function parseToDo(response) {
     }
 }
 
+function loadCheckin(checkin) {
+    waiting.state = "shown";
+    //var id = "4fa6a2cae4b089a95b316999"; //points
+    //var id = "4fa74812e4b0cbe2e15e6ada"; //bages
+    //var id = "4fa6634ce4b0fd4c3fb0af77"; //points + badges
+    //var id = "4fa3ecd8e4b0ace472d9569c"; //comments + points + badge
+    var id = checkin.id
+    var url = "https://api.foursquare.com/v2/checkins/" + id + "?" + getAccessTokenParameter();
+
+    checkinDetails.scoreTotal = "--";
+    scoresModel.clear();
+    badgesModel.clear();
+    commentsModel.clear();
+    doWebRequest("GET",url,"",parseCheckin);
+}
+
+function parseCheckin(response) {
+    var data = eval("[" + response + "]")[0].response;
+    //console.log("CHECKIN INFO: " + JSON.stringify(data.checkin) + "\n");
+
+    checkinDetails.scoreTotal = data.checkin.score.total;
+    for( var i in data.checkin.score.scores) {
+        var score = data.checkin.score.scores[i];
+        //console.log("CHECKIN SCORE: " + JSON.stringify(score));
+        scoresModel.append({
+                               "scorePoints": score.points,
+                               "scoreImage": score.icon,
+                               "scoreMessage": score.message,
+                    });
+    }
+    if(typeof(data.checkin.badges)!="undefined") {
+        for( var i in data.checkin.badges.items) {
+            var badge = data.checkin.badges.items[i];
+            //console.log("CHECKIN BADGE: " + JSON.stringify(badge));
+            badgesModel.append({
+                                   "badgeTitle":badge.name,
+                                   "badgeMessage":badge.description,
+                                   "badgeImage":badge.image.prefix + badge.image.sizes[1] + badge.image.name})
+        }
+    }
+    for( var i in data.checkin.comments.items) {
+        var comment = data.checkin.comments.items[i];
+        console.log("CHECKIN COMMENT: " + JSON.stringify(comment));
+        var createdAt = new Date(parseInt(comment.createdAt,10)*1000);
+        var createdAgo = prettyDate(createdAt);
+        var userID = comment.user.id;
+        var userName = comment.user.firstName;
+        if (typeof(comment.user.lastName)!="undefined") {
+            userName = userName + " " + comment.user.lastName[0] + ".";
+        }
+        var userPhoto = comment.user.photo;
+        var text = comment.text;
+        commentsModel.append({
+                                 "createdAt":createdAgo,
+                                 "user":userName,
+                                 "venueName":"",
+                                 "userID":userID,
+                                 "photo":userPhoto,
+                                 "shout":text});
+    }
+
+    waiting.state = "hidden";
+}
+
 function loadUser(user) {
     var url = "https://api.foursquare.com/v2/users/" + user + "?" + getAccessTokenParameter();
     waiting.state = "shown";
@@ -374,7 +440,7 @@ function loadUser(user) {
 }
 
 function parseUser(response) {
-    console.log("USER: " + response);
+    //console.log("USER: " + response);
     var data = eval("[" + response + "]")[0].response;
     waiting.state = "hidden";
     var user = data.user;

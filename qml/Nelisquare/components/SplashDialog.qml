@@ -22,7 +22,7 @@ Rectangle {
         }
 
         Text {
-            text: "© 2011 Tommi Laukkanen\nTwitter: @tlaukkanen\nhttp://nelisquare.com"
+            text: "© 2012 Basil Semuonov\n© 2011 Tommi Laukkanen\nTwitter: @basil_s\nhttp://nelisquare.com"
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#666"
             font.pixelSize: 22

@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Rectangle {
-    id: friendsList
+    id: friendsCheckinsList
     signal clicked(int index)
     signal shout()
     signal nearby()
@@ -18,10 +18,10 @@ Rectangle {
 
     ListView {
         y: 110
-        model: friendsModel
+        model: friendsCheckinsModel
         width: parent.width
         height: parent.height - y
-        delegate: friendsListDelegate
+        delegate: friendsCheckinsListDelegate
         highlightFollowsCurrentItem: true
     }
 
@@ -38,7 +38,7 @@ Rectangle {
             width: parent.width - 20
 
             onClicked: {
-                friendsList.shout();
+                friendsCheckinsList.shout();
             }
         }
 */
@@ -59,10 +59,10 @@ Rectangle {
                 x: 10
                 width:  parent.width/2-15
                 height: 50
-                pressed: friendsList.recentPressed
+                pressed: friendsCheckinsList.recentPressed
                 onClicked: {
-                    if(friendsList.recentPressed==false) {
-                        friendsList.recent();
+                    if(friendsCheckinsList.recentPressed==false) {
+                        friendsCheckinsList.recent();
                     }
                 }
             }
@@ -72,10 +72,10 @@ Rectangle {
                 x: parent.width/2+5
                 width: parent.width/2-15
                 height: 50
-                pressed: friendsList.nearbyPressed
+                pressed: friendsCheckinsList.nearbyPressed
                 onClicked: {
-                    if(friendsList.nearbyPressed==false) {
-                        friendsList.nearby();
+                    if(friendsCheckinsList.nearbyPressed==false) {
+                        friendsCheckinsList.nearby();
                     }
                 }
             }
@@ -111,7 +111,7 @@ Rectangle {
     }
 
     Component {
-        id: friendsListDelegate
+        id: friendsCheckinsListDelegate
 
         Item {
             id: friendItem
@@ -169,13 +169,30 @@ Rectangle {
                         text: shout!="" ? shout : venueAddress + " " + venueCity
                         wrapMode: Text.Wrap
                     }
-
-                    Text {
-                        color: "#888"
-                        font.pixelSize: 20
+                    Row {
                         width: parent.width
-                        text: createdAt
-                        wrapMode: Text.Wrap
+                        Text {
+                            color: "#888"
+                            font.pixelSize: 20
+                            width: parent.width * 0.7
+                            text: createdAt
+                            wrapMode: Text.Wrap
+                        }
+                        Image {
+                            id: commentImage
+                            source: "../pics/112-group@2x.png"
+                            smooth: true
+                            width: 32
+                            height: 21
+                            visible: comments>0
+                        }
+                        Text {
+                            id: commentCount
+                            color: theme.toolbarDarkColor
+                            font.pixelSize: 20
+                            text: comments
+                            visible: comments>0
+                        }
                     }
                 }
             }
@@ -192,7 +209,7 @@ Rectangle {
                 id: mouseArea
                 anchors.fill: parent
                 onClicked: {
-                    friendsList.clicked( index );
+                    friendsCheckinsList.clicked( index );
                 }
             }
 
@@ -203,21 +220,21 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: friendsList
+                target: friendsCheckinsList
                 x: parent.width
             }
         },
         State {
             name: "hiddenLeft"
             PropertyChanges {
-                target: friendsList
+                target: friendsCheckinsList
                 x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: friendsList
+                target: friendsCheckinsList
                 x: 0
             }
         }
@@ -227,7 +244,7 @@ Rectangle {
         Transition {
             SequentialAnimation {
                 PropertyAnimation {
-                    target: friendsList
+                    target: friendsCheckinsList
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"

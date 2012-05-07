@@ -8,7 +8,7 @@ Rectangle {
     smooth: true
     color: "#555"
 
-    signal openFriends()
+    signal openFriendsCheckins()
     signal openPlaces()
     signal openExplore()
     signal openProfile()
@@ -29,8 +29,8 @@ Rectangle {
                 id: friendsButton
                 image: "users.png" // "112-group@2x.png"
                 label: "Friends"
-                selected: friendsList.state == "shown"
-                onClicked: menu.openFriends();
+                selected: friendsCheckinsList.state == "shown"
+                onClicked: menu.openFriendsCheckins();
             }
 
 

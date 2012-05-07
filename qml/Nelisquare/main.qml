@@ -53,7 +53,7 @@ Rectangle {
         if(key=="accesstoken") {
             if(value.length>0) {
                 Script.setAccessToken(value);
-                Script.loadFriends();
+                Script.loadFriendsCheckins();
             } else {
                 login.visible = true;
                 login.reset();
@@ -62,7 +62,8 @@ Rectangle {
     }
 
     function hideAll() {
-        friendsList.state = "hidden";
+        checkinDetails.state = "hidden";
+        friendsCheckinsList.state = "hidden";
         placesList.state = "hidden";
         placeDialog.state = "hidden";
         mainmenu.state = "hidden"
@@ -79,7 +80,23 @@ Rectangle {
     }
 
     ListModel {
-        id: friendsModel
+        id: checkinModel
+    }
+
+    ListModel {
+        id: scoresModel
+    }
+
+    ListModel {
+        id: badgesModel
+    }
+
+    ListModel {
+        id: commentsModel
+    }
+
+    ListModel {
+        id: friendsCheckinsModel
     }
 
     ListModel {
@@ -103,28 +120,50 @@ Rectangle {
         y: toolbar.height
         height: menubar.visible ? parent.height - toolbar.height - menubar.height : parent.height - toolbar.height
 
-        FriendsList {
-            id: friendsList
+        FriendsCheckinsList {
+            id: friendsCheckinsList
             state: "shown"
             width: parent.width
             height: parent.height
             recentPressed: true
             nearbyPressed: false
             onRecent: {
-                friendsList.recentPressed = true;
-                friendsList.nearbyPressed = false;
-                Script.loadFriends();
+                friendsCheckinsList.recentPressed = true;
+                friendsCheckinsList.nearbyPressed = false;
+                Script.loadFriendsCheckins();
             }
             onNearby: {
-                friendsList.recentPressed = false;
-                friendsList.nearbyPressed = true;
-                Script.loadNearbyFriends();
+                friendsCheckinsList.recentPressed = false;
+                friendsCheckinsList.nearbyPressed = true;
+                Script.loadNearbyFriendsCheckins();
             }
             onClicked: {
-                var checkin = friendsModel.get(index);
-                Script.loadVenue( checkin.venueID );
+                var checkin = friendsCheckinsModel.get(index);
+                Script.loadCheckin(checkin)
+                checkinModel.clear();
+                checkinModel.append(checkin);
+                hideAll();
+                checkinDetails.state = "shown";
+            }
+        }
+
+        CheckinDetails {
+            id: checkinDetails
+            width: parent.width
+            height: parent.height
+            state: "hidden"
+
+            onVenue: {
+                var checkin = checkinModel.get(0);
+                Script.loadVenue(checkin.venueID);
                 hideAll();
                 placeDialog.state = "shown";
+
+            }
+            onUser: {
+                Script.loadUser(user);
+                hideAll();
+                userDetails.state = "shown";
             }
         }
 
@@ -189,7 +228,7 @@ Rectangle {
                 if(realComment.indexOf("Add comment")>-1) {
                     realComment = "";
                 }
-                Script.checkin(venueID, realComment, friends, facebook, twitter);
+                Script.addCheckin(venueID, realComment, friends, facebook, twitter);
                 checkinDialog.state = "hidden";
             }
         }
@@ -199,6 +238,12 @@ Rectangle {
             width: parent.width
             height: parent.height
             state: "hidden"
+
+            onUser: {
+                Script.loadUser(user);
+                hideAll();
+                userDetails.state = "shown";
+            }
         }
 
         ShoutDialog {
@@ -216,7 +261,7 @@ Rectangle {
                 if(realComment.indexOf("Write here")>-1) {
                     realComment = "";
                 }
-                Script.checkin(null, realComment, true, facebook, twitter);
+                Script.addCheckin(null, realComment, true, facebook, twitter);
                 shoutDialog.state = "hidden";
             }
         }
@@ -278,10 +323,10 @@ Rectangle {
         y: toolbar.height
         state: "hidden"
         anchors.horizontalCenter: parent.horizontalCenter
-        onOpenFriends: {
-            Script.loadFriends();
+        onOpenFriendsCheckins: {
+            Script.loadFriendsCheckins();
             hideAll();
-            friendsList.state = "shown";
+            friendsCheckinsList.state = "shown";
         }
         onOpenPlaces: {
             Script.loadPlaces("");
@@ -400,14 +445,14 @@ Rectangle {
             spacing: isSmallScreen() ? 5 : 15
 
             ToolbarButton {
-                id: friendsButton
+                id: friendsCheckinsButton
                 image: "users.png" // "112-group@2x.png"
                 label: "Friends"
-                selected: friendsList.state == "shown"
+                selected: friendsCheckinsList.state == "shown"
                 onClicked: {
-                    Script.loadFriends();
+                    Script.loadFriendsCheckins();
                     hideAll();
-                    friendsList.state = "shown";
+                    friendsCheckinsList.state = "shown";
                 }
             }
 

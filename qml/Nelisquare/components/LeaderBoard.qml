@@ -2,7 +2,7 @@ import Qt 4.7
 
 Rectangle {
     id: leaderBoard
-    signal back()
+    signal user( string user )
     property string rank: ""
     width: parent.width
     color: "#eee"
@@ -145,7 +145,7 @@ Rectangle {
                 id: mouseArea
                 anchors.fill: parent
                 onClicked: {
-                    leaderBoard.clicked( index );
+                    leaderBoard.user( id );
                 }
             }
 
