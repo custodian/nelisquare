@@ -14,4 +14,4 @@ refer to http://nelisquare.com for more info.
 Wiki
 ----
 
-check out https://github.com/custodian/nelisquare/wiki/General-information for details
+check out https://github.com/custodian/nelisquare/wiki for details
