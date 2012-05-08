@@ -35,22 +35,10 @@ Rectangle {
         Item {
             width: parent.width
             height: 64
-            Rectangle {
-                id: profileImage
-                width: 64
-                height: 64
-                color: "#fff"
-                border.color: "#ccc"
-                border.width: 1
 
-                Image {
-                    x: 4
-                    y: 4
-                    source: details.userPhoto
-                    smooth: true
-                    width: 57
-                    height: 57
-                }
+            ProfilePhoto {
+                id: profileImage
+                photoUrl: details.userPhoto
             }
 
             Text {

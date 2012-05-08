@@ -29,19 +29,7 @@ Rectangle {
         width: parent.width
         height: 100
         color: theme.toolbarLightColor
-/*
-        GreenButton {
-            x: 10
-            y: 10
-            height: 50
-            label: "Shout"
-            width: parent.width - 20
 
-            onClicked: {
-                friendsCheckinsList.shout();
-            }
-        }
-*/
         Rectangle {
             width: parent.width-20
             y: 20
@@ -125,23 +113,12 @@ Rectangle {
                 width: parent.width
                 height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
 
-                Rectangle {
+                ProfilePhoto {
                     id: profileImage
-                    x: 4
-                    y: 4
-                    width: 64
-                    height: 64
-                    color: "#fff"
-                    border.color: "#ccc"
-                    border.width: 1
+                    photoUrl: photo
 
-                    Image {
-                        x: 4
-                        y: 4
-                        source: photo
-                        smooth: true
-                        width: 57
-                        height: 57
+                    onClicked: {
+                        checkin.user(userID);
                     }
                 }
 
@@ -168,7 +145,7 @@ Rectangle {
                         width: parent.width
                         text: shout!="" ? shout : venueAddress + " " + venueCity
                         wrapMode: Text.Wrap
-                        visible: venuePhoto.length=0
+                        visible: venuePhoto == "" && shout!=""
                     }
                     Row {
                         width: parent.width

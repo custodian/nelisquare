@@ -172,30 +172,14 @@ Rectangle {
                 width: parent.width
                 height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
 
-                Rectangle {
-                    id: profileImage
+                ProfilePhoto {
                     x: 14
                     y: 14
-                    width: 64
-                    height: 64
-                    color: "#fff"
-                    border.color: "#ccc"
-                    border.width: 1
+                    id: profileImage
+                    photoUrl: photo
 
-                    Image {
-                        x: 4
-                        y: 4
-                        source: photo
-                        smooth: true
-                        width: 57
-                        height: 57
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            checkin.user(userID);
-                        }
+                    onClicked: {
+                        checkin.user(userID);
                     }
                 }
 
@@ -265,30 +249,12 @@ Rectangle {
                 width: parent.width - 20
                 height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
 
-                Rectangle {
+                ProfilePhoto {
                     id: profileImage
-                    x: 4
-                    y: 4
-                    width: 64
-                    height: 64
-                    color: "#fff"
-                    border.color: "#ccc"
-                    border.width: 1
+                    photoUrl: photo
 
-                    Image {
-                        x: 4
-                        y: 4
-                        source: photo
-                        smooth: true
-                        width: 57
-                        height: 57
-                    }
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            checkin.user(userID);
-                        }
+                    onClicked: {
+                        checkin.user(userID);
                     }
                 }
 
@@ -315,6 +281,7 @@ Rectangle {
                         width: parent.width
                         text: shout
                         wrapMode: Text.Wrap
+                        visible: shout.length>0
                     }
 
                     Text {

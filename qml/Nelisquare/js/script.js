@@ -254,31 +254,32 @@ function parsePlaces(response) {
 function loadVenue(venueID) {
     var url = "venues/" + venueID + "?" + getAccessTokenParameter();
     waiting.state = "shown";
-    placeDialog.venueID = venueID;
-    placeDialog.venueName = "";
-    placeDialog.venueAddress = "";
-    placeDialog.venueCity = "";
-    placeDialog.venueMajor = "";
+    venueDetails.venueID = venueID;
+    venueDetails.venueName = "";
+    venueDetails.venueAddress = "";
+    venueDetails.venueCity = "";
+    venueDetails.venueMajor = "";
     doWebRequest("GET", url, "", parseVenue);
 }
 
 function parseVenue(response) {
     var data = processResponse(response);
-    console.log("VENUE: "+ JSON.stringify(data));
+    //console.log("VENUE: "+ JSON.stringify(data));
     waiting.state = "hidden";
     var venue = data.venue;
     var icon = "";
     if(venue.categories!=null && typeof(venue.categories[0])!="undefined") {
         icon = venue.categories[0].icon;
     }
-    placeDialog.venueID = venue.id;
-    placeDialog.venueName = venue.name;
-    placeDialog.venueAddress = parse(venue.location.address);
-    placeDialog.venueCity = parse(venue.location.city);
-    placeDialog.venueMajor = "";
+    venueDetails.venueID = venue.id;
+    venueDetails.venueName = venue.name;
+    venueDetails.venueAddress = parse(venue.location.address);
+    venueDetails.venueCity = parse(venue.location.city);
+    venueDetails.venueMajor = "";
     if(venue.mayor.count>0) {
-        placeDialog.venueMajor = makeUserName(venue.mayor.user);
-        placeDialog.venueMajorPhoto = venue.mayor.user.photo;
+        venueDetails.venueMajor = makeUserName(venue.mayor.user);
+        venueDetails.venueMajorPhoto = venue.mayor.user.photo;
+        venueDetails.venueMajorID = venue.mayor.user.id;
     }
     // Parse venue tips
     tipsModel.clear();
@@ -523,7 +524,7 @@ function loadUser(user) {
 
 function parseUser(response) {
     var data = processResponse(response);
-    console.log("USER: " + JSON.stringify(data))
+    //console.log("USER: " + JSON.stringify(data))
     waiting.state = "hidden";
     var user = data.user;
     userDetails.userName = makeUserName(user);
@@ -533,8 +534,10 @@ function parseUser(response) {
     userDetails.userFriendsCount = user.friends.count;
     userDetails.userID = user.id;
     userDetails.userMayorshipsCount = user.mayorships.count;
-    userDetails.lastVenue = user.checkins.items[0].venue.name;
-    userDetails.lastTime = makeTime(user.checkins.items[0].createdAt);
+    if(typeof(user.checkins.items)!="undefined") {
+        userDetails.lastVenue = user.checkins.items[0].venue.name;
+        userDetails.lastTime = makeTime(user.checkins.items[0].createdAt);
+    }
     userDetails.scoreRecent = user.scores.recent;
     userDetails.scoreMax = user.scores.max;
 }

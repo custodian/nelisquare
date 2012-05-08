@@ -3,6 +3,8 @@ import Qt 4.7
 import QtMobility.location 1.1
 import "js/script.js" as Script
 import "js/storage.js" as Storage
+import "js/window.js" as Window
+import "js/utils.js" as Utils
 
 Rectangle {
     id:window
@@ -53,7 +55,8 @@ Rectangle {
         if(key=="accesstoken") {
             if(value.length>0) {
                 Script.setAccessToken(value);
-                Script.loadFriendsCheckins();
+                showFriendsCheckins();
+                //Script.loadFriendsCheckins();
             } else {
                 login.visible = true;
                 login.reset();
@@ -64,8 +67,8 @@ Rectangle {
     function hideAll() {
         checkinDetails.state = "hidden";
         friendsCheckinsList.state = "hidden";
-        placesList.state = "hidden";
-        placeDialog.state = "hidden";
+        venuesList.state = "hidden";
+        venueDetails.state = "hidden";
         mainmenu.state = "hidden"
         userDetails.state = "hidden";
         leaderBoard.state = "hidden";
@@ -77,6 +80,60 @@ Rectangle {
         } else {
             return false;
         }
+    }
+
+    function showLeaderBoard() {
+        Window.pushWindow(function() {
+                Script.loadLeaderBoard();
+                hideAll();
+                leaderBoard.state = "shown";
+                });
+    }
+
+    function showFriendsCheckins() {
+        Window.pushWindow(function() {
+            Script.loadFriendsCheckins();
+            hideAll();
+            friendsCheckinsList.state = "shown";
+            });
+    }
+
+    function showVenueList(query) {
+        Window.pushWindow(function() {
+                if (query == "todolist") {
+                    Script.loadToDo();
+                } else {
+                    Script.loadPlaces(query);
+                }
+                hideAll();
+                venuesList.state = "shown";
+            });
+    }
+
+    function showVenueDetails(venueID) {
+        Window.pushWindow(function() {
+                Script.loadVenue(venueID);
+                hideAll();
+                venueDetails.state = "shown";
+            });
+    }
+
+    function showUserDetails(user) {
+        Window.pushWindow(function() {
+                Script.loadUser(user);
+                hideAll();
+                userDetails.state = "shown";
+            });
+    }
+
+    function showCheckinDetails(checkin) {
+        Window.pushWindow(function() {
+                Script.loadCheckin(checkin)
+                checkinModel.clear();
+                checkinModel.append(checkin);
+                hideAll();
+                checkinDetails.state = "shown";
+            });
     }
 
     ListModel {
@@ -143,11 +200,7 @@ Rectangle {
             }
             onClicked: {
                 var checkin = friendsCheckinsModel.get(index);
-                Script.loadCheckin(checkin)
-                checkinModel.clear();
-                checkinModel.append(checkin);
-                hideAll();
-                checkinDetails.state = "shown";
+                showCheckinDetails(checkin);
             }
         }
 
@@ -159,15 +212,10 @@ Rectangle {
 
             onVenue: {
                 var checkin = checkinModel.get(0);
-                Script.loadVenue(checkin.venueID);
-                hideAll();
-                placeDialog.state = "shown";
-
+                showVenueDetails(checkin.venueID);
             }
             onUser: {
-                Script.loadUser(user);
-                hideAll();
-                userDetails.state = "shown";
+                showUserDetails(user);
             }
             onShowAddComment: {
                 var checkin = checkinModel.get(0);
@@ -181,48 +229,49 @@ Rectangle {
             }
         }
 
-        PlacesList {
-            id: placesList
+        VenuesList {
+            id: venuesList
             width: parent.width
             height: parent.height
             state:  "hidden"
 
             onClicked: {
                 var venue = placesModel.get(index);
-                Script.loadVenue( venue.id );
-                hideAll();
-                placeDialog.state = "shown";
+                showVenueDetails(venue.id)
             }
             onSearch: {
                 Script.loadPlaces(query);
             }
         }
 
-        PlaceDetails {
-            id: placeDialog
+        VenueDetails {
+            id: venueDetails
             width: parent.width
             height: parent.height
             state: "hidden"
             onCheckin: {
                 checkinDialog.reset();
-                checkinDialog.venueID = placeDialog.venueID;
+                checkinDialog.venueID = venueDetails.venueID;
                 checkinDialog.comment = "";
-                checkinDialog.venueName = placeDialog.venueName;
+                checkinDialog.venueName = venueDetails.venueName;
                 checkinDialog.state = "shown";
             }
             onShowAddTip: {
                 tipDialog.reset();
-                tipDialog.venueID = placeDialog.venueID;
-                tipDialog.venueName = placeDialog.venueName;
+                tipDialog.venueID = venueDetails.venueID;
+                tipDialog.venueName = venueDetails.venueName;
                 tipDialog.action = 0;
                 tipDialog.state = "shown";
             }
             onMarkToDo: {
                 tipDialog.reset();
-                tipDialog.venueID = placeDialog.venueID;
-                tipDialog.venueName = placeDialog.venueName;
+                tipDialog.venueID = venueDetails.venueID;
+                tipDialog.venueName = venueDetails.venueName;
                 tipDialog.action = 1;
                 tipDialog.state = "shown";
+            }
+            onUser: {
+                showUserDetails(user)
             }
         }
 
@@ -253,9 +302,7 @@ Rectangle {
             state: "hidden"
 
             onUser: {
-                Script.loadUser(user);
-                hideAll();
-                userDetails.state = "shown";
+                showUserDetails(user);
             }
         }
 
@@ -315,9 +362,7 @@ Rectangle {
             height: parent.height
             state: "hidden"
             onOpenLeaderBoard: {
-                Script.loadLeaderBoard();
-                hideAll();
-                leaderBoard.state = "shown";
+                showLeaderBoard();
             }
         }
 
@@ -350,29 +395,19 @@ Rectangle {
         state: "hidden"
         anchors.horizontalCenter: parent.horizontalCenter
         onOpenFriendsCheckins: {
-            Script.loadFriendsCheckins();
-            hideAll();
-            friendsCheckinsList.state = "shown";
+            showFriendsCheckins();
         }
         onOpenPlaces: {
-            Script.loadPlaces("");
-            hideAll();
-            placesList.state = "shown";
+            showVenueList("");
         }
         onOpenExplore: {
-            Script.loadToDo();
-            hideAll();
-            placesList.state = "shown";
+            showVenueList("todolist")
         }
         onOpenProfile: {
-            Script.loadUser("self");
-            hideAll();
-            userDetails.state = "shown";
+            showUserDetails("self");
         }
         onOpenLeaderBoard: {
-            Script.loadLeaderBoard();
-            hideAll();
-            leaderBoard.state = "shown";
+            showLeaderBoard();
         }
     }
 
@@ -471,14 +506,23 @@ Rectangle {
             spacing: isSmallScreen() ? 5 : 15
 
             ToolbarButton {
+                id: backwardsButton
+                image: "undo.png" // "112-group@2x.png"
+                label: "Back"
+                shown: Script.windowStash.length>0
+                onClicked: {
+                    Window.popWindow();
+                }
+            }
+
+            ToolbarButton {
                 id: friendsCheckinsButton
                 image: "users.png" // "112-group@2x.png"
                 label: "Friends"
                 selected: friendsCheckinsList.state == "shown"
                 onClicked: {
-                    Script.loadFriendsCheckins();
-                    hideAll();
-                    friendsCheckinsList.state = "shown";
+                    Window.clearWindows();
+                    showFriendsCheckins();
                 }
             }
 
@@ -487,11 +531,9 @@ Rectangle {
                 id: placesButton
                 image: "pin_map.png" //  "07-map-marker@2x.png"
                 label: "Places"
-                selected: placesList.state == "shown"
+                selected: venuesList.state == "shown"
                 onClicked: {
-                    Script.loadPlaces("");
-                    hideAll();
-                    placesList.state = "shown";
+                    showVenueList("");
                 }
             }
 
@@ -499,9 +541,7 @@ Rectangle {
                 image: "checkbox_checked.png" // "117-todo@2x.png"
                 label: "To-Do"
                 onClicked: {
-                    Script.loadToDo();
-                    hideAll();
-                    placesList.state = "shown";
+                    showVenueList("todolist");
                 }
             }
 
@@ -509,9 +549,7 @@ Rectangle {
                 image: "contact_card.png" // "111-user@2x.png"
                 label: "Myself"
                 onClicked: {
-                    Script.loadUser("self");
-                    hideAll();
-                    userDetails.state = "shown";
+                    showUserDetails("self");
                 }
             }
 
@@ -539,9 +577,7 @@ Rectangle {
                 var code = url.substring(codeStart + 13);
                 Script.setAccessToken(code);
                 Storage.setKeyValue("accesstoken", code);
-                console.log("Access token: " + code);
-                //done.label = code;
-                //done.state = "shown";
+                //console.log("Access token: " + code);
             }
         }
 
@@ -550,8 +586,6 @@ Rectangle {
             done.state = "shown"
         }
     }
-
-
 
     DoneIndicator {
         id: done
@@ -573,6 +607,5 @@ Rectangle {
         id: splashDialog
         anchors.centerIn: parent
     }
-
 
 }

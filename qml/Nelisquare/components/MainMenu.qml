@@ -38,7 +38,7 @@ Rectangle {
                 id: placesButton
                 image: "pin_map.png" //  "07-map-marker@2x.png"
                 label: "Places"
-                selected: placesList.state == "shown"
+                selected: venuesList.state == "shown"
                 onClicked: menu.openPlaces();
             }
         }

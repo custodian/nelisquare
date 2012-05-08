@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Rectangle {
-    id: placesList
+    id: venuesList
     signal clicked(int index)
     signal search(string query)
     width: parent.width
@@ -17,7 +17,7 @@ Rectangle {
         width: parent.width
         height: parent.height - 80
         y: 110
-        delegate: placesListDelegate
+        delegate: venuesListDelegate
         highlightFollowsCurrentItem: true
     }
 
@@ -89,7 +89,7 @@ Rectangle {
                     if(query=="Search") {
                         query = "";
                     }
-                    placesList.search(query);
+                    venuesList.search(query);
                 }
 
                 MouseArea {
@@ -119,7 +119,7 @@ Rectangle {
                 if(query=="Search") {
                     query = "";
                 }
-                placesList.search(query);
+                venuesList.search(query);
             }
         }
 
@@ -127,7 +127,7 @@ Rectangle {
     }
 
     Component {
-        id: placesListDelegate
+        id: venuesListDelegate
 
         Item {
             id: placesItem
@@ -144,7 +144,7 @@ Rectangle {
                 Image {
                     x: 8
                     y: 4
-                    id: profileImage
+                    id: buildingImage
                     source: icon
                     width: 32
                     height: 32
@@ -153,7 +153,7 @@ Rectangle {
                 Column {
                     id: statusTextArea
                     spacing: 4
-                    x: profileImage.width + 16
+                    x: buildingImage.width + 16
                     y: 4
                     width: parent.width - x - 16
 
@@ -200,7 +200,7 @@ Rectangle {
                 id: mouseArea
                 anchors.fill: parent
                 onClicked: {
-                    placesList.clicked( index );
+                    venuesList.clicked( index );
                 }
             }
 
@@ -211,21 +211,21 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: placesList
+                target: venuesList
                 x: parent.width
             }
         },
         State {
             name: "hiddenLeft"
             PropertyChanges {
-                target: placesList
+                target: venuesList
                 x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: placesList
+                target: venuesList
                 x: 0
             }
         }
@@ -235,7 +235,7 @@ Rectangle {
         Transition {
             SequentialAnimation {
                 PropertyAnimation {
-                    target: placesList
+                    target: venuesList
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"

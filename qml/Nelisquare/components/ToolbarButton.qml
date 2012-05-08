@@ -5,6 +5,7 @@ Item {
     property string image: ""
     property string label: ""
     property bool selected: false
+    property bool shown: true
     signal clicked()
     width: window.isSmallScreen ? 80 : 90
     height: 58
@@ -51,6 +52,7 @@ Item {
         source: "../pics/" + toolbarButton.image // "pics/112-group@2x.png"
         anchors.horizontalCenter: parent.horizontalCenter
         y: 8
+        visible: shown
     }
 
     Text {
@@ -59,13 +61,16 @@ Item {
         anchors.bottom: parent.bottom
         color: "#eee"
         font.pixelSize: 12
+        visible: shown
     }
 
     MouseArea {
         id: mouse
         anchors.fill: parent
         onClicked: {
-            toolbarButton.clicked();
+            if (shown) {
+                toolbarButton.clicked();
+            }
         }
     }
 }

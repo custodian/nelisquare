@@ -5,6 +5,7 @@ Rectangle {
     signal checkin()
     signal markToDo()
     signal showAddTip()
+    signal user(string user)
     width: parent.width
     color: "#eee"
 
@@ -13,6 +14,7 @@ Rectangle {
     property string venueAddress: ""
     property string venueCity: ""
     property string venueMajor: ""
+    property string venueMajorID: ""
     property string venueMajorPhoto: ""
     property string venueHereNow: ""
     property string venueCheckinsCount: ""
@@ -159,23 +161,14 @@ Rectangle {
                     visible: tipsModel.count>0
                 }
             }
-            Rectangle {
+            ProfilePhoto {
                 id: profileImage
-                x: parent.width - 68
+                x: parent.width - 75
+                photoUrl: place.venueMajorPhoto
                 visible: place.venueMajor.length>0
-                width: 64
-                height: 64
-                color: "#fff"
-                border.color: "#ccc"
-                border.width: 1
 
-                Image {
-                    x: 4
-                    y: 4
-                    source: place.venueMajorPhoto
-                    smooth: true
-                    width: 57
-                    height: 57
+                onClicked: {
+                    place.user(venueMajorID);
                 }
             }
         }
