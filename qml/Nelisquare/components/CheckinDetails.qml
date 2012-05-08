@@ -1,16 +1,37 @@
 import Qt 4.7
 
 Rectangle {
-    id: checkin
     signal venue()
     signal user(string user)
+    signal photo(string photo)
     signal showAddComment()
     signal deleteComment(string commentID)
+    y: 10
+    id: checkin
+
     width: parent.width
     height: parent.height
     color: "#eee"
 
-    property string scoreTotal: ""
+    property string checkinID: ""
+    property alias scoreTotal: scoreTotal.text
+    property alias owner: checkinOwner
+
+    property alias scoresModel: scoresModel
+    property alias badgesModel: badgesModel
+    property alias commentsModel: commentsModel
+    property alias photosBox: photosBox
+    ListModel {
+        id: scoresModel
+    }
+
+    ListModel {
+        id: badgesModel
+    }
+
+    ListModel {
+        id: commentsModel
+    }
 
     MouseArea {
         anchors.fill: parent
@@ -21,11 +42,18 @@ Rectangle {
     Column {
         anchors.fill: parent
 
-        Repeater {
-            id: checkinListView
-            model: checkinModel
-            width: parent.width
-            delegate: checkinDelegate
+        EventBox {
+            x: 10
+            id: checkinOwner
+            width: parent.width - 20
+            showRemoveButton: false
+
+            onUserClicked: {
+                checkin.user(checkin.owner.userID);
+            }
+            onAreaClicked: {
+                checkin.venue();
+            }
         }
 
         Flickable {
@@ -58,8 +86,7 @@ Rectangle {
                         text: "Total points:"
                     }
                     Text {
-                        //anchors.right: parent.right
-                        text: checkin.scoreTotal
+                        id: scoreTotal
                     }
                 }
 
@@ -98,25 +125,11 @@ Rectangle {
                     visible: badgesModel.count>0
                 }
 
-                Text {
-                    width: parent.width
-                    visible: photosModel.count>0
-                    text: "Photos:"
-                }
-
-                Repeater {
-                    id: photoRepeater
-                    width: parent.width
-                    model: photosModel
-                    delegate: photoDelegate
-                    visible: photosModel.count>0
-                }
-
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#ccc"
-                    visible: photosModel.count>0
+                PhotosBox {
+                    id: photosBox
+                    onPhoto: {
+                        checkin.photo(photo);
+                    }
                 }
 
                 Text {
@@ -158,169 +171,27 @@ Rectangle {
     }
 
     Component {
-        id: checkinDelegate
-
-        Item {
-            z: 100
-            id: friendItem
-            width: checkinListView.width
-            height: titleContainer.height + 2
-
-            Rectangle {
-                id: titleContainer
-                y: 1
-                width: parent.width
-                height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
-
-                ProfilePhoto {
-                    x: 14
-                    y: 14
-                    id: profileImage
-                    photoUrl: photo
-
-                    onClicked: {
-                        checkin.user(userID);
-                    }
-                }
-
-                Column {
-                    id: statusTextArea
-                    spacing: 4
-                    x: profileImage.width + 22
-                    y: 4
-                    width: parent.width - x - 22
-
-                    Text {
-                        id: messageText
-                        color: theme.toolbarDarkColor
-                        font.pixelSize: 22
-                        font.bold: true
-                        width: parent.width
-                        text: user + "<span style='color:#000'> @ </span>" + venueName
-                        wrapMode: Text.Wrap
-                    }
-
-                    Text {
-                        color: "#555"
-                        font.pixelSize: 22
-                        width: parent.width
-                        text: shout!="" ? shout : venueAddress + " " + venueCity
-                        wrapMode: Text.Wrap
-                    }
-
-                    Text {
-                        color: "#888"
-                        font.pixelSize: 20
-                        width: parent.width
-                        text: createdAt
-                        wrapMode: Text.Wrap
-                    }
-                }
-                MouseArea {
-                    anchors.fill: statusTextArea
-                    onClicked: {
-                        checkin.venue();
-                    }
-                }
-            }
-
-            Rectangle {
-                width: parent.width
-                x: 4
-                y: friendItem.height - 1
-                height: 1
-                color: "#ddd"
-            }
-        }
-    }
-
-    Component {
         id: commentDelegate
 
-        Item {
-            z: 100
-            id: friendItem
-            width: checkinListView.width
-            height: titleContainer.height + 2
+        EventBox {
+            width: commentRepeater.width
+            userName: model.user
+            userShout: model.shout
+            createdAt: model.createdAt
+            eventOwner: model.owner
 
-            Rectangle {
-                id: titleContainer
-                y: 1
-                width: parent.width - 20
-                height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
-
-                ProfilePhoto {
-                    id: profileImage
-                    photoUrl: photo
-
-                    onClicked: {
-                        checkin.user(userID);
-                    }
-                }
-
-                Column {
-                    id: statusTextArea
-                    spacing: 4
-                    x: profileImage.width + 12
-                    y: 4
-                    width: parent.width - x - 12
-
-                    Text {
-                        id: messageText
-                        color: theme.toolbarDarkColor
-                        font.pixelSize: 22
-                        font.bold: true
-                        width: parent.width
-                        text: user
-                        wrapMode: Text.Wrap
-                    }
-
-                    Text {
-                        color: "#555"
-                        font.pixelSize: 22
-                        width: parent.width
-                        text: shout
-                        wrapMode: Text.Wrap
-                        visible: shout.length>0
-                    }
-
-                    Text {
-                        color: "#888"
-                        font.pixelSize: 20
-                        width: parent.width
-                        text: createdAt
-                        wrapMode: Text.Wrap
-                    }
-                }
-
-                Rectangle {
-                    anchors.right: parent.right
-                    color: "black"
-                    width: 32
-                    height: 32
-                    Image {
-                        source: "../pics/delete.png"
-                        smooth: true
-                    }
-                    visible: owner == "self"
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            checkin.deleteComment(commentID);
-                        }
-                    }
-                }
+            Component.onCompleted: {
+                userPhoto.photoUrl = model.photo
             }
 
-            Rectangle {
-                width: parent.width
-                x: 4
-                y: friendItem.height - 1
-                height: 1
-                color: "#ddd"
+            onUserClicked: {
+                checkin.user(model.userID);
+            }
+            onDeleteEvent: {
+                checkin.deleteComment(model.commentID);
             }
         }
+
     }
 
     Component {
@@ -351,16 +222,6 @@ Rectangle {
                     font.pixelSize: 18
                 }
             }
-        }
-    }
-
-    Component {
-        id: photoDelegate
-
-        Image {
-            source: photoThumb
-            width: 250
-            height: 250
         }
     }
 

@@ -14,10 +14,6 @@ Rectangle {
     smooth: true
     state: "hidden"
 
-    /*Image {
-        source: "../pics/sand.png"
-    }*/
-
     Row {
         id: doneItems
         anchors.horizontalCenter: parent.horizontalCenter

@@ -32,7 +32,7 @@ function prettyDate(date){
                 day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
         day_diff >= 31 && Math.ceil( day_diff / 30 ) + " months ago";
     } catch(err) {
-        console.log("Error: " + err);
+        //console.log("Error: " + err);
         return "some time ago";
     }
 }
@@ -72,7 +72,7 @@ function parseDate(stamp)
 
         return dt;
     } catch(err) {
-        console.log("Error while parsing date: " + err);
+        //console.log("Error while parsing date: " + err);
         return new Date();
     }
 }

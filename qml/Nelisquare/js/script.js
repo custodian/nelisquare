@@ -1,3 +1,4 @@
+Qt.include("utils.js")
 
 var CLIENT_ID = "4IFSW3ZXR4BRBXT3IIZMB13YPNGSIOK4ANEM0PP3T2CQQFWI";
 var CALLBACK_URL = "http://nelisquare.substanceofcode.com/callback.php";
@@ -12,7 +13,7 @@ var accessToken = "";
 function doWebRequest(method, url, params, callback) {
     var doc = new XMLHttpRequest();
     url = "https://api.foursquare.com/v2/" + url
-    console.log(method + " " + url);
+    //console.log(method + " " + url);
 
     doc.onreadystatechange = function() {
         if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
@@ -69,27 +70,31 @@ function getAccessTokenParameter() {
 }
 
 function makeUserName(user) {
-    var username = "unknown";
-    if(typeof(user.firstName)!="undefined") {
-        username = user.firstName;
-    }
-    if(typeof(user.lastName)!="undefined") {
-        username = username + " " + user.lastName[0] + ".";
+    var username = parse(user.firstName);
+    var lastname = parse(user.lastName);
+    if(lastname.length>0) {
+        username += " " + lastname + ".";
     }
     return username;
 }
 
-function makePhoto(photos, minsize) {
+function thumbnailPhoto(photos, minsize) {
     var url = "";
     var width = 1000;
-    for( var i in photos.sizes.items) {
-        var photo = photos.sizes.items[i];
+    photos.sizes.items.forEach(function(photo) {
         if (photo.width < width && photo.width >= minsize ) {
             width = photo.width;
             url = photo.url;
         }
-    }
+    });
     return url;
+}
+
+function makePhoto(photo,minsize) {
+    return {
+       "photoID": photo.id,
+       "photoThumb":thumbnailPhoto(photo,minsize)
+   }
 }
 
 function processResponse(response) {
@@ -99,8 +104,10 @@ function processResponse(response) {
 }
 
 function addTipToModel(tip) {
-    //console.log("tip: " + tip);
-    tipsModel.append({
+    //console.log("VENUE TIP: " + JSON.stringify(tip));
+    venueDetails.tipsModel.append({
+                     "userID": tip.user.id,
+                     "userPhoto": tip.user.photo,
                      "tipID": tip.id,
                      "tipText": tip.text,
                      "tipAge": "Added " + makeTime(tip.createdAt)
@@ -114,14 +121,16 @@ function addCommentToModel(comment) {
     var userName = makeUserName(comment.user);
     var userPhoto = comment.user.photo;
     var text = comment.text;
-    commentsModel.append({
+    var relationship = parse(comment.user.relationship);
+
+    checkinDetails.commentsModel.append({
                              "commentID":comment.id,
                              "createdAt":createdAgo,
                              "user":userName,
                              "userID":userID,
                              "photo":userPhoto,
                              "shout":text,
-                             "owner":comment.user.relationship
+                             "owner":relationship
                          });
 }
 
@@ -142,32 +151,20 @@ function parseFriendsCheckins(response) {
     var data = processResponse(response);
     var count = 0;
     friendsCheckinsModel.clear();
-    for(var i in data.recent) {
-        var checkin = data.recent[i];
+    data.recent.forEach(function(checkin) {
         //console.log("FRIEND CHECKIN: " + JSON.stringify(checkin));
         var userName = makeUserName(checkin.user);
         var createdAgo = makeTime(checkin.createdAt);
         var venueName = "";
         var venueID = "";
-        var venueAddress = "";
-        var venueCity = "";
-        var venueCheckinsCount = "";
-        var venueUsersCount = "";
         if(typeof(checkin.venue)!="undefined") {
             venueName = checkin.venue.name;
             venueID = checkin.venue.id;
-            venueAddress = parse(checkin.venue.location.address);
-            venueCity = parse(checkin.venue.location.city);
-            venueCheckinsCount = checkin.venue.stats.checkinsCount;
-            venueUsersCount = checkin.venue.stats.usersCount;
         }
-        var comments = "123";
-        if(typeof(checkin.comments)!="undefined"){
-            comments = checkin.comments.count;
-        }
+        var comments = parse(checkin.comments.count);
         var venuePhoto = "";
         if (checkin.photos.count > 0) {
-            venuePhoto = makePhoto(checkin.photos.items[0], 300);
+            venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
         }
         friendsCheckinsModel.append({
                            "id": checkin.id,
@@ -176,17 +173,13 @@ function parseFriendsCheckins(response) {
                            "userID": checkin.user.id,
                            "photo": checkin.user.photo,
                            "comments": comments,
-                           "venueName": venueName,
                            "venueID": venueID,
+                           "venueName": venueName,
                            "createdAt": createdAgo,
-                           "venueAddress": venueAddress,
-                           "venueCity": venueCity,
-                           "venueCheckinsCount": venueCheckinsCount,
-                           "venueUsersCount": venueUsersCount,
                            "venuePhoto": venuePhoto
         });
         count++;
-    }
+    });
     waiting.state = "hidden";
     if(count==0) {
         showDone("No visible checkins");
@@ -224,8 +217,7 @@ function parsePlaces(response) {
     var count = 0;
     placesModel.clear();
     waiting.state = "hidden";
-    for(var i in data.groups[0].items) {
-        var place = data.groups[0].items[i];
+    data.groups[0].items.forEach(function(place) {
         var icon = "";
         if(place.categories!=null && typeof(place.categories[0])!="undefined") {
             icon = place.categories[0].icon;
@@ -245,7 +237,7 @@ function parsePlaces(response) {
                            "venueUsersCount": place.stats.usersCount
         });
         count++;
-    }
+    });
     if(count==0) {
         showDone("No visible places");
     }
@@ -259,6 +251,7 @@ function loadVenue(venueID) {
     venueDetails.venueAddress = "";
     venueDetails.venueCity = "";
     venueDetails.venueMajor = "";
+    venueDetails.photosBox.photosModel.clear();
     doWebRequest("GET", url, "", parseVenue);
 }
 
@@ -282,12 +275,21 @@ function parseVenue(response) {
         venueDetails.venueMajorID = venue.mayor.user.id;
     }
     // Parse venue tips
-    tipsModel.clear();
+    venueDetails.tipsModel.clear();
     if(venue.tips.count>0) {
-        for(var i in venue.tips.groups[0].items) {
-            var tip = venue.tips.groups[0].items[i];
+        venue.tips.groups[0].items.forEach(function(tip) {
             addTipToModel(tip);
-        }
+        });
+    }
+    if(venue.photos.count>0) {
+        venue.photos.groups.forEach(function(group) {
+            if (group.count>0 && group.type == "venue") {
+                group.items.forEach(function(photo){
+                    venueDetails.photosBox.photosModel.append(
+                        makePhoto(photo,300) );
+                });
+            }
+        });
     }
 }
 
@@ -319,10 +321,9 @@ function parseDeleteComment(response) {
     var data = processResponse(response);
     waiting.state = "hidden";
     commentsModel.clear();
-    for( var i in data.checkin.comments.items) {
-        var comment = data.checkin.comments.items[i];
+    data.checkin.comments.items.forEach(function(comment) {
         addCommentToModel(comment);
-    }
+    });
 }
 
 function addTip(venueID, text) {
@@ -381,15 +382,14 @@ function parseAddCheckin(response) {
     waiting.state = "hidden";
     var data = eval("[" + response + "]")[0];
     notification.message = "<span>";
-    for(var i in data.notifications) {
-        var noti = data.notifications[i];
+    data.notifications.forEach(function(noti) {
         if(typeof(noti.item.message)!="undefined") {
             if(notification.message.length>6) {
                 notification.message += "<br/><br/>"
             }
             notification.message += noti.item.message;
         }
-    }
+    });
     notification.message += "</span>";
     notification.state = "shown";
 }
@@ -404,8 +404,7 @@ function parseLeaderBoard(response) {
     waiting.state = "hidden";
     var data = eval("[" + response + "]")[0];
     boardModel.clear();
-    for(var i in data.response.leaderboard.items) {
-        var ranking = data.response.leaderboard.items[i];
+    data.response.leaderboard.items.forEach(function(ranking) {
         boardModel.append({
                            "id": ranking.user.id,
                            "name": makeUserName(ranking.user),
@@ -418,7 +417,7 @@ function parseLeaderBoard(response) {
         if(ranking.user.relationship=="self") {
             leaderBoard.rank = ranking.rank;
         }
-    }
+    });
 }
 
 function loadToDo() {
@@ -433,8 +432,7 @@ function parseToDo(response) {
     waiting.state = "hidden";
     var data = eval("[" + response + "]")[0];
     placesModel.clear();
-    for(var i in data.response.todos.items) {
-        var todo = data.response.todos.items[i];
+    data.response.todos.items.forEach(function(todo) {
         var place = todo.tip.venue;
         var icon = "";
         if(place.categories!=null && typeof(place.categories[0])!="undefined") {
@@ -454,7 +452,7 @@ function parseToDo(response) {
                            "venueCheckinsCount": place.stats.checkinsCount,
                            "venueUsersCount": place.stats.usersCount
         });
-    }
+    });
 }
 
 function loadCheckin(checkin) {
@@ -467,50 +465,56 @@ function loadCheckin(checkin) {
     var url = "checkins/" + id + "?" + getAccessTokenParameter();
 
     checkinDetails.scoreTotal = "--";
-    scoresModel.clear();
-    badgesModel.clear();
-    commentsModel.clear();
-    photosModel.clear();
+    checkinDetails.scoresModel.clear();
+    checkinDetails.badgesModel.clear();
+    checkinDetails.commentsModel.clear();
+    checkinDetails.photosBox.photosModel.clear();
     doWebRequest("GET",url,"",parseCheckin);
 }
 
 function parseCheckin(response) {
-    var data = processResponse(response);
+    var checkin = processResponse(response).checkin;
     //console.log("CHECKIN INFO: " + JSON.stringify(data.checkin) + "\n");
 
-    checkinDetails.scoreTotal = data.checkin.score.total;
-    for( var i in data.checkin.score.scores) {
-        var score = data.checkin.score.scores[i];
+    checkinDetails.checkinID = checkin.id;
+    checkinDetails.scoreTotal = checkin.score.total;
+    checkinDetails.owner.userID = checkin.user.id;
+    checkinDetails.owner.userName = makeUserName(checkin.user);
+    checkinDetails.owner.createdAt = makeTime(checkin.createdAt);
+    checkinDetails.owner.userPhoto.photoUrl = checkin.user.photo;
+    checkinDetails.owner.venueID = checkin.venue.id;
+    checkinDetails.owner.venueName = checkin.venue.name;
+    checkinDetails.owner.venueAddress = parse(checkin.venue.location.address);
+    checkinDetails.owner.venueCity = parse(checkin.venue.location.city);
+    checkinDetails.owner.eventOwner = parse(checkin.user.relationship);
+    checkinDetails.owner.userShout = parse(checkin.user.shout);
+
+    checkin.score.scores.forEach(function(score) {
         //console.log("CHECKIN SCORE: " + JSON.stringify(score));
-        scoresModel.append({
+        checkinDetails.scoresModel.append({
                                "scorePoints": score.points,
                                "scoreImage": score.icon,
                                "scoreMessage": score.message,
                     });
-    }
-    if(typeof(data.checkin.badges)!="undefined") {
-        for( var i in data.checkin.badges.items) {
-            var badge = data.checkin.badges.items[i];
+    });
+    if(typeof(checkin.badges)!="undefined") {
+        checkin.badges.items.forEach(function(badge) {
             //console.log("CHECKIN BADGE: " + JSON.stringify(badge));
-            badgesModel.append({
+            checkinDetails.badgesModel.append({
                                    "badgeTitle":badge.name,
                                    "badgeMessage":badge.description,
                                    "badgeImage":badge.image.prefix + badge.image.sizes[1] + badge.image.name})
-        }
+        });
     }
-    for( var i in data.checkin.comments.items) {
-        var comment = data.checkin.comments.items[i];
+    checkin.comments.items.forEach(function(comment) {
         addCommentToModel(comment);
-    }
+    });
 
-    if (data.checkin.photos.count>0) {
-        for(var i in data.checkin.photos.items) {
-            var photo = data.checkin.photos.items[i];
-            photosModel.append({
-                                   "photoId": photo.id,
-                                   "photoThumb":makePhoto(photo,300)
-                               });
-        }
+    if (checkin.photos.count>0) {
+        checkin.photos.items.forEach(function (photo) {
+            checkinDetails.photosBox.photosModel.append(
+                makePhoto(photo,300));
+        });
     }
 
     waiting.state = "hidden";
@@ -542,9 +546,29 @@ function parseUser(response) {
     userDetails.scoreMax = user.scores.max;
 }
 
+function loadPhoto(photoid) {
+    var url = "photos/" + photoid + "?" + getAccessTokenParameter();
+    waiting.state = "shown";
+    doWebRequest("GET", url, "", parsePhoto);
+}
+
+function parsePhoto(response) {
+    var photo = processResponse(response).photo;
+    //console.log("PHOTO: " + JSON.stringify(photo))
+
+    photoDetails.photoUrl = photo.url;
+    photoDetails.owner.userID = photo.user.id;
+    photoDetails.owner.userName = "<span style='color:#000'>Uploaded by </span>" + makeUserName(photo.user);
+    photoDetails.owner.userPhoto.photoUrl = photo.user.photo;
+    photoDetails.owner.userShout = "via " + parse(photo.source.name);
+    photoDetails.owner.createdAt = makeTime(photo.createdAt);
+
+    waiting.state = "hidden";
+}
+
 function showError(msg) {
     waiting.state = "hidden";
-    console.log("Error: "+ msg);
+    //console.log("Error: "+ msg);
     error.state = "shown";
     error.reason = msg;
 }
@@ -590,7 +614,7 @@ function getToken() {
 
 
 function showDone(data) {
-    console.log("DONE: " + data);
+    //console.log("DONE: " + data);
     if(waiting.state!="shown") {
         return;
     }
@@ -606,82 +630,4 @@ function showDone(data) {
         }
     }
     done.state = "shown";
-}
-
-function doNothing(data) {
-    // Nothing...
-}
-
-function makeTime(date) {
-    var pretty = prettyDate(new Date(parseInt(date,10)*1000));
-    return pretty;
-}
-
-function prettyDate(date){
-    try {
-        var diff = (((new Date()).getTime() - date.getTime()) / 1000);
-        var day_diff = Math.floor(diff / 86400);
-
-        if ( isNaN(day_diff) || day_diff >= 31 ) {
-            //console.log("Days: " + day_diff);
-            return "some time ago";
-        } else if (day_diff < 0) {
-            //console.log("day_diff: " + day_diff);
-            return "just now";
-        }
-
-        return day_diff == 0 && (
-                    diff < 60 && "just now" ||
-                    diff < 120 && "1 minute ago" ||
-                    diff < 3600 && Math.floor( diff / 60 ) + " min ago" ||
-                    diff < 7200 && "1 hour ago" ||
-                    diff < 86400 && Math.floor( diff / 3600 ) + " hours ago") ||
-                day_diff == 1 && "Yesterday" ||
-                day_diff < 7 && day_diff + " days ago" ||
-                day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
-        day_diff >= 31 && Math.ceil( day_diff / 30 ) + " months ago";
-    } catch(err) {
-        console.log("Error: " + err);
-        return "some time ago";
-    }
-}
-
-// 2011-01-24T18:48:00Z
-function parseDate(stamp)
-{
-    try {
-        //console.log("stamp: " + stamp);
-        var parts = stamp.split("T");
-        var day;
-        var time;
-        var hours;
-        var minutes;
-        var seconds = 0;
-        var year;
-        var month;
-
-        var dates = parts[0].split("-");
-        year = parseInt(dates[0]);
-        month = parseInt(dates[1])-1;
-        day = parseInt(dates[2]);
-
-        var times = parts[1].split(":");
-        hours = parseInt(times[0]);
-        minutes = parseInt(times[1]);
-
-        var dt = new Date();
-        dt.setUTCDate(day);
-        dt.setYear(year);
-        dt.setUTCMonth(month);
-        dt.setUTCHours(hours);
-        dt.setUTCMinutes(minutes);
-        dt.setUTCSeconds(seconds);
-
-        //console.log("day: " + day + " year: " + year + " month " + month + " hour " + hours);
-
-        return dt;
-    } catch(err) {
-        console.log("Error while parsing date: " + err);
-        return new Date();
-    }
 }

@@ -72,6 +72,7 @@ Rectangle {
         mainmenu.state = "hidden"
         userDetails.state = "hidden";
         leaderBoard.state = "hidden";
+        photoDetails.state = "hidden";
     }
 
     function isSmallScreen() {
@@ -91,8 +92,8 @@ Rectangle {
     }
 
     function showFriendsCheckins() {
+        Script.loadFriendsCheckins();
         Window.pushWindow(function() {
-            Script.loadFriendsCheckins();
             hideAll();
             friendsCheckinsList.state = "shown";
             });
@@ -111,8 +112,8 @@ Rectangle {
     }
 
     function showVenueDetails(venueID) {
-        Window.pushWindow(function() {
-                Script.loadVenue(venueID);
+        Script.loadVenue(venueID);
+        Window.pushWindow(function() {                
                 hideAll();
                 venueDetails.state = "shown";
             });
@@ -128,32 +129,18 @@ Rectangle {
 
     function showCheckinDetails(checkin) {
         Window.pushWindow(function() {
-                Script.loadCheckin(checkin)
-                checkinModel.clear();
-                checkinModel.append(checkin);
+                Script.loadCheckin(checkin);
                 hideAll();
                 checkinDetails.state = "shown";
             });
     }
 
-    ListModel {
-        id: checkinModel
-    }
-
-    ListModel {
-        id: scoresModel
-    }
-
-    ListModel {
-        id: badgesModel
-    }
-
-    ListModel {
-        id: commentsModel
-    }
-
-    ListModel {
-        id: photosModel
+    function showPhotoDetails(photo) {
+        Window.pushWindow(function() {
+                Script.loadPhoto(photo);
+                hideAll();
+                photoDetails.state = "shown";
+            });
     }
 
     ListModel {
@@ -166,10 +153,6 @@ Rectangle {
 
     ListModel {
         id: boardModel
-    }
-
-    ListModel {
-        id: tipsModel
     }
 
     Theme {
@@ -211,21 +194,21 @@ Rectangle {
             state: "hidden"
 
             onVenue: {
-                var checkin = checkinModel.get(0);
-                showVenueDetails(checkin.venueID);
+                showVenueDetails(checkinDetails.owner.venueID);
             }
             onUser: {
                 showUserDetails(user);
             }
+            onPhoto: {
+                showPhotoDetails(photo);
+            }
             onShowAddComment: {
-                var checkin = checkinModel.get(0);
                 commentDialog.reset();
-                commentDialog.checkinID = checkin.id;
+                commentDialog.checkinID = checkinDetails.checkinID;
                 commentDialog.state = "shown";
             }
             onDeleteComment: {
-                var checkin = checkinModel.get(0);
-                Script.deleteComment(checkin.id,commentID);
+                Script.deleteComment(checkinDetails.checkinID,commentID);
             }
         }
 
@@ -237,7 +220,7 @@ Rectangle {
 
             onClicked: {
                 var venue = placesModel.get(index);
-                showVenueDetails(venue.id)
+                showVenueDetails(venue.id);
             }
             onSearch: {
                 Script.loadPlaces(query);
@@ -271,7 +254,10 @@ Rectangle {
                 tipDialog.state = "shown";
             }
             onUser: {
-                showUserDetails(user)
+                showUserDetails(user);
+            }
+            onPhoto: {
+                showPhotoDetails(photo);
             }
         }
 
@@ -282,10 +268,6 @@ Rectangle {
 
             onCancel: { checkinDialog.state = "hidden"; }
             onCheckin: {
-                console.log("Checkin to " + venueID +
-                            " with comment " + comment +
-                            " fb " + facebook +
-                            " tw " + twitter);
                 var realComment = comment;
                 if(realComment.indexOf("Add comment")>-1) {
                     realComment = "";
@@ -313,10 +295,6 @@ Rectangle {
 
             onCancel: { shoutDialog.state = "hidden"; }
             onShout: {
-                /*console.log("Shout! " +
-                            " with comment " + comment +
-                            " fb " + facebook +
-                            " tw " + twitter);*/
                 var realComment = comment;
                 if(realComment.indexOf("Write here")>-1) {
                     realComment = "";
@@ -363,6 +341,16 @@ Rectangle {
             state: "hidden"
             onOpenLeaderBoard: {
                 showLeaderBoard();
+            }
+        }
+
+        PhotoDetails {
+            id: photoDetails
+            width: parent.width
+            height: parent.height
+            state: "hidden"
+            onUser: {
+                showUserDetails(user);
             }
         }
 
@@ -570,7 +558,7 @@ Rectangle {
         anchors.fill: parent
         visible: false
         onFinished: {
-            console.log("current URL: " + url);
+            //console.log("current URL: " + url);
             if(url.indexOf("access_token=")>0) {
                 login.visible = false;
                 var codeStart = url.indexOf("access_token=");

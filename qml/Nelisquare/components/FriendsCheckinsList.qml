@@ -101,106 +101,23 @@ Rectangle {
     Component {
         id: friendsCheckinsListDelegate
 
-        Item {
-            id: friendItem
-            width: parent.width
-            height: titleContainer.height + 2
+        EventBox {
+            activeWhole: true
 
-            Rectangle {
-                id: titleContainer
-                color: mouseArea.pressed ? "#ddd" : "#eee"
-                y: 1
-                width: parent.width
-                height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
+            userName: model.user
+            userShout: model.shout
+            venueName: model.venueName
+            venuePhoto: model.venuePhoto
+            createdAt: model.createdAt
+            comments: model.comments
 
-                ProfilePhoto {
-                    id: profileImage
-                    photoUrl: photo
-
-                    onClicked: {
-                        checkin.user(userID);
-                    }
-                }
-
-                Column {
-                    id: statusTextArea
-                    spacing: 4
-                    x: profileImage.width + 12
-                    y: 4
-                    width: parent.width - x - 12
-
-                    Text {
-                        id: messageText
-                        color: theme.toolbarDarkColor
-                        font.pixelSize: 22
-                        font.bold: true
-                        width: parent.width
-                        text: user + "<span style='color:#000'> @ </span>" + venueName
-                        wrapMode: Text.Wrap
-                    }
-
-                    Text {
-                        color: "#555"
-                        font.pixelSize: 22
-                        width: parent.width
-                        text: shout!="" ? shout : venueAddress + " " + venueCity
-                        wrapMode: Text.Wrap
-                        visible: venuePhoto == "" && shout!=""
-                    }
-                    Row {
-                        width: parent.width
-                        Image {
-                            source: venuePhoto
-                            smooth: true
-                            width: 200
-                            height: 200
-                        }
-                        visible: venuePhoto.length>0
-                    }
-                    Row {
-                        width: parent.width
-                        Text {
-                            color: "#888"
-                            font.pixelSize: 20
-                            width: parent.width * 0.7
-                            text: createdAt
-                            wrapMode: Text.Wrap
-                        }
-                        Image {
-                            id: commentImage
-                            source: "../pics/112-group@2x.png"
-                            smooth: true
-                            width: 32
-                            height: 21
-                            visible: comments>0
-                        }
-                        Text {
-                            id: commentCount
-                            color: theme.toolbarDarkColor
-                            font.pixelSize: 20
-                            text: comments
-                            visible: comments>0
-                        }
-                    }
-                }
+            Component.onCompleted: {
+                userPhoto.photoUrl = model.photo
             }
 
-            Rectangle {
-                width:  parent.width
-                x: 4
-                y: friendItem.height - 1
-                height: 1
-                color: "#ddd"
+            onAreaClicked: {
+                friendsCheckinsList.clicked( index );
             }
-
-            MouseArea {
-                id: mouseArea
-                anchors.fill: parent
-                onClicked: {
-                    friendsCheckinsList.clicked( index );
-                }
-            }
-
         }
     }
 

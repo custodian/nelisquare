@@ -6,6 +6,7 @@ Rectangle {
     signal markToDo()
     signal showAddTip()
     signal user(string user)
+    signal photo(string photo)
     width: parent.width
     color: "#eee"
 
@@ -19,6 +20,13 @@ Rectangle {
     property string venueHereNow: ""
     property string venueCheckinsCount: ""
     property string venueUsersCount: ""
+
+    property alias tipsModel: tipsModel
+    property alias photosBox: photosBox
+
+    ListModel {
+        id: tipsModel
+    }
 
     MouseArea {
         anchors.fill: parent
@@ -112,15 +120,30 @@ Rectangle {
                     font.bold: true
                     color: "#111"
                 }
+
                 Text {
                     text: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
                     font.pixelSize: 20
                     color: "#888"
                 }
+
                 Rectangle {
                     width: parent.width
                     height: 1
                     color: "#ccc"
+                }
+
+                PhotosBox {
+                    id: photosBox
+                    onPhoto: {
+                        place.photo(photo);
+                    }
+                }
+
+                Text {
+                    width: parent.width
+                    text: "User tips:"
+                    visible: tipsModel.count>0
                 }
                 Repeater {
                     id: tipRepeater
@@ -177,24 +200,22 @@ Rectangle {
     Component {
         id: tipDelegate
 
-        Column {
+        EventBox {
             width: tipRepeater.width
-            Text {
-                width: parent.width
-                wrapMode: Text.Wrap
-                text: tipText
-                color: "#111"
-                font.pixelSize: 18
+
+            userShout: model.tipText
+            createdAt: model.tipAge
+            fontSize: 18
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = model.userPhoto
+                userPhoto.photoSize = 48
+                userPhoto.photoBorder = 2
             }
-            Text {
-                width: parent.width
-                wrapMode: Text.Wrap
-                text: tipAge
-                color: "#aaa"
-                font.pixelSize: 18
+            onUserClicked: {
+                place.user(model.userID);
             }
         }
-
     }
 
     states: [

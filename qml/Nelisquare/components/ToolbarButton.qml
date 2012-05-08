@@ -32,11 +32,6 @@ Item {
         GradientStop{position: 0.49; color: "#666"; }
         GradientStop{position: 0.5; color: "#707070"; }
         GradientStop{position: 0.8; color: "#606060"; }
-
-  /*      GradientStop{position: 0; color: "#e0e0e0"; }
-        GradientStop{position: 0.49; color: "#ddd"; }
-        GradientStop{position: 0.5; color: "#ccc"; }
-        GradientStop{position: 0.9; color: "#ddd"; } */
     }
 
     Gradient {
@@ -49,7 +44,7 @@ Item {
 
 
     Image {
-        source: "../pics/" + toolbarButton.image // "pics/112-group@2x.png"
+        source: "../pics/" + toolbarButton.image
         anchors.horizontalCenter: parent.horizontalCenter
         y: 8
         visible: shown
@@ -61,7 +56,7 @@ Item {
         anchors.bottom: parent.bottom
         color: "#eee"
         font.pixelSize: 12
-        visible: shown
+        visible: shown && toolbarButton.label.length > 0
     }
 
     MouseArea {

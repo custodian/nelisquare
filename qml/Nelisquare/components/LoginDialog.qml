@@ -24,15 +24,12 @@ Rectangle {
         WebView {
             id: webView
             anchors.fill: parent
-            //anchors.centerIn: parent
-            //width: parent.width
-            //height: parent.height
             preferredHeight: parent.height
-            preferredWidth: parent.width // parent.width //Math.max(parent.width,640)
-            url: "" //Script.AUTHENTICATE_URL
+            preferredWidth: parent.width
+            url: ""
 
             onLoadFinished: {
-                console.log("URL is now " + webView.url);
+                //console.log("URL is now " + webView.url);
                 loginDialog.finished( webView.url );
 
             }
