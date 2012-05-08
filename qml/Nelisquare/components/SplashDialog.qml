@@ -15,7 +15,7 @@ Rectangle {
         width: parent.width
 
         Text {
-            text: "NeliSquare 0.2.4"
+            text: "Nelisquare 0.2.7"
             anchors.horizontalCenter: parent.horizontalCenter
             color: "#333"
             font.pixelSize: 22

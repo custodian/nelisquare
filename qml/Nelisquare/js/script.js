@@ -264,7 +264,7 @@ function loadVenue(venueID) {
 
 function parseVenue(response) {
     var data = processResponse(response);
-    //console.log("VENUE: "+ JSON.stringify(data));
+    console.log("VENUE: "+ JSON.stringify(data));
     waiting.state = "hidden";
     var venue = data.venue;
     var icon = "";
@@ -276,7 +276,7 @@ function parseVenue(response) {
     placeDialog.venueAddress = parse(venue.location.address);
     placeDialog.venueCity = parse(venue.location.city);
     placeDialog.venueMajor = "";
-    if(typeof(venue.mayor)!="undefined") {
+    if(venue.mayor.count>0) {
         placeDialog.venueMajor = makeUserName(venue.mayor.user);
         placeDialog.venueMajorPhoto = venue.mayor.user.photo;
     }

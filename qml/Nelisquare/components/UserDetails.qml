@@ -122,6 +122,7 @@ Rectangle {
                     anchors.right: parent.right
                     font.pixelSize: 18
                     color: "white"
+                    visible: scoreRecent>0
                 }
             }
             Text {

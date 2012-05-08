@@ -88,7 +88,7 @@ Rectangle {
             id: flickableArea
             width: parent.width
             contentWidth: parent.width
-            height: place.height - y
+            height: 500//place.height - y
 
             clip: true
             flickableDirection: Flickable.VerticalFlick
