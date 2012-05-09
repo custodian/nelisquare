@@ -12,8 +12,8 @@ var accessToken = "";
 
 function doWebRequest(method, url, params, callback) {
     var doc = new XMLHttpRequest();
-    url = "https://api.foursquare.com/v2/" + url
-    //console.log(method + " " + url);
+    url = "https://api.foursquare.com/v2/" + url;
+    console.log(method + " " + url);
 
     doc.onreadystatechange = function() {
         if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
@@ -29,15 +29,44 @@ function doWebRequest(method, url, params, callback) {
         }
     }
 
-    doc.open(method, url);
-    if(params.length>0) {
-        //console.log("Sending: " + params);
-        doc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        doc.setRequestHeader("Content-Length", String(params.length));
-        doc.send(params);
-    } else {
+    //doc.open(method, url);
+    if(params.length>1) {
+        console.log("post");
+        doc.open("POST", "http://172.17.0.1:8080");
+        doc.setRequestHeader("Content-Type", "image/jpeg");
+        //doc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        doc.setRequestHeader("Content-Length", params[0]);
+        doc.setRequestHeader("Connection", "Close");
+        doc.send(params[1]);
+    } else {        
+        doc.open(method, url);
         doc.send();
     }
+}
+
+function doLoadFile(path, size, callback) {
+    var doc = new XMLHttpRequest();
+    doc.onreadystatechange = function() {
+        if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
+            var status = doc.status;
+            if(status!=200 && status) {
+                showError("Failed loading file: " + status + " " + doc.statusText);
+            }
+        } else if (doc.readyState == XMLHttpRequest.DONE) {
+            var data = [ size ];
+            var contentType = doc.getResponseHeader("Content-Type");
+            data.push(doc.responseText);
+            callback(data);
+        }
+    }
+
+    doc.open("GET", path);
+    doc.send();
+}
+
+function doNothing(response) {
+    // Nothing...
+    processResponse(response);
 }
 
 function setAccessToken(token) {
@@ -69,6 +98,74 @@ function getAccessTokenParameter() {
     return "oauth_token=" + accessToken;
 }
 
+function showError(msg) {
+    waiting.state = "hidden";
+    console.log("Error: "+ msg);
+    //error.state = "shown";
+    //error.reason = msg;
+    notificationDialog.message += msg + "<br/>"
+    notificationDialog.state = "shown";
+}
+
+function removeLinks(original) {
+    var txt = original;
+    txt = txt.replace(/<a /g, "<span ");
+    txt = txt.replace(/<\/a>/g, "</span>");
+    return txt;
+}
+
+function parseToken(data) {
+    sid = parseAuth(data, "Auth");
+    //console.log("Auth=" + sid);
+    sidToken = parseAuth(data, "SID");
+    //console.log("SID=" + sidToken);
+    logo.state = "hidden"; //.visible = false;
+    if(sid.length>0) {
+        navigation.state = "menu";
+        waiting.state = "hidden";
+        //loadUnreadNews();
+    } else {
+        addError("Couldn't parse SID");
+        waiting.state = "hidden";
+    }
+}
+
+function getNodeValue(node, name) {
+    var nodeValue = "";
+    for(var i=0; i<node.childNodes.length; i++) {
+        var nodeName = node.childNodes[i].nodeName;
+        if(nodeName==name) {
+            nodeValue = node.childNodes[i].firstChild.nodeValue;
+        }
+    }
+    return nodeValue;
+}
+
+function getToken() {
+    var url = "http://www.google.com/reader/api/0/token";
+    doWebRequest("GET", url, "", parseAccessToken);
+}
+
+
+function showDone(data) {
+    //console.log("DONE: " + data);
+    if(waiting.state!="shown") {
+        return;
+    }
+    waiting.state = "hidden";
+    done.status = "";
+    if(typeof(data)!="undefined" && data!=null) {
+        if(action=="read") {
+            done.status = "Marked as read " + data;
+        } else if(action=="unread") {
+            done.status = "Marked as unread " + data;
+        } else {
+            done.status = "" + data;
+        }
+    }
+    done.state = "shown";
+}
+
 function makeUserName(user) {
     var username = parse(user.firstName);
     var lastname = parse(user.lastName);
@@ -92,15 +189,21 @@ function thumbnailPhoto(photos, minsize) {
 
 function makePhoto(photo,minsize) {
     return {
-       "photoID": photo.id,
+       "objectID": photo.id,
        "photoThumb":thumbnailPhoto(photo,minsize)
    }
 }
 
 function processResponse(response) {
     //TODO: update notification tray
-    var data = eval("[" + response + "]")[0].response;
-    return data;
+    var data = eval("[" + response + "]")[0];
+    var notifications = data.notifications;
+    notifications.forEach(function(notification) {
+            if (parse(notification.type) == "notificationTray") {
+                updateNotificationCount(notification.item.unreadCount);
+            }
+        });
+    return data.response;
 }
 
 function addTipToModel(tip) {
@@ -252,6 +355,7 @@ function loadVenue(venueID) {
     venueDetails.venueCity = "";
     venueDetails.venueMajor = "";
     venueDetails.photosBox.photosModel.clear();
+    venueDetails.usersBox.photosModel.clear();
     doWebRequest("GET", url, "", parseVenue);
 }
 
@@ -282,6 +386,7 @@ function parseVenue(response) {
         });
     }
     if(venue.photos.count>0) {
+        venueDetails.photosBox.caption = venue.photos.summary;
         venue.photos.groups.forEach(function(group) {
             if (group.count>0 && group.type == "venue") {
                 group.items.forEach(function(photo){
@@ -290,6 +395,19 @@ function parseVenue(response) {
                 });
             }
         });
+    }
+    if (venue.hereNow.count>0) {
+        venueDetails.usersBox.caption = venue.hereNow.summary;
+        venue.hereNow.groups.forEach(function(group) {
+            if (group.count>0) {
+                group.items.forEach(function(user){
+                    venueDetails.usersBox.photosModel.append({
+                        "objectID": user.user.id,
+                        "photoThumb": user.user.photo });
+                });
+            }
+        });
+
     }
 }
 
@@ -381,17 +499,17 @@ function parseAddCheckin(response) {
     //console.log("CHECKIN ===== " + response);
     waiting.state = "hidden";
     var data = eval("[" + response + "]")[0];
-    notification.message = "<span>";
+    notificationDialog.message = "<span>";
     data.notifications.forEach(function(noti) {
         if(typeof(noti.item.message)!="undefined") {
-            if(notification.message.length>6) {
-                notification.message += "<br/><br/>"
+            if(notificationDialog.message.length>6) {
+                notificationDialog.message += "<br/><br/>"
             }
-            notification.message += noti.item.message;
+            notificationDialog.message += noti.item.message;
         }
     });
-    notification.message += "</span>";
-    notification.state = "shown";
+    notificationDialog.message += "</span>";
+    notificationDialog.state = "shown";
 }
 
 function loadLeaderBoard() {
@@ -455,13 +573,12 @@ function parseToDo(response) {
     });
 }
 
-function loadCheckin(checkin) {
+function loadCheckin(id) {
     waiting.state = "shown";
     //var id = "4fa6a2cae4b089a95b316999"; //points
     //var id = "4fa74812e4b0cbe2e15e6ada"; //bages
     //var id = "4fa6634ce4b0fd4c3fb0af77"; //points + badges
     //var id = "4fa3ecd8e4b0ace472d9569c"; //comments + points + badge
-    var id = checkin.id
     var url = "checkins/" + id + "?" + getAccessTokenParameter();
 
     checkinDetails.scoreTotal = "--";
@@ -523,6 +640,7 @@ function parseCheckin(response) {
 function loadUser(user) {
     var url = "users/" + user + "?" + getAccessTokenParameter();
     waiting.state = "shown";
+    userDetails.friendsBox.photosModel.clear();
     doWebRequest("GET", url, "", parseUser);
 }
 
@@ -538,12 +656,60 @@ function parseUser(response) {
     userDetails.userFriendsCount = user.friends.count;
     userDetails.userID = user.id;
     userDetails.userMayorshipsCount = user.mayorships.count;
+    var lastVenue = "";
+    var lastTime = "";
     if(typeof(user.checkins.items)!="undefined") {
-        userDetails.lastVenue = user.checkins.items[0].venue.name;
-        userDetails.lastTime = makeTime(user.checkins.items[0].createdAt);
+        lastVenue = user.checkins.items[0].venue.name;
+        lastTime = makeTime(user.checkins.items[0].createdAt);
     }
+    userDetails.lastVenue = lastVenue;
+    userDetails.lastTime = lastTime;
+
     userDetails.scoreRecent = user.scores.recent;
     userDetails.scoreMax = user.scores.max;
+    userDetails.userRelationship = parse(user.relationship);
+
+    if (user.friends.count>0) {
+        userDetails.friendsBox.caption = "Total friends: " + user.friends.count;
+        user.friends.groups.forEach(function(group) {
+            if (group.type == "friends") {
+                userDetails.friendsBox.caption += " ("+ group.name + " " + group.count + ")";
+            }
+            if (group.count>0) {
+                group.items.forEach(function(user){
+                    userDetails.friendsBox.photosModel.append({
+                        "objectID": user.id,
+                        "photoThumb": user.photo });
+                });
+            }
+        });
+
+    }
+}
+
+function addPhoto(checkin, photopath, size) {
+    notificationDialog.message = "Sorry, this isn't implemented yet!";
+    notificationDialog.state = "shown";
+    //TODO: make public photos
+    /*
+    waiting.state = "shown";
+    doLoadFile(photopath,size,function(photoData){
+        console.log("PHOTODATA: " + JSON.stringify(photoData[0])
+            + " SIZE: " + photoData[1].length);
+        var url = "photos/add?";
+        url += "checkinId=" + checkin;
+        url += "&" + getAccessTokenParameter();
+        doWebRequest("POST",url, photoData, parseAddPhoto);
+    });*/
+}
+
+function parseAddPhoto(response) {
+    console.log("PHOTOADD RESULT: " + JSON.stringify(response));
+    var photo = processResponse(response).photo;
+    waiting.state = "hidden";
+    console.log("ADDED PHOTO: " + JSON.stringify(photo));
+    checkinDetails.photosBox.photosModel.append(
+                makePhoto(photo,300));
 }
 
 function loadPhoto(photoid) {
@@ -566,68 +732,55 @@ function parsePhoto(response) {
     waiting.state = "hidden";
 }
 
-function showError(msg) {
+function loadNotifications() {
+    var url = "updates/notifications?" + getAccessTokenParameter();
+    waiting.state = "shown";
+    doWebRequest("GET",url,"", parseNotifications);
+}
+
+function markNotificationsRead(time) {
+    var url = "updates/marknotificationsread?";
+    url += "highWatermark=" + time;
+    url += "&" + getAccessTokenParameter();
+    notificationsList.notificationsModel.clear();
+    doWebRequest("POST",url,"", doNothing);
+}
+
+function parseNotifications(response) {
+    var notis = processResponse(response).notifications;
+    //console.log("NOTIFICATIONS: " + JSON.stringify(notis));
     waiting.state = "hidden";
-    //console.log("Error: "+ msg);
-    error.state = "shown";
-    error.reason = msg;
+    notis.items.forEach(function(noti) {
+        var objectID = noti.target.object.id;
+        if (noti.target.type == "tip")
+            objectID = noti.target.object.venue.id;
+        notificationsList.notificationsModel
+            .append({
+                        "type": noti.target.type,
+                        "objectID": objectID,
+                        "userName": makeUserName("asdf"),
+                        "createdAt": noti.createdAt,
+                        "time": makeTime(noti.createdAt),
+                        "text": noti.text,
+                        "photo": noti.image.fullPath
+                })
+        });
 }
 
-function removeLinks(original) {
-    var txt = original;
-    txt = txt.replace(/<a /g, "<span ");
-    txt = txt.replace(/<\/a>/g, "</span>");
-    return txt;
+function addFriend(user) {
+    var url = "users/"+user+"/request?";
+    url += getAccessTokenParameter();
+    doWebRequest("POST",url,"", doNothing);
 }
 
-function parseToken(data) {
-    sid = parseAuth(data, "Auth");
-    //console.log("Auth=" + sid);
-    sidToken = parseAuth(data, "SID");
-    //console.log("SID=" + sidToken);
-    logo.state = "hidden"; //.visible = false;
-    if(sid.length>0) {
-        navigation.state = "menu";
-        waiting.state = "hidden";
-        //loadUnreadNews();
-    } else {
-        addError("Couldn't parse SID");
-        waiting.state = "hidden";
-    }
+function removeFriend(user) {
+    var url = "users/"+user+"/unfriend?";
+    url += getAccessTokenParameter();
+    doWebRequest("POST",url,"", doNothing);
 }
 
-function getNodeValue(node, name) {
-    var nodeValue = "";
-    for(var i=0; i<node.childNodes.length; i++) {
-        var nodeName = node.childNodes[i].nodeName;
-        if(nodeName==name) {
-            nodeValue = node.childNodes[i].firstChild.nodeValue;
-        }
-    }
-    return nodeValue;
-}
-
-function getToken() {
-    var url = "http://www.google.com/reader/api/0/token";
-    doWebRequest("GET", url, "", parseAccessToken);
-}
-
-
-function showDone(data) {
-    //console.log("DONE: " + data);
-    if(waiting.state!="shown") {
-        return;
-    }
-    waiting.state = "hidden";
-    done.status = "";
-    if(typeof(data)!="undefined" && data!=null) {
-        if(action=="read") {
-            done.status = "Marked as read " + data;
-        } else if(action=="unread") {
-            done.status = "Marked as unread " + data;
-        } else {
-            done.status = "" + data;
-        }
-    }
-    done.state = "shown";
+function approveFriend(user) {
+    var url = "users/"+user+"/approve?";
+    url += getAccessTokenParameter();
+    doWebRequest("POST",url,"", doNothing);
 }

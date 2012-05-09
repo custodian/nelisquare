@@ -64,6 +64,10 @@ Rectangle {
         }
     }
 
+    function updateNotificationCount(value) {
+        notificationsCount.text = value
+    }
+
     function hideAll() {
         checkinDetails.state = "hidden";
         friendsCheckinsList.state = "hidden";
@@ -73,6 +77,8 @@ Rectangle {
         userDetails.state = "hidden";
         leaderBoard.state = "hidden";
         photoDetails.state = "hidden";
+        photoAddDialog.state = "hidden";
+        notificationsList.state ="hidden";
     }
 
     function isSmallScreen() {
@@ -143,6 +149,22 @@ Rectangle {
             });
     }
 
+    function showAddPhotoDialog(checkin) {
+        Window.pushWindow(function() {
+                //hideAll();
+                photoAddDialog.checkinID = checkin;
+                photoAddDialog.state = "shown";
+            });
+    }
+
+    function showNotificationsList() {
+        Window.pushWindow(function() {
+                hideAll();
+                Script.loadNotifications();
+                notificationsList.state = "shown";
+            });
+    }
+
     ListModel {
         id: friendsCheckinsModel
     }
@@ -183,7 +205,7 @@ Rectangle {
             }
             onClicked: {
                 var checkin = friendsCheckinsModel.get(index);
-                showCheckinDetails(checkin);
+                showCheckinDetails(checkin.id);
             }
         }
 
@@ -209,6 +231,9 @@ Rectangle {
             }
             onDeleteComment: {
                 Script.deleteComment(checkinDetails.checkinID,commentID);
+            }
+            onShowAddPhoto: {
+                showAddPhotoDialog(checkin);
             }
         }
 
@@ -339,6 +364,24 @@ Rectangle {
             width: parent.width
             height: parent.height
             state: "hidden"
+            onAddFriend: {
+                Script.addFriend(user);
+                userRelationship = "updated";
+                //showUserDetails(user);
+            }
+            onRemoveFriend: {
+                Script.removeFriend(user);
+                userRelationship = "updated";
+                //showUserDetails(user);
+            }
+            onApproveFriend: {
+                Script.approveFriend(user);
+                userRelationship = "updated";
+                //showUserDetails(user);
+            }
+            onUser: {
+                showUserDetails(user);
+            }
             onOpenLeaderBoard: {
                 showLeaderBoard();
             }
@@ -354,11 +397,38 @@ Rectangle {
             }
         }
 
+        PhotoAddDialog {
+            id: photoAddDialog
+            width: parent.width
+            height: parent.height
+            state: "hidden"
+            onPath: {
+                Script.addPhoto(checkin,photo,size);
+                photoAddDialog.state = "hidden";
+            }
+        }
+
         NotificationDialog {
-            id: notification
+            id: notificationDialog
             width: parent.width
             state: "hidden"
-            onClose: notification.state = "hidden";
+            onClose: notificationDialog.state = "hidden";
+        }
+
+        NotificationsList {
+            id: notificationsList
+            onUser: {
+                showUserDetails(user);
+            }
+            onCheckin: {
+                showCheckinDetails(checkin);
+            }
+            onVenue: {
+                showVenueDetails(venue);
+            }
+            onMarkNotificationsRead: {
+                Script.markNotificationsRead(time);
+            }
         }
 
         Rectangle {
@@ -455,6 +525,28 @@ Rectangle {
         }
 
         Button {
+            id: notificationsButton
+            pic: notificationsCount.visible?"notif_full.png":"notif_empty.png"
+            x: buttonClose.x - width - 25
+            anchors.verticalCenter: parent.verticalCenter
+            width: 64
+            height: 48
+            visible: isSmallScreen()==false
+
+            Text {
+                id: notificationsCount
+                anchors.centerIn: parent
+                text: ""
+                visible: text > 0
+                color: "red"
+            }
+            onClicked: {
+                showNotificationsList();
+            }
+        }
+
+        Button {
+            id: buttonClose
             pic: "delete.png"
             x: parent.width - width - 4
             anchors.verticalCenter: parent.verticalCenter

@@ -1,6 +1,12 @@
 import Qt 4.7
 
 Rectangle {
+    signal openLeaderBoard()
+    signal user(string user)
+    signal addFriend(string user)
+    signal removeFriend(string user)
+    signal approveFriend(string user)
+
     id: details
     width: parent.width
     color: "#eee"
@@ -12,6 +18,7 @@ Rectangle {
     property int userMayorshipsCount: 0
     property int userCheckinsCount: 0
     property int userFriendsCount: 0
+    property string userRelationship: ""
 
     property int scoreRecent: 0
     property int scoreMax: 0
@@ -19,7 +26,7 @@ Rectangle {
     property string lastVenue: ""
     property string lastTime: ""
 
-    signal openLeaderBoard()
+    property alias friendsBox: friendsBox
 
     MouseArea {
         anchors.fill: parent
@@ -76,6 +83,36 @@ Rectangle {
             }
         }
 
+        GreenButton {
+            anchors.horizontalCenter: parent.horizontalCenter
+            label: "Add Friend"
+            width: parent.width - 130
+            onClicked: {
+                details.addFriend(userID);
+            }
+            visible: userRelationship == ""
+        }
+
+        BlueButton {
+            anchors.horizontalCenter: parent.horizontalCenter
+            label: "Approve Friend"
+            width: parent.width - 130
+            onClicked: {
+                details.approveFriend(userID);
+            }
+            visible: userRelationship == "pendingMe"
+        }
+
+        Button {
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - 130
+            label: "Remove Friend"
+            onClicked: {
+                details.removeFriend(userID);
+            }
+            visible: (userRelationship == "friend" || userRelationship == "pendingThem")
+        }
+
         //scores title
         Row {
             width: parent.width
@@ -119,16 +156,21 @@ Rectangle {
                 font.pixelSize: 18
             }
         }
-
         Rectangle {
             width: parent.width
             height: 1
             color: "#ccc"
         }
 
-        //Friends
-        Row {
+        PhotosBox {
+            id: friendsBox
+            showButtons: false
+            photoSize: 64
+            caption: ""
 
+            onObject: {
+                details.user(object)
+            }
         }
 
         Rectangle {
@@ -217,8 +259,9 @@ Rectangle {
         }
 
         Button {
-            width: 120
-            label: "Stats"
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: 200
+            label: "Leaders board"
             onClicked: {
                 details.openLeaderBoard();
             }

@@ -6,6 +6,7 @@ Rectangle {
     signal photo(string photo)
     signal showAddComment()
     signal deleteComment(string commentID)
+    signal showAddPhoto(string checkin)
     y: 10
     id: checkin
 
@@ -78,6 +79,16 @@ Rectangle {
                 width: parent.width - 20
                 spacing: 10
 
+                BlueButton {
+                    label: "Add photo"
+                    width: 180
+
+                    onClicked: {
+                        checkin.showAddPhoto(checkin.checkinID)
+                    }
+                    visible: checkin.owner.eventOwner == "self"
+                }
+
                 Row {
                     width: parent.width
                     spacing: 10
@@ -127,8 +138,8 @@ Rectangle {
 
                 PhotosBox {
                     id: photosBox
-                    onPhoto: {
-                        checkin.photo(photo);
+                    onObject: {
+                        checkin.photo(object);
                     }
                 }
 

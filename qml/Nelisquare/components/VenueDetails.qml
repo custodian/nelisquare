@@ -23,6 +23,7 @@ Rectangle {
 
     property alias tipsModel: tipsModel
     property alias photosBox: photosBox
+    property alias usersBox: usersBox
 
     ListModel {
         id: tipsModel
@@ -39,7 +40,7 @@ Rectangle {
         Rectangle {
             z: 100
             width: parent.width
-            height: 160
+            height: 140
             color: theme.toolbarLightColor
 
             Text {
@@ -135,8 +136,18 @@ Rectangle {
 
                 PhotosBox {
                     id: photosBox
-                    onPhoto: {
-                        place.photo(photo);
+                    onObject: {
+                        place.photo(object);
+                    }
+                }
+
+                PhotosBox {
+                    id: usersBox
+                    showButtons: false
+                    photoSize: 64
+
+                    onObject: {
+                        place.user(object)
                     }
                 }
 

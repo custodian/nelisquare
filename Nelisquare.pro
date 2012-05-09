@@ -16,7 +16,7 @@ symbian:TARGET.CAPABILITY += NetworkServices Location LocalServices ReadUserData
     QT += opengl
 }
 
-VERSION = 0.2.6
+VERSION = 0.3.0
 PACKAGENAME = com.substanceofcode.nelisquare
 
 # Define QMLJSDEBUGGER to allow debugging of QML in debug builds
@@ -45,9 +45,10 @@ HEADERS += \
     windowhelper.h
 
 OTHER_FILES += \
-    qtc_packaging/debian_fremantle/rules \
-    qtc_packaging/debian_fremantle/README \
-    qtc_packaging/debian_fremantle/copyright \
-    qtc_packaging/debian_fremantle/control \
-    qtc_packaging/debian_fremantle/compat \
-    qtc_packaging/debian_fremantle/changelog
+    qtc_packaging/debian_harmattan/rules \
+    qtc_packaging/debian_harmattan/README \
+    qtc_packaging/debian_harmattan/manifest.aegis \
+    qtc_packaging/debian_harmattan/copyright \
+    qtc_packaging/debian_harmattan/control \
+    qtc_packaging/debian_harmattan/compat \
+    qtc_packaging/debian_harmattan/changelog

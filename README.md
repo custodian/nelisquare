@@ -8,7 +8,7 @@ refer to http://nelisquare.com for more info.
 ### branches
 
     master - latest easy to use "release"
-    topsquare - development branch of nelisquare with improvements
+    topsquare - if exists, active development branch with unstable improvements
     nelisquare - original nelisquare client as of 0.2.6
 
 Wiki

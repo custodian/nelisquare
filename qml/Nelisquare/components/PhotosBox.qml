@@ -1,13 +1,14 @@
 import Qt 4.7
 
 Item {
-    signal photo(string photo)
+    signal object(string object)
     id: photosBox
     width: parent.width
 
     property string caption: "Photos: "
     property bool showButtons: true
     property int photoSize: photosBox.sizeMini
+    property int fontSize: 20
 
     property int sizeMini: 150
     property int sizeMidi: 220
@@ -31,6 +32,7 @@ Item {
             width: parent.width
             height: 48
             text: caption
+            font.pixelSize: fontSize
         }
 
         Flickable {
@@ -97,6 +99,7 @@ Item {
                 photosBox.photoSize = sizeMaxi;
             }
         }
+        visible: showButtons
     }
 
     Component {
@@ -106,7 +109,7 @@ Item {
             photoUrl: model.photoThumb
             photoSize: photosBox.photoSize
             onClicked: {
-                photosBox.photo(model.photoID)
+                photosBox.object(model.objectID)
             }
         }
     }

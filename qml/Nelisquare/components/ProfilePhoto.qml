@@ -5,6 +5,7 @@ Rectangle {
     property string photoUrl: ""
     property int photoSize: 64
     property int photoBorder: 4
+    property variant photoAspect: Image.Stretch
 
     id: profileImage
     x: photoBorder
@@ -16,10 +17,12 @@ Rectangle {
     border.width: 1
 
     Image {
+        id: image
         x: photoBorder
         y: photoBorder
         source: photoUrl
         smooth: true
+        fillMode: photoAspect
         width: photoSize - 2*photoBorder + 1
         height: photoSize - 2*photoBorder + 1
     }

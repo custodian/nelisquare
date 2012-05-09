@@ -1,5 +1,7 @@
 release
 debug
 moc
+obj
 *.user
 Makefile*
+Nelisquare_resource.rc

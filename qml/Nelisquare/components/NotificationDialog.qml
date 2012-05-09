@@ -28,7 +28,10 @@ Rectangle {
             id: checkinButton
             label: "Ok"
             width: parent.width
-            onClicked: notification.close();
+            onClicked: {
+                notification.close();
+                message = "";
+            }
         }
 
     }
