@@ -1,7 +1,9 @@
 #include <QtGui/QApplication>
 #include <QDeclarativeContext>
 #include <QDeclarativeEngine>
+#include <QGraphicsObject>
 #include "qmlapplicationviewer.h"
+#include "picturehelper.h"
 #include "windowhelper.h"
 
 int main(int argc, char *argv[])
@@ -21,9 +23,17 @@ int main(int argc, char *argv[])
     //viewer.engine()->addPluginPath(QString("/opt/qtm11/plugins"));
 #endif
     WindowHelper *windowHelper = new WindowHelper();
+    PictureHelper *pictureHelper = new PictureHelper();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
+    viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/Nelisquare/main.qml"));
+    viewer.installEventFilter(windowHelper);
+
+    QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
+    rootObject->connect(windowHelper,SIGNAL(visibilityChanged(QVariant)), SLOT(onVisibililityChange(QVariant)));
+    rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant)),SLOT(onPictureUploaded(QVariant)));
+
     viewer.showFullScreen();
 
     return app.exec();

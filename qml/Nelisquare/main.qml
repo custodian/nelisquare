@@ -12,6 +12,13 @@ Rectangle {
     height: 800
     color: theme.backGroundColor
 
+    function onVisibililityChange(state) {
+        positionSource.active = state;
+    }
+    function onPictureUploaded(response) {
+        Script.parseAddPhoto(response);
+    }
+
     Component.onCompleted: {
         splashHider.start();
         signalTimer.start();
@@ -403,7 +410,7 @@ Rectangle {
             height: parent.height
             state: "hidden"
             onPath: {
-                Script.addPhoto(checkin,photo,size);
+                Script.addPhoto(checkin,photo);
                 photoAddDialog.state = "hidden";
             }
         }

@@ -79,12 +79,16 @@ Rectangle {
                 width: parent.width - 20
                 spacing: 10
 
-                BlueButton {
-                    label: "Add photo"
-                    width: 180
+                Row {
+                    width: parent.width
+                    BlueButton {
+                        y: 10
+                        label: "Add photo"
+                        width: 180
 
-                    onClicked: {
-                        checkin.showAddPhoto(checkin.checkinID)
+                        onClicked: {
+                            checkin.showAddPhoto(checkin.checkinID)
+                        }
                     }
                     visible: checkin.owner.eventOwner == "self"
                 }
@@ -138,7 +142,7 @@ Rectangle {
 
                 PhotosBox {
                     id: photosBox
-                    onObject: {
+                    onItemSelected: {
                         checkin.photo(object);
                     }
                 }

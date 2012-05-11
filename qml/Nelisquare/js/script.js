@@ -13,7 +13,7 @@ var accessToken = "";
 function doWebRequest(method, url, params, callback) {
     var doc = new XMLHttpRequest();
     url = "https://api.foursquare.com/v2/" + url;
-    console.log(method + " " + url);
+    //console.log(method + " " + url);
 
     doc.onreadystatechange = function() {
         if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
@@ -29,39 +29,13 @@ function doWebRequest(method, url, params, callback) {
         }
     }
 
-    //doc.open(method, url);
-    if(params.length>1) {
-        console.log("post");
-        doc.open("POST", "http://172.17.0.1:8080");
-        doc.setRequestHeader("Content-Type", "image/jpeg");
-        //doc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        doc.setRequestHeader("Content-Length", params[0]);
-        doc.setRequestHeader("Connection", "Close");
-        doc.send(params[1]);
+    doc.open(method, url);
+    if(params.length) {
+        doc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        doc.send(params);
     } else {        
-        doc.open(method, url);
         doc.send();
     }
-}
-
-function doLoadFile(path, size, callback) {
-    var doc = new XMLHttpRequest();
-    doc.onreadystatechange = function() {
-        if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
-            var status = doc.status;
-            if(status!=200 && status) {
-                showError("Failed loading file: " + status + " " + doc.statusText);
-            }
-        } else if (doc.readyState == XMLHttpRequest.DONE) {
-            var data = [ size ];
-            var contentType = doc.getResponseHeader("Content-Type");
-            data.push(doc.responseText);
-            callback(data);
-        }
-    }
-
-    doc.open("GET", path);
-    doc.send();
 }
 
 function doNothing(response) {
@@ -195,14 +169,19 @@ function makePhoto(photo,minsize) {
 }
 
 function processResponse(response) {
-    //TODO: update notification tray
     var data = eval("[" + response + "]")[0];
+    var meta = data.meta;
+    if (meta.code != 200) {
+        showError("ErrorType: " + meta.errorType + "\n" + meta.errorDetail);
+    }
     var notifications = data.notifications;
-    notifications.forEach(function(notification) {
-            if (parse(notification.type) == "notificationTray") {
-                updateNotificationCount(notification.item.unreadCount);
-            }
-        });
+    if (typeof(notifications)!="undefined"){
+        notifications.forEach(function(notification) {
+                if (parse(notification.type) == "notificationTray") {
+                    updateNotificationCount(notification.item.unreadCount);
+                }
+            });
+    }
     return data.response;
 }
 
@@ -687,27 +666,26 @@ function parseUser(response) {
     }
 }
 
-function addPhoto(checkin, photopath, size) {
-    notificationDialog.message = "Sorry, this isn't implemented yet!";
-    notificationDialog.state = "shown";
+function addPhoto(checkin, photopath) {
+    //notificationDialog.message = "Sorry, this isn't implemented yet!";
+    //notificationDialog.state = "shown";
     //TODO: make public photos
-    /*
+
     waiting.state = "shown";
-    doLoadFile(photopath,size,function(photoData){
-        console.log("PHOTODATA: " + JSON.stringify(photoData[0])
-            + " SIZE: " + photoData[1].length);
-        var url = "photos/add?";
-        url += "checkinId=" + checkin;
-        url += "&" + getAccessTokenParameter();
-        doWebRequest("POST",url, photoData, parseAddPhoto);
-    });*/
+    var url = "https://api.foursquare.com/v2/photos/add?";
+    //var url = "http://172.17.0.1:8080/";
+    url += "checkinId=" + checkin;
+    url += "&" + getAccessTokenParameter();
+    if (!pictureHelper.upload(url,photopath)) {
+        showError("Error uploading photo!");
+    }
+
 }
 
 function parseAddPhoto(response) {
-    console.log("PHOTOADD RESULT: " + JSON.stringify(response));
-    var photo = processResponse(response).photo;
     waiting.state = "hidden";
-    console.log("ADDED PHOTO: " + JSON.stringify(photo));
+    var photo = processResponse(response).photo;    
+    //console.log("ADDED PHOTO: " + JSON.stringify(photo));
     checkinDetails.photosBox.photosModel.append(
                 makePhoto(photo,300));
 }
@@ -751,6 +729,7 @@ function parseNotifications(response) {
     //console.log("NOTIFICATIONS: " + JSON.stringify(notis));
     waiting.state = "hidden";
     notis.items.forEach(function(noti) {
+        //console.log("NOTIFICATIONS: " + JSON.stringify(noti));
         var objectID = noti.target.object.id;
         if (noti.target.type == "tip")
             objectID = noti.target.object.venue.id;

@@ -136,7 +136,7 @@ Rectangle {
 
                 PhotosBox {
                     id: photosBox
-                    onObject: {
+                    onItemSelected: {
                         place.photo(object);
                     }
                 }
@@ -145,8 +145,7 @@ Rectangle {
                     id: usersBox
                     showButtons: false
                     photoSize: 64
-
-                    onObject: {
+                    onItemSelected: {
                         place.user(object)
                     }
                 }

@@ -19,6 +19,7 @@ Rectangle {
         height: parent.height - y
         delegate: leaderBoardDelegate
         highlightFollowsCurrentItem: true
+        clip: true
     }
 
     Rectangle {

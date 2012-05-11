@@ -25,6 +25,7 @@ Rectangle {
         model: notificationsModel
         delegate: notificationDelegate
         highlightFollowsCurrentItem: true
+        clip: true
     }
 
     Component {
@@ -48,7 +49,7 @@ Rectangle {
                 userPhoto.photoUrl = model.photo
             }
             onAreaClicked: {
-                console.log("NOTI MODEL: "+JSON.stringify(model));
+                //console.log("NOTI TYPE: " + model.type + " OBJID: " + model.objectID);
                 markNotificationsRead(model.createdAt);
                 if (model.type == "checkin") {
                     notificationsList.checkin(model.objectID);

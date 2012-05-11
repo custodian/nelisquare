@@ -168,7 +168,7 @@ Rectangle {
             photoSize: 64
             caption: ""
 
-            onObject: {
+            onItemSelected: {
                 details.user(object)
             }
         }

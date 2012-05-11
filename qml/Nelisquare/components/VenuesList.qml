@@ -19,6 +19,7 @@ Rectangle {
         y: 110
         delegate: venuesListDelegate
         highlightFollowsCurrentItem: true
+        clip: true
     }
 
     Rectangle {

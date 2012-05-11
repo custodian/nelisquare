@@ -1,13 +1,13 @@
 import Qt 4.7
 
 Item {
-    signal object(string object)
-    id: photosBox
+    signal itemSelected(string object)
+    id: photosBoxComponent
     width: parent.width
 
     property string caption: "Photos: "
     property bool showButtons: true
-    property int photoSize: photosBox.sizeMini
+    property int photoSize: photosBoxComponent.sizeMini
     property int fontSize: 20
 
     property int sizeMini: 150
@@ -24,7 +24,7 @@ Item {
         id: photoColumn
         width: parent.width
         onHeightChanged: {
-            photosBox.height = height;
+            photosBoxComponent.height = height;
         }
 
         Text {
@@ -35,32 +35,17 @@ Item {
             font.pixelSize: fontSize
         }
 
-        Flickable {
-            id: photoArea
+        ListView {
             width: parent.width
-
+            height: photoSize + 10
+            orientation: ListView.Horizontal
+            boundsBehavior: ListView.StopAtBounds
+            spacing: 5
             clip: true
-            flickableDirection: Flickable.HorizontalFlick
-            boundsBehavior: Flickable.StopAtBounds
-
-            pressDelay: 100
-            Row {
-                onWidthChanged: {
-                    photoArea.contentWidth = width;
-                }
-                onHeightChanged: {
-                    photoArea.contentHeight = height;
-                    photoArea.height = height + 10;
-                }
-                spacing: 5
-                Repeater {
-                    id: photoRepeater
-                    width: parent.width
-                    model: photosModel
-                    delegate: photoDelegate
-                }
-            }
+            model: photosModel
+            delegate: photoDelegate
         }
+
         Rectangle {
             width: parent.width
             height: 1
@@ -76,27 +61,27 @@ Item {
             width: 48
             height: 48
             image: "photo_mini.png"
-            selected: photosBox.photoSize == sizeMini;
+            selected: photosBoxComponent.photoSize == sizeMini;
             onClicked: {
-                photosBox.photoSize = sizeMini;
+                photosBoxComponent.photoSize = sizeMini;
             }
         }
         ToolbarButton {
             width: 48
             height: 48
             image: "photo_midi.png"
-            selected: photosBox.photoSize == sizeMidi;
+            selected: photosBoxComponent.photoSize == sizeMidi;
             onClicked: {
-                photosBox.photoSize = sizeMidi;
+                photosBoxComponent.photoSize = sizeMidi;
             }
         }
         ToolbarButton {
             width: 48
             height: 48
             image: "photo_maxi.png"
-            selected: photosBox.photoSize == sizeMaxi;
+            selected: photosBoxComponent.photoSize == sizeMaxi;
             onClicked: {
-                photosBox.photoSize = sizeMaxi;
+                photosBoxComponent.photoSize = sizeMaxi;
             }
         }
         visible: showButtons
@@ -107,11 +92,13 @@ Item {
 
         ProfilePhoto {
             photoUrl: model.photoThumb
-            photoSize: photosBox.photoSize
+            photoSize: photosBoxComponent.photoSize
+            //enableMouseArea: false
             onClicked: {
-                photosBox.object(model.objectID)
+                photosBoxComponent.itemSelected(model.objectID);
             }
         }
     }
+
     visible: photosModel.count>0
 }

@@ -14,7 +14,7 @@ Rectangle {
         width: parent.width
         height: parent.height
 
-        /*Flickable {
+        Flickable {
             id: photoArea
             width: parent.width
             height: parent.height - photoOwner.height
@@ -30,16 +30,14 @@ Rectangle {
                 }
                 onHeightChanged: {
                     photoArea.contentHeight = height;
-                }*/
+                }
                 Image {
                     id: fullImage
-                    width: parent.width
-                    height: parent.height - photoOwner.height
                     fillMode: Image.PreserveAspectFit
                     source: photoDetails.photoUrl
                 }
-            /*}
-        }*/
+            }
+        }
 
         EventBox {
             id: photoOwner

@@ -5,7 +5,8 @@ Rectangle {
     property string photoUrl: ""
     property int photoSize: 64
     property int photoBorder: 4
-    property variant photoAspect: Image.Stretch
+    property bool enableMouseArea: true
+    property variant photoAspect: Image.PreserveAspectFit
 
     id: profileImage
     x: photoBorder
@@ -28,9 +29,10 @@ Rectangle {
     }
 
     MouseArea {
-        anchors.fill: parent
+        anchors.fill: profileImage
         onClicked: {
             profileImage.clicked();
         }
+        visible: enableMouseArea
     }
 }

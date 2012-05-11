@@ -23,6 +23,7 @@ Rectangle {
         height: parent.height - y
         delegate: friendsCheckinsListDelegate
         highlightFollowsCurrentItem: true
+        clip: true
     }
 
     Rectangle {

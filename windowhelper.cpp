@@ -18,6 +18,9 @@
 */
 
 #include "windowhelper.h"
+#include <QEvent>
+#include <QList>
+#include <QVariant>
 #ifdef Q_WS_MAEMO_5
 #include <QtDBus>
 #include <QDBusConnection>
@@ -31,7 +34,7 @@ WindowHelper::WindowHelper(QObject *parent) :
 
 Q_INVOKABLE void WindowHelper::minimize()
 {
-#ifdef Q_WS_MAEMO_5 
+#ifdef Q_WS_MAEMO_5
     QDBusConnection c = QDBusConnection::sessionBus();
     QDBusMessage m = QDBusMessage::createSignal("/", "com.nokia.hildon_desktop", "exit_app_view");
     c.send(m);
@@ -41,10 +44,23 @@ Q_INVOKABLE void WindowHelper::minimize()
 
 Q_INVOKABLE bool WindowHelper::isMaemo()
 {
-#ifdef Q_WS_MAEMO_5 
+#ifdef Q_WS_MAEMO_5
     return true;
 #else
     return false;
 #endif
+}
+
+bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
+    switch(event->type()) {
+    case QEvent::WindowActivate:
+        emit visibilityChanged(QVariant(true));
+        return true;
+    case QEvent::WindowDeactivate:
+        emit visibilityChanged(QVariant(false));
+        return true;
+    default:
+    return false;
+    }
 }
 
