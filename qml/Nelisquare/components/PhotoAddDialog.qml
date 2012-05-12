@@ -53,7 +53,7 @@ Rectangle {
         id: photoGrid
         width: parent.width
         height: parent.height - rowNavigation.height
-        cellWidth: Math.min(width,height)/2
+        cellWidth: Math.min(width/2,height)
         cellHeight: cellWidth
         clip: true
         //model: galleryModel
@@ -73,6 +73,19 @@ Rectangle {
             visible: galleryOffset > 0
             onClicked: {
                 galleryOffset -= galleryLimit;
+                if (galleryOffset<0)
+                    galleryOffset = 0;
+            }
+        }
+
+        BlueButton {
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: 100
+            label: "Latest"
+            visible: galleryOffset > 0
+            onClicked: {
+                galleryOffset = 0;
             }
         }
 

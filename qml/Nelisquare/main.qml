@@ -320,52 +320,6 @@ Rectangle {
             }
         }
 
-        ShoutDialog {
-            id: shoutDialog
-            width: parent.width
-            state: "hidden"
-
-            onCancel: { shoutDialog.state = "hidden"; }
-            onShout: {
-                var realComment = comment;
-                if(realComment.indexOf("Write here")>-1) {
-                    realComment = "";
-                }
-                Script.addCheckin(null, realComment, true, facebook, twitter);
-                shoutDialog.state = "hidden";
-            }
-        }
-
-        CommentDialog {
-            id: commentDialog
-            width: parent.width
-            state: "hidden"
-
-            onCancel: { commentDialog.state = "hidden"; }
-            onShout: {
-                //console.log("COMMENT FOR: " + checkinID + " VALUE: " + comment);
-                Script.addComment(checkinID,comment);
-                commentDialog.state = "hidden";
-            }
-        }
-
-        TipDialog {
-            id: tipDialog
-            width: parent.width
-            state: "hidden"
-            onCancel: {tipDialog.state = "hidden";}
-            onAddTip: {
-                if(tipDialog.action==0) {
-                    //console.log("Tip: " + comment + " on " + tipDialog.venueID);
-                    Script.addTip(tipDialog.venueID, comment);
-                } else {
-                    //console.log("mark: " + comment + " on " + tipDialog.venueID);
-                    Script.markVenueToDo(tipDialog.venueID, comment);
-                }
-                tipDialog.state = "hidden";
-            }
-        }
-
         UserDetails {
             id: userDetails
             width: parent.width
@@ -415,13 +369,6 @@ Rectangle {
             }
         }
 
-        NotificationDialog {
-            id: notificationDialog
-            width: parent.width
-            state: "hidden"
-            onClose: notificationDialog.state = "hidden";
-        }
-
         NotificationsList {
             id: notificationsList
             onUser: {
@@ -435,6 +382,59 @@ Rectangle {
             }
             onMarkNotificationsRead: {
                 Script.markNotificationsRead(time);
+            }
+        }
+
+        NotificationDialog {
+            id: notificationDialog
+            width: parent.width
+            state: "hidden"
+            onClose: notificationDialog.state = "hidden";
+        }
+
+        ShoutDialog {
+            id: shoutDialog
+            width: parent.width
+            state: "hidden"
+
+            onCancel: { shoutDialog.state = "hidden"; }
+            onShout: {
+                var realComment = comment;
+                if(realComment.indexOf("Write here")>-1) {
+                    realComment = "";
+                }
+                Script.addCheckin(null, realComment, true, facebook, twitter);
+                shoutDialog.state = "hidden";
+            }
+        }
+
+        CommentDialog {
+            id: commentDialog
+            width: parent.width
+            state: "hidden"
+
+            onCancel: { commentDialog.state = "hidden"; }
+            onShout: {
+                //console.log("COMMENT FOR: " + checkinID + " VALUE: " + comment);
+                Script.addComment(checkinID,comment);
+                commentDialog.state = "hidden";
+            }
+        }
+
+        TipDialog {
+            id: tipDialog
+            width: parent.width
+            state: "hidden"
+            onCancel: {tipDialog.state = "hidden";}
+            onAddTip: {
+                if(tipDialog.action==0) {
+                    //console.log("Tip: " + comment + " on " + tipDialog.venueID);
+                    Script.addTip(tipDialog.venueID, comment);
+                } else {
+                    //console.log("mark: " + comment + " on " + tipDialog.venueID);
+                    Script.markVenueToDo(tipDialog.venueID, comment);
+                }
+                tipDialog.state = "hidden";
             }
         }
 

@@ -32,14 +32,6 @@ Rectangle {
         id: notificationDelegate
 
         EventBox {
-            /*
-            "type": noti.target.type,
-            "objectID": noti.target.object.id,
-            "userName": makeUserName("asdf"),
-            "createdAt": makeTime(noti.createdAt),
-            "text": noti.text,
-            "photo": noti.image.fullPath
-            */
             activeWhole: true
             userShout: model.text
             createdAt: model.time
@@ -49,7 +41,7 @@ Rectangle {
                 userPhoto.photoUrl = model.photo
             }
             onAreaClicked: {
-                //console.log("NOTI TYPE: " + model.type + " OBJID: " + model.objectID);
+                console.log("NOTI TYPE: " + model.type + " OBJID: " + model.objectID);
                 markNotificationsRead(model.createdAt);
                 if (model.type == "checkin") {
                     notificationsList.checkin(model.objectID);

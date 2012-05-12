@@ -1,3 +1,10 @@
+nelisquare (0.3.2) stable; urgency=low
+  * Fixed notifications link
+  * Layout fixes with shout and comment dialogs
+  * Latest button at photo add dialog
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Sat, 12 May 2012 18:18:02 +0400
+
 nelisquare (0.3.1) stable; urgency=low
 
   * Photo upload latency reduced. 2 lastest photos.
