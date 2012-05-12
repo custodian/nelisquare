@@ -1,12 +1,17 @@
-import "components"
 import Qt 4.7
 import QtMobility.location 1.1
+import "components"
 import "js/script.js" as Script
 import "js/storage.js" as Storage
 import "js/window.js" as Window
 import "js/utils.js" as Utils
 
 Rectangle {
+    property bool isPortrait: false
+
+    property string orientationType: "Auto"
+    property string iconset: "Classic"
+
     id:window
     width: 480
     height: 800
@@ -19,10 +24,46 @@ Rectangle {
         Script.parseAddPhoto(response);
     }
 
+    function iconsetPath() {
+        return iconset + "/";
+    }
+
+    function settingLoaded(key, value) {
+        if(key=="accesstoken") {
+            if(value.length>0) {
+                Script.setAccessToken(value);
+                showFriendsCheckins();
+            } else {
+                login.visible = true;
+                login.reset();
+            }
+        } else if (key == "settings.orientation") {
+            if (value == "") value = "Auto";
+            window.orientationType = value;
+            windowHelper.setOrientation(value);
+        } else if (key == "settings.iconset") {
+            if (value == "") value = "Classic";
+            window.iconset = value;
+        }
+    }
+
+    function settingChanged(key, value) {
+        Storage.setKeyValue(key, value);
+        settingLoaded(key, value);
+    }
+
     Component.onCompleted: {
         splashHider.start();
         signalTimer.start();
-        Storage.getKeyValue("accesstoken", valueLoaded);
+        Storage.getKeyValue("accesstoken", settingLoaded);
+        isPortrait = (window.width<window.height)
+
+        Storage.getKeyValue("settings.orientation", settingLoaded);
+        Storage.getKeyValue("settings.iconset",settingLoaded);
+    }
+
+    onHeightChanged: {
+        isPortrait = (window.width<window.height)
     }
 
     Timer {
@@ -58,19 +99,6 @@ Rectangle {
         }
     }
 
-    function valueLoaded(key, value) {
-        if(key=="accesstoken") {
-            if(value.length>0) {
-                Script.setAccessToken(value);
-                showFriendsCheckins();
-                //Script.loadFriendsCheckins();
-            } else {
-                login.visible = true;
-                login.reset();
-            }
-        }
-    }
-
     function updateNotificationCount(value) {
         notificationsCount.text = value
     }
@@ -85,7 +113,8 @@ Rectangle {
         leaderBoard.state = "hidden";
         photoDetails.state = "hidden";
         photoAddDialog.state = "hidden";
-        notificationsList.state ="hidden";
+        notificationsList.state = "hidden";
+        settingsDialog.state = "hidden";
     }
 
     function isSmallScreen() {
@@ -172,6 +201,14 @@ Rectangle {
             });
     }
 
+    function showSettingsDialog() {
+        Window.pushWindow(function() {
+                hideAll();
+                settingsDialog.state = "shown";
+            });
+    }
+
+
     ListModel {
         id: friendsCheckinsModel
     }
@@ -189,9 +226,10 @@ Rectangle {
     }
 
     Item {
-        width: parent.width
+        id: viewPort
         y: toolbar.height
-        height: menubar.visible ? parent.height - toolbar.height - menubar.height : parent.height - toolbar.height
+        height: isPortrait ? parent.height - toolbar.height - menubar.height : parent.height - toolbar.height
+        width: isPortrait ? parent.width : parent.width - menubar.width
 
         FriendsCheckinsList {
             id: friendsCheckinsList
@@ -392,6 +430,19 @@ Rectangle {
             onClose: notificationDialog.state = "hidden";
         }
 
+        SettingsDialog {
+            id: settingsDialog
+            onOrientationChange: {
+                settingChanged("settings.orientation",type);
+            }
+            onIconsetChange: {
+                settingChanged("settings.iconset",type);
+            }
+            onAuthDelete: {
+                settingChanged("accesstoken","");
+            }
+        }
+
         ShoutDialog {
             id: shoutDialog
             width: parent.width
@@ -455,7 +506,7 @@ Rectangle {
     }
 
     MainMenu {
-        id:mainmenu
+        id: mainmenu
         y: toolbar.height
         state: "hidden"
         anchors.horizontalCenter: parent.horizontalCenter
@@ -474,6 +525,9 @@ Rectangle {
         onOpenLeaderBoard: {
             showLeaderBoard();
         }
+        onOpenSettings: {
+            showSettingsDialog();
+        }
     }
 
     Rectangle {
@@ -487,8 +541,6 @@ Rectangle {
         }
 
         Button {
-            pic: "logo.png"
-            visible: menubar.visible==false
             anchors.centerIn: parent
             width: 160
             height: 48
@@ -499,6 +551,7 @@ Rectangle {
                     mainmenu.state = "hidden";
                 }
             }
+            visible: settingsDialog.state == "hidden"
         }
 
         Image {
@@ -533,7 +586,7 @@ Rectangle {
 
         Button {
             id: notificationsButton
-            pic: notificationsCount.visible?"notif_full.png":"notif_empty.png"
+            pic: notificationsCount.visible?"email.png":"email_opened.png"
             x: buttonClose.x - width - 25
             anchors.verticalCenter: parent.verticalCenter
             width: 64
@@ -556,9 +609,8 @@ Rectangle {
             id: buttonClose
             pic: "delete.png"
             x: parent.width - width - 4
-            anchors.verticalCenter: parent.verticalCenter
             width: 48
-            height: 48
+            anchors.verticalCenter: parent.verticalCenter
             onClicked: Qt.quit();
         }
 
@@ -573,7 +625,6 @@ Rectangle {
 
     Rectangle {
         id: menubar
-        visible: window.width<window.height
         height: 70
         width: parent.width
         y: parent.height - height
@@ -585,16 +636,15 @@ Rectangle {
             GradientStop{position: 0.8; color: "#404040"; }
         }
 
-        Row {
-            //width: 400
-            height: 78
-            y: 5
-            anchors.horizontalCenter: parent.horizontalCenter
+        Flow {
+            id: menubarToolbar
+            width: menubar.width
+            height: menubar.height
             spacing: isSmallScreen() ? 5 : 15
 
             ToolbarButton {
                 id: backwardsButton
-                image: "undo.png" // "112-group@2x.png"
+                image: "undo.png"
                 label: "Back"
                 shown: Script.windowStash.length>0
                 onClicked: {
@@ -604,8 +654,8 @@ Rectangle {
 
             ToolbarButton {
                 id: friendsCheckinsButton
-                image: "users.png" // "112-group@2x.png"
-                label: "Friends"
+                image: "feed.png"
+                label: "Feed"
                 selected: friendsCheckinsList.state == "shown"
                 onClicked: {
                     Window.clearWindows();
@@ -616,7 +666,7 @@ Rectangle {
 
             ToolbarButton {
                 id: placesButton
-                image: "pin_map.png" //  "07-map-marker@2x.png"
+                image: "places.png"
                 label: "Places"
                 selected: venuesList.state == "shown"
                 onClicked: {
@@ -625,7 +675,7 @@ Rectangle {
             }
 
             ToolbarButton {
-                image: "checkbox_checked.png" // "117-todo@2x.png"
+                image: "todo_list.png"
                 label: "To-Do"
                 onClicked: {
                     showVenueList("todolist");
@@ -633,7 +683,7 @@ Rectangle {
             }
 
             ToolbarButton {
-                image: "contact_card.png" // "111-user@2x.png"
+                image: "info.png"
                 label: "Myself"
                 onClicked: {
                     showUserDetails("self");
@@ -642,6 +692,40 @@ Rectangle {
 
         }
 
+        state: isPortrait ? "bottom" : "right"
+
+        states: [
+            State {
+                name: "bottom"
+                PropertyChanges {
+                    target: menubar
+                    height: 70
+                    width: parent.width
+                    y: parent.height - menubar.height
+                    x: 0
+                }
+                PropertyChanges {
+                    target: menubarToolbar
+                    y: 5
+                    x: (menubar.width - backwardsButton.width*5 - 4*menubarToolbar.spacing)/2
+                }
+            },
+            State {
+                name: "right"
+                PropertyChanges {
+                    target: menubar
+                    width: 90
+                    height: parent.height - toolbar.height
+                    x: parent.width - width
+                    y: toolbar.height
+                }
+                PropertyChanges {
+                    target: menubarToolbar
+                    y: (menubar.height - backwardsButton.height*5 - 4*menubarToolbar.spacing)/2
+                    x: 5
+                }
+            }
+        ]
     }
 
     Image {
@@ -657,14 +741,13 @@ Rectangle {
         anchors.fill: parent
         visible: false
         onFinished: {
-            //console.log("current URL: " + url);
             if(url.indexOf("access_token=")>0) {
-                login.visible = false;
                 var codeStart = url.indexOf("access_token=");
                 var code = url.substring(codeStart + 13);
                 Script.setAccessToken(code);
                 Storage.setKeyValue("accesstoken", code);
-                //console.log("Access token: " + code);
+                login.visible = false;
+                showFriendsCheckins();
             }
         }
 

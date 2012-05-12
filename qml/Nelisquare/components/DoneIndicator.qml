@@ -24,7 +24,9 @@ Rectangle {
 
         Image {
             id: icon
-            source: "../pics/accepted_48.png"
+            source: "../pics/"+window.iconset+"/accepted.png"
+            width: 48
+            height: 48
         }
 
         Text {

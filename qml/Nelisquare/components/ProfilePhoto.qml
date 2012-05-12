@@ -6,6 +6,7 @@ Rectangle {
     property int photoSize: 64
     property int photoBorder: 4
     property bool enableMouseArea: true
+    property alias photoSmooth: image.smooth
     property variant photoAspect: Image.PreserveAspectFit
 
     id: profileImage
@@ -26,6 +27,16 @@ Rectangle {
         fillMode: photoAspect
         width: photoSize - 2*photoBorder + 1
         height: photoSize - 2*photoBorder + 1
+        onStatusChanged: {
+            image.visible = (image.status == Image.Ready)
+            loader.visible = (image.status != Image.Ready)
+        }
+    }
+
+    /*Animated*/Image {
+        id: loader
+        anchors.centerIn: image
+        source: "../pics/"+window.iconset+"/loader.gif"
     }
 
     MouseArea {

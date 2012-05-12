@@ -97,7 +97,7 @@ Rectangle {
 
                     Image {
                         anchors.centerIn: parent
-                        source: "../pics/delete.png"
+                        source: "../pics/"+window.iconset+"/delete.png"
                         visible: checkin.useFacebook
                     }
 
@@ -138,7 +138,7 @@ Rectangle {
 
                     Image {
                         anchors.centerIn: parent
-                        source: "../pics/delete.png"
+                        source: "../pics/"+window.iconset+"/delete.png"
                         visible: checkin.useTwitter
                     }
 

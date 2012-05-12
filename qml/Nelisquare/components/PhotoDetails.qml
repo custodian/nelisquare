@@ -39,6 +39,13 @@ Rectangle {
             }
         }
 
+        /*Animated*/Image {
+            id: loader
+            anchors.centerIn: parent
+            source: "../pics/"+window.iconset+"/loader.gif"
+            visible: (fullImage.status != Image.Ready)
+        }
+
         EventBox {
             id: photoOwner
             fontSize: 18

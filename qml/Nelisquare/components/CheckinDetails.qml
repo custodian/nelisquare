@@ -43,20 +43,6 @@ Rectangle {
     Column {
         anchors.fill: parent
 
-        EventBox {
-            x: 10
-            id: checkinOwner
-            width: parent.width - 20
-            showRemoveButton: false
-
-            onUserClicked: {
-                checkin.user(checkin.owner.userID);
-            }
-            onAreaClicked: {
-                checkin.venue();
-            }
-        }
-
         Flickable {
             id: flickableArea
             width: parent.width
@@ -78,6 +64,20 @@ Rectangle {
                 x: 10
                 width: parent.width - 20
                 spacing: 10
+
+                EventBox {
+                    x: 10
+                    id: checkinOwner
+                    width: parent.width - 20
+                    showRemoveButton: false
+
+                    onUserClicked: {
+                        checkin.user(checkin.owner.userID);
+                    }
+                    onAreaClicked: {
+                        checkin.venue();
+                    }
+                }
 
                 Row {
                     width: parent.width

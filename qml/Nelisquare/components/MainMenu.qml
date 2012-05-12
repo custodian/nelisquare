@@ -1,6 +1,8 @@
 import Qt 4.7
 
 Rectangle {
+    signal openSettings()
+
     id: menu
     width: 220
     height: iconsColumn.height + 40
@@ -26,46 +28,9 @@ Rectangle {
             spacing: 10
 
             ToolbarButton {
-                id: friendsButton
-                image: "users.png" // "112-group@2x.png"
-                label: "Friends"
-                selected: friendsCheckinsList.state == "shown"
-                onClicked: menu.openFriendsCheckins();
-            }
-
-
-            ToolbarButton {
-                id: placesButton
-                image: "pin_map.png" //  "07-map-marker@2x.png"
-                label: "Places"
-                selected: venuesList.state == "shown"
-                onClicked: menu.openPlaces();
-            }
-        }
-        Row {
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 10
-
-            ToolbarButton {
-                image: "checkbox_checked.png" // "117-todo@2x.png"
-                label: "To-Do"
-                onClicked: menu.openExplore();
-            }
-
-            ToolbarButton {
-                image: "contact_card.png" // "111-user@2x.png"
-                label: "Myself"
-                onClicked: menu.openProfile();
-            }
-        }
-        Row {
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 10
-
-            ToolbarButton {
-                image: "chart_bar.png"
-                label: "Stats"
-                onClicked: menu.openLeaderBoard();
+                image: "settings.png"
+                label: "Settings"
+                onClicked: menu.openSettings();
             }
         }
     }

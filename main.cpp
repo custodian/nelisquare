@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     viewer.addImportPath(QString("/opt/qtm11/imports"));
     //viewer.engine()->addPluginPath(QString("/opt/qtm11/plugins"));
 #endif
-    WindowHelper *windowHelper = new WindowHelper();
+    WindowHelper *windowHelper = new WindowHelper(&viewer);
     PictureHelper *pictureHelper = new PictureHelper();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);

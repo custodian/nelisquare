@@ -21,7 +21,7 @@ Rectangle {
         spacing: 10
 
         Image {
-            source: "../pics/clock_48.png"
+            source: "../pics/"+window.iconset+"/clock.png"
         }
 
         Text {

@@ -3,12 +3,13 @@ import Qt 4.7
 Item {
     id: toolbarButton
     property string image: ""
+    property int imageSize: 32
     property string label: ""
     property bool selected: false
     property bool shown: true
     signal clicked()
-    width: window.isSmallScreen ? 80 : 90
-    height: 58
+    width: imageSize + 42 //window.isSmallScreen ? 80 : 90
+    height: imageSize + 26//58
     //border.color: mouse.pressed ? "#333" : "#555"
     //border.width: 1
     //gradient: mouse.pressed ? pressedColor : idleColor
@@ -44,9 +45,11 @@ Item {
 
 
     Image {
-        source: "../pics/" + toolbarButton.image
+        source: "../pics/"+window.iconset+"/" + toolbarButton.image
         anchors.horizontalCenter: parent.horizontalCenter
         y: 8
+        width: imageSize
+        height: imageSize
         visible: shown
     }
 

@@ -21,15 +21,18 @@
 #include <QEvent>
 #include <QList>
 #include <QVariant>
+#include <QDebug>
 #ifdef Q_WS_MAEMO_5
 #include <QtDBus>
 #include <QDBusConnection>
 #include <QDBusMessage>
 #endif
+#include "qmlapplicationviewer.h"
 
-WindowHelper::WindowHelper(QObject *parent) :
+WindowHelper::WindowHelper(QmlApplicationViewer *viewer, QObject *parent) :
     QObject(parent)
 {
+    m_viewer = viewer;
 }
 
 Q_INVOKABLE void WindowHelper::minimize()
@@ -62,5 +65,16 @@ bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
     default:
     return false;
     }
+}
+
+Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
+    QString orientation = value.toString();
+    QmlApplicationViewer::ScreenOrientation type = QmlApplicationViewer::ScreenOrientationAuto;
+    if (orientation == "Landscape") {
+        type = QmlApplicationViewer::ScreenOrientationLockLandscape;
+    } else if (orientation == "Portrait") {
+        type = QmlApplicationViewer::ScreenOrientationLockPortrait;
+    }
+    m_viewer->setOrientation(type);
 }
 

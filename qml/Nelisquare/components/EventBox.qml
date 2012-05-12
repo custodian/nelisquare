@@ -89,13 +89,14 @@ Item {
                 }
                 Image {
                     id: commentImage
-                    source: "../pics/112-group@2x.png"
+                    source: "../pics/"+window.iconset+"/comment.png"
                     smooth: true
                     width: 32
-                    height: 21
+                    height: 32
                     visible: comments>0
                 }
                 Text {
+                    x: 10
                     id: commentCount
                     color: theme.toolbarDarkColor
                     font.pixelSize: fontSize - 2
@@ -113,13 +114,15 @@ Item {
 
         Rectangle {
             anchors.right: parent.right
-            color: "black"
+            color: window.color
             width: 32
             height: 32
             visible: eventOwner == "self" && showRemoveButton
 
             Image {
-                source: "../pics/delete.png"
+                source: "../pics/"+window.iconset+"/delete.png"
+                width: parent.width
+                height: parent.height
                 smooth: true
             }            
 

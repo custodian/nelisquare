@@ -41,6 +41,7 @@ Rectangle {
             //photoUrl: model.fileName
             photoSize: photoGrid.cellWidth
             photoBorder: 2
+            photoSmooth: false
             photoAspect: Image.PreserveAspectFit
             onClicked: {
                 //console.log("PHOTOADD MODEL: " + JSON.stringify(model));

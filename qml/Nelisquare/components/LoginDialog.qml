@@ -20,6 +20,8 @@ Rectangle {
         contentWidth: Math.max(webView.contentsSize.width,480)
         contentHeight: Math.max(webView.contentsSize.height,800)
         pressDelay: 200
+        clip: true
+        boundsBehavior: Flickable.StopAtBounds
 
         WebView {
             id: webView
