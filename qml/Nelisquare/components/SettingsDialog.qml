@@ -1,5 +1,4 @@
 import Qt 4.7
-import "../colibri"
 
 Rectangle {
     signal authDelete()
