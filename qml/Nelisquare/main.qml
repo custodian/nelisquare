@@ -427,7 +427,17 @@ Rectangle {
             id: notificationDialog
             width: parent.width
             state: "hidden"
-            onClose: notificationDialog.state = "hidden";
+            onClose: {
+                if (objectID != "") {
+                    objectType = "";
+                    objectID = "";
+                    if(objectType=="checkin") {
+                        showCheckinDetails(objectID);
+                    }
+                }
+                notificationDialog.state = "hidden";
+
+            }
         }
 
         SettingsDialog {

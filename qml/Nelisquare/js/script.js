@@ -313,7 +313,6 @@ function parsePlaces(response) {
                            "city": parse(place.location.city),
                            "lat": place.location.lat,
                            "lng": place.location.lng,
-                           "hereNow": place.hereNow.count,
                            "icon": icon,
                            "venueCheckinsCount": place.stats.checkinsCount,
                            "venueUsersCount": place.stats.usersCount
@@ -489,6 +488,7 @@ function parseAddCheckin(response) {
     });
     notificationDialog.message += "</span>";
     notificationDialog.state = "shown";
+    window.showCheckinDetails(data.response.checkin.id);
 }
 
 function loadLeaderBoard() {
@@ -544,7 +544,6 @@ function parseToDo(response) {
                            "city": parse(place.location.city),
                            "lat": place.location.lat,
                            "lng": place.location.lng,
-                           "hereNow": "",
                            "icon": icon,
                            "venueCheckinsCount": place.stats.checkinsCount,
                            "venueUsersCount": place.stats.usersCount

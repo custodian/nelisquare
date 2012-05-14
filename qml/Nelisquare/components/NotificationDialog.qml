@@ -6,6 +6,8 @@ Rectangle {
     height: items.height + 50
     color: theme.toolbarLightColor
     property string message: ""
+    property string objectType: ""
+    property string objectID: ""
     signal close()
 
     Column {

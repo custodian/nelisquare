@@ -1,27 +1,21 @@
-nelisquare (0.3.4) stable; urgency=low
+nelisquare (0.3.6) stable; urgency=low
+
+  * Minor bugfix for "hereNow" option at vuenue list
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Tue, 15 May 2012 10:30:40 +0400
+
+nelisquare (0.3.5) stable; urgency=low
+
+  * Redirect to results after checkin
   * Settings dialog: orientation, iconset, delete auth
   * Added righthanded toolbar
   * Added image loaders(no animation, testing performance).
-
- -- Basil Semuonov <basil.semuonov@gmail.com>  Sun, 13 May 2012 16:58:56 +0400
-
-nelisquare (0.3.2) stable; urgency=low
   * Fixed notifications link
   * Layout fixes with shout and comment dialogs
   * Latest button at photo add dialog
-
- -- Basil Semuonov <basil.semuonov@gmail.com>  Sat, 12 May 2012 18:18:02 +0400
-
-nelisquare (0.3.1) stable; urgency=low
-
   * Photo upload latency reduced. 2 lastest photos.
   * Photobox component bug fix. Scroll photos, users - have fun!
   * GPS switches off when app is inactive
-
- -- Basil Semuonov <basil.semuonov@gmail.com>  Sat, 12 May 2012 12:34:33 +0400
-
-nelisquare (0.3.0) unstable; urgency=low
-
   * Photo upload!
   * Notifications
   * Comments on friend feed
