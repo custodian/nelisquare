@@ -356,6 +356,15 @@ function parseVenue(response) {
         venueDetails.venueMajorPhoto = venue.mayor.user.photo;
         venueDetails.venueMajorID = venue.mayor.user.id;
     }
+    venueDetails.venueMapUrl = "";
+    if(typeof(venue.location)!="undefined") {
+        venueDetails.venueMapUrl =
+        "http://maps.googleapis.com/maps/api/staticmap?center="+
+                venue.location.lat+","+venue.location.lng+
+                "&zoom=15&size=320x320&maptype=roadmap&markers=size:small|"+
+                venue.location.lat+","+venue.location.lng+"&sensor=false";
+    }
+
     // Parse venue tips
     venueDetails.tipsModel.clear();
     if(venue.tips.count>0) {

@@ -20,6 +20,7 @@ Rectangle {
     property string venueHereNow: ""
     property string venueCheckinsCount: ""
     property string venueUsersCount: ""
+    property string venueMapUrl: ""
 
     property alias tipsModel: tipsModel
     property alias photosBox: photosBox
@@ -115,23 +116,48 @@ Rectangle {
                 x: 10
                 spacing: 10
 
-                Text {
-                    text: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
-                    font.pixelSize: 22
-                    font.bold: true
-                    color: "#111"
+
+                Row {
+                    width: parent.width
+                    EventBox {
+                        width: parent.width - venueMapButton.width
+                        userName: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
+                        userShout: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
+
+                        Component.onCompleted: {
+                            userPhoto.photoUrl = place.venueMajorPhoto
+                        }
+                        onUserClicked: {
+                            place.user(venueMajorID);
+                        }
+                    }
+
+                    BlueButton {
+                        id: venueMapButton
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: 170
+                        label: venueMapImage.visible ? "Hide map" :"Show on map"
+                        onClicked: {
+                            venueMapImage.visible = !venueMapImage.visible;
+                        }
+                        visible: venueMapUrl != ""
+                    }
                 }
 
-                Text {
-                    text: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
-                    font.pixelSize: 20
-                    color: "#888"
+                ProfilePhoto {
+                    id: venueMapImage
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    photoSize: 320
+                    photoSmooth: false
+                    photoUrl: place.venueMapUrl
+                    visible: false
                 }
 
                 Rectangle {
                     width: parent.width
                     height: 1
                     color: "#ccc"
+                    visible: venueMapImage.visible
                 }
 
                 PhotosBox {
@@ -194,16 +220,6 @@ Rectangle {
                     visible: tipsModel.count>0
                 }
             }
-            ProfilePhoto {
-                id: profileImage
-                x: parent.width - 75
-                photoUrl: place.venueMajorPhoto
-                visible: place.venueMajor.length>0
-
-                onClicked: {
-                    place.user(venueMajorID);
-                }
-            }
         }
     }
 
@@ -235,12 +251,22 @@ Rectangle {
                 target: place
                 x: parent.width
             }
+            PropertyChanges {
+                target: venueMapImage
+                visible: false
+                photoUrl: ""
+            }
         },
         State {
             name: "hiddenLeft"
             PropertyChanges {
                 target: place
                 x: -parent.width
+            }
+            PropertyChanges {
+                target: venueMapImage
+                visible: false
+                photoUrl: ""
             }
         },
         State {

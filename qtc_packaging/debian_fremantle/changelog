@@ -1,6 +1,11 @@
+nelisquare (0.3.7) stable; urgency=low
+  * Venue location on google maps added at venue details
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 16 May 2012 12:26:17 +0400
+
 nelisquare (0.3.6) stable; urgency=low
 
-  * Minor bugfix for "hereNow" option at vuenue list
+  * Minor bugfix for "hereNow" option at venue list
 
  -- Basil Semuonov <basil.semuonov@gmail.com>  Tue, 15 May 2012 10:30:40 +0400
 
