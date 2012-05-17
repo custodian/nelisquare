@@ -334,6 +334,10 @@ function loadVenue(venueID) {
     venueDetails.venueMajor = "";
     venueDetails.photosBox.photosModel.clear();
     venueDetails.usersBox.photosModel.clear();
+    venueDetails.venueMapUrl = "";
+    venueDetails.venueMapLat = "";
+    venueDetails.venueMapLng = "";
+    //venueDetails.venueMapZoom = 15; //do not reset on each venue
     doWebRequest("GET", url, "", parseVenue);
 }
 
@@ -350,19 +354,14 @@ function parseVenue(response) {
     venueDetails.venueName = venue.name;
     venueDetails.venueAddress = parse(venue.location.address);
     venueDetails.venueCity = parse(venue.location.city);
-    venueDetails.venueMajor = "";
     if(venue.mayor.count>0) {
         venueDetails.venueMajor = makeUserName(venue.mayor.user);
         venueDetails.venueMajorPhoto = venue.mayor.user.photo;
         venueDetails.venueMajorID = venue.mayor.user.id;
     }
-    venueDetails.venueMapUrl = "";
     if(typeof(venue.location)!="undefined") {
-        venueDetails.venueMapUrl =
-        "http://maps.googleapis.com/maps/api/staticmap?center="+
-                venue.location.lat+","+venue.location.lng+
-                "&zoom=15&size=320x320&maptype=roadmap&markers=size:small|"+
-                venue.location.lat+","+venue.location.lng+"&sensor=false";
+        venueDetails.venueMapLat = venue.location.lat;
+        venueDetails.venueMapLng = venue.location.lng;
     }
 
     // Parse venue tips

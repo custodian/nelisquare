@@ -1,3 +1,9 @@
+nelisquare (0.3.8) stable; urgency=low
+  * Map provider switch at settings dialog
+  * Map zoom-in & zoom-out
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 17 May 2012 13:48:47 +0400
+
 nelisquare (0.3.7) stable; urgency=low
   * Venue location on google maps added at venue details
 

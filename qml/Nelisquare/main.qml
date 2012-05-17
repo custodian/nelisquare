@@ -11,6 +11,7 @@ Rectangle {
 
     property string orientationType: "Auto"
     property string iconset: "Classic"
+    property string mapprovider: "Google Maps"
 
     id:window
     width: 480
@@ -44,6 +45,9 @@ Rectangle {
         } else if (key == "settings.iconset") {
             if (value == "") value = "Classic";
             window.iconset = value;
+        } else if (key == "settings.mapprovider") {
+            if (value == "") value = "Google Maps";
+            window.mapprovider = value;
         }
     }
 
@@ -60,6 +64,7 @@ Rectangle {
 
         Storage.getKeyValue("settings.orientation", settingLoaded);
         Storage.getKeyValue("settings.iconset",settingLoaded);
+        Storage.getKeyValue("settings.mapprovider",settingLoaded);
     }
 
     onHeightChanged: {
@@ -442,14 +447,17 @@ Rectangle {
 
         SettingsDialog {
             id: settingsDialog
-            onOrientationChange: {
+            onAuthDeleted: {
+                settingChanged("accesstoken","");
+            }
+            onOrientationChanged: {
                 settingChanged("settings.orientation",type);
             }
-            onIconsetChange: {
+            onIconsetChanged: {
                 settingChanged("settings.iconset",type);
             }
-            onAuthDelete: {
-                settingChanged("accesstoken","");
+            onMapProviderChanged: {
+                settingChanged("settings.mapprovider",type);
             }
         }
 

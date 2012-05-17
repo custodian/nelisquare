@@ -1,4 +1,5 @@
 import Qt 4.7
+import "../js/utils.js" as Utils;
 
 Rectangle {
     id: place
@@ -20,11 +21,18 @@ Rectangle {
     property string venueHereNow: ""
     property string venueCheckinsCount: ""
     property string venueUsersCount: ""
+    property string venueMapLat: ""
+    property string venueMapLng: ""
     property string venueMapUrl: ""
+    property int venueMapZoom: 15
 
     property alias tipsModel: tipsModel
     property alias photosBox: photosBox
     property alias usersBox: usersBox
+
+    function loadMapImage() {
+        venueDetails.venueMapUrl = Utils.createMapUrl(venueMapLat,venueMapLng,venueMapZoom);
+    }
 
     ListModel {
         id: tipsModel
@@ -136,20 +144,59 @@ Rectangle {
                         id: venueMapButton
                         anchors.verticalCenter: parent.verticalCenter
                         width: 170
-                        label: venueMapImage.visible ? "Hide map" :"Show on map"
+                        label: venueMapBox.visible ? "Hide map" :"Show on map"
                         onClicked: {
-                            venueMapImage.visible = !venueMapImage.visible;
+                            venueMapBox.visible = !venueMapBox.visible;
+                            if (venueMapBox.visible) {
+                                loadMapImage();
+                            }
                         }
-                        visible: venueMapUrl != ""
+                        visible: venueMapLat != "" && venueMapLng != ""
                     }
                 }
 
-                ProfilePhoto {
-                    id: venueMapImage
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    photoSize: 320
-                    photoSmooth: false
-                    photoUrl: place.venueMapUrl
+                Row {
+                    id: venueMapBox
+                    width: parent.width
+
+                    ProfilePhoto {
+                        id: venueMapImage
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        photoSize: 320
+                        photoSmooth: false
+                        photoUrl: place.venueMapUrl
+                    }
+                    Column {
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: venueMapImage.right
+                        height: venueMapImage.height
+                        ToolbarButton {
+                            anchors.top: parent.top
+                            width: 48
+                            height: 48
+                            image: "zoom_in.png"
+                            onClicked: {
+                                venueMapZoom++;
+                                if (venueMapZoom > 18)
+                                    venueMapZoom = 18;
+                                else
+                                    loadMapImage();
+                            }
+                        }
+                        ToolbarButton {
+                            anchors.bottom: parent.bottom
+                            width: 48
+                            height: 48
+                            image: "zoom_out.png"
+                            onClicked: {
+                                venueMapZoom--;
+                                if (venueMapZoom < 1)
+                                    venueMapZoom = 1;
+                                else
+                                    loadMapImage();
+                            }
+                        }
+                    }
                     visible: false
                 }
 
@@ -157,7 +204,7 @@ Rectangle {
                     width: parent.width
                     height: 1
                     color: "#ccc"
-                    visible: venueMapImage.visible
+                    visible: venueMapBox.visible
                 }
 
                 PhotosBox {
@@ -253,7 +300,6 @@ Rectangle {
             }
             PropertyChanges {
                 target: venueMapImage
-                visible: false
                 photoUrl: ""
             }
         },
@@ -265,7 +311,6 @@ Rectangle {
             }
             PropertyChanges {
                 target: venueMapImage
-                visible: false
                 photoUrl: ""
             }
         },

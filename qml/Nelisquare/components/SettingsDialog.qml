@@ -1,9 +1,10 @@
 import Qt 4.7
 
 Rectangle {
-    signal authDelete()
-    signal iconsetChange(string type)
-    signal orientationChange(string type)
+    signal authDeleted()
+    signal iconsetChanged(string type)
+    signal orientationChanged(string type)
+    signal mapProviderChanged(string type)
 
     id: settingsDialog
     color: "#555"
@@ -50,7 +51,7 @@ Rectangle {
                     imageSize: 64
                     image: "orientation_auto.png"
                     label: "Auto"
-                    onClicked: orientationChange(label)
+                    onClicked: orientationChanged(label)
                 }
                 ToolbarButton {
                     id: orientationLandscape
@@ -59,7 +60,7 @@ Rectangle {
                     imageSize: 64
                     image: "orientation_landscape.png"
                     label: "Landscape"
-                    onClicked: orientationChange(label)
+                    onClicked: orientationChanged(label)
                 }
                 ToolbarButton {
                     id: orientationPortrait
@@ -68,7 +69,7 @@ Rectangle {
                     imageSize: 64
                     image: "orientation_portrait.png"
                     label: "Portrait"
-                    onClicked: orientationChange(label)
+                    onClicked: orientationChanged(label)
                 }
             }
 
@@ -89,7 +90,7 @@ Rectangle {
                     imageSize: 64
                     image: "../iconset_classic.png"
                     label: "Classic"
-                    onClicked: iconsetChange(label)
+                    onClicked: iconsetChanged(label)
                 }
                 ToolbarButton {
                     id: iconSetHanddraw
@@ -98,11 +99,41 @@ Rectangle {
                     imageSize: 64
                     image: "../iconset_handdraw.png"
                     label: "Handdraw"
-                    onClicked: iconsetChange(label)
+                    onClicked: iconsetChanged(label)
                 }
             }
 
-            //DefaultPhotoPreviewSize
+            //Map provider
+            Row {
+                width: parent.width
+                Text {
+                    color: "#eee"
+                    text: "Map provider"
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                ToolbarButton {
+                    id: mapProviderGoogleMaps
+                    anchors.right: mapProviderOSM.left
+                    selected: window.mapprovider == label
+                    imageSize: 64
+                    image: "icon_google_maps.png"
+                    label: "Google Maps"
+                    onClicked: mapProviderChanged(label)
+                }
+                ToolbarButton {
+                    id: mapProviderOSM
+                    anchors.right: parent.right
+                    selected: window.mapprovider == label
+                    imageSize: 64
+                    image: "icon_osm.png"
+                    label: "OpenStreetMap"
+                    onClicked: mapProviderChanged(label)
+                }
+
+            }
+
+            //Revoke auth token
             Row {
                 width: parent.width
 
@@ -119,7 +150,7 @@ Rectangle {
                     pic: "stop.png"
                     imageSize: 48
                     onClicked: {
-                        authDelete()
+                        authDeleted()
                     }
                 }
             }
