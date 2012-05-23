@@ -1,3 +1,8 @@
+nelisquare (0.3.9) stable; urgency=low
+  * Classic icons update. thx Bartcode3.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 23 May 2012 10:52:18 +0400
+
 nelisquare (0.3.8) stable; urgency=low
   * Map provider switch at settings dialog
   * Map zoom-in & zoom-out
