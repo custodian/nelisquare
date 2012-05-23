@@ -5,28 +5,23 @@ Rectangle {
     signal path(string checkin, string photo)
 
     property string checkinID: ""
-    property int galleryOffset: 0
-    property int galleryLimit: 2
-
 
     id: photoAddDialog
     width: parent.width
     height: parent.height
 
     ListModel {
-        id: galleryModelFake
+        id: emptyModel
     }
 
     DocumentGalleryModel {
-        id: galleryModelReal
+        id: galleryModel
 
-        limit: galleryLimit
-        offset: galleryOffset
         autoUpdate: true
-        scope: DocumentGallery.Image
-        properties: [ "filePath" ]
-        //rootType: DocumentGallery.Image
-        //properties: [ "fileName" ]
+        scope: DocumentGallery.Image  //real
+        properties: [ "filePath" ]    //real
+        //rootType: DocumentGallery.Image //Sim
+        //properties: [ "fileName" ]      //Sim
         filter: GalleryWildcardFilter {
             property: "fileName";
             value: "*.jpg";
@@ -37,14 +32,14 @@ Rectangle {
     Component {
          id: photoDelegate
          ProfilePhoto {
-            photoUrl: model.filePath
-            //photoUrl: model.fileName
+            photoUrl: model.filePath      //real
+            //photoUrl: model.fileName        //sim
             photoSize: photoGrid.cellWidth
+            photoSourceSize: photoGrid.cellWidth
             photoBorder: 2
             photoSmooth: false
             photoAspect: Image.PreserveAspectFit
             onClicked: {
-                //console.log("PHOTOADD MODEL: " + JSON.stringify(model));
                 photoAddDialog.path(checkinID, model.filePath);
             }
          }
@@ -53,60 +48,22 @@ Rectangle {
     GridView {
         id: photoGrid
         width: parent.width
-        height: parent.height - rowNavigation.height
-        cellWidth: Math.min(width/2,height)
+        height: parent.height
+        cellWidth: Math.min((width-5)/3,height)
         cellHeight: cellWidth
         clip: true
-        //model: galleryModel
+        model: emptyModel
         delegate: photoDelegate
-    }
-
-    Row {
-        id: rowNavigation
-        width: parent.width
-        anchors.bottom: parent.bottom
-        //TODO: fast image paginator
-        BlueButton {
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.left: parent.left
-            width: 200
-            label: "<-- Prev"
-            visible: galleryOffset > 0
-            onClicked: {
-                galleryOffset -= galleryLimit;
-                if (galleryOffset<0)
-                    galleryOffset = 0;
-            }
-        }
-
-        BlueButton {
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: 100
-            label: "Latest"
-            visible: galleryOffset > 0
-            onClicked: {
-                galleryOffset = 0;
-            }
-        }
-
-        BlueButton {
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.right: parent.right
-            width: 200
-            label: "Next -->"
-            visible: photoGrid.count >= galleryLimit
-            onClicked: {
-                galleryOffset += galleryLimit;
-            }
+        header: Text {
+            text: "Select photo for upload"
         }
     }
 
     onStateChanged: {
-        if (photoAddDialog.state == "shown") {
-            photoGrid.model = galleryModelReal;
+        if (state == "shown") {
+            photoGrid.model = galleryModel;
         } else {
-            photoGrid.model = galleryModelFake;
+            photoGrid.model = emptyModel;
         }
     }
 

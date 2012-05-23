@@ -5,6 +5,7 @@ Rectangle {
     property string photoUrl: ""
     property int photoSize: 64
     property int photoBorder: 4
+    property variant photoSourceSize: undefined
     property bool enableMouseArea: true
     property alias photoSmooth: image.smooth
     property variant photoAspect: Image.PreserveAspectFit
@@ -22,11 +23,14 @@ Rectangle {
         id: image
         x: photoBorder
         y: photoBorder
+        asynchronous: true
         source: photoUrl
         smooth: true
         fillMode: photoAspect
         width: photoSize - 2*photoBorder + 1
         height: photoSize - 2*photoBorder + 1
+        sourceSize.width: photoSourceSize
+        sourceSize.height: photoSourceSize
         onStatusChanged: {
             image.visible = (image.status == Image.Ready)
             loader.visible = (image.status != Image.Ready)

@@ -1,5 +1,10 @@
+nelisquare (0.3.10) stable; urgency=low
+  * Add photo update: all images & smooth scrolling.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 24 May 2012 11:34:23 +0400
+
 nelisquare (0.3.9) stable; urgency=low
-  * Classic icons update. thx Bartcode3.
+  * Classic icons update. thx Bartcore3.
 
  -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 23 May 2012 10:52:18 +0400
 
