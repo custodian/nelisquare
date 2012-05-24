@@ -253,6 +253,7 @@ function parseFriendsCheckins(response) {
                            "shout": parse(checkin.shout),
                            "user": userName,
                            "userID": checkin.user.id,
+                           "mayor": parse(checkin.isMayor),
                            "photo": checkin.user.photo,
                            "comments": comments,
                            "venueID": venueID,
@@ -354,6 +355,7 @@ function parseVenue(response) {
     venueDetails.venueName = venue.name;
     venueDetails.venueAddress = parse(venue.location.address);
     venueDetails.venueCity = parse(venue.location.city);
+    venueDetails.venueTypeUrl = parse(venue.categories[0].icon);
     if(venue.mayor.count>0) {
         venueDetails.venueMajor = makeUserName(venue.mayor.user);
         venueDetails.venueMajorPhoto = venue.mayor.user.photo;
@@ -673,28 +675,48 @@ function parseUser(response) {
     }
 }
 
-function addPhoto(checkin, photopath) {
-    //notificationDialog.message = "Sorry, this isn't implemented yet!";
-    //notificationDialog.state = "shown";
-    //TODO: make public photos
-
+function addPhoto(checkinID, venueID, photopath, makepublic, facebook, twitter) {
     waiting.state = "shown";
     var url = "https://api.foursquare.com/v2/photos/add?";
-    //var url = "http://172.17.0.1:8080/";
-    url += "checkinId=" + checkin;
+    if (checkinID!="") {
+        url += "checkinId=" + checkinID;
+    }
+    if (venueID!=""){
+        url += "venueId=" +venueID;
+    }
+    if (makepublic == "1") {
+        url += "&public=1";
+    }
+    var broadcast = "";
+    if (facebook) {
+        broadcast = "facebook";
+    }
+    if (twitter) {
+        if (broadcast!="") broadcast += ",";
+        broadcast += "twitter";
+    }
+    if (broadcast != "") {
+        url += "&broadcast="+broadcast;
+    }
     url += "&" + getAccessTokenParameter();
+    //console.log("PHOTOUPLOAD: "+url);
     if (!pictureHelper.upload(url,photopath)) {
         showError("Error uploading photo!");
     }
-
 }
 
 function parseAddPhoto(response) {
     waiting.state = "hidden";
     var photo = processResponse(response).photo;    
     //console.log("ADDED PHOTO: " + JSON.stringify(photo));
-    checkinDetails.photosBox.photosModel.append(
-                makePhoto(photo,300));
+    if (photoAddDialog.checkinID!="") {
+        checkinDetails.photosBox.photosModel.insert(0,
+                    makePhoto(photo,300));
+    }
+    if (photoAddDialog.venueID!="") {
+        venueDetails.photosBox.photosModel.insert(0,
+                    makePhoto(photo,300));
+    }
 }
 
 function loadPhoto(photoid) {

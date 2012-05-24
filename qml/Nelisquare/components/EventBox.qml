@@ -8,6 +8,7 @@ Item {
     property string userID: ""
     property string userName: ""
     property string userShout: ""
+    property bool userMayor: false
     property string venueID: ""
     property string venueName: ""
     property string venueCity: ""
@@ -32,7 +33,7 @@ Item {
         color: mouseArea.pressed ? "#ddd" : "#eee"
         y: 1
         width: parent.width
-        height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
+        height: 10 + Math.max(statusTextArea.height,profileImage.height)
 
         ProfilePhoto {
             id: profileImage
@@ -49,15 +50,27 @@ Item {
             y: 4
             width: parent.width - x - 12
 
-            Text {
-                id: messageText
-                color: theme.toolbarDarkColor
-                font.pixelSize: fontSize
-                font.bold: true
+            Row {
                 width: parent.width
-                text: (userName + (venueName !="" ? ("<span style='color:#000'> @ </span>" + venueName):""))
-                wrapMode: Text.Wrap
-                visible: messageText.text != ""
+                spacing: userMayor?5:0
+
+                Image {
+                    id: mayorImage
+                    anchors.verticalCenter: messageText.verticalCenter
+                    source: "https://foursquare.com/img/points/mayor.png"
+                    visible: userMayor
+                }
+
+                Text {
+                    id: messageText
+                    color: theme.toolbarDarkColor
+                    font.pixelSize: fontSize
+                    font.bold: true
+                    width: (parent.width - (userMayor?mayorImage.width+5:0))
+                    text: (userName + (venueName !="" ? ("<span style='color:#000'> @ </span>" + venueName):""))
+                    wrapMode: Text.Wrap
+                    visible: messageText.text != ""
+                }
             }
 
             Text {
@@ -67,7 +80,7 @@ Item {
                 width: parent.width
                 text: userShout!="" ? userShout : (venueAddress + " " + venueCity)
                 wrapMode: Text.Wrap
-                visible: venuePhoto == "" && text.length > 1
+                visible: /*venuePhoto == "" &&*/ text.length > 1
             }
             Row {
                 width: parent.width
@@ -86,6 +99,7 @@ Item {
                     width: parent.width * 0.7
                     text: createdAt
                     wrapMode: Text.Wrap
+                    visible: createdAt.length>0
                 }
                 Image {
                     id: commentImage
@@ -103,6 +117,7 @@ Item {
                     text: comments
                     visible: comments>0
                 }
+                visible: createdAt.length>0 || comments>0
             }
         }
         MouseArea {
@@ -137,10 +152,9 @@ Item {
 
     Rectangle {
         width:  parent.width
-        x: 4
         y: eventItem.height - 1
         height: 1
-        color: "#ddd"
+        color: "#ccc"
     }
 
     MouseArea {

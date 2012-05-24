@@ -6,7 +6,7 @@ Rectangle {
     signal photo(string photo)
     signal showAddComment()
     signal deleteComment(string commentID)
-    signal showAddPhoto(string checkin)
+    signal showAddPhoto()
     y: 10
     id: checkin
 
@@ -66,9 +66,8 @@ Rectangle {
                 spacing: 10
 
                 EventBox {
-                    x: 10
                     id: checkinOwner
-                    width: parent.width - 20
+                    width: parent.width
                     showRemoveButton: false
 
                     onUserClicked: {
@@ -77,20 +76,6 @@ Rectangle {
                     onAreaClicked: {
                         checkin.venue();
                     }
-                }
-
-                Row {
-                    width: parent.width
-                    BlueButton {
-                        y: 10
-                        label: "Add photo"
-                        width: 180
-
-                        onClicked: {
-                            checkin.showAddPhoto(checkin.checkinID)
-                        }
-                    }
-                    visible: checkin.owner.eventOwner == "self"
                 }
 
                 Row {
@@ -161,18 +146,27 @@ Rectangle {
                     visible: commentsModel.count>0
                 }
 
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#ccc"
-                    visible: commentsModel.count>0
-                }
+                Row {
+                    width:parent.width
+                    spacing: 10
 
-                BlueButton{
-                    label: "Add comment"
-                    width: parent.width - 5
-                    onClicked: {
-                        checkin.showAddComment();
+                    BlueButton {
+                        id: btnAddPhoto
+                        label: "Add photo"
+                        width: 150
+
+                        onClicked: {
+                            checkin.showAddPhoto()
+                        }
+                        visible: checkin.owner.eventOwner == "self"
+                    }
+
+                    BlueButton{
+                        label: "Add comment"
+                        width: parent.width - (btnAddPhoto.visible?btnAddPhoto.width:0) - parent.spacing
+                        onClicked: {
+                            checkin.showAddComment();
+                        }
                     }
                 }
 

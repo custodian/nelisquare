@@ -1,3 +1,11 @@
+nelisquare (0.3.11) stable; urgency=low
+  * Look and feel
+  * Scrolling of objects added at pages
+  * Photo upload: sharing options, upload to venue
+  * Display of mayor photo fixed.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 25 May 2012 01:10:45 +0400
+
 nelisquare (0.3.10) stable; urgency=low
   * Add photo update: all images & smooth scrolling.
 

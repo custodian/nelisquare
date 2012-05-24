@@ -33,7 +33,7 @@ Rectangle {
 
     Image {
         id: icon
-        source: "../pics/" + window.iconset + "/" + button.pic
+        source: button.pic.length>0?"../pics/" + window.iconset + "/" + button.pic:""
         anchors.centerIn: parent
         width: imageSize
         height: imageSize

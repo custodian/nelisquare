@@ -120,6 +120,7 @@ Rectangle {
         photoAddDialog.state = "hidden";
         notificationsList.state = "hidden";
         settingsDialog.state = "hidden";
+        photoShareDialog.state = "hidden";
     }
 
     function isSmallScreen() {
@@ -190,10 +191,10 @@ Rectangle {
             });
     }
 
-    function showAddPhotoDialog(checkin) {
+    function showAddPhotoDialog(checkinID,venueID) {
         Window.pushWindow(function() {
-                //hideAll();
-                photoAddDialog.checkinID = checkin;
+                photoAddDialog.checkinID = checkinID;
+                photoAddDialog.venueID = venueID;
                 photoAddDialog.state = "shown";
             });
     }
@@ -283,7 +284,7 @@ Rectangle {
                 Script.deleteComment(checkinDetails.checkinID,commentID);
             }
             onShowAddPhoto: {
-                showAddPhotoDialog(checkin);
+                showAddPhotoDialog(checkinDetails.checkinID,"");
             }
         }
 
@@ -333,6 +334,9 @@ Rectangle {
             }
             onPhoto: {
                 showPhotoDetails(photo);
+            }
+            onShowAddPhoto: {
+                showAddPhotoDialog("",venueDetails.venueID);
             }
         }
 
@@ -406,9 +410,9 @@ Rectangle {
             width: parent.width
             height: parent.height
             state: "hidden"
-            onPath: {
-                Script.addPhoto(checkin,photo);
-                photoAddDialog.state = "hidden";
+            onUploadPhoto: {
+                photoShareDialog.photoUrl = photo;
+                photoShareDialog.state = "shown";
             }
         }
 
@@ -504,6 +508,23 @@ Rectangle {
                     Script.markVenueToDo(tipDialog.venueID, comment);
                 }
                 tipDialog.state = "hidden";
+            }
+        }
+
+        PhotoShareDialog{
+            id: photoShareDialog
+            width: parent.width
+            state: "hidden"
+            onCancel:{
+                photoShareDialog.state="hidden";
+            }
+            onUploadPhoto: {
+                photoShareDialog.state="hidden";
+                Script.addPhoto(photoAddDialog.checkinID,
+                                photoAddDialog.venueID,
+                                photoShareDialog.photoUrl,
+                                makepublic,facebook,twitter);
+                photoAddDialog.state="hidden";
             }
         }
 

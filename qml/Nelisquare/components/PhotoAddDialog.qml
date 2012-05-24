@@ -2,9 +2,10 @@ import Qt 4.7
 import QtMobility.gallery 1.1
 
 Rectangle {
-    signal path(string checkin, string photo)
+    signal uploadPhoto(string photo)
 
     property string checkinID: ""
+    property string venueID: ""
 
     id: photoAddDialog
     width: parent.width
@@ -40,7 +41,7 @@ Rectangle {
             photoSmooth: false
             photoAspect: Image.PreserveAspectFit
             onClicked: {
-                photoAddDialog.path(checkinID, model.filePath);
+                photoAddDialog.uploadPhoto(photoUrl);
             }
          }
      }

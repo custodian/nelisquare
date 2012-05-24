@@ -6,8 +6,10 @@ Rectangle {
     signal checkin()
     signal markToDo()
     signal showAddTip()
+    signal showAddPhoto()
     signal user(string user)
     signal photo(string photo)
+
     width: parent.width
     color: "#eee"
 
@@ -24,6 +26,7 @@ Rectangle {
     property string venueMapLat: ""
     property string venueMapLng: ""
     property string venueMapUrl: ""
+    property string venueTypeUrl: ""
     property int venueMapZoom: 15
 
     property alias tipsModel: tipsModel
@@ -32,6 +35,14 @@ Rectangle {
 
     function loadMapImage() {
         venueDetails.venueMapUrl = Utils.createMapUrl(venueMapLat,venueMapLng,venueMapZoom);
+    }
+
+    onVenueMajorPhotoChanged: {
+        venueMayorDetails.userPhoto.photoUrl = place.venueMajorPhoto;
+    }
+
+    onVenueTypeUrlChanged: {
+        venueNameDetails.userPhoto.photoUrl = place.venueTypeUrl
     }
 
     ListModel {
@@ -46,64 +57,6 @@ Rectangle {
     Column {
         anchors.fill: parent
 
-        Rectangle {
-            z: 100
-            width: parent.width
-            height: 140
-            color: theme.toolbarLightColor
-
-            Text {
-                id: venueNameText
-                text: place.venueName
-                font.pixelSize: 24
-                font.bold: true
-                color: "#fff"
-                x: 10
-                y: 10
-            }
-
-            Text {
-                id: venueAddressText
-                text: place.venueAddress
-                font.pixelSize: 20
-                color: "#fff"
-                x: 10
-                y: venueNameText.y + venueNameText.height
-            }
-
-            GreenButton {
-                label: "CHECK IN HERE"
-                width: parent.width - 20
-                x: 10
-                y: venueAddressText.y + venueAddressText.height + 8
-
-                onClicked: {
-                    place.checkin();
-                }
-            }
-
-        }
-
-        Rectangle {
-            z:100
-            width: parent.width
-            height: 10
-            color: "#A8CB17"
-
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#A8CB17"
-            }
-
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#888"
-                y: 9
-            }
-        }
-
         Flickable {
             id: flickableArea
             width: parent.width
@@ -116,155 +69,234 @@ Rectangle {
             pressDelay: 100
 
             Column {
+                width: parent.width
+
                 onHeightChanged: {
                     flickableArea.contentHeight = height;
                 }
 
-                width: parent.width - 20
-                x: 10
-                spacing: 10
-
-
-                Row {
+                Rectangle {
+                    z: 100
                     width: parent.width
-                    EventBox {
-                        width: parent.width - venueMapButton.width
-                        userName: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
-                        userShout: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
+                    height: columnCheckin.height + 10
+                    color: theme.toolbarLightColor
 
-                        Component.onCompleted: {
-                            userPhoto.photoUrl = place.venueMajorPhoto
-                        }
-                        onUserClicked: {
-                            place.user(venueMajorID);
-                        }
-                    }
-
-                    BlueButton {
-                        id: venueMapButton
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: 170
-                        label: venueMapBox.visible ? "Hide map" :"Show on map"
-                        onClicked: {
-                            venueMapBox.visible = !venueMapBox.visible;
-                            if (venueMapBox.visible) {
-                                loadMapImage();
-                            }
-                        }
-                        visible: venueMapLat != "" && venueMapLng != ""
-                    }
-                }
-
-                Row {
-                    id: venueMapBox
-                    width: parent.width
-
-                    ProfilePhoto {
-                        id: venueMapImage
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        photoSize: 320
-                        photoSmooth: false
-                        photoUrl: place.venueMapUrl
-                    }
                     Column {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: venueMapImage.right
-                        height: venueMapImage.height
-                        ToolbarButton {
-                            anchors.top: parent.top
-                            width: 48
-                            height: 48
-                            image: "zoom_in.png"
+                        id: columnCheckin
+                        y: 10
+                        width: parent.width
+                        spacing: 10
+
+                        EventBox {
+                            id: venueNameDetails
+                            activeWhole: true
+                            width: parent.width - 20
+                            anchors.horizontalCenter: parent.horizontalCenter
+
+                            userName: place.venueName
+                            userShout: place.venueAddress
+                        }
+
+                        /*Text {
+                            text: place.venueName
+                            font.pixelSize: 24
+                            font.bold: true
+                            color: "#fff"
+                            x: 10
+                        }
+                        Text {
+                            text: place.venueAddress
+                            font.pixelSize: 20
+                            color: "#fff"
+                            x: 10
+                        }*/
+
+                        GreenButton {
+                            label: "CHECK IN HERE"
+                            width: parent.width - 20
+                            anchors.horizontalCenter: parent.horizontalCenter
+
                             onClicked: {
-                                venueMapZoom++;
-                                if (venueMapZoom > 18)
-                                    venueMapZoom = 18;
-                                else
-                                    loadMapImage();
+                                place.checkin();
                             }
                         }
-                        ToolbarButton {
-                            anchors.bottom: parent.bottom
-                            width: 48
-                            height: 48
-                            image: "zoom_out.png"
-                            onClicked: {
-                                venueMapZoom--;
-                                if (venueMapZoom < 1)
-                                    venueMapZoom = 1;
-                                else
-                                    loadMapImage();
+
+                        Row {
+                            width: parent.width - 20
+                            height: 50
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            spacing: 10
+
+                            BlueButton {
+                                label: "Add tip"
+                                width: parent.width / 3 - parent.spacing
+                                anchors.left: parent.left
+                                onClicked: {
+                                    place.showAddTip();
+                                }
+                            }
+                            BlueButton {
+                                label: "Add photo"
+                                width: parent.width / 3 - parent.spacing
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                onClicked: {
+                                    place.showAddPhoto()
+                                }
+                            }
+
+                            BlueButton {
+                                label: "Mark to-do"
+                                width: parent.width / 3 - parent.spacing
+                                anchors.right: parent.right
+                                onClicked: {
+                                    place.markToDo();
+                                }
                             }
                         }
-                    }
-                    visible: false
-                }
 
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#ccc"
-                    visible: venueMapBox.visible
-                }
+                        Rectangle {
+                            z:100
+                            width: parent.width
+                            height: 10
+                            color: "#A8CB17"
 
-                PhotosBox {
-                    id: photosBox
-                    onItemSelected: {
-                        place.photo(object);
-                    }
-                }
+                            Rectangle {
+                                anchors.top: parent.top
+                                width: parent.width
+                                height: 1
+                                color: "#A8CB17"
+                            }
 
-                PhotosBox {
-                    id: usersBox
-                    showButtons: false
-                    photoSize: 64
-                    onItemSelected: {
-                        place.user(object)
+                            Rectangle {
+                                anchors.bottom: parent.bottom
+                                width: parent.width
+                                height: 1
+                                color: "#888"
+                            }
+                        }
+
                     }
                 }
 
-                Text {
-                    width: parent.width
-                    text: "User tips:"
-                    visible: tipsModel.count>0
-                }
-                Repeater {
-                    id: tipRepeater
-                    width: parent.width
-                    model: tipsModel
-                    delegate: tipDelegate
-                    visible: tipsModel.count>0
-                }
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#ccc"
-                    visible: tipsModel.count>0
-                }
-                Row {
-                    width: parent.width
-                    height: 50
+                Column {
+                    width: parent.width - 20
+                    x: 10
                     spacing: 10
-                    BlueButton {
-                        label: "Add tip"
-                        width: parent.width / 2 - 5
-                        onClicked: {
-                            place.showAddTip();
+
+                    Row {
+                        width: parent.width
+                        EventBox {
+                            id: venueMayorDetails
+                            width: parent.width - venueMapButton.width
+                            userName: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
+                            userShout: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
+
+                            onUserClicked: {
+                                place.user(venueMajorID);
+                            }
+                        }
+
+                        BlueButton {
+                            id: venueMapButton
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 170
+                            label: venueMapBox.visible ? "Hide map" :"Show on map"
+                            onClicked: {
+                                venueMapBox.visible = !venueMapBox.visible;
+                                if (venueMapBox.visible) {
+                                    loadMapImage();
+                                }
+                            }
+                            visible: venueMapLat != "" && venueMapLng != ""
                         }
                     }
-                    BlueButton {
-                        label: "Mark to-do"
-                        width: parent.width / 2 - 5
-                        onClicked: {
-                            place.markToDo();
+
+                    Row {
+                        id: venueMapBox
+                        width: parent.width
+
+                        ProfilePhoto {
+                            id: venueMapImage
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            photoSize: 320
+                            photoSmooth: false
+                            photoUrl: place.venueMapUrl
+                        }
+                        Column {
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: venueMapImage.right
+                            height: venueMapImage.height
+                            ToolbarButton {
+                                anchors.top: parent.top
+                                width: 48
+                                height: 48
+                                image: "zoom_in.png"
+                                onClicked: {
+                                    venueMapZoom++;
+                                    if (venueMapZoom > 18)
+                                        venueMapZoom = 18;
+                                    else
+                                        loadMapImage();
+                                }
+                            }
+                            ToolbarButton {
+                                anchors.bottom: parent.bottom
+                                width: 48
+                                height: 48
+                                image: "zoom_out.png"
+                                onClicked: {
+                                    venueMapZoom--;
+                                    if (venueMapZoom < 1)
+                                        venueMapZoom = 1;
+                                    else
+                                        loadMapImage();
+                                }
+                            }
+                        }
+                        visible: false
+                    }
+
+                    Rectangle {
+                        width: parent.width
+                        height: 1
+                        color: "#ccc"
+                        visible: venueMapBox.visible
+                    }
+
+                    PhotosBox {
+                        id: photosBox
+                        onItemSelected: {
+                            place.photo(object);
                         }
                     }
-                }
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#ccc"
-                    visible: tipsModel.count>0
+
+                    PhotosBox {
+                        id: usersBox
+                        showButtons: false
+                        photoSize: 64
+                        onItemSelected: {
+                            place.user(object)
+                        }
+                    }
+
+                    Text {
+                        width: parent.width
+                        text: "User tips:"
+                        visible: tipsModel.count>0
+                    }
+                    Repeater {
+                        id: tipRepeater
+                        width: parent.width
+                        model: tipsModel
+                        delegate: tipDelegate
+                        visible: tipsModel.count>0
+                    }
+                    Rectangle {
+                        width: parent.width
+                        height: 1
+                        color: "#ccc"
+                        visible: tipsModel.count>0
+                    }
                 }
             }
         }
