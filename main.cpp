@@ -5,12 +5,37 @@
 #include "qmlapplicationviewer.h"
 #include "picturehelper.h"
 #include "windowhelper.h"
+#include <QInputContext>
+
+#include <qplatformdefs.h>
+
+class EventFilter : public QObject
+{
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) {
+        QInputContext *ic = qApp->inputContext();
+        if (ic) {
+            if (ic->focusWidget() == 0 && prevFocusWidget) {
+                QEvent closeSIPEvent(QEvent::CloseSoftwareInputPanel);
+                ic->filterEvent(&closeSIPEvent);
+            } else if (prevFocusWidget == 0 && ic->focusWidget()) {
+                QEvent openSIPEvent(QEvent::RequestSoftwareInputPanel);
+                ic->filterEvent(&openSIPEvent);
+            }
+            prevFocusWidget = ic->focusWidget();
+        }
+        return QObject::eventFilter(obj,event);
+    }
+
+private:
+    QWidget *prevFocusWidget;
+};
 
 int main(int argc, char *argv[])
 {
 #ifdef Q_OS_SYMBIAN
     QApplication::setGraphicsSystem(QLatin1String("openvg"));
-#elif defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
+#elif defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6) || defined(MEEGO_EDITION_HARMATTAN)
     QApplication::setGraphicsSystem(QLatin1String("opengl"));
 #endif
 
@@ -27,14 +52,25 @@ int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-    viewer.setMainQmlFile(QLatin1String("qml/Nelisquare/main.qml"));
-    viewer.installEventFilter(windowHelper);
+#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
+    viewer.setMainQmlFile(QLatin1String("qml/Nelisquare/MainWindow.qml"));
+#elif defined(MEEGO_EDITION_HARMATTAN)
+    viewer.setMainQmlFile(QLatin1String("qml/Nelisquare/Meego.qml"));
+#else
+    viewer.setMainQmlFile(QLatin1String("qml/Nelisquare/MainWindow.qml"));
+#endif
+
+    EventFilter ef;
+    viewer.installEventFilter(&ef);
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
-    rootObject->connect(windowHelper,SIGNAL(visibilityChanged(QVariant)), SLOT(onVisibililityChange(QVariant)));
     rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant)),SLOT(onPictureUploaded(QVariant)));
+#if defined(MEEGO_EDITION_HARMATTAN)
+    rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));
+#endif
 
-    viewer.showFullScreen();
+    viewer.showExpanded();
 
     return app.exec();
+
 }

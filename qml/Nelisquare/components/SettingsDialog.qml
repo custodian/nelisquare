@@ -143,7 +143,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                 }
 
-                Button {
+                ButtonEx {
                     width: 150
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
@@ -152,6 +152,15 @@ Rectangle {
                     onClicked: {
                         authDeleted()
                     }
+                }
+            }
+
+            Row {
+                width: parent.width
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: theme.textHelp1
                 }
             }
 

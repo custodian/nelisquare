@@ -119,7 +119,7 @@ Rectangle {
                 visible: userRelationship == "pendingMe"
             }
 
-            Button {
+            ButtonEx {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width - 130
                 label: "Remove Friend"
@@ -274,7 +274,7 @@ Rectangle {
                 }
             }
 
-            Button {
+            ButtonEx {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: 200
                 label: "Leaders board"

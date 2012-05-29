@@ -11,7 +11,7 @@ Rectangle {
 
     function reset() {
         webView.url = Script.AUTHENTICATE_URL;
-        webView.reload();
+        webView.reload.trigger();
     }
 
     Flickable {

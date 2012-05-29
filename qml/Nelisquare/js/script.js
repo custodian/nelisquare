@@ -178,7 +178,7 @@ function processResponse(response) {
     if (typeof(notifications)!="undefined"){
         notifications.forEach(function(notification) {
                 if (parse(notification.type) == "notificationTray") {
-                    updateNotificationCount(notification.item.unreadCount);
+                    window.updateNotificationCount(notification.item.unreadCount);
                 }
             });
     }

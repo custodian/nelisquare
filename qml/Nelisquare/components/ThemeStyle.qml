@@ -1,7 +1,6 @@
+import QtQuick 1.1
 
-import Qt 4.7
-
-QtObject {
+Item {
     id: theme
     property string backGroundColor: "#EEEEEE"
     property string textColor: "#222"
@@ -15,4 +14,5 @@ QtObject {
     property int menuFontSize: 20
     property int menuSubFontSize: 14
 
+    property string textHelp1: "If you got any problems - tweet @basil_s"
 }

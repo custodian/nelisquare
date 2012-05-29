@@ -29,6 +29,8 @@
 #endif
 #include "qmlapplicationviewer.h"
 
+#include <qplatformdefs.h>
+
 WindowHelper::WindowHelper(QmlApplicationViewer *viewer, QObject *parent) :
     QObject(parent)
 {
@@ -54,20 +56,8 @@ Q_INVOKABLE bool WindowHelper::isMaemo()
 #endif
 }
 
-bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
-    switch(event->type()) {
-    case QEvent::WindowActivate:
-        emit visibilityChanged(QVariant(true));
-        return true;
-    case QEvent::WindowDeactivate:
-        emit visibilityChanged(QVariant(false));
-        return true;
-    default:
-    return false;
-    }
-}
-
 Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
+#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
     QString orientation = value.toString();
     QmlApplicationViewer::ScreenOrientation type = QmlApplicationViewer::ScreenOrientationAuto;
     if (orientation == "Landscape") {
@@ -76,5 +66,7 @@ Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
         type = QmlApplicationViewer::ScreenOrientationLockPortrait;
     }
     m_viewer->setOrientation(type);
+#elif defined(MEEGO_EDITION_HARMATTAN)
+    emit lockOrientation(value);
+#endif
 }
-

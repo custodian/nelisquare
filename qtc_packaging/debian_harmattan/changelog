@@ -1,0 +1,92 @@
+nelisquare (0.3.11) stable; urgency=low
+  * Look and feel
+  * Scrolling of objects added at pages
+  * Photo upload: sharing options, upload to venue
+  * Display of mayor photo fixed.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 25 May 2012 01:10:45 +0400
+
+nelisquare (0.3.10) stable; urgency=low
+  * Add photo update: all images & smooth scrolling.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 24 May 2012 11:34:23 +0400
+
+nelisquare (0.3.9) stable; urgency=low
+  * Classic icons update. thx Bartcore3.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 23 May 2012 10:52:18 +0400
+
+nelisquare (0.3.8) stable; urgency=low
+  * Map provider switch at settings dialog
+  * Map zoom-in & zoom-out
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 17 May 2012 13:48:47 +0400
+
+nelisquare (0.3.7) stable; urgency=low
+  * Venue location on google maps added at venue details
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 16 May 2012 12:26:17 +0400
+
+nelisquare (0.3.6) stable; urgency=low
+
+  * Minor bugfix for "hereNow" option at venue list
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Tue, 15 May 2012 10:30:40 +0400
+
+nelisquare (0.3.5) stable; urgency=low
+
+  * Redirect to results after checkin
+  * Settings dialog: orientation, iconset, delete auth
+  * Added righthanded toolbar
+  * Added image loaders(no animation, testing performance).
+  * Fixed notifications link
+  * Layout fixes with shout and comment dialogs
+  * Latest button at photo add dialog
+  * Photo upload latency reduced. 2 lastest photos.
+  * Photobox component bug fix. Scroll photos, users - have fun!
+  * GPS switches off when app is inactive
+  * Photo upload!
+  * Notifications
+  * Comments on friend feed
+  * Checkin details: points, badges, comments
+  * Venue details: tips
+  * Basic uses details
+  * Users at venue
+  * Photos at friend feed, checkin details, venue details
+  * Friends managment
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 10 May 2012 15:16:06 +0400
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Fixed adding of tips and todo
+
+ -- Tommi Laukkanen <tlaukkanen@gmail.com>  Wed, 24 Jun 2011 13:41:22 +0300
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Show tip on place details
+  * Add new tip
+  * Add place as todo
+
+ -- Tommi Laukkanen <tlaukkanen@gmail.com>  Wed, 24 Jun 2011 13:41:22 +0300
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Fixed desktop shortcut
+
+ -- unknown <tlaukkanen@gmail.com>  Wed, 25 May 2011 23:23:22 +0300
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Added leader board
+  * Added Shouting support
+  * Added GPS signal indicator
+
+ -- unknown <tlaukkanen@gmail.com>  Tue, 24 May 2011 23:23:22 +0300
+
+nelisquare (0.2.6) unstable; urgency=low
+
+  * Initial Release.
+
+ -- unknown <tommi@unknown>  Thu, 28 Apr 2011 22:33:22 +0300 

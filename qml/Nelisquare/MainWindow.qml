@@ -14,26 +14,23 @@ Rectangle {
     property string mapprovider: "Google Maps"
 
     id:window
-    width: 480
-    height: 800
-    color: theme.backGroundColor
 
-    function onVisibililityChange(state) {
-        positionSource.active = state;
-    }
-    function onPictureUploaded(response) {
-        Script.parseAddPhoto(response);
-    }
+    anchors.fill: parent
+    color: theme.backGroundColor
 
     function iconsetPath() {
         return iconset + "/";
+    }
+
+    function onPictureUploaded(response) {
+        Script.onPictureUploaded(response);
     }
 
     function settingLoaded(key, value) {
         if(key=="accesstoken") {
             if(value.length>0) {
                 Script.setAccessToken(value);
-                showFriendsCheckins();
+                window.showFriendsCheckins();
             } else {
                 login.visible = true;
                 login.reset();
@@ -53,22 +50,22 @@ Rectangle {
 
     function settingChanged(key, value) {
         Storage.setKeyValue(key, value);
-        settingLoaded(key, value);
+        window.settingLoaded(key, value);
     }
 
     Component.onCompleted: {
         splashHider.start();
         signalTimer.start();
-        Storage.getKeyValue("accesstoken", settingLoaded);
-        isPortrait = (window.width<window.height)
+        Storage.getKeyValue("accesstoken", window.settingLoaded);
+        window.isPortrait = (window.width<window.height)
 
-        Storage.getKeyValue("settings.orientation", settingLoaded);
-        Storage.getKeyValue("settings.iconset",settingLoaded);
-        Storage.getKeyValue("settings.mapprovider",settingLoaded);
+        Storage.getKeyValue("settings.orientation", window.settingLoaded);
+        Storage.getKeyValue("settings.iconset", window.settingLoaded);
+        Storage.getKeyValue("settings.mapprovider", window.settingLoaded);
     }
 
     onHeightChanged: {
-        isPortrait = (window.width<window.height)
+        window.isPortrait = (window.width<window.height)
     }
 
     Timer {
@@ -94,7 +91,7 @@ Rectangle {
     PositionSource {
         id: positionSource
         updateInterval: 1000
-        active: true
+        active: Qt.application.active
         onPositionChanged: {
             if(positionSource.position.latitudeValid) {
                 signalIcon.visible = false;
@@ -134,7 +131,7 @@ Rectangle {
     function showLeaderBoard() {
         Window.pushWindow(function() {
                 Script.loadLeaderBoard();
-                hideAll();
+                window.hideAll();
                 leaderBoard.state = "shown";
                 });
     }
@@ -142,7 +139,7 @@ Rectangle {
     function showFriendsCheckins() {
         Script.loadFriendsCheckins();
         Window.pushWindow(function() {
-            hideAll();
+            window.hideAll();
             friendsCheckinsList.state = "shown";
             });
     }
@@ -154,15 +151,15 @@ Rectangle {
                 } else {
                     Script.loadPlaces(query);
                 }
-                hideAll();
+                window.hideAll();
                 venuesList.state = "shown";
             });
     }
 
     function showVenueDetails(venueID) {
         Script.loadVenue(venueID);
-        Window.pushWindow(function() {                
-                hideAll();
+        Window.pushWindow(function() {
+                window.hideAll();
                 venueDetails.state = "shown";
             });
     }
@@ -170,7 +167,7 @@ Rectangle {
     function showUserDetails(user) {
         Window.pushWindow(function() {
                 Script.loadUser(user);
-                hideAll();
+                window.hideAll();
                 userDetails.state = "shown";
             });
     }
@@ -178,7 +175,7 @@ Rectangle {
     function showCheckinDetails(checkin) {
         Window.pushWindow(function() {
                 Script.loadCheckin(checkin);
-                hideAll();
+                window.hideAll();
                 checkinDetails.state = "shown";
             });
     }
@@ -186,7 +183,7 @@ Rectangle {
     function showPhotoDetails(photo) {
         Window.pushWindow(function() {
                 Script.loadPhoto(photo);
-                hideAll();
+                window.hideAll();
                 photoDetails.state = "shown";
             });
     }
@@ -201,7 +198,7 @@ Rectangle {
 
     function showNotificationsList() {
         Window.pushWindow(function() {
-                hideAll();
+                window.hideAll();
                 Script.loadNotifications();
                 notificationsList.state = "shown";
             });
@@ -209,7 +206,7 @@ Rectangle {
 
     function showSettingsDialog() {
         Window.pushWindow(function() {
-                hideAll();
+                window.hideAll();
                 settingsDialog.state = "shown";
             });
     }
@@ -227,15 +224,15 @@ Rectangle {
         id: boardModel
     }
 
-    Theme {
+    ThemeStyle {
         id: theme
     }
 
     Item {
         id: viewPort
         y: toolbar.height
-        height: isPortrait ? parent.height - toolbar.height - menubar.height : parent.height - toolbar.height
-        width: isPortrait ? parent.width : parent.width - menubar.width
+        height: window.isPortrait ? parent.height - toolbar.height - menubar.height : parent.height - toolbar.height
+        width: window.isPortrait ? parent.width : parent.width - menubar.width
 
         FriendsCheckinsList {
             id: friendsCheckinsList
@@ -256,7 +253,7 @@ Rectangle {
             }
             onClicked: {
                 var checkin = friendsCheckinsModel.get(index);
-                showCheckinDetails(checkin.id);
+                window.showCheckinDetails(checkin.id);
             }
         }
 
@@ -267,13 +264,13 @@ Rectangle {
             state: "hidden"
 
             onVenue: {
-                showVenueDetails(checkinDetails.owner.venueID);
+                window.showVenueDetails(checkinDetails.owner.venueID);
             }
             onUser: {
-                showUserDetails(user);
+                window.showUserDetails(user);
             }
             onPhoto: {
-                showPhotoDetails(photo);
+                window.showPhotoDetails(photo);
             }
             onShowAddComment: {
                 commentDialog.reset();
@@ -284,7 +281,7 @@ Rectangle {
                 Script.deleteComment(checkinDetails.checkinID,commentID);
             }
             onShowAddPhoto: {
-                showAddPhotoDialog(checkinDetails.checkinID,"");
+                window.showAddPhotoDialog(checkinDetails.checkinID,"");
             }
         }
 
@@ -296,7 +293,7 @@ Rectangle {
 
             onClicked: {
                 var venue = placesModel.get(index);
-                showVenueDetails(venue.id);
+                window.showVenueDetails(venue.id);
             }
             onSearch: {
                 Script.loadPlaces(query);
@@ -330,13 +327,13 @@ Rectangle {
                 tipDialog.state = "shown";
             }
             onUser: {
-                showUserDetails(user);
+                window.showUserDetails(user);
             }
             onPhoto: {
-                showPhotoDetails(photo);
+                window.showPhotoDetails(photo);
             }
             onShowAddPhoto: {
-                showAddPhotoDialog("",venueDetails.venueID);
+                window.showAddPhotoDialog("",venueDetails.venueID);
             }
         }
 
@@ -363,7 +360,7 @@ Rectangle {
             state: "hidden"
 
             onUser: {
-                showUserDetails(user);
+                window.showUserDetails(user);
             }
         }
 
@@ -375,23 +372,23 @@ Rectangle {
             onAddFriend: {
                 Script.addFriend(user);
                 userRelationship = "updated";
-                //showUserDetails(user);
+                //window.showUserDetails(user);
             }
             onRemoveFriend: {
                 Script.removeFriend(user);
                 userRelationship = "updated";
-                //showUserDetails(user);
+                //window.showUserDetails(user);
             }
             onApproveFriend: {
                 Script.approveFriend(user);
                 userRelationship = "updated";
-                //showUserDetails(user);
+                //window.showUserDetails(user);
             }
             onUser: {
-                showUserDetails(user);
+                window.showUserDetails(user);
             }
             onOpenLeaderBoard: {
-                showLeaderBoard();
+                window.showLeaderBoard();
             }
         }
 
@@ -401,7 +398,7 @@ Rectangle {
             height: parent.height
             state: "hidden"
             onUser: {
-                showUserDetails(user);
+                window.showUserDetails(user);
             }
         }
 
@@ -419,13 +416,13 @@ Rectangle {
         NotificationsList {
             id: notificationsList
             onUser: {
-                showUserDetails(user);
+                window.showUserDetails(user);
             }
             onCheckin: {
-                showCheckinDetails(checkin);
+                window.showCheckinDetails(checkin);
             }
             onVenue: {
-                showVenueDetails(venue);
+                window.showVenueDetails(venue);
             }
             onMarkNotificationsRead: {
                 Script.markNotificationsRead(time);
@@ -441,7 +438,7 @@ Rectangle {
                     objectType = "";
                     objectID = "";
                     if(objectType=="checkin") {
-                        showCheckinDetails(objectID);
+                        window.showCheckinDetails(objectID);
                     }
                 }
                 notificationDialog.state = "hidden";
@@ -452,16 +449,16 @@ Rectangle {
         SettingsDialog {
             id: settingsDialog
             onAuthDeleted: {
-                settingChanged("accesstoken","");
+                window.settingChanged("accesstoken","");
             }
             onOrientationChanged: {
-                settingChanged("settings.orientation",type);
+                window.settingChanged("settings.orientation",type);
             }
             onIconsetChanged: {
-                settingChanged("settings.iconset",type);
+                window.settingChanged("settings.iconset",type);
             }
             onMapProviderChanged: {
-                settingChanged("settings.mapprovider",type);
+                window.settingChanged("settings.mapprovider",type);
             }
         }
 
@@ -550,22 +547,22 @@ Rectangle {
         state: "hidden"
         anchors.horizontalCenter: parent.horizontalCenter
         onOpenFriendsCheckins: {
-            showFriendsCheckins();
+            window.showFriendsCheckins();
         }
         onOpenPlaces: {
-            showVenueList("");
+            window.showVenueList("");
         }
         onOpenExplore: {
-            showVenueList("todolist")
+            window.showVenueList("todolist")
         }
         onOpenProfile: {
-            showUserDetails("self");
+            window.showUserDetails("self");
         }
         onOpenLeaderBoard: {
-            showLeaderBoard();
+            window.showLeaderBoard();
         }
         onOpenSettings: {
-            showSettingsDialog();
+            window.showSettingsDialog();
         }
     }
 
@@ -579,7 +576,7 @@ Rectangle {
             GradientStop{position: 0.9; color: "#aaa"; }
         }
 
-        Button {
+        ButtonEx {
             anchors.centerIn: parent
             width: 160
             height: 48
@@ -599,7 +596,7 @@ Rectangle {
             visible: menubar.visible
         }
 
-        Button {
+        ButtonEx {
             id: minimizeButton
             pic: "minimize.png"
             x: 4
@@ -609,10 +606,10 @@ Rectangle {
             onClicked: {
                 windowHelper.minimize();
             }
-            visible: isSmallScreen()==false
+            visible: window.isSmallScreen()==false
         }
 
-        Button {
+        ButtonEx {
             x: minimizeButton.visible ? 56 : 4
             anchors.verticalCenter: parent.verticalCenter
             width: 90
@@ -623,14 +620,14 @@ Rectangle {
             }
         }
 
-        Button {
+        ButtonEx {
             id: notificationsButton
             pic: notificationsCount.visible?"email.png":"email_opened.png"
             x: buttonClose.x - width - 25
             anchors.verticalCenter: parent.verticalCenter
             width: 64
             height: 48
-            visible: isSmallScreen()==false
+            visible: window.isSmallScreen()==false
 
             Text {
                 id: notificationsCount
@@ -640,11 +637,11 @@ Rectangle {
                 color: "red"
             }
             onClicked: {
-                showNotificationsList();
+                window.showNotificationsList();
             }
         }
 
-        Button {
+        ButtonEx {
             id: buttonClose
             pic: "delete.png"
             x: parent.width - width - 4
@@ -679,13 +676,13 @@ Rectangle {
             id: menubarToolbar
             width: menubar.width
             height: menubar.height
-            spacing: isSmallScreen() ? 5 : 15
+            spacing: window.isSmallScreen() ? 5 : 15
 
             ToolbarButton {
                 id: backwardsButton
                 image: "undo.png"
                 label: "Back"
-                shown: Script.windowStash.length>0
+                shown: Window.windowStash.length>0
                 onClicked: {
                     Window.popWindow();
                 }
@@ -698,7 +695,7 @@ Rectangle {
                 selected: friendsCheckinsList.state == "shown"
                 onClicked: {
                     Window.clearWindows();
-                    showFriendsCheckins();
+                    window.showFriendsCheckins();
                 }
             }
 
@@ -709,7 +706,7 @@ Rectangle {
                 label: "Places"
                 selected: venuesList.state == "shown"
                 onClicked: {
-                    showVenueList("");
+                    window.showVenueList("");
                 }
             }
 
@@ -717,7 +714,7 @@ Rectangle {
                 image: "todo_list.png"
                 label: "To-Do"
                 onClicked: {
-                    showVenueList("todolist");
+                    window.showVenueList("todolist");
                 }
             }
 
@@ -725,13 +722,13 @@ Rectangle {
                 image: "info.png"
                 label: "Myself"
                 onClicked: {
-                    showUserDetails("self");
+                    window.showUserDetails("self");
                 }
             }
 
         }
 
-        state: isPortrait ? "bottom" : "right"
+        state: window.isPortrait ? "bottom" : "right"
 
         states: [
             State {
@@ -786,7 +783,7 @@ Rectangle {
                 Script.setAccessToken(code);
                 Storage.setKeyValue("accesstoken", code);
                 login.visible = false;
-                showFriendsCheckins();
+                window.showFriendsCheckins();
             }
         }
 
@@ -816,5 +813,4 @@ Rectangle {
         id: splashDialog
         anchors.centerIn: parent
     }
-
 }
