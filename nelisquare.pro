@@ -1,8 +1,8 @@
 # Add more folders to ship with the application, here
 unix {
-    folder_01.source = $$PWD/qml/Nelisquare
+    folder_01.source = $$PWD/qml/resources
 } else: win32 {
-    folder_01.source = qml/Nelisquare
+    folder_01.source = qml/resources
 }
     folder_01.target = qml
     DEPLOYMENTFOLDERS = folder_01
@@ -23,7 +23,7 @@ symbian:TARGET.CAPABILITY += NetworkServices Location LocalServices ReadUserData
 
 QT += network
 
-VERSION = 0.3.0
+VERSION = 0.3.11
 PACKAGENAME = com.substanceofcode.nelisquare
 
 # Define QMLJSDEBUGGER to allow debugging of QML in debug builds

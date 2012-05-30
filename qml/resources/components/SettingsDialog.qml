@@ -42,6 +42,7 @@ Rectangle {
                     color: "#eee"
                     text: "Orientation"
                     anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 24
                 }
 
                 ToolbarButton {
@@ -81,6 +82,7 @@ Rectangle {
                     color: "#eee"
                     text: "Icon set"
                     anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 24
                 }
 
                 ToolbarButton {
@@ -110,6 +112,7 @@ Rectangle {
                     color: "#eee"
                     text: "Map provider"
                     anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 24
                 }
 
                 ToolbarButton {
@@ -141,6 +144,7 @@ Rectangle {
                     color: "#eee"
                     text: "Revoke auth token"
                     anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: 24
                 }
 
                 ButtonEx {
@@ -161,6 +165,7 @@ Rectangle {
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: theme.textHelp1
+                    font.pixelSize: 24
                 }
             }
 

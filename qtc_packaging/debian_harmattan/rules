@@ -9,14 +9,10 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-
-
-
-
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	# qmake PREFIX=/usr# Uncomment this line for use without Qt Creator
+	qmake PREFIX=/usr # Uncomment this line for use without Qt Creator
 
 	touch configure-stamp
 
@@ -27,7 +23,7 @@ build-stamp: configure-stamp
 	dh_testdir
 
 	# Add here commands to compile the package.
-	# $(MAKE) # Uncomment this line for use without Qt Creator
+	#$(MAKE) # Uncomment this line for use without Qt Creator
 	#docbook-to-man debian/nelisquare.sgml > nelisquare.1
 
 	touch $@
@@ -38,7 +34,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	$(MAKE) clean
+	#$(MAKE) clean
 
 	dh_clean 
 
@@ -49,7 +45,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/nelisquare.
-	$(MAKE) INSTALL_ROOT="$(CURDIR)"/debian/nelisquare install
+	$(MAKE)  INSTALL_ROOT=$(CURDIR)/debian/nelisquare install
 
 
 # Build architecture-independent files here.
@@ -82,10 +78,11 @@ binary-arch: build install
 #	dh_perl
 #	dh_makeshlibs
 	dh_installdeb
-	# dh_shlibdeps # Uncomment this line for use without Qt Creator
+	dh_shlibdeps # Uncomment this line for use without Qt Creator
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
+	aegis-deb-add -control debian/nelisquare/DEBIAN/control .. debian/nelisquare.aegis=_aegis
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure

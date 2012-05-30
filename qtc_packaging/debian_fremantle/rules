@@ -4,7 +4,7 @@ builddir:
 	mkdir -p builddir
  
 builddir/Makefile: builddir
-	cd builddir && qmake-qt4 PREFIX=/usr ../Nelisquare.pro
+	cd builddir && qmake-qt4 PREFIX=/usr ../nelisquare.pro
  
 build: build-stamp
  

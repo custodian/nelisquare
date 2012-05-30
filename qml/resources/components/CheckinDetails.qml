@@ -84,6 +84,7 @@ Rectangle {
                     Text {
                         width: parent.width * 0.85
                         text: "Total points:"
+                        font.pixelSize: 24
                     }
                     Text {
                         id: scoreTotal
@@ -108,6 +109,7 @@ Rectangle {
                     width: parent.width
                     visible: badgesModel.count>0
                     text: "Earned badges:"
+                    font.pixelSize: 24
                 }
 
                 Repeater {
@@ -136,6 +138,7 @@ Rectangle {
                     width: parent.width
                     visible: commentsModel.count>0
                     text: "Comments:"
+                    font.pixelSize: 24
                 }
 
                 Repeater {
@@ -244,6 +247,7 @@ Rectangle {
                 Text {
                     width: badgeRepeater.width * 0.95
                     text: badgeTitle
+                    font.pixelSize: 24
                 }
                 Text {
                     width: parent.width * 0.8

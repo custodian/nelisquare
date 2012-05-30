@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=0.3.11
+Type=Application
+Terminal=false
+Name=Nelisquare
+Exec=/opt/nelisquare/bin/nelisquare
+Icon=/usr/share/icons/hicolor/64x64/apps/nelisquare64.png
+X-Window-Icon=
+X-HildonDesk-ShowInToolbar=true
+X-Osso-Type=application/x-executable

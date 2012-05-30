@@ -58,7 +58,7 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         color: "#eee"
-        font.pixelSize: 12
+        font.pixelSize: 14 //TODO: is too small ?
         visible: shown && toolbarButton.label.length > 0
     }
 

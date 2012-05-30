@@ -97,20 +97,6 @@ Rectangle {
                             userShout: place.venueAddress
                         }
 
-                        /*Text {
-                            text: place.venueName
-                            font.pixelSize: 24
-                            font.bold: true
-                            color: "#fff"
-                            x: 10
-                        }
-                        Text {
-                            text: place.venueAddress
-                            font.pixelSize: 20
-                            color: "#fff"
-                            x: 10
-                        }*/
-
                         GreenButton {
                             label: "CHECK IN HERE"
                             width: parent.width - 20
@@ -227,7 +213,7 @@ Rectangle {
                             anchors.left: venueMapImage.right
                             height: venueMapImage.height
                             ToolbarButton {
-                                anchors.top: parent.top
+                                anchors.top: venueMapImage.top
                                 width: 48
                                 height: 48
                                 image: "zoom_in.png"
@@ -282,6 +268,7 @@ Rectangle {
                     Text {
                         width: parent.width
                         text: "User tips:"
+                        font.pixelSize: 24
                         visible: tipsModel.count>0
                     }
                     Repeater {

@@ -16,6 +16,11 @@ Rectangle {
         shoutText.text = "Comment...";
     }
 
+    function hideKeyboard() {
+        shoutText.closeSoftwareInputPanel();
+        window.focus = true;
+    }
+
     Column {
         id: items
         x: 10
@@ -60,12 +65,10 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        shoutText.focus = true;
                         if(shoutText.text=="Comment...") {
                             shoutText.text = "";
-                            shoutText.focus = true;
                         }
-                        shoutText.forceActiveFocus();
-                        shoutText.openSoftwareInputPanel();
                     }
                 }
             }
@@ -84,6 +87,7 @@ Rectangle {
                     if(comment=="Comment...") {
                         comment = "";
                     }
+                    hideKeyboard();
                     tipDialog.addTip( comment );
                 }
             }
@@ -92,7 +96,10 @@ Rectangle {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120
-                onClicked: tipDialog.state = "hidden";
+                onClicked: {
+                    hideKeyboard();
+                    tipDialog.state = "hidden";
+                }
             }
         }
     }

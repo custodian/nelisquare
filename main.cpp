@@ -31,7 +31,7 @@ private:
     QWidget *prevFocusWidget;
 };
 
-int main(int argc, char *argv[])
+Q_DECL_EXPORT int main(int argc, char *argv[])
 {
 #ifdef Q_OS_SYMBIAN
     QApplication::setGraphicsSystem(QLatin1String("openvg"));
@@ -40,36 +40,42 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
-    //app.setProperty("NoMStyle", true);
 
     QmlApplicationViewer viewer;
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
     viewer.addImportPath(QString("/opt/qtm11/imports"));
-    //viewer.engine()->addPluginPath(QString("/opt/qtm11/plugins"));
 #endif
+
     WindowHelper *windowHelper = new WindowHelper(&viewer);
     PictureHelper *pictureHelper = new PictureHelper();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
-    viewer.setMainQmlFile(QLatin1String("qml/Nelisquare/MainWindow.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/resources/Maemo.qml"));
 #elif defined(MEEGO_EDITION_HARMATTAN)
-    viewer.setMainQmlFile(QLatin1String("qml/Nelisquare/Meego.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
 #else
-    viewer.setMainQmlFile(QLatin1String("qml/Nelisquare/MainWindow.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/resources/MainWindow.qml"));
 #endif
 
+#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
+    viewer.installEventFilter(windowHelper);
+#elif defined(MEEGO_EDITION_HARMATTAN)
     EventFilter ef;
     viewer.installEventFilter(&ef);
+#endif
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
     rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant)),SLOT(onPictureUploaded(QVariant)));
-#if defined(MEEGO_EDITION_HARMATTAN)
+#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
+    rootObject->connect(windowHelper,SIGNAL(visibilityChanged(QVariant)), SLOT(onVisibililityChange(QVariant)));
+    viewer.showFullScreen();
+#elif defined(MEEGO_EDITION_HARMATTAN)
     rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));
-#endif
-
     viewer.showExpanded();
+#endif
 
     return app.exec();
 

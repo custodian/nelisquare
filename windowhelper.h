@@ -11,6 +11,9 @@ class WindowHelper : public QObject
 private:
     QmlApplicationViewer * m_viewer;
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
+
 public:
     explicit WindowHelper(QmlApplicationViewer *viewer, QObject *parent = 0);
     Q_INVOKABLE void minimize();

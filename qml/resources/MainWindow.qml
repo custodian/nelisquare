@@ -91,7 +91,7 @@ Rectangle {
     PositionSource {
         id: positionSource
         updateInterval: 1000
-        active: Qt.application.active
+        active: mainWindowStack.gpsActive
         onPositionChanged: {
             if(positionSource.position.latitudeValid) {
                 signalIcon.visible = false;
@@ -106,6 +106,7 @@ Rectangle {
     }
 
     function hideAll() {
+        window.focus = true;
         checkinDetails.state = "hidden";
         friendsCheckinsList.state = "hidden";
         venuesList.state = "hidden";
@@ -118,6 +119,10 @@ Rectangle {
         notificationsList.state = "hidden";
         settingsDialog.state = "hidden";
         photoShareDialog.state = "hidden";
+        shoutDialog.state = "hidden";
+        commentDialog.state = "hidden";
+        checkinDialog.state = "hidden";
+        tipDialog.state = "hidden";
     }
 
     function isSmallScreen() {
@@ -616,6 +621,7 @@ Rectangle {
             height: 48
             label: "Shout"
             onClicked: {
+                shoutDialog.reset();
                 shoutDialog.state = "shown";
             }
         }
@@ -632,6 +638,7 @@ Rectangle {
             Text {
                 id: notificationsCount
                 anchors.centerIn: parent
+                font.pixelSize: 24
                 text: ""
                 visible: text > 0
                 color: "red"

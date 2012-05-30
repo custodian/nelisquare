@@ -5,7 +5,6 @@ Rectangle {
     width: parent.width
     height: items.height + 20
     color: theme.toolbarLightColor
-    property string comment: "Write here"
     property bool useFacebook: false
     property bool useTwitter: false
     signal cancel()
@@ -13,6 +12,11 @@ Rectangle {
 
     function reset() {
         shoutText.text = "Write here";
+    }
+
+    function hideKeyboard() {
+        shoutText.closeSoftwareInputPanel();
+        window.focus = true;
     }
 
     Column {
@@ -59,12 +63,10 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        shoutText.focus = true;
                         if(shoutText.text=="Write here") {
-                            shoutText.text = "";
-                            shoutText.focus = true;
+                            shoutText.text = "";                            
                         }
-                        shoutText.forceActiveFocus();
-                        shoutText.openSoftwareInputPanel();
                     }
                 }
             }
@@ -170,7 +172,10 @@ Rectangle {
                 id: checkinButton
                 label: "Shout!"
                 width: parent.width - 130
-                onClicked: checkin.shout( shoutText.text, checkin.useFacebook, checkin.useTwitter )
+                onClicked: {
+                    hideKeyboard();
+                    checkin.shout( shoutText.text, checkin.useFacebook, checkin.useTwitter )
+                }
 
             }
 
@@ -178,7 +183,10 @@ Rectangle {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120
-                onClicked: checkin.state = "hidden";
+                onClicked: {
+                    hideKeyboard();
+                    checkin.state = "hidden";
+                }
             }
         }
     }

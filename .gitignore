@@ -1,9 +1,15 @@
 release
 debug
-moc
+moc*
 obj
+builddir
+debian
 *.user
+*.o
 Makefile*
 Nelisquare_resource.rc
 *_armel.changes
 *_armel.deb
+*Debug
+*Release
+nelisquare

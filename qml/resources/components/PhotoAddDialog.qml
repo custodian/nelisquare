@@ -36,7 +36,7 @@ Rectangle {
             photoUrl: model.filePath      //real
             //photoUrl: model.fileName        //sim
             photoSize: photoGrid.cellWidth
-            photoSourceSize: photoGrid.cellWidth
+            //photoSourceSize: photoGrid.cellWidth //commented due to sizing bug
             photoBorder: 2
             photoSmooth: false
             photoAspect: Image.PreserveAspectFit
@@ -57,6 +57,7 @@ Rectangle {
         delegate: photoDelegate
         header: Text {
             text: "Select photo for upload"
+            font.pixelSize: 24
         }
     }
 

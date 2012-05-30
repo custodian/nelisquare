@@ -14,6 +14,12 @@ Rectangle {
         commentText.text = "Write here";
     }
 
+    function hideKeyboard() {
+        commentText.closeSoftwareInputPanel();
+        window.focus = true;
+    }
+
+
     Column {
         id: items
         x: 10
@@ -58,12 +64,10 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        commentText.focus = true;
                         if(commentText.text=="Write here") {
                             commentText.text = "";
-                            commentText.focus = true;
                         }
-                        commentText.forceActiveFocus();
-                        commentText.openSoftwareInputPanel();
                     }
                 }
             }
@@ -77,15 +81,20 @@ Rectangle {
                 id: commentButton
                 label: "Comment!"
                 width: parent.width - 130
-                onClicked: comment.shout( commentText.text )
-
+                onClicked: {
+                    hideKeyboard();
+                    comment.shout( commentText.text )
+                }
             }
 
             GreenButton {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120
-                onClicked: comment.state = "hidden";
+                onClicked: {
+                    hideKeyboard();
+                    comment.state = "hidden";
+                }
             }
         }
     }

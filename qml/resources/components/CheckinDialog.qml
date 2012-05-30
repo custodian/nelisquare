@@ -18,6 +18,11 @@ Rectangle {
         shoutText.text = "Add comment";
     }
 
+    function hideKeyboard() {
+        shoutText.closeSoftwareInputPanel();
+        window.focus = true;
+    }
+
     Column {
         id: items
         x: 10
@@ -62,12 +67,10 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        shoutText.focus = true;
                         if(shoutText.text=="Add comment") {
                             shoutText.text = "";
-                            shoutText.focus = true;
                         }
-                        shoutText.forceActiveFocus();
-                        shoutText.openSoftwareInputPanel();
                     }
                 }
             }
@@ -214,15 +217,20 @@ Rectangle {
                 id: checkinButton
                 label: "CHECK-IN HERE"
                 width: parent.width - 130
-                onClicked: checkin.checkin( checkin.venueID, shoutText.text, checkin.useFriends, checkin.useFacebook, checkin.useTwitter )
-
+                onClicked: {
+                    hideKeyboard();
+                    checkin.checkin( checkin.venueID, shoutText.text, checkin.useFriends, checkin.useFacebook, checkin.useTwitter )
+                }
             }
 
             GreenButton {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120
-                onClicked: checkin.state = "hidden";
+                onClicked: {
+                    hideKeyboard();
+                    checkin.state = "hidden";
+                }
             }
         }
     }

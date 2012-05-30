@@ -5,10 +5,12 @@ import "."
 
 PageStackWindow {
     id: mainWindowStack
+    property bool gpsActive: Qt.application.active
+
     initialPage: Page{
         id: mainWindowPage
         anchors.fill: parent
-        orientationLock: PageOrientation.Automatic
+        orientationLock: PageOrientation.LockPortrait
         MainWindow {
             id: window
         }

@@ -65,6 +65,6 @@ AutoGenerateAegisFile
 
 	</request>
 
-	<for path="/opt/Nelisquare/bin/Nelisquare" />
+    <for path="/opt/nelisquare/bin/nelisquare" />
 	<for path="applauncherd-launcher::/usr/bin/applauncherd.bin" id="" />
 </aegis>

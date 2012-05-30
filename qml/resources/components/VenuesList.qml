@@ -7,6 +7,11 @@ Rectangle {
     width: parent.width
     color: "#eee"
 
+    function hideKeyboard() {
+        searchText.closeSoftwareInputPanel();
+        window.focus = true;
+    }
+
     MouseArea {
         anchors.fill: parent
         onClicked: { }
@@ -96,12 +101,10 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
+                        searchText.focus = true;
                         if(searchText.text=="Search") {
                             searchText.text = "";
-                            searchText.focus = true;
                         }
-                        searchText.forceActiveFocus();
-                        searchText.openSoftwareInputPanel();
                     }
                 }
             }
@@ -120,6 +123,7 @@ Rectangle {
                 if(query=="Search") {
                     query = "";
                 }
+                hideKeyboard();
                 venuesList.search(query);
             }
         }

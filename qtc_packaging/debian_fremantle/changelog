@@ -1,3 +1,10 @@
+nelisquare (0.3.12) stable; urgency=low
+  * Meego OBS build support
+  * Internal interface changes.
+  * Keyboard layout fix.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 13 Jun 2012 23:52:58 +0400
+
 nelisquare (0.3.11) stable; urgency=low
   * Look and feel
   * Scrolling of objects added at pages
