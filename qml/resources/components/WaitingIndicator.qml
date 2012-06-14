@@ -33,41 +33,54 @@ Rectangle {
         }
     }
 
-    states:
+    states: [
         State {
-        name: "hidden"
-        PropertyChanges {
-            target: waitingIndicator
-            y: 0 - waitingIndicator.height - 1
+            name: "hidden"
+            PropertyChanges {
+                target: waitingIndicator
+                y: 0 - waitingIndicator.height - 1
+            }
+        },
+        State {
+            name: "shown"
+            PropertyChanges {
+                target: waitingIndicator
+                y: 100
+            }
         }
-    }
-    State {
-        name: "shown"
-        PropertyChanges {
-            target: waitingIndicator
-            y: 10
-        }
-    }
+    ]
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
                 PropertyAnimation {
                     target: waitingIndicator
                     properties: "y"
                     duration: 200
                     easing.type: "InOutCubic"
-                }/*
+                }
+                PropertyAction {
+                    target: waitingIndicator
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: waitingIndicator
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: waitingIndicator
                     properties: "y"
-                    duration: 8000
+                    duration: 200
+                    easing.type: "InOutCubic"
                 }
-                ScriptAction {
-                    script: {
-                        waitingIndicator.state = "hidden";
-                    }
-                }*/
             }
         }
     ]

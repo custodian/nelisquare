@@ -344,7 +344,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: place
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: place
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: place
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: place
                     properties: "x"

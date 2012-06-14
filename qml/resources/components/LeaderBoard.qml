@@ -161,7 +161,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: leaderBoard
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: leaderBoard
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: leaderBoard
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: leaderBoard
                     properties: "x"

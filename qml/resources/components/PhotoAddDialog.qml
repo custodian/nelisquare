@@ -88,7 +88,31 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: photoAddDialog
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                ScriptAction {
+                    script: {
+                        photoAddDialog.visible = false;
+                        photoGrid.model = emptyModel;
+                    }
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                ScriptAction {
+                    script: {
+                        photoAddDialog.visible = true;
+                        photoGrid.model = galleryModel;
+                    }
+                }
                 PropertyAnimation {
                     target: photoAddDialog
                     properties: "x"

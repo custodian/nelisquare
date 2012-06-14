@@ -305,7 +305,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: details
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: details
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: details
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: details
                     properties: "x"

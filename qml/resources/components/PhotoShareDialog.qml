@@ -229,7 +229,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: photoShare
+                    properties: "y"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: photoShare
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: photoShare
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: photoShare
                     properties: "y"

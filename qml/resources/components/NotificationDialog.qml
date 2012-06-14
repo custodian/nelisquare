@@ -64,7 +64,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: notification
+                    properties: "y"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: notification
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: notification
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: notification
                     properties: "y"

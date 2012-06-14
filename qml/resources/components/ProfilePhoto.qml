@@ -29,8 +29,8 @@ Rectangle {
         fillMode: photoAspect
         width: photoSize - 2*photoBorder + 1
         height: photoSize - 2*photoBorder + 1
-        sourceSize.width: photoSourceSize
-        sourceSize.height: photoSourceSize
+        sourceSize.width: width // photoSourceSize
+        //sourceSize.height: photoSourceSize
         onStatusChanged: {
             image.visible = (image.status == Image.Ready)
             loader.visible = (image.status != Image.Ready)

@@ -195,7 +195,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: settingsDialog
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: settingsDialog
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: settingsDialog
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: settingsDialog
                     properties: "x"

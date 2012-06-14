@@ -238,7 +238,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: venuesList
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: venuesList
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: venuesList
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: venuesList
                     properties: "x"

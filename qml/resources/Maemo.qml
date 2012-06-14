@@ -6,7 +6,7 @@ Item {
     width: 480
     height: 800
 
-    property bool gpsActive: false
+    property bool gpsActive: true
 
     function onPictureUploaded(response) {
         window.onPictureUploaded(response);

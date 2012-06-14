@@ -217,7 +217,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: checkin
+                    properties: "y"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: checkin
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: checkin
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: checkin
                     properties: "y"

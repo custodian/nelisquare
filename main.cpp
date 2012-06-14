@@ -57,7 +57,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #elif defined(MEEGO_EDITION_HARMATTAN)
     viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
 #else
-    viewer.setMainQmlFile(QLatin1String("qml/resources/MainWindow.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/resources/Maemo.qml"));
 #endif
 
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
@@ -74,6 +74,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.showFullScreen();
 #elif defined(MEEGO_EDITION_HARMATTAN)
     rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));
+    viewer.showExpanded();
+#else
     viewer.showExpanded();
 #endif
 

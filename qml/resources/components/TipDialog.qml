@@ -130,7 +130,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: tipDialog
+                    properties: "y"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: tipDialog
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: tipDialog
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: tipDialog
                     properties: "y"

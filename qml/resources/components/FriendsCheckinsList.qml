@@ -141,7 +141,29 @@ Rectangle {
 
     transitions: [
         Transition {
+            from: "shown"
             SequentialAnimation {
+                PropertyAnimation {
+                    target: friendsCheckinsList
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }                
+                PropertyAction {
+                    target: friendsCheckinsList
+                    properties: "visible"
+                    value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: friendsCheckinsList
+                    properties: "visible"
+                    value: true
+                }
                 PropertyAnimation {
                     target: friendsCheckinsList
                     properties: "x"

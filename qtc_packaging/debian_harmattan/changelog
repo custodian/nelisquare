@@ -1,3 +1,8 @@
+nelisquare (0.3.13) stable; urgency=low
+  * Speed optimization fixes
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 14 Jun 2012 20:08:28 +0400
+
 nelisquare (0.3.12) stable; urgency=low
   * Meego OBS build support
   * Internal interface changes.
