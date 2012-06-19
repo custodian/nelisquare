@@ -5,6 +5,7 @@ Rectangle {
     width: parent.width
     height: items.height + 20
     color: theme.toolbarLightColor
+    state: "hidden"
     property string comment: "Write here"
     property string checkinID: ""
     signal cancel()
@@ -111,7 +112,7 @@ Rectangle {
             name: "hidden"
             PropertyChanges {
                 target: comment
-                y: -comment.height
+                y: -200-comment.height
             }
         },
         State {

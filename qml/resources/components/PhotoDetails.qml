@@ -6,6 +6,7 @@ Rectangle {
     id: photoDetails
     width: parent.width
     height: parent.height
+    state: "hidden"
 
     property string photoUrl: ""
     property alias owner: photoOwner

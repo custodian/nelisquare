@@ -40,7 +40,7 @@ Rectangle {
             name: "hidden"
             PropertyChanges {
                 target: menu
-                y: -menu.height
+                y: -200-menu.height
             }
         },
         State {

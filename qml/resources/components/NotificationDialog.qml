@@ -9,6 +9,7 @@ Rectangle {
     property string objectType: ""
     property string objectID: ""
     signal close()
+    state: "hidden"
 
     Column {
         id: items
@@ -50,7 +51,7 @@ Rectangle {
             name: "hidden"
             PropertyChanges {
                 target: notification
-                y: -notification.height
+                y: -200-notification.height
             }
         },
         State {

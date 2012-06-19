@@ -43,7 +43,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     QmlApplicationViewer viewer;
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
-    viewer.addImportPath(QString("/opt/qtm11/imports"));
+    viewer.addImportPath(QString("/opt/qtm12/imports"));
+    viewer.engine()->addPluginPath(QString("/opt/qtm12/plugins"));
 #endif
 
     WindowHelper *windowHelper = new WindowHelper(&viewer);

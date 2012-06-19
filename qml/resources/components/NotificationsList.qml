@@ -11,9 +11,9 @@ Rectangle {
     property alias notificationsModel: notificationsModel
 
     id: notificationsList
-
     width: parent.width
     height: parent.height
+    state: "hidden"
 
     ListModel {
         id: notificationsModel

@@ -8,6 +8,7 @@ Rectangle {
 
     id: settingsDialog
     color: "#555"
+    state: "hidden"
 
     width: parent.width
     height: parent.height    

@@ -13,6 +13,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: "#eee"
+    state: "hidden"
 
     property string checkinID: ""
     property alias scoreTotal: scoreTotal.text

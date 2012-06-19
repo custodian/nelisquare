@@ -6,6 +6,7 @@ Rectangle {
     width: parent.width
     height: items.height + 20
     color: theme.toolbarLightColor
+    state: "hidden"
 
     signal cancel()
     signal uploadPhoto(string photo, bool makepublic, bool facebook, bool twitter)
@@ -215,7 +216,7 @@ Rectangle {
             name: "hidden"
             PropertyChanges {
                 target: photoShare
-                y: -photoShare.height
+                y: -200-photoShare.height
             }
         },
         State {

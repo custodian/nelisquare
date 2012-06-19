@@ -10,6 +10,7 @@ Rectangle {
     property bool nearbyPressed: false
     width: parent.width
     color: "#eee"
+    state: "hidden"
 
     MouseArea {
         anchors.fill: parent

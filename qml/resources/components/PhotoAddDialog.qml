@@ -10,6 +10,7 @@ Rectangle {
     id: photoAddDialog
     width: parent.width
     height: parent.height
+    state: "hidden"
 
     ListModel {
         id: emptyModel

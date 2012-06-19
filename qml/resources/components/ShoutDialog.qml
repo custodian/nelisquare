@@ -5,6 +5,7 @@ Rectangle {
     width: parent.width
     height: items.height + 20
     color: theme.toolbarLightColor
+    state: "hidden"
     property bool useFacebook: false
     property bool useTwitter: false
     signal cancel()
@@ -203,7 +204,7 @@ Rectangle {
             name: "hidden"
             PropertyChanges {
                 target: checkin
-                y: -checkin.height
+                y: -200-checkin.height
             }
         },
         State {

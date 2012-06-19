@@ -1,3 +1,13 @@
+nelisquare (0.3.15) stable; urgency=low
+  * Migrate to QtMobility 1.2
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 19 Jun 2012 23:40:47 +0400
+
+nelisquare (0.3.14) stable; urgency=low
+  * Bug fixes: layouts, icons.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 18 Jun 2012 22:01:47 +0400
+
 nelisquare (0.3.13) stable; urgency=low
   * Speed optimization fixes
 

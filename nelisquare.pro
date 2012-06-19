@@ -23,7 +23,7 @@ symbian:TARGET.CAPABILITY += NetworkServices Location LocalServices ReadUserData
 
 QT += network
 
-VERSION = 0.3.11
+VERSION = 0.3.13
 PACKAGENAME = com.substanceofcode.nelisquare
 
 # Define QMLJSDEBUGGER to allow debugging of QML in debug builds

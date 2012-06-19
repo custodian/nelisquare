@@ -12,6 +12,7 @@ Rectangle {
 
     width: parent.width
     color: "#eee"
+    state: "hidden"
 
     property string venueID: ""
     property string venueName: ""

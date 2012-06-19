@@ -5,6 +5,7 @@ Rectangle {
     width: parent.width
     height: items.height + 20
     color: theme.toolbarLightColor
+    state: "hidden"
     property string venueID: ""
     property string venueName: ""
     property int action: 0
@@ -116,7 +117,7 @@ Rectangle {
             name: "hidden"
             PropertyChanges {
                 target: tipDialog
-                y: -tipDialog.height
+                y: -200-tipDialog.height
             }
         },
         State {

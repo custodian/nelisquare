@@ -6,6 +6,7 @@ Rectangle {
     property string rank: ""
     width: parent.width
     color: "#eee"
+    state: "hidden"
 
     MouseArea {
         anchors.fill: parent

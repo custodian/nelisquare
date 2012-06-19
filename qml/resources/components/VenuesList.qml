@@ -6,6 +6,7 @@ Rectangle {
     signal search(string query)
     width: parent.width
     color: "#eee"
+    state: "hidden"
 
     function hideKeyboard() {
         searchText.closeSoftwareInputPanel();

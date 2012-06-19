@@ -38,7 +38,7 @@ Rectangle {
             name: "hidden"
             PropertyChanges {
                 target: waitingIndicator
-                y: 0 - waitingIndicator.height - 1
+                y: -100 - waitingIndicator.height - 1
             }
         },
         State {

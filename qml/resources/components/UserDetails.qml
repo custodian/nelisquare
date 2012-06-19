@@ -10,6 +10,7 @@ Rectangle {
     id: details
     width: parent.width
     color: "#eee"
+    state: "hidden"
 
     property string userID: ""
     property string userName: ""

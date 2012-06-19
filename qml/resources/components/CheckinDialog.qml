@@ -5,6 +5,7 @@ Rectangle {
     width: parent.width
     height: items.height + 20
     color: theme.toolbarLightColor
+    state: "hidden"
     property string venueID: ""
     property string venueName: ""
     property string comment: "Add comment"
@@ -40,7 +41,7 @@ Rectangle {
 
         Rectangle {
             id: checkinShoutBox
-            height: 120
+            height: 100
             width: parent.width
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "#ccc" }
@@ -247,7 +248,7 @@ Rectangle {
             name: "hidden"
             PropertyChanges {
                 target: checkin
-                y: -checkin.height
+                y: -200-checkin.height
             }
         },
         State {
