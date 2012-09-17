@@ -30,7 +30,7 @@ Rectangle {
         if(key=="accesstoken") {
             if(value.length>0) {
                 Script.setAccessToken(value);
-                window.showFriendsCheckins();
+                window.showFriendsFeed();
             } else {
                 login.visible = true;
                 login.reset();
@@ -108,16 +108,16 @@ Rectangle {
     function hideAll() {
         window.focus = true;
         checkinDetails.state = "hidden";
-        friendsCheckinsList.state = "hidden";
+        friendsFeed.state = "hidden";
         venuesList.state = "hidden";
         venueDetails.state = "hidden";
         mainmenu.state = "hidden"
         userDetails.state = "hidden";
         leaderBoard.state = "hidden";
         photoDetails.state = "hidden";
-        photoAddDialog.state = "hidden";
+        photoAdd.state = "hidden";
         notificationsList.state = "hidden";
-        settingsDialog.state = "hidden";
+        settings.state = "hidden";
         photoShareDialog.state = "hidden";
         shoutDialog.state = "hidden";
         commentDialog.state = "hidden";
@@ -141,11 +141,11 @@ Rectangle {
                 });
     }
 
-    function showFriendsCheckins() {
-        Script.loadFriendsCheckins();
+    function showFriendsFeed() {
+        Script.loadFriendsFeed();
         Window.pushWindow(function() {
             window.hideAll();
-            friendsCheckinsList.state = "shown";
+            friendsFeed.state = "shown";
             });
     }
 
@@ -161,7 +161,7 @@ Rectangle {
             });
     }
 
-    function showVenueDetails(venueID) {
+    function showVenuePage(venueID) {
         Script.loadVenue(venueID);
         Window.pushWindow(function() {
                 window.hideAll();
@@ -169,7 +169,7 @@ Rectangle {
             });
     }
 
-    function showUserDetails(user) {
+    function showUserPage(user) {
         Window.pushWindow(function() {
                 Script.loadUser(user);
                 window.hideAll();
@@ -177,7 +177,7 @@ Rectangle {
             });
     }
 
-    function showCheckinDetails(checkin) {
+    function showCheckinPage(checkin) {
         Window.pushWindow(function() {
                 Script.loadCheckin(checkin);
                 window.hideAll();
@@ -185,7 +185,7 @@ Rectangle {
             });
     }
 
-    function showPhotoDetails(photo) {
+    function showPhotoPage(photo) {
         Window.pushWindow(function() {
                 Script.loadPhoto(photo);
                 window.hideAll();
@@ -195,13 +195,13 @@ Rectangle {
 
     function showAddPhotoDialog(checkinID,venueID) {
         Window.pushWindow(function() {
-                photoAddDialog.checkinID = checkinID;
-                photoAddDialog.venueID = venueID;
-                photoAddDialog.state = "shown";
+                photoAdd.checkinID = checkinID;
+                photoAdd.venueID = venueID;
+                photoAdd.state = "shown";
             });
     }
 
-    function showNotificationsList() {
+    function showNotifications() {
         Window.pushWindow(function() {
                 window.hideAll();
                 Script.loadNotifications();
@@ -209,10 +209,10 @@ Rectangle {
             });
     }
 
-    function showSettingsDialog() {
+    function showSettingsPage() {
         Window.pushWindow(function() {
                 window.hideAll();
-                settingsDialog.state = "shown";
+                settings.state = "shown";
             });
     }
 
@@ -239,43 +239,43 @@ Rectangle {
         height: window.isPortrait ? parent.height - toolbar.height - menubar.height : parent.height - toolbar.height
         width: window.isPortrait ? parent.width : parent.width - menubar.width
 
-        FriendsCheckinsList {
-            id: friendsCheckinsList
+        FriendsFeedPage {
+            id: friendsFeed
             state: "shown"
             width: parent.width
             height: parent.height
             recentPressed: true
             nearbyPressed: false
             onRecent: {
-                friendsCheckinsList.recentPressed = true;
-                friendsCheckinsList.nearbyPressed = false;
-                Script.loadFriendsCheckins();
+                friendsFeed.recentPressed = true;
+                friendsFeed.nearbyPressed = false;
+                Script.loadFriendsFeed();
             }
             onNearby: {
-                friendsCheckinsList.recentPressed = false;
-                friendsCheckinsList.nearbyPressed = true;
-                Script.loadNearbyFriendsCheckins();
+                friendsFeed.recentPressed = false;
+                friendsFeed.nearbyPressed = true;
+                Script.loadFriendsFeedNearby();
             }
             onClicked: {
                 var checkin = friendsCheckinsModel.get(index);
-                window.showCheckinDetails(checkin.id);
+                window.showCheckinPage(checkin.id);
             }
         }
 
-        CheckinDetails {
+        CheckinPage {
             id: checkinDetails
             width: parent.width
             height: parent.height
             state: "hidden"
 
             onVenue: {
-                window.showVenueDetails(checkinDetails.owner.venueID);
+                window.showVenuePage(checkinDetails.owner.venueID);
             }
             onUser: {
-                window.showUserDetails(user);
+                window.showUserPage(user);
             }
             onPhoto: {
-                window.showPhotoDetails(photo);
+                window.showPhotoPage(photo);
             }
             onShowAddComment: {
                 commentDialog.reset();
@@ -290,7 +290,7 @@ Rectangle {
             }
         }
 
-        VenuesList {
+        VenuesListPage {
             id: venuesList
             width: parent.width
             height: parent.height
@@ -298,14 +298,14 @@ Rectangle {
 
             onClicked: {
                 var venue = placesModel.get(index);
-                window.showVenueDetails(venue.id);
+                window.showVenuePage(venue.id);
             }
             onSearch: {
                 Script.loadPlaces(query);
             }
         }
 
-        VenueDetails {
+        VenuePage {
             id: venueDetails
             width: parent.width
             height: parent.height
@@ -332,10 +332,10 @@ Rectangle {
                 tipDialog.state = "shown";
             }
             onUser: {
-                window.showUserDetails(user);
+                window.showUserPage(user);
             }
             onPhoto: {
-                window.showPhotoDetails(photo);
+                window.showPhotoPage(photo);
             }
             onShowAddPhoto: {
                 window.showAddPhotoDialog("",venueDetails.venueID);
@@ -358,18 +358,18 @@ Rectangle {
             }
         }
 
-        LeaderBoard {
+        LeaderBoardPage {
             id: leaderBoard
             width: parent.width
             height: parent.height
             state: "hidden"
 
             onUser: {
-                window.showUserDetails(user);
+                window.showUserPage(user);
             }
         }
 
-        UserDetails {
+        UserPage {
             id: userDetails
             width: parent.width
             height: parent.height
@@ -377,38 +377,38 @@ Rectangle {
             onAddFriend: {
                 Script.addFriend(user);
                 userRelationship = "updated";
-                //window.showUserDetails(user);
+                //window.showUserPage(user);
             }
             onRemoveFriend: {
                 Script.removeFriend(user);
                 userRelationship = "updated";
-                //window.showUserDetails(user);
+                //window.showUserPage(user);
             }
             onApproveFriend: {
                 Script.approveFriend(user);
                 userRelationship = "updated";
-                //window.showUserDetails(user);
+                //window.showUserPage(user);
             }
             onUser: {
-                window.showUserDetails(user);
+                window.showUserPage(user);
             }
             onOpenLeaderBoard: {
                 window.showLeaderBoard();
             }
         }
 
-        PhotoDetails {
+        PhotoPage {
             id: photoDetails
             width: parent.width
             height: parent.height
             state: "hidden"
             onUser: {
-                window.showUserDetails(user);
+                window.showUserPage(user);
             }
         }
 
-        PhotoAddDialog {
-            id: photoAddDialog
+        PhotoAddPage {
+            id: photoAdd
             width: parent.width
             height: parent.height
             state: "hidden"
@@ -418,16 +418,16 @@ Rectangle {
             }
         }
 
-        NotificationsList {
+        NotificationsPage {
             id: notificationsList
             onUser: {
-                window.showUserDetails(user);
+                window.showUserPage(user);
             }
             onCheckin: {
-                window.showCheckinDetails(checkin);
+                window.showCheckinPage(checkin);
             }
             onVenue: {
-                window.showVenueDetails(venue);
+                window.showVenuePage(venue);
             }
             onMarkNotificationsRead: {
                 Script.markNotificationsRead(time);
@@ -443,7 +443,7 @@ Rectangle {
                     objectType = "";
                     objectID = "";
                     if(objectType=="checkin") {
-                        window.showCheckinDetails(objectID);
+                        window.showCheckinPage(objectID);
                     }
                 }
                 notificationDialog.state = "hidden";
@@ -451,8 +451,8 @@ Rectangle {
             }
         }
 
-        SettingsDialog {
-            id: settingsDialog
+        SettingsPage {
+            id: settings
             onAuthDeleted: {
                 window.settingChanged("accesstoken","");
             }
@@ -522,11 +522,11 @@ Rectangle {
             }
             onUploadPhoto: {
                 photoShareDialog.state="hidden";
-                Script.addPhoto(photoAddDialog.checkinID,
-                                photoAddDialog.venueID,
+                Script.addPhoto(photoAdd.checkinID,
+                                photoAdd.venueID,
                                 photoShareDialog.photoUrl,
                                 makepublic,facebook,twitter);
-                photoAddDialog.state="hidden";
+                photoAdd.state="hidden";
             }
         }
 
@@ -551,8 +551,8 @@ Rectangle {
         y: toolbar.height
         state: "hidden"
         anchors.horizontalCenter: parent.horizontalCenter
-        onOpenFriendsCheckins: {
-            window.showFriendsCheckins();
+        onOpenFriendsFeed: {
+            window.showFriendsFeed();
         }
         onOpenPlaces: {
             window.showVenueList("");
@@ -561,13 +561,13 @@ Rectangle {
             window.showVenueList("todolist")
         }
         onOpenProfile: {
-            window.showUserDetails("self");
+            window.showUserPage("self");
         }
         onOpenLeaderBoard: {
             window.showLeaderBoard();
         }
         onOpenSettings: {
-            window.showSettingsDialog();
+            window.showSettingsPage();
         }
     }
 
@@ -592,7 +592,7 @@ Rectangle {
                     mainmenu.state = "hidden";
                 }
             }
-            visible: settingsDialog.state == "hidden"
+            visible: settings.state == "hidden"
         }
 
         Image {
@@ -644,7 +644,7 @@ Rectangle {
                 color: "red"
             }
             onClicked: {
-                window.showNotificationsList();
+                window.showNotifications();
             }
         }
 
@@ -699,10 +699,10 @@ Rectangle {
                 id: friendsCheckinsButton
                 image: "feed.png"
                 label: "Feed"
-                selected: friendsCheckinsList.state == "shown"
+                selected: friendsFeed.state == "shown"
                 onClicked: {
                     Window.clearWindows();
-                    window.showFriendsCheckins();
+                    window.showFriendsFeed();
                 }
             }
 
@@ -729,7 +729,7 @@ Rectangle {
                 image: "info.png"
                 label: "Myself"
                 onClicked: {
-                    window.showUserDetails("self");
+                    window.showUserPage("self");
                 }
             }
 
@@ -779,7 +779,7 @@ Rectangle {
         y: menubar.y - height
     }
 
-    LoginDialog {
+    LoginDialogPage {
         id: login
         anchors.fill: parent
         visible: false
@@ -790,7 +790,7 @@ Rectangle {
                 Script.setAccessToken(code);
                 Storage.setKeyValue("accesstoken", code);
                 login.visible = false;
-                window.showFriendsCheckins();
+                window.showFriendsFeed();
             }
         }
 

@@ -6,7 +6,7 @@ Rectangle {
     signal orientationChanged(string type)
     signal mapProviderChanged(string type)
 
-    id: settingsDialog
+    id: settings
     color: "#555"
     state: "hidden"
 
@@ -18,7 +18,7 @@ Rectangle {
         id: flickableArea
         width: parent.width
         contentWidth: parent.width
-        height: settingsDialog.height - y
+        height: settings.height - y
 
         clip: true
         flickableDirection: Flickable.VerticalFlick
@@ -181,14 +181,14 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: settingsDialog
+                target: settings
                 x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: settingsDialog
+                target: settings
                 x: 0
             }
         }
@@ -199,13 +199,13 @@ Rectangle {
             from: "shown"
             SequentialAnimation {
                 PropertyAnimation {
-                    target: settingsDialog
+                    target: settings
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"
                 }
                 PropertyAction {
-                    target: settingsDialog
+                    target: settings
                     properties: "visible"
                     value: false
                 }
@@ -215,12 +215,12 @@ Rectangle {
             to: "shown"
             SequentialAnimation {
                 PropertyAction {
-                    target: settingsDialog
+                    target: settings
                     properties: "visible"
                     value: true
                 }
                 PropertyAnimation {
-                    target: settingsDialog
+                    target: settings
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"

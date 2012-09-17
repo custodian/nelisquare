@@ -1,11 +1,13 @@
 Qt.include("utils.js")
 
+var API_VERSION = "20113101";
 var CLIENT_ID = "4IFSW3ZXR4BRBXT3IIZMB13YPNGSIOK4ANEM0PP3T2CQQFWI";
 var CALLBACK_URL = "http://nelisquare.substanceofcode.com/callback.php";
 var AUTHENTICATE_URL = "https://foursquare.com/oauth2/authenticate" +
     "?client_id=" + CLIENT_ID +
     "&response_type=token" +
     "&display=touch" +
+    "&v=" + API_VERSION +
     "&redirect_uri=" + CALLBACK_URL;
 
 var accessToken = "";
@@ -69,7 +71,7 @@ function parseAuth(data, parameterName) {
 }
 
 function getAccessTokenParameter() {
-    return "oauth_token=" + accessToken;
+    return "oauth_token=" + accessToken+"&v="+API_VERSION;
 }
 
 function showError(msg) {
@@ -216,25 +218,25 @@ function addCommentToModel(comment) {
                          });
 }
 
-function loadFriendsCheckins() {
+function loadFriendsFeed() {
     var url = "checkins/recent?" + getAccessTokenParameter();
-    doWebRequest("GET", url, "", parseFriendsCheckins);
+    doWebRequest("GET", url, "", parseFriendsFeed);
     waiting.state = "shown";
 }
 
-function loadNearbyFriendsCheckins() {
+function loadFriendsFeedNearby() {
     var url = "checkins/recent?" +
         getLocationParameter() + "&" + getAccessTokenParameter();
-    doWebRequest("GET", url, "", parseFriendsCheckins);
+    doWebRequest("GET", url, "", parseFriendsFeed);
     waiting.state = "shown";
 }
 
-function parseFriendsCheckins(response) {
+function parseFriendsFeed(response) {
     var data = processResponse(response);
     var count = 0;
     friendsCheckinsModel.clear();
     data.recent.forEach(function(checkin) {
-        //console.log("FRIEND CHECKIN: " + JSON.stringify(checkin));
+        console.log("FRIEND CHECKIN: " + JSON.stringify(checkin));
         var userName = makeUserName(checkin.user);
         var createdAgo = makeTime(checkin.createdAt);
         var venueName = "";
@@ -243,7 +245,10 @@ function parseFriendsCheckins(response) {
             venueName = checkin.venue.name;
             venueID = checkin.venue.id;
         }
-        var comments = parse(checkin.comments.count);
+        var comments = 0;
+        if (typeof(checkin.comments)!="undefined") {
+            comments = parse(checkin.comments.count);
+        }
         var venuePhoto = "";
         if (checkin.photos.count > 0) {
             venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
@@ -498,7 +503,7 @@ function parseAddCheckin(response) {
     });
     notificationDialog.message += "</span>";
     notificationDialog.state = "shown";
-    window.showCheckinDetails(data.response.checkin.id);
+    window.showCheckinPage(data.response.checkin.id);
 }
 
 function loadLeaderBoard() {
@@ -709,11 +714,11 @@ function parseAddPhoto(response) {
     waiting.state = "hidden";
     var photo = processResponse(response).photo;    
     //console.log("ADDED PHOTO: " + JSON.stringify(photo));
-    if (photoAddDialog.checkinID!="") {
+    if (photoAdd.checkinID!="") {
         checkinDetails.photosBox.photosModel.insert(0,
                     makePhoto(photo,300));
     }
-    if (photoAddDialog.venueID!="") {
+    if (photoAdd.venueID!="") {
         venueDetails.photosBox.photosModel.insert(0,
                     makePhoto(photo,300));
     }

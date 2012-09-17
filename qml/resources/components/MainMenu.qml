@@ -10,7 +10,7 @@ Rectangle {
     smooth: true
     color: "#555"
 
-    signal openFriendsCheckins()
+    signal openFriendsFeed()
     signal openPlaces()
     signal openExplore()
     signal openProfile()

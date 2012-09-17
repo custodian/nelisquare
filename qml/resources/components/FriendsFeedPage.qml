@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Rectangle {
-    id: friendsCheckinsList
+    id: friendsFeed
     signal clicked(int index)
     signal shout()
     signal nearby()
@@ -21,7 +21,7 @@ Rectangle {
         model: friendsCheckinsModel
         width: parent.width
         height: parent.height - y
-        delegate: friendsCheckinsListDelegate
+        delegate: friendsFeedDelegate
         highlightFollowsCurrentItem: true
         clip: true
 
@@ -49,10 +49,10 @@ Rectangle {
                         x: 10
                         width:  parent.width/2-15
                         height: 50
-                        pressed: friendsCheckinsList.recentPressed
+                        pressed: friendsFeed.recentPressed
                         onClicked: {
-                            if(friendsCheckinsList.recentPressed==false) {
-                                friendsCheckinsList.recent();
+                            if(friendsFeed.recentPressed==false) {
+                                friendsFeed.recent();
                             }
                         }
                     }
@@ -62,10 +62,10 @@ Rectangle {
                         x: parent.width/2+5
                         width: parent.width/2-15
                         height: 50
-                        pressed: friendsCheckinsList.nearbyPressed
+                        pressed: friendsFeed.nearbyPressed
                         onClicked: {
-                            if(friendsCheckinsList.nearbyPressed==false) {
-                                friendsCheckinsList.nearby();
+                            if(friendsFeed.nearbyPressed==false) {
+                                friendsFeed.nearby();
                             }
                         }
                     }
@@ -93,7 +93,7 @@ Rectangle {
     }
 
     Component {
-        id: friendsCheckinsListDelegate
+        id: friendsFeedDelegate
 
         EventBox {
             activeWhole: true
@@ -111,7 +111,7 @@ Rectangle {
             }
 
             onAreaClicked: {
-                friendsCheckinsList.clicked( index );
+                friendsFeed.clicked( index );
             }
         }
     }
@@ -120,21 +120,21 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: friendsCheckinsList
+                target: friendsFeed
                 x: parent.width
             }
         },
         State {
             name: "hiddenLeft"
             PropertyChanges {
-                target: friendsCheckinsList
+                target: friendsFeed
                 x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: friendsCheckinsList
+                target: friendsFeed
                 x: 0
             }
         }
@@ -145,13 +145,13 @@ Rectangle {
             from: "shown"
             SequentialAnimation {
                 PropertyAnimation {
-                    target: friendsCheckinsList
+                    target: friendsFeed
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"
                 }                
                 PropertyAction {
-                    target: friendsCheckinsList
+                    target: friendsFeed
                     properties: "visible"
                     value: false
                 }
@@ -161,12 +161,12 @@ Rectangle {
             to: "shown"
             SequentialAnimation {
                 PropertyAction {
-                    target: friendsCheckinsList
+                    target: friendsFeed
                     properties: "visible"
                     value: true
                 }
                 PropertyAnimation {
-                    target: friendsCheckinsList
+                    target: friendsFeed
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"

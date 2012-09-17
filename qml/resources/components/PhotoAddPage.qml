@@ -7,7 +7,7 @@ Rectangle {
     property string checkinID: ""
     property string venueID: ""
 
-    id: photoAddDialog
+    id: photoAdd
     width: parent.width
     height: parent.height
     state: "hidden"
@@ -42,7 +42,7 @@ Rectangle {
             photoSmooth: false
             photoAspect: Image.PreserveAspectFit
             onClicked: {
-                photoAddDialog.uploadPhoto(photoUrl);
+                photoAdd.uploadPhoto(photoUrl);
             }
          }
      }
@@ -74,14 +74,14 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: photoAddDialog
+                target: photoAdd
                 x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: photoAddDialog
+                target: photoAdd
                 x: 0
             }
         }
@@ -92,14 +92,14 @@ Rectangle {
             from: "shown"
             SequentialAnimation {
                 PropertyAnimation {
-                    target: photoAddDialog
+                    target: photoAdd
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"
                 }
                 ScriptAction {
                     script: {
-                        photoAddDialog.visible = false;
+                        photoAdd.visible = false;
                         photoGrid.model = emptyModel;
                     }
                 }
@@ -110,12 +110,12 @@ Rectangle {
             SequentialAnimation {
                 ScriptAction {
                     script: {
-                        photoAddDialog.visible = true;
+                        photoAdd.visible = true;
                         photoGrid.model = galleryModel;
                     }
                 }
                 PropertyAnimation {
-                    target: photoAddDialog
+                    target: photoAdd
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"
