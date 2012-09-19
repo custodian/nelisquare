@@ -16,7 +16,7 @@ Item {
     property string venueAddress: ""
     property string createdAt: ""
     property string eventOwner: ""
-    property int comments: 0
+    property int likes: 0
     property int fontSize: 22
 
     property alias userPhoto: profileImage
@@ -107,17 +107,17 @@ Item {
                     smooth: true
                     width: 32
                     height: 32
-                    visible: comments>0
+                    visible: likes>0
                 }
                 Text {
                     x: 10
                     id: commentCount
                     color: theme.toolbarDarkColor
                     font.pixelSize: fontSize - 2
-                    text: comments
-                    visible: comments>0
+                    text: likes
+                    visible: likes>0
                 }
-                visible: createdAt.length>0 || comments>0
+                visible: createdAt.length>0 || likes>0
             }
         }
         MouseArea {

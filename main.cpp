@@ -1,4 +1,5 @@
 #include <QtGui/QApplication>
+#include <QtDeclarative>
 #include <QDeclarativeContext>
 #include <QDeclarativeEngine>
 #include <QGraphicsObject>
@@ -47,6 +48,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.engine()->addPluginPath(QString("/opt/qtm12/plugins"));
 #endif
 
+    qmlRegisterType<QGraphicsBlurEffect>("Effects",1,0,"Blur");
+    qmlRegisterType<QGraphicsColorizeEffect>("Effects",1,0,"Colorize");
+    qmlRegisterType<QGraphicsDropShadowEffect>("Effects",1,0,"DropShadow");
+    qmlRegisterType<QGraphicsOpacityEffect>("Effects",1,0,"OpacityEffect");
+
     WindowHelper *windowHelper = new WindowHelper(&viewer);
     PictureHelper *pictureHelper = new PictureHelper();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
@@ -58,7 +64,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #elif defined(MEEGO_EDITION_HARMATTAN)
     viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
 #else
-    viewer.setMainQmlFile(QLatin1String("qml/resources/Maemo.qml"));
+    viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
 #endif
 
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)

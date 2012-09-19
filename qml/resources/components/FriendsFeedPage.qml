@@ -30,43 +30,31 @@ Rectangle {
             Rectangle {
                 width: parent.width
                 height: 100
-                color: theme.toolbarLightColor
+                color: theme.toolbarDarkColor
 
-                Rectangle {
-                    width: parent.width-20
-                    y: 20
+                BlueButton {
+                    label: "RECENT"
+                    y: 30
                     x: 10
-                    color: theme.toolbarDarkColor
-                    border.color: "#2774aA"
-                    border.width: 1
-                    height: 70
-                    radius: 5
-                    smooth: true
-
-                    BlueButton {
-                        label: "Recent"
-                        y: 10
-                        x: 10
-                        width:  parent.width/2-15
-                        height: 50
-                        pressed: friendsFeed.recentPressed
-                        onClicked: {
-                            if(friendsFeed.recentPressed==false) {
-                                friendsFeed.recent();
-                            }
+                    width:  parent.width/2-15
+                    height: 50
+                    pressed: friendsFeed.recentPressed
+                    onClicked: {
+                        if(friendsFeed.recentPressed==false) {
+                            friendsFeed.recent();
                         }
                     }
-                    BlueButton {
-                        label: "Nearby"
-                        y: 10
-                        x: parent.width/2+5
-                        width: parent.width/2-15
-                        height: 50
-                        pressed: friendsFeed.nearbyPressed
-                        onClicked: {
-                            if(friendsFeed.nearbyPressed==false) {
-                                friendsFeed.nearby();
-                            }
+                }
+                BlueButton {
+                    label: "NEARBY"
+                    y: 30
+                    x: parent.width/2+5
+                    width: parent.width/2-15
+                    height: 50
+                    pressed: friendsFeed.nearbyPressed
+                    onClicked: {
+                        if(friendsFeed.nearbyPressed==false) {
+                            friendsFeed.nearby();
                         }
                     }
                 }
@@ -74,7 +62,7 @@ Rectangle {
             Rectangle {
                 width: parent.width
                 height: 10
-                color: "#A8CB17"
+                /*color: "#A8CB17"
 
                 Rectangle {
                     width: parent.width
@@ -87,7 +75,8 @@ Rectangle {
                     height: 1
                     color: "#888"
                     y: 9
-                }
+                }*/
+                gradient: theme.gradientGreen
             }
         }
     }
@@ -104,7 +93,7 @@ Rectangle {
             venueName: model.venueName
             venuePhoto: model.venuePhoto
             createdAt: model.createdAt
-            comments: model.comments
+            likes: model.likes
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo

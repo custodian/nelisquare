@@ -7,15 +7,24 @@ Rectangle {
     signal mapProviderChanged(string type)
 
     id: settings
-    color: "#555"
+    color: theme.backgroundSettings
     state: "hidden"
 
     width: parent.width
     height: parent.height    
 
+    GreenLine {
+        id: settingsLabel
+        text: "SETTINGS"
+        size: theme.font.sizeSettigs
+        height: 50
+    }
+
     Flickable{
 
         id: flickableArea
+
+        anchors.top: settingsLabel.bottom
         width: parent.width
         contentWidth: parent.width
         height: settings.height - y
@@ -31,143 +40,124 @@ Rectangle {
             }
 
             width: parent.width - 20
-            y: 10
+            y: 30
             x: 10
-            spacing: 10
+            spacing: 0
 
             //OrientationLock
+            Text {
+                color: theme.textColorSign
+                text: "Screen orientation"
+                font.pixelSize: theme.font.sizeSettigs
+            }
+
             Row {
                 width: parent.width
 
-                Text {
-                    color: "#eee"
-                    text: "Orientation"
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 24
+                ToolbarTextButton {
+                    selected: window.orientationType == "auto"
+                    label: "AUTO"
+                    onClicked: orientationChanged("auto")
                 }
-
-                ToolbarButton {
-                    id: orientationAuto
-                    anchors.right: orientationLandscape.left
-                    selected: window.orientationType == label
-                    imageSize: 64
-                    image: "orientation_auto.png"
-                    label: "Auto"
-                    onClicked: orientationChanged(label)
+                ToolbarTextButton {
+                    selected: window.orientationType == "landscape"
+                    label: "LANDSCAPE"
+                    onClicked: orientationChanged("landscape")
                 }
-                ToolbarButton {
-                    id: orientationLandscape
-                    anchors.right: orientationPortrait.left
-                    selected: window.orientationType == label
-                    imageSize: 64
-                    image: "orientation_landscape.png"
-                    label: "Landscape"
-                    onClicked: orientationChanged(label)
-                }
-                ToolbarButton {
-                    id: orientationPortrait
-                    anchors.right: parent.right
-                    selected: window.orientationType == label
-                    imageSize: 64
-                    image: "orientation_portrait.png"
-                    label: "Portrait"
-                    onClicked: orientationChanged(label)
+                ToolbarTextButton {
+                    selected: window.orientationType == "portrait"
+                    label: "PORTRAIT"
+                    onClicked: orientationChanged("portrait")
                 }
             }
 
-            //IconSet
+            //Icons
+            Text {
+                color: theme.textColorSign
+                text: "Icons"
+                font.pixelSize: theme.font.sizeSettigs
+            }
             Row {
                 width: parent.width
 
-                Text {
-                    color: "#eee"
-                    text: "Icon set"
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 24
+                ToolbarTextButton {
+                    selected: window.iconset == "original"
+                    label: "ORIGINAL"
+                    onClicked: iconsetChanged("original")
                 }
-
-                ToolbarButton {
-                    id: iconSetClassic
-                    anchors.right: iconSetHanddraw.left
-                    selected: window.iconset == label
-                    imageSize: 64
-                    image: "../iconset_classic.png"
-                    label: "Classic"
-                    onClicked: iconsetChanged(label)
-                }
-                ToolbarButton {
-                    id: iconSetHanddraw
-                    anchors.right: parent.right
-                    selected: window.iconset == label
-                    imageSize: 64
-                    image: "../iconset_handdraw.png"
-                    label: "Handdraw"
-                    onClicked: iconsetChanged(label)
+                ToolbarTextButton {
+                    selected: window.iconset == "colorful"
+                    label: "COLOURFUL"
+                    onClicked: iconsetChanged("colorful")
                 }
             }
 
             //Map provider
+            Text {
+                color: theme.textColorSign
+                text: "Map provider"
+                font.pixelSize: theme.font.sizeSettigs
+            }
             Row {
                 width: parent.width
-                Text {
-                    color: "#eee"
-                    text: "Map provider"
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 24
-                }
 
-                ToolbarButton {
-                    id: mapProviderGoogleMaps
-                    anchors.right: mapProviderOSM.left
-                    selected: window.mapprovider == label
-                    imageSize: 64
-                    image: "icon_google_maps.png"
-                    label: "Google Maps"
-                    onClicked: mapProviderChanged(label)
+                ToolbarTextButton {
+                    selected: window.mapprovider == "googlemaps"
+                    label: "GOOGLE MAPS"
+                    onClicked: mapProviderChanged("googlemaps")
                 }
-                ToolbarButton {
-                    id: mapProviderOSM
-                    anchors.right: parent.right
-                    selected: window.mapprovider == label
-                    imageSize: 64
-                    image: "icon_osm.png"
-                    label: "OpenStreetMap"
-                    onClicked: mapProviderChanged(label)
+                ToolbarTextButton {
+                    selected: window.mapprovider == "osm"
+                    label: "OPENSTREETMAP"
+                    onClicked: mapProviderChanged("osm")
                 }
 
             }
 
             //Revoke auth token
+            Text {
+                color: theme.textColorSign
+                text: "Reset authentication"
+                font.pixelSize: theme.font.sizeSettigs
+            }
             Row {
                 width: parent.width
 
-                Text {
-                    color: "#eee"
-                    text: "Revoke auth token"
-                    anchors.verticalCenter: parent.verticalCenter
-                    font.pixelSize: 24
-                }
-
-                ButtonEx {
-                    width: 150
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    pic: "stop.png"
-                    imageSize: 48
+                ToolbarTextButton {
+                    label: "REVOKE"
                     onClicked: {
                         authDeleted()
                     }
                 }
             }
 
-            Row {
-                width: parent.width
 
-                Text {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: theme.textHelp1
-                    font.pixelSize: 24
-                }
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: theme.textHelp1
+                color: theme.textColorSign
+                font.pixelSize: theme.font.sizeHelp
+
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: theme.textHelp2
+                color: theme.textColorSign
+                font.pixelSize: theme.font.sizeHelp
+                font.bold: true
+
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: theme.textHelp3
+                color: theme.textColorSign
+                font.pixelSize: theme.font.sizeHelp
+
+                horizontalAlignment: Text.AlignHCenter
             }
 
         }

@@ -1,32 +1,98 @@
 import Qt 4.7
 
-Rectangle {
-    width: parent.width - 20
-    x: 10
-    height: copyTexts.height + 20
-    color: "#40B3DF"
-    radius: 5
-    border.color: "#17649A"
-    border.width: 2
+Item {
+    id: splashPage
+    signal login()
 
-    Column {
-        id: copyTexts
-        y: 10
-        width: parent.width
+    property string nextState: "hidden"
 
-        Text {
-            text: "Nelisquare 0.3"
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "#333"
-            font.pixelSize: 22
-        }
+    width: parent.width
+    height: parent.height
+    state: "shown"
 
-        Text {
-            text: "© 2012 Basil Semuonov\n© 2011 Tommi Laukkanen\nTwitter: @basil_s\nhttp://nelisquare.com"
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "#666"
-            font.pixelSize: 22
-        }
+    Image {
+        anchors.centerIn: parent
+        source: "../pics/splash.png"
     }
 
+    Text {
+        id: textRelease
+        text: theme.textSplash
+        anchors.centerIn: parent
+        color: theme.textColorSign
+        font.pixelSize: theme.font.sizeDefault
+        font.family: theme.font.name
+    }
+
+    Item {
+        id: loginBox
+        width: parent.width
+        anchors.centerIn: parent
+        Column{
+            width: parent.width
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Please, login!"
+                color: theme.textColorSign
+                font.pixelSize: theme.font.sizeDefault
+            }
+            GreenButton {
+                anchors.horizontalCenter: parent.horizontalCenter
+                id: loginButton
+                label: "Login"
+                width: parent.width - 130
+                onClicked: {
+                    splashPage.state = "hidden"
+                }
+            }
+        }
+        visible: false
+    }
+
+    states: [
+        State {
+            name: "hidden"
+            PropertyChanges {
+                target: splashPage
+                x: -parent.width
+            }
+        },
+        State {
+            name: "shown"
+            PropertyChanges {
+                target: splashPage
+                x: 0
+            }
+        },
+        State {
+            name: "login"
+            PropertyChanges {
+                target: textRelease
+                visible: false
+            }
+            PropertyChanges {
+                target: loginBox
+                visible: true
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            to: "hidden"
+            SequentialAnimation {
+                PropertyAnimation {
+                    target: splashPage
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
+                }
+                PropertyAction {
+                    target: splashPage
+                    properties: "visible"
+                    value: false
+                }
+            }
+        }
+    ]
 }

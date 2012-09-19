@@ -6,12 +6,12 @@ Rectangle {
     height: 50
     property string label: "-"
     signal clicked()
-    radius: 6
+    radius: 0
     property bool pressed: false
+    border.width: 2
+    border.color: pressed?theme.blueButtonBorderColorPressed:theme.blueButtonBorderColor
 
     smooth: true
-    //border.color: mouse.pressed ? "#17649A" : "#3784cA"
-    //border.width: button.pressed ? 0 : 2
     gradient: button.pressed ? pressedColor : (mouse.pressed ? pressedColor : idleColor)
 
     Gradient {
@@ -32,8 +32,9 @@ Rectangle {
 
     Text {
         text: button.label
-        font.pixelSize: 24
-        color: "#fff"
+        font.pixelSize: theme.font.sizeDefault
+        font.family: theme.font.name
+        color: theme.textColorButton
         anchors.centerIn: parent
     }
 

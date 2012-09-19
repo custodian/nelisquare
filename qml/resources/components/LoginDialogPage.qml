@@ -11,17 +11,18 @@ Rectangle {
 
     function reset() {
         webView.url = Script.AUTHENTICATE_URL;
+        //console.log("Redirecting to " + Script.AUTHENTICATE_URL);
         webView.reload.trigger();
     }
 
-    Flickable {
+    /*Flickable {
         width: parent.width
         height: parent.height
         contentWidth: Math.max(webView.contentsSize.width,480)
         contentHeight: Math.max(webView.contentsSize.height,800)
         pressDelay: 200
         clip: true
-        boundsBehavior: Flickable.StopAtBounds
+        boundsBehavior: Flickable.StopAtBounds*/
 
         WebView {
             id: webView
@@ -33,7 +34,6 @@ Rectangle {
             onLoadFinished: {
                 //console.log("URL is now " + webView.url);
                 loginDialog.finished( webView.url );
-
             }
 
             onLoadFailed: {
@@ -41,6 +41,6 @@ Rectangle {
             }
 
         }
-    }
+    /*}*/
 
 }

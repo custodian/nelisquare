@@ -11,22 +11,36 @@ PageStackWindow {
         id: mainWindowPage
         anchors.fill: parent
         orientationLock: PageOrientation.LockPortrait
+
         MainWindow {
             id: window
         }
     }
     showToolBar: false
 
+    Menu {
+        id: myMenu
+        visualParent: pageStack
+        MenuLayout {
+            MenuItem { text: qsTr("Refresh")
+                onClicked: {
+                    mainWindowStack.pageStack.currentPage.updateContent();
+                }
+                visible: mainWindowStack.pageStack.currentPage.updateContent !== undefined
+            }
+        }
+    }
+
     function onPictureUploaded(response) {
         window.onPictureUploaded(response);
     }
 
     function onLockOrientation(value) {
-        if (value == "Auto") {
+        if (value == "auto") {
             mainWindowPage.orientationLock = PageOrientation.Automatic
-        } else if (value == "Landscape") {
+        } else if (value == "landscape") {
             mainWindowPage.orientationLock = PageOrientation.LockLandscape
-        } else if (value == "Portrait") {
+        } else if (value == "portrait") {
             mainWindowPage.orientationLock = PageOrientation.LockPortrait
         }
     }

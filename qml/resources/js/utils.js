@@ -1,12 +1,12 @@
 
 function createMapUrl(lat,lng,zoom) {
     var url = "";
-    if (window.mapprovider == "Google Maps") {
+    if (window.mapprovider == "googlemaps") {
         url = "http://maps.googleapis.com/maps/api/staticmap?"+
                 "zoom="+zoom+"&size=320x320&maptype=roadmap"+
                 "&center="+lat+","+lng+
                 "&markers=size:small|"+lat+","+lng+"&sensor=false";
-    } else if (window.mapprovider == "OpenStreetMap") {
+    } else if (window.mapprovider == "osm") {
         //NOTE: lng and lat inverted at API
         url = "http://pafciu17.dev.openstreetmap.org/?module=map"+
                 "&zoom="+zoom+"&type=mapnik&width=320&height=320"+

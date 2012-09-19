@@ -28,22 +28,13 @@ Rectangle {
         clip: true
     }
 
-    Rectangle {
-        width: parent.width
-        height: 30
-        color: "#ccc"
+    GreenLine {
         y: 80
-
-        Text {
-            color: "#333"
-            text: "Places nearby"
-            font.pixelSize: 20
-            anchors.verticalCenter: parent.verticalCenter
-            x: 4
-        }
+        height: 30
+        text: "PLACES NEAR YOU"
     }
 
-    Rectangle {
+    /*Rectangle {
         width: parent.width
         height: 1
         color: "#eee"
@@ -55,16 +46,15 @@ Rectangle {
         height: 1
         color: "#888"
         y: 109
-    }
+    }*/
 
     Rectangle {
         width: parent.width
         height: 80
-        color: theme.toolbarLightColor
-
+        color: theme.backgroundBlueDark
 
         Rectangle {
-            id: tweetTextContainer
+            id: textContainer
             height: 40
             width: parent.width - 150
             x: 10
@@ -74,7 +64,6 @@ Rectangle {
                 GradientStop { position: 0.1; color: "#fafafa" }
                 GradientStop { position: 1.0; color: "#fff" }
             }
-            radius: 5
             border.width: 1
             border.color: "#aaa"
             smooth: true
@@ -82,7 +71,7 @@ Rectangle {
             TextInput {
                 id: searchText
                 //wrapMode: TextEdit.NoWrap
-                text: "Search"
+                text: "Type place to search"
                 //textFormat: TextEdit.PlainText
                 width: parent.width - 10
                 height: parent.height - 10
@@ -93,7 +82,7 @@ Rectangle {
 
                 onAccepted: {
                     var query = searchText.text;
-                    if(query=="Search") {
+                    if(query=="Type place to search") {
                         query = "";
                     }
                     venuesList.search(query);
@@ -103,7 +92,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         searchText.focus = true;
-                        if(searchText.text=="Search") {
+                        if(searchText.text=="Type place to search") {
                             searchText.text = "";
                         }
                     }
@@ -115,13 +104,13 @@ Rectangle {
             x: parent.width - width - 10
             y: 20
             height: 40
-            label: "Search"
+            label: "SEARCH"
             width: 120
 
             onClicked: {
                 // Search
                 var query = searchText.text;
-                if(query=="Search") {
+                if(query=="Type place to search") {
                     query = "";
                 }
                 hideKeyboard();
@@ -163,15 +152,35 @@ Rectangle {
                     y: 4
                     width: parent.width - x - 16
 
+                    Row {
+                        spacing: 10
+                        width: parent.width
+
                         Text {
                             id: messageText
                             color: "#333"
                             font.pixelSize: 24
-                            width: parent.width
+                            //width: parent.width / 2
                             text: name
                             font.bold: true
                             wrapMode: Text.Wrap
                         }
+
+                        Image {
+                            id: hereNowImage
+                            source: "../pics/peoples.png"
+                            fillMode: Image.PreserveAspectFit
+                            width: 32
+                            visible: hereNow > 0
+                        }
+
+                        Text {
+                            text: hereNow
+                            font.pixelSize: 20
+                            visible: hereNow > 0
+                        }
+                    }
+
 
                         Text {
                             id: todoText

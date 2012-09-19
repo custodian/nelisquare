@@ -1,5 +1,6 @@
 import Qt 4.7
 import QtMobility.location 1.1
+import Effects 1.0
 import "components"
 import "js/script.js" as Script
 import "js/storage.js" as Storage
@@ -8,14 +9,18 @@ import "js/utils.js" as Utils
 
 Rectangle {
     property bool isPortrait: false
+    property bool blurred: false
 
-    property string orientationType: "Auto"
-    property string iconset: "Classic"
-    property string mapprovider: "Google Maps"
+    property string toolbarFile: ""
 
-    id:window
+    property string orientationType: "auto"
+    property string iconset: "original"
+    property string mapprovider: "googlemaps"
 
-    anchors.fill: parent
+    id: window
+
+    anchors.fill:  parent
+
     color: theme.backGroundColor
 
     function iconsetPath() {
@@ -29,21 +34,22 @@ Rectangle {
     function settingLoaded(key, value) {
         if(key=="accesstoken") {
             if(value.length>0) {
+                splashDialog.nextState = "hidden";
                 Script.setAccessToken(value);
                 window.showFriendsFeed();
             } else {
-                login.visible = true;
-                login.reset();
+                splashDialog.nextState = "login";
+                splashDialog.login();
             }
         } else if (key == "settings.orientation") {
-            if (value == "") value = "Auto";
+            if (value == "") value = "auto";
             window.orientationType = value;
             windowHelper.setOrientation(value);
         } else if (key == "settings.iconset") {
-            if (value == "") value = "Classic";
+            if (value == "") value = "original";
             window.iconset = value;
         } else if (key == "settings.mapprovider") {
-            if (value == "") value = "Google Maps";
+            if (value == "") value = "googlemaps";
             window.mapprovider = value;
         }
     }
@@ -70,10 +76,10 @@ Rectangle {
 
     Timer {
         id: splashHider
-        interval: 2000
+        interval: 3000 //dbg
         repeat: false
         onTriggered: {
-            splashDialog.visible = false;
+            splashDialog.state = splashDialog.nextState;
         }
     }
 
@@ -102,7 +108,7 @@ Rectangle {
     }
 
     function updateNotificationCount(value) {
-        notificationsCount.text = value
+        toolbar.notificationsCount.text = value
     }
 
     function hideAll() {
@@ -236,8 +242,12 @@ Rectangle {
     Item {
         id: viewPort
         y: toolbar.height
-        height: window.isPortrait ? parent.height - toolbar.height - menubar.height : parent.height - toolbar.height
+        height: window.isPortrait ? parent.height - menubar.height - toolbar.height : parent.height - toolbar.height
         width: window.isPortrait ? parent.width : parent.width - menubar.width
+
+        /*effect: Blur {
+            blurRadius: blurred ? 2.0 : 0.0
+        }*/
 
         FriendsFeedPage {
             id: friendsFeed
@@ -454,6 +464,8 @@ Rectangle {
         SettingsPage {
             id: settings
             onAuthDeleted: {
+                splashDialog.state = "shown";
+                splashHider.start();
                 window.settingChanged("accesstoken","");
             }
             onOrientationChanged: {
@@ -465,6 +477,7 @@ Rectangle {
             onMapProviderChanged: {
                 window.settingChanged("settings.mapprovider",type);
             }
+            visible: false
         }
 
         ShoutDialog {
@@ -546,9 +559,12 @@ Rectangle {
 
     }
 
+    Toolbar {
+        id: toolbar
+    }
+
     MainMenu {
         id: mainmenu
-        y: toolbar.height
         state: "hidden"
         anchors.horizontalCenter: parent.horizontalCenter
         onOpenFriendsFeed: {
@@ -572,133 +588,36 @@ Rectangle {
     }
 
     Rectangle {
-        id: toolbar
-        height: 54
-        width:parent.width
-        gradient: Gradient{
-            GradientStop{position: 0; color: "#888"; }
-            GradientStop{position: 0.1; color: "#ccc"; }
-            GradientStop{position: 0.9; color: "#aaa"; }
-        }
-
-        ButtonEx {
-            anchors.centerIn: parent
-            width: 160
-            height: 48
-            onClicked: {
-                if(mainmenu.state!="shown") {
-                    mainmenu.state = "shown";
-                } else {
-                    mainmenu.state = "hidden";
-                }
-            }
-            visible: settings.state == "hidden"
-        }
-
-        Image {
-            source: "pics/logo.png"
-            anchors.centerIn: parent
-            visible: menubar.visible
-        }
-
-        ButtonEx {
-            id: minimizeButton
-            pic: "minimize.png"
-            x: 4
-            anchors.verticalCenter: parent.verticalCenter
-            width: 48
-            height: 48
-            onClicked: {
-                windowHelper.minimize();
-            }
-            visible: window.isSmallScreen()==false
-        }
-
-        ButtonEx {
-            x: minimizeButton.visible ? 56 : 4
-            anchors.verticalCenter: parent.verticalCenter
-            width: 90
-            height: 48
-            label: "Shout"
-            onClicked: {
-                shoutDialog.reset();
-                shoutDialog.state = "shown";
-            }
-        }
-
-        ButtonEx {
-            id: notificationsButton
-            pic: notificationsCount.visible?"email.png":"email_opened.png"
-            x: buttonClose.x - width - 25
-            anchors.verticalCenter: parent.verticalCenter
-            width: 64
-            height: 48
-            visible: window.isSmallScreen()==false
-
-            Text {
-                id: notificationsCount
-                anchors.centerIn: parent
-                font.pixelSize: 24
-                text: ""
-                visible: text > 0
-                color: "red"
-            }
-            onClicked: {
-                window.showNotifications();
-            }
-        }
-
-        ButtonEx {
-            id: buttonClose
-            pic: "delete.png"
-            x: parent.width - width - 4
-            width: 48
-            anchors.verticalCenter: parent.verticalCenter
-            onClicked: Qt.quit();
-        }
-
-        Image {
-            id: shadow
-            source:  "pics/top-shadow.png"
-            width: parent.width
-            y: parent.height - 1
-        }
-
-    }
-
-    Rectangle {
         id: menubar
         height: 70
         width: parent.width
         y: parent.height - height
-        color: "#ccc"
-        gradient: Gradient {
+        color: "#404040"
+        /*gradient: Gradient {
             GradientStop{position: 0.2; color: "#4f4f4f"; }
             GradientStop{position: 0.49; color: "#494949"; }
             GradientStop{position: 0.5; color: "#4f4f4f"; }
             GradientStop{position: 0.8; color: "#404040"; }
-        }
+        }*/
 
         Flow {
             id: menubarToolbar
-            width: menubar.width
+            //width: menubar.width
+            anchors.horizontalCenter: parent.horizontalCenter
             height: menubar.height
             spacing: window.isSmallScreen() ? 5 : 15
 
-            ToolbarButton {
+            ToolbarTextButton {
                 id: backwardsButton
-                image: "undo.png"
-                label: "Back"
+                label: "BACK"
                 shown: Window.windowStash.length>0
                 onClicked: {
                     Window.popWindow();
                 }
             }
 
-            ToolbarButton {
-                id: friendsCheckinsButton
-                image: "feed.png"
-                label: "Feed"
+            ToolbarTextButton {
+                label: "FEED"
                 selected: friendsFeed.state == "shown"
                 onClicked: {
                     Window.clearWindows();
@@ -707,27 +626,23 @@ Rectangle {
             }
 
 
-            ToolbarButton {
-                id: placesButton
-                image: "places.png"
-                label: "Places"
+            ToolbarTextButton {
+                label: "PLACES"
                 selected: venuesList.state == "shown"
                 onClicked: {
                     window.showVenueList("");
                 }
             }
 
-            ToolbarButton {
-                image: "todo_list.png"
-                label: "To-Do"
+            ToolbarTextButton {
+                label: "LISTS"
                 onClicked: {
                     window.showVenueList("todolist");
                 }
             }
 
-            ToolbarButton {
-                image: "info.png"
-                label: "Myself"
+            ToolbarTextButton {
+                label: "MYSELF"
                 onClicked: {
                     window.showUserPage("self");
                 }
@@ -750,7 +665,7 @@ Rectangle {
                 PropertyChanges {
                     target: menubarToolbar
                     y: 5
-                    x: (menubar.width - backwardsButton.width*5 - 4*menubarToolbar.spacing)/2
+                    x: 5//(menubar.width - backwardsButton.width*5 - 4*menubarToolbar.spacing)/2
                 }
             },
             State {
@@ -764,7 +679,7 @@ Rectangle {
                 }
                 PropertyChanges {
                     target: menubarToolbar
-                    y: (menubar.height - backwardsButton.height*5 - 4*menubarToolbar.spacing)/2
+                    y: 5//(menubar.height - backwardsButton.height*5 - 4*menubarToolbar.spacing)/2
                     x: 5
                 }
             }
@@ -818,6 +733,10 @@ Rectangle {
 
     SplashDialog {
         id: splashDialog
-        anchors.centerIn: parent
+
+        onLogin: {
+            login.reset();
+            login.visible = true;
+        }
     }
 }

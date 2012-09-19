@@ -3,34 +3,22 @@ import Qt 4.7
 Rectangle {
     id: waitingIndicator
     y: 80
-    //x: 10
     anchors.horizontalCenter: parent.horizontalCenter
-    property string label: "Please wait..."
-    width: doneItems.width+30
-    height: doneItems.height+20
+    property string label: "ONE MOMENT..."
+    width: doneText.width+50
+    height: doneText.height+30
     color: theme.highlightColor
-    radius: 5
+    radius: 2
     opacity: 0.9
     smooth: true
     state: "hidden"
 
-    Row {
-        id: doneItems
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        spacing: 10
-
-        Image {
-            source: "../pics/"+window.iconset+"/clock.png"
-        }
-
-        Text {
-            id: doneText
-            text: waitingIndicator.label
-            color: "#333"
-            font.pixelSize: 22
-            anchors.verticalCenter: parent.verticalCenter
-        }
+    Text {
+        id: doneText
+        text: waitingIndicator.label
+        color: theme.textColorSign
+        font.pixelSize: theme.font.sizeSigns
+        anchors.centerIn: parent
     }
 
     states: [
@@ -40,12 +28,20 @@ Rectangle {
                 target: waitingIndicator
                 y: -100 - waitingIndicator.height - 1
             }
+            PropertyChanges {
+                target: window
+                blurred: false
+            }
         },
         State {
             name: "shown"
             PropertyChanges {
                 target: waitingIndicator
                 y: 100
+            }
+            PropertyChanges {
+                target: window
+                blurred: true
             }
         }
     ]
