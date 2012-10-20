@@ -6,6 +6,7 @@
 #include "qmlapplicationviewer.h"
 #include "picturehelper.h"
 #include "windowhelper.h"
+#include "cache.h"
 #include <QInputContext>
 
 #include <qplatformdefs.h>
@@ -55,8 +56,10 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     WindowHelper *windowHelper = new WindowHelper(&viewer);
     PictureHelper *pictureHelper = new PictureHelper();
+    Cache *cache = new Cache();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
+    viewer.rootContext()->setContextProperty("cache", cache);
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)

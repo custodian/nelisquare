@@ -31,8 +31,13 @@ Rectangle {
             preferredWidth: parent.width
             url: ""
 
+            onLoadStarted: {
+                waiting.state = "shown";
+            }
+
             onLoadFinished: {
                 //console.log("URL is now " + webView.url);
+                waiting.state = "hidden";
                 loginDialog.finished( webView.url );
             }
 

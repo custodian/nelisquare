@@ -20,7 +20,10 @@ Rectangle {
 
     Image {
         id: notificationsButton
-        source: "../pics/bubble.png"
+        source:
+            (notificationsCount.text > 0)
+                ?"../pics/notification_alarm.png"
+                :"../pics/notification.png"
         x: parent.width - width - 80
         anchors.verticalCenter: parent.verticalCenter
 

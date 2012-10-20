@@ -104,7 +104,7 @@ Rectangle {
 
                     Image {
                         anchors.centerIn: parent
-                        source: "../pics/"+window.iconset+"/delete.png"
+                        source: "../pics/checktap.png"
                         visible: checkin.useFriends
                     }
 
@@ -145,7 +145,7 @@ Rectangle {
 
                     Image {
                         anchors.centerIn: parent
-                        source: "../pics/"+window.iconset+"/delete.png"
+                        source: "../pics/checktap.png"
                         visible: checkin.useFacebook
                     }
 
@@ -186,7 +186,7 @@ Rectangle {
 
                     Image {
                         anchors.centerIn: parent
-                        source: "../pics/"+window.iconset+"/delete.png"
+                        source: "../pics/checktap.png"
                         visible: checkin.useTwitter
                     }
 

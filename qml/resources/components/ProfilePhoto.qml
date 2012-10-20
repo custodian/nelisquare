@@ -24,7 +24,7 @@ Rectangle {
         x: photoBorder
         y: photoBorder
         asynchronous: true
-        source: photoUrl
+        source: cache.get(photoUrl)
         smooth: true
         fillMode: photoAspect
         width: photoSize - 2*photoBorder + 1
@@ -40,7 +40,7 @@ Rectangle {
     /*Animated*/Image {
         id: loader
         anchors.centerIn: image
-        source: "../pics/"+window.iconset+"/loader.gif"
+        source: "../pics/loader.gif"
     }
 
     MouseArea {

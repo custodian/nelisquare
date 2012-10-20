@@ -140,7 +140,7 @@ Rectangle {
                     x: 8
                     y: 4
                     id: buildingImage
-                    source: icon
+                    source: cache.get(icon)
                     width: 32
                     height: 32
                 }

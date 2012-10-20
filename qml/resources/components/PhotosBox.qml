@@ -60,7 +60,7 @@ Item {
         ToolbarButton {
             width: 48
             height: 48
-            image: "zoom_out.png"
+            image: "zoom_minus.png"
             selected: photosBoxComponent.photoSize == sizeMini;
             onClicked: {
                 photosBoxComponent.photoSize = sizeMini;
@@ -78,7 +78,7 @@ Item {
         ToolbarButton {
             width: 48
             height: 48
-            image: "zoom_in.png"
+            image: "zoom_plus.png"
             selected: photosBoxComponent.photoSize == sizeMaxi;
             onClicked: {
                 photosBoxComponent.photoSize = sizeMaxi;

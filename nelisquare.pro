@@ -43,12 +43,14 @@ MOBILITY += location
 SOURCES += $$PWD/main.cpp \
     $$PWD/windowhelper.cpp \
     $$PWD/picturehelper.cpp \
+    $$PWD/cache.cpp \
     $$PWD/extras/formpost.cpp \
     $$PWD/extras/httppostsendbuffer.cpp
 
 HEADERS += \
     $$PWD/windowhelper.h \
     $$PWD/picturehelper.h \
+    $$PWD/cache.h \
     $$PWD/extras/formpost.h \
     $$PWD/extras/httppostsendbuffer.h
 

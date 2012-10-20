@@ -2,7 +2,7 @@ import Qt 4.7
 
 Rectangle {
     signal authDeleted()
-    signal iconsetChanged(string type)
+    signal cacheReseted()
     signal orientationChanged(string type)
     signal mapProviderChanged(string type)
 
@@ -53,43 +53,31 @@ Rectangle {
 
             Row {
                 width: parent.width
+                spacing: 20
 
                 ToolbarTextButton {
+                    height: 35
                     selected: window.orientationType == "auto"
                     label: "AUTO"
                     onClicked: orientationChanged("auto")
                 }
                 ToolbarTextButton {
+                    height: 35
                     selected: window.orientationType == "landscape"
                     label: "LANDSCAPE"
                     onClicked: orientationChanged("landscape")
                 }
                 ToolbarTextButton {
+                    height: 35
                     selected: window.orientationType == "portrait"
                     label: "PORTRAIT"
                     onClicked: orientationChanged("portrait")
                 }
             }
 
-            //Icons
-            Text {
-                color: theme.textColorSign
-                text: "Icons"
-                font.pixelSize: theme.font.sizeSettigs
-            }
-            Row {
+            Item{
+                height: 20
                 width: parent.width
-
-                ToolbarTextButton {
-                    selected: window.iconset == "original"
-                    label: "ORIGINAL"
-                    onClicked: iconsetChanged("original")
-                }
-                ToolbarTextButton {
-                    selected: window.iconset == "colorful"
-                    label: "COLOURFUL"
-                    onClicked: iconsetChanged("colorful")
-                }
             }
 
             //Map provider
@@ -100,18 +88,26 @@ Rectangle {
             }
             Row {
                 width: parent.width
+                spacing: 20
 
                 ToolbarTextButton {
+                    height: 35
                     selected: window.mapprovider == "googlemaps"
                     label: "GOOGLE MAPS"
                     onClicked: mapProviderChanged("googlemaps")
                 }
                 ToolbarTextButton {
+                    height: 35
                     selected: window.mapprovider == "osm"
                     label: "OPENSTREETMAP"
                     onClicked: mapProviderChanged("osm")
                 }
 
+            }
+
+            Item{
+                height: 20
+                width: parent.width
             }
 
             //Revoke auth token
@@ -124,6 +120,7 @@ Rectangle {
                 width: parent.width
 
                 ToolbarTextButton {
+                    height: 35
                     label: "REVOKE"
                     onClicked: {
                         authDeleted()
@@ -131,6 +128,43 @@ Rectangle {
                 }
             }
 
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //App cache
+            Text {
+                color: theme.textColorSign
+                text: "App Cache"
+                font.pixelSize: theme.font.sizeSettigs
+            }
+            Row {
+                width: parent.width
+                spacing: 20
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: false//window.iconset == "original"
+                    label: "RESET"
+                    onClicked: cacheReseted()
+                }
+            }
+
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            Image {
+                anchors.horizontalCenter: parent.horizontalCenter
+                source: "../pics/separator.png"
+            }
+
+            Item{
+                height: 20
+                width: parent.width
+            }
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter

@@ -43,7 +43,7 @@ Rectangle {
         /*Animated*/Image {
             id: loader
             anchors.centerIn: parent
-            source: "../pics/"+window.iconset+"/loader.gif"
+            source: "../pics/loader.gif"
             visible: (fullImage.status != Image.Ready)
         }
 

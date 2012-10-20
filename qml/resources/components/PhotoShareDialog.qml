@@ -77,7 +77,7 @@ Rectangle {
 
                         Image {
                             anchors.centerIn: parent
-                            source: "../pics/"+window.iconset+"/delete.png"
+                            source: "../pics/checktap.png"
                             visible: photoShare.makePublic
                         }
                     }
@@ -117,7 +117,7 @@ Rectangle {
 
                         Image {
                             anchors.centerIn: parent
-                            source: "../pics/"+window.iconset+"/delete.png"
+                            source: "../pics/checktap.png"
                             visible: photoShare.useFacebook
                         }
                     }
@@ -158,7 +158,7 @@ Rectangle {
 
                         Image {
                             anchors.centerIn: parent
-                            source: "../pics/"+window.iconset+"/delete.png"
+                            source: "../pics/checktap.png"
                             visible: photoShare.useTwitter
                         }
                     }

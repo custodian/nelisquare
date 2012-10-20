@@ -45,7 +45,7 @@ Item {
 
 
     Image {
-        source: "../pics/"+window.iconset+"/" + toolbarButton.image
+        source: "../pics/" + toolbarButton.image
         anchors.horizontalCenter: parent.horizontalCenter
         y: 8
         width: imageSize

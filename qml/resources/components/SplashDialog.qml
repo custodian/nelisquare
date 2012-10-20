@@ -60,6 +60,14 @@ Item {
         State {
             name: "shown"
             PropertyChanges {
+                target: textRelease
+                visible: true
+            }
+            PropertyChanges {
+                target: loginBox
+                visible: false
+            }
+            PropertyChanges {
                 target: splashPage
                 x: 0
             }
@@ -91,6 +99,22 @@ Item {
                     target: splashPage
                     properties: "visible"
                     value: false
+                }
+            }
+        },
+        Transition {
+            to: "shown"
+            SequentialAnimation {
+                PropertyAction {
+                    target: splashPage
+                    properties: "visible"
+                    value: true
+                }
+                PropertyAnimation {
+                    target: splashPage
+                    properties: "x"
+                    duration: 300
+                    easing.type: "InOutQuad"
                 }
             }
         }

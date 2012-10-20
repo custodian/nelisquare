@@ -8,7 +8,7 @@ import "js/window.js" as Window
 import "js/utils.js" as Utils
 
 Rectangle {
-    property bool isPortrait: false
+    property bool isPortrait: true
     property bool blurred: false
 
     property string toolbarFile: ""
@@ -63,7 +63,7 @@ Rectangle {
         splashHider.start();
         signalTimer.start();
         Storage.getKeyValue("accesstoken", window.settingLoaded);
-        window.isPortrait = (window.width<window.height)
+        window.isPortrait = (window.height>(window.width/2));
 
         Storage.getKeyValue("settings.orientation", window.settingLoaded);
         Storage.getKeyValue("settings.iconset", window.settingLoaded);
@@ -71,7 +71,7 @@ Rectangle {
     }
 
     onHeightChanged: {
-        window.isPortrait = (window.width<window.height)
+        window.isPortrait = (window.height>(window.width/2))
     }
 
     Timer {
@@ -117,7 +117,7 @@ Rectangle {
         friendsFeed.state = "hidden";
         venuesList.state = "hidden";
         venueDetails.state = "hidden";
-        mainmenu.state = "hidden"
+        //mainmenu.state = "hidden"
         userDetails.state = "hidden";
         leaderBoard.state = "hidden";
         photoDetails.state = "hidden";
@@ -471,9 +471,13 @@ Rectangle {
             onOrientationChanged: {
                 window.settingChanged("settings.orientation",type);
             }
-            onIconsetChanged: {
+            /*onIconsetChanged: {
                 window.settingChanged("settings.iconset",type);
+            }*/
+            onCacheReseted: {
+                //dbg nothing here yet
             }
+
             onMapProviderChanged: {
                 window.settingChanged("settings.mapprovider",type);
             }
@@ -563,7 +567,7 @@ Rectangle {
         id: toolbar
     }
 
-    MainMenu {
+    /*MainMenu {
         id: mainmenu
         state: "hidden"
         anchors.horizontalCenter: parent.horizontalCenter
@@ -585,7 +589,7 @@ Rectangle {
         onOpenSettings: {
             window.showSettingsPage();
         }
-    }
+    }*/
 
     Rectangle {
         id: menubar

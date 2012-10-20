@@ -135,7 +135,7 @@ Item {
             visible: eventOwner == "self" && showRemoveButton
 
             Image {
-                source: "../pics/"+window.iconset+"/delete.png"
+                source: "../pics/checktap.png"
                 width: parent.width
                 height: parent.height
                 smooth: true
