@@ -10,6 +10,11 @@ Item {
     height: parent.height
     state: "shown"
 
+    Rectangle {
+        anchors.fill: parent
+        color: "#00aedb"
+    }
+
     Image {
         anchors.centerIn: parent
         source: "../pics/splash.png"

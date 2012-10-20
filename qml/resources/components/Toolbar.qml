@@ -14,6 +14,7 @@ Rectangle {
     }
 
     Image {
+        id: logoImage
         source: "../pics/logo.png"
         anchors.centerIn: parent
     }
@@ -24,7 +25,7 @@ Rectangle {
             (notificationsCount.text > 0)
                 ?"../pics/notification_alarm.png"
                 :"../pics/notification.png"
-        x: parent.width - width - 80
+        x: logoImage.x + logoImage.width + 50
         anchors.verticalCenter: parent.verticalCenter
 
         Text {
@@ -35,7 +36,7 @@ Rectangle {
             font.family: theme.font.name
             text: "0"
             //visible: text > 0
-            color: theme.textColorButton
+            color: theme.textColorSign
         }
         MouseArea {
             anchors.fill: parent
@@ -46,7 +47,7 @@ Rectangle {
     Image {
         id: settingsButton
         source: ("../pics/cogwheel_"+(settings.visible?"active.png":"passive.png"))
-        x: 80
+        x: logoImage.x - width - 50
         anchors.verticalCenter: parent.verticalCenter
         MouseArea {
             anchors.fill: parent
@@ -89,5 +90,4 @@ Rectangle {
         width: parent.width
         y: parent.height - 1
     }
-
 }

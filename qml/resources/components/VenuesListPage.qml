@@ -21,7 +21,7 @@ Rectangle {
     ListView {
         model: placesModel
         width: parent.width
-        height: parent.height - 80
+        height: parent.height - y
         y: 110
         delegate: venuesListDelegate
         highlightFollowsCurrentItem: true
@@ -70,9 +70,7 @@ Rectangle {
 
             TextInput {
                 id: searchText
-                //wrapMode: TextEdit.NoWrap
-                text: "Type place to search"
-                //textFormat: TextEdit.PlainText
+                text: theme.textSearchVenue
                 width: parent.width - 10
                 height: parent.height - 10
                 x: 5
@@ -82,7 +80,7 @@ Rectangle {
 
                 onAccepted: {
                     var query = searchText.text;
-                    if(query=="Type place to search") {
+                    if(query==theme.textSearchVenue) {
                         query = "";
                     }
                     venuesList.search(query);
@@ -92,8 +90,11 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         searchText.focus = true;
-                        if(searchText.text=="Type place to search") {
+                        if(searchText.text==theme.textSearchVenue) {
                             searchText.text = "";
+                        }
+                        if (searchText.text != "") {
+                            searchText.cursorPosition = searchText.positionAt(mouseX,mouseY);
                         }
                     }
                 }
@@ -110,7 +111,7 @@ Rectangle {
             onClicked: {
                 // Search
                 var query = searchText.text;
-                if(query=="Type place to search") {
+                if(query==theme.textSearchVenue) {
                     query = "";
                 }
                 hideKeyboard();

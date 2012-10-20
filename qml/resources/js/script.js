@@ -75,7 +75,7 @@ function getAccessTokenParameter() {
 }
 
 function showError(msg) {
-    waiting.state = "hidden";
+    waiting.hide();
     console.log("Error: "+ msg);
     //error.state = "shown";
     //error.reason = msg;
@@ -98,11 +98,11 @@ function parseToken(data) {
     logo.state = "hidden"; //.visible = false;
     if(sid.length>0) {
         navigation.state = "menu";
-        waiting.state = "hidden";
+        waiting.hide();
         //loadUnreadNews();
     } else {
         addError("Couldn't parse SID");
-        waiting.state = "hidden";
+        waiting.hide();
     }
 }
 
@@ -128,7 +128,7 @@ function showDone(data) {
     if(waiting.state!="shown") {
         return;
     }
-    waiting.state = "hidden";
+    waiting.hide();
     done.status = "";
     if(typeof(data)!="undefined" && data!=null) {
         if(action=="read") {
@@ -225,14 +225,14 @@ function addCommentToModel(comment) {
 function loadFriendsFeed() {
     var url = "checkins/recent?" + getAccessTokenParameter();
     doWebRequest("GET", url, "", parseFriendsFeed);
-    waiting.state = "shown";
+    waiting.show();
 }
 
 function loadFriendsFeedNearby() {
     var url = "checkins/recent?" +
         getLocationParameter() + "&" + getAccessTokenParameter();
     doWebRequest("GET", url, "", parseFriendsFeed);
-    waiting.state = "shown";
+    waiting.show();
 }
 
 function parseFriendsFeed(response) {
@@ -272,7 +272,7 @@ function parseFriendsFeed(response) {
         });
         count++;
     });
-    waiting.state = "hidden";
+    waiting.hide();
     if(count==0) {
         showDone("No visible checkins");
     }
@@ -292,7 +292,7 @@ function loadPlaces(query) {
     }
     url += "&" + getAccessTokenParameter();
     doWebRequest("GET", url, "", parsePlaces);
-    waiting.state = "shown";
+    waiting.show();
 }
 
 function parseIcon(icon, size) {
@@ -314,7 +314,7 @@ function parsePlaces(response) {
     var data = processResponse(response);
     var count = 0;
     placesModel.clear();
-    waiting.state = "hidden";
+    waiting.hide();
     data.venues.forEach(function(place) {
         //console.log("PLACE: " + JSON.stringify(place));
         var icon = "";
@@ -342,7 +342,7 @@ function parsePlaces(response) {
 
 function loadVenue(venueID) {
     var url = "venues/" + venueID + "?" + getAccessTokenParameter();
-    waiting.state = "shown";
+    waiting.show();
     venueDetails.venueID = venueID;
     venueDetails.venueName = "";
     venueDetails.venueAddress = "";
@@ -360,7 +360,7 @@ function loadVenue(venueID) {
 function parseVenue(response) {
     var data = processResponse(response);
     //console.log("VENUE: "+ JSON.stringify(data));
-    waiting.state = "hidden";
+    waiting.hide();
     var venue = data.venue;
     var icon = "";
     if(venue.categories!=null && typeof(venue.categories[0])!="undefined") {
@@ -416,7 +416,7 @@ function parseVenue(response) {
 }
 
 function addComment(checkinID, text) {
-    waiting.state = "shown";
+    waiting.show();
     var url = "checkins/" + checkinID + "/addcomment?"
     url += "CHECKIN_ID=" + checkinID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
@@ -426,12 +426,12 @@ function addComment(checkinID, text) {
 
 function parseAddComment(response) {
     var data = processResponse(response);
-    waiting.state = "hidden";
+    waiting.hide();
     addCommentToModel(data.comment);
 }
 
 function deleteComment(checkinID, commentID) {
-    waiting.state = "shown";
+    waiting.show();
     var url = "checkins/" + checkinID + "/deletecomment?"
     url += "CHECKIN_ID=" + checkinID + "&";
     url += "commentId=" + commentID + "&";
@@ -441,7 +441,7 @@ function deleteComment(checkinID, commentID) {
 
 function parseDeleteComment(response) {
     var data = processResponse(response);
-    waiting.state = "hidden";
+    waiting.hide();
     commentsModel.clear();
     data.checkin.comments.items.forEach(function(comment) {
         addCommentToModel(comment);
@@ -449,7 +449,7 @@ function parseDeleteComment(response) {
 }
 
 function addTip(venueID, text) {
-    waiting.state = "shown";
+    waiting.show();
     var url = "tips/add?";
     url += "venueId=" + venueID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
@@ -459,7 +459,7 @@ function addTip(venueID, text) {
 
 function parseAddTip(response){
     var data = processResponse(response);
-    waiting.state = "hidden";
+    waiting.hide();
     addTipToModel(data.tip);
 }
 
@@ -495,12 +495,12 @@ function addCheckin(venueID, comment, friends, facebook, twitter) {
     url += "&" + getAccessTokenParameter();
 
     //console.log("Checkin URL: " + url);
-    waiting.state = "shown";
+    waiting.show();
     doWebRequest("POST", url, "", parseAddCheckin);
 }
 
 function parseAddCheckin(response) {
-    waiting.state = "hidden";
+    waiting.hide();
     var data = processResponse(response);
     notificationDialog.message = "<span>";
     data.notifications.forEach(function(noti) {
@@ -519,12 +519,12 @@ function parseAddCheckin(response) {
 
 function loadLeaderBoard() {
     var url = "users/leaderboard?" + getAccessTokenParameter();
-    waiting.state = "shown";
+    waiting.show();
     doWebRequest("GET", url, "", parseLeaderBoard);
 }
 
 function parseLeaderBoard(response) {
-    waiting.state = "hidden";
+    waiting.hide();
     var data = eval("[" + response + "]")[0];
     boardModel.clear();
     data.response.leaderboard.items.forEach(function(ranking) {
@@ -547,12 +547,12 @@ function loadToDo() {
     var url = "users/self/todos?" +
         getLocationParameter() + "&" +
         getAccessTokenParameter();
-    waiting.state = "shown";
+    waiting.show();
     doWebRequest("GET", url, "", parseToDo);
 }
 
 function parseToDo(response) {
-    waiting.state = "hidden";
+    waiting.hide();
     var data = eval("[" + response + "]")[0];
     placesModel.clear();
     data.response.todos.items.forEach(function(todo) {
@@ -577,7 +577,7 @@ function parseToDo(response) {
 }
 
 function loadCheckin(id) {
-    waiting.state = "shown";
+    waiting.show();
     //var id = "4fa6a2cae4b089a95b316999"; //points
     //var id = "4fa74812e4b0cbe2e15e6ada"; //bages
     //var id = "4fa6634ce4b0fd4c3fb0af77"; //points + badges
@@ -637,20 +637,25 @@ function parseCheckin(response) {
         });
     }
 
-    waiting.state = "hidden";
+    waiting.hide();
 }
 
 function loadUser(user) {
     var url = "users/" + user + "?" + getAccessTokenParameter();
-    waiting.state = "shown";
+    waiting.show();
+    userDetails.boardModel.clear();
     userDetails.friendsBox.photosModel.clear();
     doWebRequest("GET", url, "", parseUser);
+    if (user == "self") {
+        url = "users/leaderboard?neighbors=2&" + getAccessTokenParameter();
+        doWebRequest("GET",url,"", parseUserBoard);
+    }
 }
 
 function parseUser(response) {
     var data = processResponse(response);
     //console.log("USER: " + JSON.stringify(data))
-    waiting.state = "hidden";
+    waiting.hide();
     var user = data.user;
     userDetails.userName = makeUserName(user);
     userDetails.userPhoto = thumbnailPhoto(user.photo,100);
@@ -673,10 +678,10 @@ function parseUser(response) {
     userDetails.userRelationship = parse(user.relationship);
 
     if (user.friends.count>0) {
-        userDetails.friendsBox.caption = "Total friends: " + user.friends.count;
+        userDetails.friendsBox.caption = "TOTAL FRIENDS: <b>" + user.friends.count +"</b>";
         user.friends.groups.forEach(function(group) {
             if (group.type == "friends") {
-                userDetails.friendsBox.caption += " ("+ group.name + " " + group.count + ")";
+                userDetails.friendsBox.caption += " ("+ group.name + " <b>" + group.count + "</b>)";
             }
             if (group.count>0) {
                 group.items.forEach(function(user){
@@ -690,8 +695,26 @@ function parseUser(response) {
     }
 }
 
+function parseUserBoard(response) {
+    var data = processResponse(response);
+    //console.log("USER: " + JSON.stringify(data))
+    data.leaderboard.items.forEach(function(ranking) {
+        if (ranking.user.relationship == "self")
+            userDetails.userLeadersboardRank = ranking.rank;
+        userDetails.boardModel.append({
+               "user": "#" + ranking.rank + ". " +makeUserName(ranking.user),
+               "shout": "<b>"+ranking.scores.recent+" "+"points" + "</b> " + ranking.scores.checkinsCount + " " + "checkins",
+               //"createdAt": "asdfasdf",
+               "photo": thumbnailPhoto(ranking.user.photo,100),
+        });
+        if(ranking.user.relationship=="self") {
+            leaderBoard.rank = ranking.rank;
+        }
+    });
+}
+
 function addPhoto(checkinID, venueID, photopath, makepublic, facebook, twitter) {
-    waiting.state = "shown";
+    waiting.show();
     var url = "https://api.foursquare.com/v2/photos/add?";
     if (checkinID!="") {
         url += "checkinId=" + checkinID;
@@ -721,9 +744,9 @@ function addPhoto(checkinID, venueID, photopath, makepublic, facebook, twitter) 
 }
 
 function parseAddPhoto(response) {
-    waiting.state = "hidden";
+    waiting.hide();
     var photo = processResponse(response).photo;    
-    //console.log("ADDED PHOTO: " + JSON.stringify(photo));
+    console.log("ADDED PHOTO: " + JSON.stringify(photo));
     if (photoAdd.checkinID!="") {
         checkinDetails.photosBox.photosModel.insert(0,
                     makePhoto(photo,300));
@@ -736,7 +759,7 @@ function parseAddPhoto(response) {
 
 function loadPhoto(photoid) {
     var url = "photos/" + photoid + "?" + getAccessTokenParameter();
-    waiting.state = "shown";
+    waiting.show();
     doWebRequest("GET", url, "", parsePhoto);
 }
 
@@ -751,12 +774,12 @@ function parsePhoto(response) {
     photoDetails.owner.userShout = "via " + parse(photo.source.name);
     photoDetails.owner.createdAt = makeTime(photo.createdAt);
 
-    waiting.state = "hidden";
+    waiting.hide();
 }
 
 function loadNotifications() {
     var url = "updates/notifications?" + getAccessTokenParameter();
-    waiting.state = "shown";
+    waiting.show();
     doWebRequest("GET",url,"", parseNotifications);
 }
 
@@ -771,7 +794,7 @@ function markNotificationsRead(time) {
 function parseNotifications(response) {
     var notis = processResponse(response).notifications;
     //console.log("NOTIFICATIONS: " + JSON.stringify(notis));
-    waiting.state = "hidden";
+    waiting.hide();
     notis.items.forEach(function(noti) {
         //console.log("NOTIFICATIONS: " + JSON.stringify(noti));
         var objectID = noti.target.object.id;

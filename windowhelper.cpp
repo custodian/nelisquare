@@ -73,9 +73,9 @@ Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
     QString orientation = value.toString();
     QmlApplicationViewer::ScreenOrientation type = QmlApplicationViewer::ScreenOrientationAuto;
-    if (orientation == "Landscape") {
+    if (orientation == "landscape") {
         type = QmlApplicationViewer::ScreenOrientationLockLandscape;
-    } else if (orientation == "Portrait") {
+    } else if (orientation == "portrait") {
         type = QmlApplicationViewer::ScreenOrientationLockPortrait;
     }
     m_viewer->setOrientation(type);

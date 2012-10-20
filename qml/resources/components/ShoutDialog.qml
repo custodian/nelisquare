@@ -68,6 +68,9 @@ Rectangle {
                         if(shoutText.text=="Write here") {
                             shoutText.text = "";                            
                         }
+                        if (shoutText.text != "") {
+                            shoutText.cursorPosition = shoutText.positionAt(mouseX,mouseY);
+                        }
                     }
                 }
             }

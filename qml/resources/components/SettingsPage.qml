@@ -46,7 +46,7 @@ Rectangle {
 
             //OrientationLock
             Text {
-                color: theme.textColorSign
+                color: theme.textColorOptions
                 text: "Screen orientation"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -82,7 +82,7 @@ Rectangle {
 
             //Map provider
             Text {
-                color: theme.textColorSign
+                color: theme.textColorOptions
                 text: "Map provider"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -112,7 +112,7 @@ Rectangle {
 
             //Revoke auth token
             Text {
-                color: theme.textColorSign
+                color: theme.textColorOptions
                 text: "Reset authentication"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -135,7 +135,7 @@ Rectangle {
 
             //App cache
             Text {
-                color: theme.textColorSign
+                color: theme.textColorOptions
                 text: "App Cache"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -145,7 +145,7 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: false//window.iconset == "original"
+                    selected: false
                     label: "RESET"
                     onClicked: cacheReseted()
                 }
@@ -169,7 +169,7 @@ Rectangle {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textHelp1
-                color: theme.textColorSign
+                color: theme.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
 
                 horizontalAlignment: Text.AlignHCenter
@@ -178,7 +178,7 @@ Rectangle {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textHelp2
-                color: theme.textColorSign
+                color: theme.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
                 font.bold: true
 
@@ -188,7 +188,7 @@ Rectangle {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textHelp3
-                color: theme.textColorSign
+                color: theme.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
 
                 horizontalAlignment: Text.AlignHCenter

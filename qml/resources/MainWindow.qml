@@ -11,10 +11,8 @@ Rectangle {
     property bool isPortrait: true
     property bool blurred: false
 
-    property string toolbarFile: ""
-
     property string orientationType: "auto"
-    property string iconset: "original"
+    property string iconset: "colorful"
     property string mapprovider: "googlemaps"
 
     id: window
@@ -28,7 +26,7 @@ Rectangle {
     }
 
     function onPictureUploaded(response) {
-        Script.onPictureUploaded(response);
+        Script.parseAddPhoto(response);
     }
 
     function settingLoaded(key, value) {
@@ -47,6 +45,8 @@ Rectangle {
             windowHelper.setOrientation(value);
         } else if (key == "settings.iconset") {
             if (value == "") value = "original";
+            if (value == "Handdraw") value = "colorful";
+            if (value == "Classic") value = "colorful";
             window.iconset = value;
         } else if (key == "settings.mapprovider") {
             if (value == "") value = "googlemaps";
@@ -63,15 +63,15 @@ Rectangle {
         splashHider.start();
         signalTimer.start();
         Storage.getKeyValue("accesstoken", window.settingLoaded);
-        window.isPortrait = (window.height>(window.width/2));
+        window.isPortrait = window.height > (window.width*2/3);//window.width<(window.height/2);
 
         Storage.getKeyValue("settings.orientation", window.settingLoaded);
-        Storage.getKeyValue("settings.iconset", window.settingLoaded);
+        //Storage.getKeyValue("settings.iconset", window.settingLoaded);
         Storage.getKeyValue("settings.mapprovider", window.settingLoaded);
     }
 
     onHeightChanged: {
-        window.isPortrait = (window.height>(window.width/2))
+        window.isPortrait = window.height > (window.width*2/3);//window.width<(window.height/2);
     }
 
     Timer {
@@ -239,6 +239,10 @@ Rectangle {
         id: theme
     }
 
+    Toolbar {
+        id: toolbar
+    }
+
     Item {
         id: viewPort
         y: toolbar.height
@@ -323,7 +327,6 @@ Rectangle {
             onCheckin: {
                 checkinDialog.reset();
                 checkinDialog.venueID = venueDetails.venueID;
-                checkinDialog.comment = "";
                 checkinDialog.venueName = venueDetails.venueName;
                 checkinDialog.state = "shown";
             }
@@ -360,7 +363,7 @@ Rectangle {
             onCancel: { checkinDialog.state = "hidden"; }
             onCheckin: {
                 var realComment = comment;
-                if(realComment.indexOf("Add comment")>-1) {
+                if(realComment == theme.textDefaultComment) {
                     realComment = "";
                 }
                 Script.addCheckin(venueID, realComment, friends, facebook, twitter);
@@ -563,10 +566,6 @@ Rectangle {
 
     }
 
-    Toolbar {
-        id: toolbar
-    }
-
     /*MainMenu {
         id: mainmenu
         state: "hidden"
@@ -597,12 +596,6 @@ Rectangle {
         width: parent.width
         y: parent.height - height
         color: "#404040"
-        /*gradient: Gradient {
-            GradientStop{position: 0.2; color: "#4f4f4f"; }
-            GradientStop{position: 0.49; color: "#494949"; }
-            GradientStop{position: 0.5; color: "#4f4f4f"; }
-            GradientStop{position: 0.8; color: "#404040"; }
-        }*/
 
         Flow {
             id: menubarToolbar
@@ -614,6 +607,8 @@ Rectangle {
             ToolbarTextButton {
                 id: backwardsButton
                 label: "BACK"
+                colorActive: theme.textColorButtonMenu
+                colorInactive: theme.textColorButtonMenuInactive
                 shown: Window.windowStash.length>0
                 onClicked: {
                     Window.popWindow();
@@ -623,16 +618,19 @@ Rectangle {
             ToolbarTextButton {
                 label: "FEED"
                 selected: friendsFeed.state == "shown"
+                colorActive: theme.textColorButtonMenu
+                colorInactive: theme.textColorButtonMenuInactive
                 onClicked: {
                     Window.clearWindows();
                     window.showFriendsFeed();
                 }
             }
 
-
             ToolbarTextButton {
                 label: "PLACES"
                 selected: venuesList.state == "shown"
+                colorActive: theme.textColorButtonMenu
+                colorInactive: theme.textColorButtonMenuInactive
                 onClicked: {
                     window.showVenueList("");
                 }
@@ -640,6 +638,8 @@ Rectangle {
 
             ToolbarTextButton {
                 label: "LISTS"
+                colorActive: theme.textColorButtonMenu
+                colorInactive: theme.textColorButtonMenuInactive
                 onClicked: {
                     window.showVenueList("todolist");
                 }
@@ -647,6 +647,9 @@ Rectangle {
 
             ToolbarTextButton {
                 label: "MYSELF"
+                selected: userDetails.state == "shown" && userDetails.userRelationship == "self"
+                colorActive: theme.textColorButtonMenu
+                colorInactive: theme.textColorButtonMenuInactive
                 onClicked: {
                     window.showUserPage("self");
                 }
@@ -670,6 +673,7 @@ Rectangle {
                     target: menubarToolbar
                     y: 5
                     x: 5//(menubar.width - backwardsButton.width*5 - 4*menubarToolbar.spacing)/2
+                    width: undefined
                 }
             },
             State {
@@ -685,6 +689,7 @@ Rectangle {
                     target: menubarToolbar
                     y: 5//(menubar.height - backwardsButton.height*5 - 4*menubarToolbar.spacing)/2
                     x: 5
+                    width: menubar.width
                 }
             }
         ]

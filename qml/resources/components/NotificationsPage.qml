@@ -51,6 +51,9 @@ Rectangle {
                     notificationsList.venue(model.objectID);
                 } else if (model.type == "user") {
                     notificationsList.user(model.objectID);
+                } else if (mode.type == "badge") {
+                    //TODO
+                    //notificationsList.badge(model.objectID);
                 }
             }
         }

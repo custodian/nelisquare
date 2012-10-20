@@ -8,7 +8,7 @@ Rectangle {
     property string pic: ""
     property int imageSize: 48
     signal clicked()
-    radius: 6
+    //radius: 6
 
     smooth: true
     border.color: mouse.pressed ? "#666" : "#999"
@@ -33,7 +33,7 @@ Rectangle {
 
     Image {
         id: icon
-        source: button.pic.length>0?"../pics/" + window.iconset + "/" + button.pic:""
+        source: button.pic.length>0?"../pics/" + button.pic:""
         anchors.centerIn: parent
         width: imageSize
         height: imageSize

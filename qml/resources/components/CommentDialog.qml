@@ -6,13 +6,12 @@ Rectangle {
     height: items.height + 20
     color: theme.toolbarLightColor
     state: "hidden"
-    property string comment: "Write here"
     property string checkinID: ""
     signal cancel()
     signal shout(string comment)
 
     function reset() {
-        commentText.text = "Write here";
+        commentText.text = theme.textDefaultComment;
     }
 
     function hideKeyboard() {
@@ -53,7 +52,7 @@ Rectangle {
             TextEdit {
                 id: commentText
                 wrapMode: TextEdit.Wrap
-                text: "Write here"
+                text: theme.textDefaultComment
                 textFormat: TextEdit.PlainText
                 width: parent.width - 10
                 height: parent.height - 10
@@ -66,8 +65,11 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         commentText.focus = true;
-                        if(commentText.text=="Write here") {
+                        if(commentText.text == theme.textDefaultComment) {
                             commentText.text = "";
+                        }
+                        if (commentText.text != "") {
+                            commentText.cursorPosition = commentText.positionAt(mouseX,mouseY);
                         }
                     }
                 }

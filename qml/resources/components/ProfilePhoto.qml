@@ -8,7 +8,7 @@ Rectangle {
     property variant photoSourceSize: undefined
     property bool enableMouseArea: true
     property alias photoSmooth: image.smooth
-    property variant photoAspect: Image.PreserveAspectFit
+    property variant photoAspect: Image.PreserveAspectCrop
 
     id: profileImage
     x: photoBorder
@@ -29,8 +29,9 @@ Rectangle {
         fillMode: photoAspect
         width: photoSize - 2*photoBorder + 1
         height: photoSize - 2*photoBorder + 1
-        sourceSize.width: width // photoSourceSize
-        //sourceSize.height: photoSourceSize
+        //sourceSize.width: width // photoSourceSize
+        //sourceSize.height: height //photoSourceSize
+        clip: true
         onStatusChanged: {
             image.visible = (image.status == Image.Ready)
             loader.visible = (image.status != Image.Ready)

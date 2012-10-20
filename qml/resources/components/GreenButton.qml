@@ -6,21 +6,11 @@ Rectangle {
     height: 50
     property string label: "-"
     signal clicked()
-    radius: 6
 
     smooth: true
-    //border.color: mouse.pressed ? "#666" : "#A8CB17" // "#98bB17" : "#c8eB37"
-    //border.width: 2
-    gradient: mouse.pressed ? pressedColor : idleColor
-
-    Gradient {
-        id: idleColor
-        GradientStop{position: 0; color: "#c8eB37"; }
-        //GradientStop{position: 0.1; color: "#A8CB17"; }
-        GradientStop{position: 0.6; color: "#A8CB17"; }
-        //GradientStop{position: 1.0; color: "#98bB17"; }
-        //GradientStop{position: 1.0; color: "#98bB17"; }
-    }
+    border.color: theme.greenButtonBorderColor
+    border.width: 2
+    gradient: mouse.pressed ? pressedColor : theme.gradientGreen //idleColor
 
     Gradient {
         id: pressedColor

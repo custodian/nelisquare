@@ -5,8 +5,8 @@ Item {
     id: photosBoxComponent
     width: parent.width
 
-    property string caption: "Photos: "
-    property bool showButtons: true
+    property string caption: "Photos"
+    property bool showButtons: false//true
     property int photoSize: photosBoxComponent.sizeMini
     property int fontSize: 20
 
@@ -27,13 +27,19 @@ Item {
             photosBoxComponent.height = height;
         }
 
-        Text {
+        GreenLine {
+            text: caption
+            height: 30
+            size: fontSize
+        }
+
+        /*Text {
             id: photoAreaCaption
             width: parent.width
             height: 48
             text: caption
             font.pixelSize: fontSize
-        }
+        }*/
 
         ListView {
             width: parent.width
@@ -44,12 +50,6 @@ Item {
             clip: true
             model: photosModel
             delegate: photoDelegate
-        }
-
-        Rectangle {
-            width: parent.width
-            height: 1
-            color: "#ccc"
         }
     }
 
@@ -93,6 +93,7 @@ Item {
         ProfilePhoto {
             photoUrl: model.photoThumb
             photoSize: photosBoxComponent.photoSize
+            //photoAspect: Image.PreserveAspectCrop
             //enableMouseArea: false
             onClicked: {
                 photosBoxComponent.itemSelected(model.objectID);

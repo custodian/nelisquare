@@ -32,12 +32,12 @@ Rectangle {
             url: ""
 
             onLoadStarted: {
-                waiting.state = "shown";
+                waiting.show();
             }
 
             onLoadFinished: {
                 //console.log("URL is now " + webView.url);
-                waiting.state = "hidden";
+                waiting.hide();
                 loginDialog.finished( webView.url );
             }
 

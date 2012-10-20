@@ -5,6 +5,8 @@ Item {
     property string label: ""
     property bool selected: false
     property bool shown: true
+    property string colorActive: theme.textColorButton
+    property string colorInactive: theme.textColorButtonInactive
     signal clicked()
     width: buttonText.width + 10 //window.isSmallScreen ? 80 : 90
     height: 58
@@ -18,7 +20,7 @@ Item {
             id: buttonText
             text: button.label
             anchors.centerIn: parent
-            color: selected ? theme.textColorButton : theme.textColorButtonInactive
+            color: selected ? colorActive : colorInactive
             font.pixelSize: theme.font.sizeToolbar
             font.family: "Nokia Pure"//theme.font.name
             font.bold: true

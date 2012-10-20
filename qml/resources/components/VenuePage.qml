@@ -80,7 +80,7 @@ Rectangle {
                     z: 100
                     width: parent.width
                     height: columnCheckin.height + 10
-                    color: theme.toolbarLightColor
+                    color: place.color//theme.toolbarLightColor
 
                     Column {
                         id: columnCheckin
@@ -99,7 +99,7 @@ Rectangle {
                         }
 
                         GreenButton {
-                            label: "CHECK IN HERE"
+                            label: "CHECK-IN HERE!"
                             width: parent.width - 20
                             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -115,7 +115,7 @@ Rectangle {
                             spacing: 10
 
                             BlueButton {
-                                label: "Add tip"
+                                label: "ADD TIP"
                                 width: parent.width / 3 - parent.spacing
                                 anchors.left: parent.left
                                 onClicked: {
@@ -123,7 +123,7 @@ Rectangle {
                                 }
                             }
                             BlueButton {
-                                label: "Add photo"
+                                label: "ADD PHOTO"
                                 width: parent.width / 3 - parent.spacing
                                 anchors.horizontalCenter: parent.horizontalCenter
                                 onClicked: {
@@ -131,13 +131,27 @@ Rectangle {
                                 }
                             }
 
-                            BlueButton {
+                            /*BlueButton {
                                 label: "Mark to-do"
                                 width: parent.width / 3 - parent.spacing
                                 anchors.right: parent.right
                                 onClicked: {
                                     place.markToDo();
                                 }
+                            }*/
+
+                            BlueButton {
+                                id: venueMapButton
+                                anchors.right: parent.right
+                                width: parent.width / 3 - parent.spacing
+                                label: venueMapBox.visible ? "HIDE MAP" :"SHOW MAP"
+                                onClicked: {
+                                    venueMapBox.visible = !venueMapBox.visible;
+                                    if (venueMapBox.visible) {
+                                        loadMapImage();
+                                    }
+                                }
+                                visible: venueMapLat != "" && venueMapLng != ""
                             }
                         }
 
@@ -166,12 +180,13 @@ Rectangle {
                 }
 
                 Column {
-                    width: parent.width - 20
-                    x: 10
+                    width: parent.width// - 20
+                    //x: 10
                     spacing: 10
 
                     Row {
-                        width: parent.width
+                        x: 10
+                        width: parent.width - 20
                         EventBox {
                             id: venueMayorDetails
                             width: parent.width - venueMapButton.width
@@ -182,25 +197,12 @@ Rectangle {
                                 place.user(venueMajorID);
                             }
                         }
-
-                        BlueButton {
-                            id: venueMapButton
-                            anchors.verticalCenter: parent.verticalCenter
-                            width: 170
-                            label: venueMapBox.visible ? "Hide map" :"Show on map"
-                            onClicked: {
-                                venueMapBox.visible = !venueMapBox.visible;
-                                if (venueMapBox.visible) {
-                                    loadMapImage();
-                                }
-                            }
-                            visible: venueMapLat != "" && venueMapLng != ""
-                        }
                     }
 
                     Row {
                         id: venueMapBox
-                        width: parent.width
+                        x: 10
+                        width: parent.width - 20
 
                         ProfilePhoto {
                             id: venueMapImage
@@ -266,23 +268,19 @@ Rectangle {
                         }
                     }
 
-                    Text {
-                        width: parent.width
-                        text: "User tips:"
-                        font.pixelSize: 24
-                        visible: tipsModel.count>0
+                    GreenLine {
+                        height: 30
+                        text: "USER TIPS"
                     }
+
                     Repeater {
                         id: tipRepeater
-                        width: parent.width
+
+                        //x: 10
+                        width: parent.width //- 20
+
                         model: tipsModel
                         delegate: tipDelegate
-                        visible: tipsModel.count>0
-                    }
-                    Rectangle {
-                        width: parent.width
-                        height: 1
-                        color: "#ccc"
                         visible: tipsModel.count>0
                     }
                 }
@@ -294,7 +292,8 @@ Rectangle {
         id: tipDelegate
 
         EventBox {
-            width: tipRepeater.width
+            x: 10
+            width: tipRepeater.width - 20
 
             userShout: model.tipText
             createdAt: model.tipAge

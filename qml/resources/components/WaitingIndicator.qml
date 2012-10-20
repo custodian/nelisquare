@@ -2,9 +2,11 @@ import Qt 4.7
 
 Rectangle {
     id: waitingIndicator
+    property int waitCount: 0
+    property string label: "ONE MOMENT..."
+
     y: 80
     anchors.horizontalCenter: parent.horizontalCenter
-    property string label: "ONE MOMENT..."
     width: doneText.width+50
     height: doneText.height+30
     color: theme.highlightColor
@@ -12,6 +14,22 @@ Rectangle {
     opacity: 0.9
     smooth: true
     state: "hidden"
+
+    onWaitCountChanged: {
+        if (waitCount > 0) {
+            state = "shown";
+        } else {
+            waitCount = 0;
+            state = "hidden";
+        }
+    }
+
+    function show() {
+        waitCount++;
+    }
+    function hide() {
+        waitCount--;
+    }
 
     Text {
         id: doneText

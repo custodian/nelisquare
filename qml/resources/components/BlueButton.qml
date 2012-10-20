@@ -34,7 +34,7 @@ Rectangle {
         text: button.label
         font.pixelSize: theme.font.sizeDefault
         font.family: theme.font.name
-        color: theme.textColorButton
+        color: theme.textColorSign
         anchors.centerIn: parent
     }
 

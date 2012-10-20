@@ -41,54 +41,68 @@ Rectangle {
         }
     }
 
-    Column {
-        anchors.fill: parent
+    Flickable {
+        id: flickableArea
+        width: parent.width
+        contentWidth: parent.width
+        height: checkin.height - y
 
-        Flickable {
-            id: flickableArea
+        clip: true
+        flickableDirection: Flickable.VerticalFlick
+        boundsBehavior: Flickable.StopAtBounds
+        pressDelay: 100
+
+        Rectangle {
+            id: scoreBackground
+            y: scoreHolder.y - columnView.spacing
             width: parent.width
-            contentWidth: parent.width
-            height: checkin.height - y
+            height: scoreHolder.height + 2 * columnView.spacing
+            gradient: theme.gradientDarkBlue
+        }
 
-            clip: true
-            flickableDirection: Flickable.VerticalFlick
-            boundsBehavior: Flickable.StopAtBounds
-            pressDelay: 100
+        Column {
+            onHeightChanged: {
+                flickableArea.contentHeight = height;
+            }
+
+            id: columnView
+            x: 10
+            width: parent.width - 20
+            spacing: 10
+
+            EventBox {
+                id: checkinOwner
+                width: parent.width
+                showRemoveButton: false
+                showSeparator: false
+
+                onUserClicked: {
+                    checkin.user(checkin.owner.userID);
+                }
+                onAreaClicked: {
+                    checkin.venue();
+                }
+            }
 
             Column {
-
-                onHeightChanged: {
-                    flickableArea.contentHeight = height;
-                }
-
-                id: columnView
-                x: 10
-                width: parent.width - 20
-                spacing: 10
-
-                EventBox {
-                    id: checkinOwner
-                    width: parent.width
-                    showRemoveButton: false
-
-                    onUserClicked: {
-                        checkin.user(checkin.owner.userID);
-                    }
-                    onAreaClicked: {
-                        checkin.venue();
-                    }
-                }
+                id: scoreHolder
+                width: parent.width
 
                 Row {
-                    width: parent.width
+                    id: scoreCaption
+                    x: 10
+                    width: parent.width - 20
                     spacing: 10
                     Text {
-                        width: parent.width * 0.85
-                        text: "Total points:"
-                        font.pixelSize: 24
+                        width: parent.width * 0.90
+                        text: "TOTAL POINTS"
+                        color: theme.textColorSign
+                        font.pixelSize: theme.font.sizeDefault
                     }
                     Text {
                         id: scoreTotal
+                        color: theme.textColorSign
+                        font.pixelSize: theme.font.sizeDefault
                     }
                 }
 
@@ -99,86 +113,85 @@ Rectangle {
                     delegate: scoreDelegate
                     visible: scoresModel.count>0
                 }
+            }
 
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#ccc"
+            Text {
+                id: likeArea
+                text:  "Here will be Like / Unlike"
+            }
+
+            GreenLine {
+                text: "Earned badges"
+                height: 30
+                size: theme.font.sizeDefault
+                visible: badgesModel.count>0
+            }
+
+            Repeater {
+                id: badgeRepeater
+                width: parent.width
+                model: badgesModel
+                delegate: badgeDelegate
+                visible: badgesModel.count>0
+            }
+
+            Rectangle {
+                width: parent.width
+                height: 1
+                color: "#ccc"
+                visible: badgesModel.count>0
+            }
+
+            PhotosBox {
+                id: photosBox
+                onItemSelected: {
+                    checkin.photo(object);
+                }
+            }
+
+            GreenLine {
+                text: "Comments"
+                height: 30
+                size: theme.font.sizeDefault
+                visible: commentsModel.count>0
+            }
+
+            Repeater {
+                id: commentRepeater
+                width: parent.width
+                model: commentsModel
+                delegate: commentDelegate
+                visible: commentsModel.count>0
+            }
+
+            Row {
+                width:parent.width
+                spacing: 10
+
+                BlueButton {
+                    id: btnAddPhoto
+                    label: "Add photo"
+                    width: 150
+
+                    onClicked: {
+                        checkin.showAddPhoto()
+                    }
+                    visible: checkin.owner.eventOwner == "self"
                 }
 
-                Text {
-                    width: parent.width
-                    visible: badgesModel.count>0
-                    text: "Earned badges:"
-                    font.pixelSize: 24
-                }
-
-                Repeater {
-                    id: badgeRepeater
-                    width: parent.width
-                    model: badgesModel
-                    delegate: badgeDelegate
-                    visible: badgesModel.count>0
-                }
-
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#ccc"
-                    visible: badgesModel.count>0
-                }
-
-                PhotosBox {
-                    id: photosBox
-                    onItemSelected: {
-                        checkin.photo(object);
+                BlueButton{
+                    label: "Add comment"
+                    width: parent.width - (btnAddPhoto.visible?btnAddPhoto.width:0) - parent.spacing
+                    onClicked: {
+                        checkin.showAddComment();
                     }
                 }
+            }
 
-                Text {
-                    width: parent.width
-                    visible: commentsModel.count>0
-                    text: "Comments:"
-                    font.pixelSize: 24
-                }
-
-                Repeater {
-                    id: commentRepeater
-                    width: parent.width
-                    model: commentsModel
-                    delegate: commentDelegate
-                    visible: commentsModel.count>0
-                }
-
-                Row {
-                    width:parent.width
-                    spacing: 10
-
-                    BlueButton {
-                        id: btnAddPhoto
-                        label: "Add photo"
-                        width: 150
-
-                        onClicked: {
-                            checkin.showAddPhoto()
-                        }
-                        visible: checkin.owner.eventOwner == "self"
-                    }
-
-                    BlueButton{
-                        label: "Add comment"
-                        width: parent.width - (btnAddPhoto.visible?btnAddPhoto.width:0) - parent.spacing
-                        onClicked: {
-                            checkin.showAddComment();
-                        }
-                    }
-                }
-
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#ccc"
-                }
+            Rectangle {
+                width: parent.width
+                height: 1
+                color: "#ccc"
             }
         }
     }
@@ -210,30 +223,28 @@ Rectangle {
     Component {
         id: scoreDelegate
 
-        Column {
-            width: scoreRepeater.width
-            Row {
-                width: scoreRepeater.width
-                spacing: 10
-                Image {
-                    source: scoreImage
-                    smooth: true
-                    width: 24
-                    height: 24
-                }
-                Text {
-                    width: parent.width * 0.8
-                    wrapMode: Text.Wrap
-                    text: scoreMessage
-                    color: "#111"
-                    font.pixelSize: 18
-                }
-                Text {
-                    wrapMode: Text.NoWrap
-                    text: "+"+scorePoints
-                    color: "#aaa"
-                    font.pixelSize: 18
-                }
+        Row {
+            x: 10
+            width: scoreRepeater.width - 20
+            spacing: 10
+            Image {
+                source: cache.get(scoreImage)
+                smooth: true
+                width: 24
+                height: 24
+            }
+            Text {
+                width: parent.width * 0.8
+                wrapMode: Text.Wrap
+                text: scoreMessage
+                color: theme.textColorSign
+                font.pixelSize: theme.font.sizeSigns
+            }
+            Text {
+                wrapMode: Text.NoWrap
+                text: "+"+scorePoints
+                color: theme.textColorSign
+                font.pixelSize: theme.font.sizeSigns
             }
         }
     }

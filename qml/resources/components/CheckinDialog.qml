@@ -4,11 +4,10 @@ Rectangle {
     id: checkin
     width: parent.width
     height: items.height + 20
-    color: theme.toolbarLightColor
+    color: theme.backgroundBlueDark //theme.toolbarLightColor
     state: "hidden"
     property string venueID: ""
     property string venueName: ""
-    property string comment: "Add comment"
     property bool useFacebook: false
     property bool useTwitter: false
     property bool useFriends: true
@@ -16,7 +15,7 @@ Rectangle {
     signal checkin(string venueID, string comment, bool friends, bool facebook, bool twitter)
 
     function reset() {
-        shoutText.text = "Add comment";
+        shoutText.text = theme.textDefaultComment;
     }
 
     function hideKeyboard() {
@@ -48,7 +47,7 @@ Rectangle {
                 GradientStop { position: 0.1; color: "#fafafa" }
                 GradientStop { position: 1.0; color: "#fff" }
             }
-            radius: 5
+            //radius: 5
             border.width: 1
             border.color: "#aaa"
             smooth: true
@@ -56,7 +55,7 @@ Rectangle {
             TextEdit {
                 id: shoutText
                 wrapMode: TextEdit.Wrap
-                text: "Add comment"
+                text: theme.textDefaultComment
                 textFormat: TextEdit.PlainText
                 width: parent.width - 10
                 height: parent.height - 10
@@ -69,8 +68,11 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         shoutText.focus = true;
-                        if(shoutText.text=="Add comment") {
+                        if(shoutText.text==theme.textDefaultComment) {
                             shoutText.text = "";
+                        }
+                        if (shoutText.text != "") {
+                            shoutText.cursorPosition = shoutText.positionAt(mouseX,mouseY);
                         }
                     }
                 }
@@ -80,8 +82,8 @@ Rectangle {
         Rectangle {
             width: parent.width
             color: theme.toolbarDarkColor
-            border.color: "#2774aA"
-            border.width: 1
+            //border.color: "#2774aA"
+            //border.width: 1
             height: 10 + twitterRow.y + twitterRow.height
             radius: 5
             smooth: true
@@ -98,7 +100,7 @@ Rectangle {
                     border.width: 1
                     border.color: "#444"
                     color: friendsMouseArea.pressed ? "#555" : "#111"
-                    radius: 5
+                    //radius: 5
                     width: 42
                     height: 42
 
@@ -139,7 +141,7 @@ Rectangle {
                     border.width: 1
                     border.color: "#444"
                     color: facebookMouseArea.pressed ? "#555" : "#111"
-                    radius: 5
+                    //radius: 5
                     width: 42
                     height: 42
 
@@ -180,7 +182,7 @@ Rectangle {
                     border.width: 1
                     border.color: "#444"
                     color: twitterMouseArea.pressed ? "#555" : "#111"
-                    radius: 5
+                    //radius: 5
                     width: 42
                     height: 42
 

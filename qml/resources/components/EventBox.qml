@@ -23,6 +23,7 @@ Item {
 
     property bool activeWhole: false
     property bool showRemoveButton: true
+    property bool showSeparator: true
 
     id: eventItem
     width: parent.width
@@ -103,7 +104,7 @@ Item {
                 }
                 Image {
                     id: commentImage
-                    source: "../pics/"+window.iconset+"/comment.png"
+                    source: "../pics/peoples.png"
                     smooth: true
                     width: 32
                     height: 32
@@ -155,6 +156,7 @@ Item {
         y: eventItem.height - 1
         height: 1
         color: "#ccc"
+        visible: showSeparator
     }
 
     MouseArea {

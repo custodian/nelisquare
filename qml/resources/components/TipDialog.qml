@@ -9,12 +9,11 @@ Rectangle {
     property string venueID: ""
     property string venueName: ""
     property int action: 0
-    property string comment: "Write here"
     signal cancel()
     signal addTip(string comment)
 
     function reset() {
-        shoutText.text = "Comment...";
+        shoutText.text = theme.textDefaultTip;
     }
 
     function hideKeyboard() {
@@ -54,7 +53,7 @@ Rectangle {
             TextEdit {
                 id: shoutText
                 wrapMode: TextEdit.Wrap
-                text: "Comment..."
+                text: theme.textDefaultTip
                 textFormat: TextEdit.PlainText
                 width: parent.width - 10
                 height: parent.height - 10
@@ -67,8 +66,11 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         shoutText.focus = true;
-                        if(shoutText.text=="Comment...") {
+                        if(shoutText.text==theme.textDefaultTip) {
                             shoutText.text = "";
+                        }
+                        if (shoutText.text != "") {
+                            shoutText.cursorPosition = shoutText.positionAt(mouseX,mouseY);
                         }
                     }
                 }
@@ -84,12 +86,12 @@ Rectangle {
                 label: "ADD"
                 width: parent.width - 130
                 onClicked: {
-                    var comment = shoutText.text;
-                    if(comment=="Comment...") {
-                        comment = "";
+                    if(shoutText.text==theme.textDefaultTip) {
+                        shoutText.text = "";
+                    } else {
+                        hideKeyboard();
+                        tipDialog.addTip( comment );
                     }
-                    hideKeyboard();
-                    tipDialog.addTip( comment );
                 }
             }
 

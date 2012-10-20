@@ -21,6 +21,8 @@ Rectangle {
     property int userFriendsCount: 0
     property string userRelationship: ""
 
+    property int userLeadersboardRank: 0
+
     property int scoreRecent: 0
     property int scoreMax: 0
 
@@ -28,6 +30,11 @@ Rectangle {
     property string lastTime: ""
 
     property alias friendsBox: friendsBox
+    property alias boardModel: boardModel
+
+    ListModel {
+        id: boardModel
+    }
 
     MouseArea {
         anchors.fill: parent
@@ -81,25 +88,6 @@ Rectangle {
                 }
             }
 
-            Rectangle {
-                width: parent.width
-                height: 10
-                color: "#A8CB17"
-
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#A8CB17"
-                }
-
-                Rectangle {
-                    width: parent.width
-                    height: 1
-                    color: "#888"
-                    y: 9
-                }
-            }
-
             GreenButton {
                 anchors.horizontalCenter: parent.horizontalCenter
                 label: "Add Friend"
@@ -134,13 +122,14 @@ Rectangle {
             Row {
                 width: parent.width
                 Text {
-                    text: "Scores (last 7 days)"
-                    font.pixelSize: 18
+                    text: "<b>SCORES</b> (LAST 7 DAYS)"
+                    font.pixelSize: theme.font.sizeHelp
                 }
                 Text {
-                    text: "Best score"
+                    text: "BEST SCORE"
                     anchors.right: parent.right
-                    font.pixelSize: 18
+                    font.pixelSize: theme.font.sizeHelp
+                    font.bold: true
                 }
             }
             //scores value
@@ -149,28 +138,41 @@ Rectangle {
                 Rectangle {
                     anchors.left: parent.left
                     anchors.top: parent.top
-                    height: 25
+                    height: 32
                     width: parent.width * 0.85
-                    color: "steelblue"
+                    color: theme.scoreBackgroundColor
                 }
                 Rectangle {
                     anchors.left: parent.left
                     anchors.top: parent.top
-                    height: 25
+                    height: 32
                     width: parent.width * 0.85 * scoreRecent / scoreMax
-                    color: "#00B000"
+                    color: theme.scoreForegroundColor
+                    onWidthChanged: {
+                        if (width > 50) {
+                            scoreRecentText.anchors.left = undefined;
+                            scoreRecentText.anchors.right = right;
+                        } else {
+                            scoreRecentText.anchors.right = undefined;
+                            scoreRecentText.anchors.left = right;
+                        }
+                    }
                     Text {
-                        text: scoreRecent + "  "
-                        anchors.right: parent.right
-                        font.pixelSize: 18
-                        color: "white"
+                        id: scoreRecentText
+                        text: "  " + scoreRecent + "  "
+                        font.pixelSize: theme.font.sizeHelp
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: theme.textColorSign
                         visible: scoreRecent>0
+
                     }
                 }
                 Text {
                     text: scoreMax
                     anchors.right: parent.right
-                    font.pixelSize: 18
+                    color: theme.scoreForegroundColor
+                    font.bold: true
+                    font.pixelSize: theme.font.sizeHelp
                 }
             }
             Rectangle {
@@ -275,15 +277,43 @@ Rectangle {
                 }
             }
 
-            ButtonEx {
-                anchors.horizontalCenter: parent.horizontalCenter
-                width: 200
-                label: "Leaders board"
-                onClicked: {
-                    details.openLeaderBoard();
-                }
+            GreenLine {
+                height: 40
+                text: "YOU ARE #" + userLeadersboardRank
+
+                visible: userRelationship == "self"
             }
 
+            Repeater {
+                id: miniLeadersboard
+                model: boardModel
+                width: parent.width
+                delegate: leaderBoardDelegate
+                clip: true
+                visible: userRelationship == "self"
+            }
+
+        }
+    }
+
+    Component {
+        id: leaderBoardDelegate
+
+        EventBox {
+            activeWhole: true
+            width: miniLeadersboard.width
+
+            userName: model.user
+            userShout: model.shout
+            //createdAt: model.createdAt
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = model.photo
+            }
+
+            onAreaClicked: {
+                details.openLeaderBoard();
+            }
         }
     }
 

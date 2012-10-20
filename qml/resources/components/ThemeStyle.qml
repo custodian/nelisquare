@@ -2,7 +2,7 @@ import QtQuick 1.1
 
 Item {
     id: theme
-    property string backGroundColor: "#EEEEEE"
+    property string backGroundColor: "#e8e3dc" //#EEEEEE"
     property string textColor: "#222"
     property string toolbarDarkColor: "#17649A"
     property string toolbarLightColor: "#40B3DF" // 40B3DF
@@ -12,16 +12,26 @@ Item {
     property string menuActiveBGColor: "#ccc"
     property string menuInactiveBGColor: "#dedfdf"
 
-    property string textColorButton: "white"
-    property string textColorButtonInactive: "gray"
+    property string textColorButton: "#00aad2" // white
+    property string textColorButtonInactive: "#938b82" //"gray"
+
+    property string textColorButtonMenu: "white"
+    property string textColorButtonMenuInactive: "gray"
 
     property string textColorSign: "white"
+    property string textColorOptions: "#635959"
 
     property string blueButtonBorderColor: "#18518c"
     property string blueButtonBorderColorPressed: "#2778b3"
 
+    property string greenButtonBorderColor: "#7aac00"
+
+    property string backgroundMain: "#e8e3dc"
     property string backgroundBlueDark: "#176095"
-    property string backgroundSettings: "#1377a8"
+    property string backgroundSettings: "#e8e3dc"
+
+    property string scoreBackgroundColor: "#c1c1c1"
+    property string scoreForegroundColor: "#18659c"
 
     property int menuFontSize: 20
     property int menuSubFontSize: 14
@@ -32,12 +42,36 @@ Item {
 
     property string textSplash: "Loading..."
 
+    property string textDefaultComment: "Add comment"
+    property string textSearchVenue: "Type place to search"
+    property string textDefaultTip: "Write some cool tip here"
+
     Gradient {
         id: gradientGreen
         GradientStop{position: 0; color: "#57a800"; }
         GradientStop{position: 1.0; color: "#a0d800"; }
     }
     property alias gradientGreen: gradientGreen
+
+    Gradient {
+        id: gradientLightGreen
+        GradientStop{position: 0; color: "#c8eB37"; }
+        //GradientStop{position: 0.1; color: "#A8CB17"; }
+        GradientStop{position: 0.6; color: "#A8CB17"; }
+        //GradientStop{position: 1.0; color: "#98bB17"; }
+        //GradientStop{position: 1.0; color: "#98bB17"; }
+    }
+    property alias gradientLightGreen: gradientLightGreen
+
+    Gradient {
+        id: gradientDarkBlue
+        GradientStop{position: 0; color: "#0a4570"; }
+        GradientStop{position: 0.2; color: "#166196"; }
+        GradientStop{position: 1.0; color: "#18659c"; }
+    }
+    property alias gradientDarkBlue: gradientDarkBlue
+
+
 
     FontLoader {
         id: font;
