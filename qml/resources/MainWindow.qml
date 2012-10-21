@@ -119,6 +119,8 @@ Rectangle {
         venueDetails.state = "hidden";
         //mainmenu.state = "hidden"
         userDetails.state = "hidden";
+        userBadges.state = "hidden";
+        badgeInfo.state = "hidden";
         leaderBoard.state = "hidden";
         photoDetails.state = "hidden";
         photoAdd.state = "hidden";
@@ -183,6 +185,21 @@ Rectangle {
             });
     }
 
+    function showUserBadges(user) {
+        Window.pushWindow(function(){
+                        Script.loadBadges(user);
+                        window.hideAll();
+                        userBadges.state = "shown";
+            });
+    }
+
+    function showBadgeInfo() {
+        Window.pushWindow(function(){
+                        window.hideAll();
+                        badgeInfo.state = "shown";
+            });
+    }
+
     function showCheckinPage(checkin) {
         Window.pushWindow(function() {
                 Script.loadCheckin(checkin);
@@ -237,10 +254,6 @@ Rectangle {
 
     ThemeStyle {
         id: theme
-    }
-
-    Toolbar {
-        id: toolbar
     }
 
     Item {
@@ -408,6 +421,30 @@ Rectangle {
             onOpenLeaderBoard: {
                 window.showLeaderBoard();
             }
+            onBadges: {
+                window.showUserBadges(user);
+            }
+        }
+
+        BadgesPage {
+            id: userBadges
+            onBadge: {
+                //string name, string image, string text, string venueName, string time
+                badgeInfo.name = name;
+                badgeInfo.image = image;
+                badgeInfo.info = info;
+                badgeInfo.venueName = venueName;
+                badgeInfo.venueID = venueID;
+                badgeInfo.time = time;
+                window.showBadgeInfo();
+            }
+        }
+
+        BadgeInfoPage {
+            id: badgeInfo
+            onVenue: {
+                window.showVenuePage(venueID);
+            }
         }
 
         PhotoPage {
@@ -566,29 +603,9 @@ Rectangle {
 
     }
 
-    /*MainMenu {
-        id: mainmenu
-        state: "hidden"
-        anchors.horizontalCenter: parent.horizontalCenter
-        onOpenFriendsFeed: {
-            window.showFriendsFeed();
-        }
-        onOpenPlaces: {
-            window.showVenueList("");
-        }
-        onOpenExplore: {
-            window.showVenueList("todolist")
-        }
-        onOpenProfile: {
-            window.showUserPage("self");
-        }
-        onOpenLeaderBoard: {
-            window.showLeaderBoard();
-        }
-        onOpenSettings: {
-            window.showSettingsPage();
-        }
-    }*/
+    Toolbar {
+        id: toolbar
+    }
 
     Rectangle {
         id: menubar

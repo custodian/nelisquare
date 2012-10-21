@@ -1,3 +1,8 @@
+nelisquare (0.4.2) stable; urgency=low
+  * badges list for user and badge info pages added
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Sun, 21 Oct 2012 23:53:40 +0400
+
 nelisquare (0.4.1) stable; urgency=low
   * Nothing changed for meego, only maemo fixes
 

@@ -151,6 +151,10 @@ function makeUserName(user) {
     return username;
 }
 
+function makeImageUrl(image, size) {
+    return image.prefix + size + image.name;
+}
+
 function thumbnailPhoto(photo, width_, height_) {
     var url = "";
     var width = photo.width;
@@ -640,6 +644,34 @@ function parseCheckin(response) {
     waiting.hide();
 }
 
+function loadBadges(user) {
+    var url = "users/" + user + "/badges?" + getAccessTokenParameter();
+    waiting.show();
+    userBadges.badgeModel.clear();
+    doWebRequest("GET", url, "", parseBadges);
+}
+
+function parseBadges(response) {
+    var data = processResponse(response);
+    waiting.hide();
+    data.sets.groups.forEach(function(group){
+         if (group.type == "all") {
+             group.items.forEach(function(item){
+                 var badge = data.badges[item];
+                 userBadges.badgeModel.append({
+                    "name":badge.name,
+                    "image":makeImageUrl(badge.image,114),
+                    "imageLarge":makeImageUrl(badge.image,300),
+                    "info":badge.badgeText,
+                    "venueName":badge.unlocks[0].checkins[0].venue.name,
+                    "venueID":badge.unlocks[0].checkins[0].venue.id,
+                    "time":prettyDate(badge.unlocks[0].checkins[0].createdAt),
+                     });
+             });
+         }
+    });
+}
+
 function loadUser(user) {
     var url = "users/" + user + "?" + getAccessTokenParameter();
     waiting.show();
@@ -704,7 +736,6 @@ function parseUserBoard(response) {
         userDetails.boardModel.append({
                "user": "#" + ranking.rank + ". " +makeUserName(ranking.user),
                "shout": "<b>"+ranking.scores.recent+" "+"points" + "</b> " + ranking.scores.checkinsCount + " " + "checkins",
-               //"createdAt": "asdfasdf",
                "photo": thumbnailPhoto(ranking.user.photo,100),
         });
         if(ranking.user.relationship=="self") {

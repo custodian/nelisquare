@@ -3,6 +3,7 @@ import Qt 4.7
 Rectangle {
     signal openLeaderBoard()
     signal user(string user)
+    signal badges(string user)
     signal addFriend(string user)
     signal removeFriend(string user)
     signal approveFriend(string user)
@@ -69,18 +70,19 @@ Rectangle {
 
                 ProfilePhoto {
                     id: profileImage
+                    //photoSize: 150
                     photoUrl: details.userPhoto
                 }
 
                 Text {
                     text: details.userName
-                    x: 74
+                    x: 74//164
                     font.pixelSize: 22
                     font.bold: true
                     color: "#111"
                 }
                 Text {
-                    x: 74
+                    x: 74//164
                     y: 32
                     text: details.lastTime + " @ " + details.lastVenue
                     font.pixelSize: 20
@@ -207,12 +209,12 @@ Rectangle {
                     smooth: true
                     radius: 5
 
-                    Text {
+                    Image {
+                        y: 10
+                        width: 64
+                        height: 64
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/newbie.png")
                         anchors.horizontalCenter: parent.horizontalCenter
-                        y: 20
-                        color: "#fff"
-                        font.pixelSize: 50
-                        text: details.userBadgesCount
                     }
 
                     Text {
@@ -220,7 +222,14 @@ Rectangle {
                         y: parent.height - height - 2
                         color: "#ddd"
                         font.pixelSize: 20
-                        text: "Badges"
+                        text: details.userBadgesCount + " " + "Badges"
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            details.badges(userID);
+                        }
                     }
                 }
 
