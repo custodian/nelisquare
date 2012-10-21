@@ -680,7 +680,7 @@ Rectangle {
                 name: "right"
                 PropertyChanges {
                     target: menubar
-                    width: 90
+                    width: 100
                     height: parent.height - toolbar.height
                     x: parent.width - width
                     y: toolbar.height

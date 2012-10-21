@@ -77,7 +77,7 @@ Item {
         id: font;
         source: "TitilliumText25L001.otf"
         property int sizeDefault: 24
-        property int sizeToolbar: sizeDefault + 1
+        property int sizeToolbar: sizeDefault + (windowHelper.isMaemo()?(-1):(1))
         property int sizeSettigs: sizeDefault + 4
         property int sizeSigns: sizeDefault - 2
         property int sizeHelp: sizeDefault - 4

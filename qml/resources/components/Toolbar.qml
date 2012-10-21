@@ -55,27 +55,32 @@ Rectangle {
         }
     }
 
-    /*ButtonEx {
+    ButtonEx {
         id: minimizeButton
         pic: "minimize.png"
         x: 4
         anchors.verticalCenter: parent.verticalCenter
         width: 48
         height: 48
+        border.width: 0
+        gradient: toolbar.gradient
         onClicked: {
             windowHelper.minimize();
         }
-        visible: window.isSmallScreen()==false
-    }*/
+        visible: windowHelper.isMaemo()
+    }
 
-    /*ButtonEx {
+    ButtonEx {
         id: buttonClose
-        pic: "delete.png"
+        pic: "close.png"
         x: parent.width - width - 4
         width: 48
         anchors.verticalCenter: parent.verticalCenter
+        gradient: toolbar.gradient
+        border.width: 0
         onClicked: Qt.quit();
-    }*/
+        visible: windowHelper.isMaemo()
+    }
 
     Rectangle {
         anchors.bottom: parent.bottom

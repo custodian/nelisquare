@@ -45,6 +45,7 @@ Rectangle {
         font.pixelSize: 24
         color: "#fff"
         anchors.centerIn: parent
+        visible: button.label.length>0
     }
 
     MouseArea {

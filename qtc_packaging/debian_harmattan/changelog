@@ -1,3 +1,8 @@
+nelisquare (0.4.1) stable; urgency=low
+  * Nothing changed for meego, only maemo fixes
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Sun, 21 Oct 2012 20:29:34 +0400
+
 nelisquare (0.4.0) stable; urgency=low
   * Design update!
   * api update to v=20120910
