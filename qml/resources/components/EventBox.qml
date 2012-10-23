@@ -81,7 +81,7 @@ Item {
                 width: parent.width
                 text: userShout!="" ? userShout : (venueAddress + " " + venueCity)
                 wrapMode: Text.Wrap
-                visible: /*venuePhoto == "" &&*/ text.length > 1
+                visible: text.length > 1
             }
             Row {
                 width: parent.width

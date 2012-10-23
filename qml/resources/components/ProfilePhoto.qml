@@ -29,7 +29,7 @@ Rectangle {
         fillMode: photoAspect
         width: photoSize - 2*photoBorder + 1
         height: photoSize - 2*photoBorder + 1
-        //sourceSize.width: width // photoSourceSize
+        sourceSize.width: width // photoSourceSize
         //sourceSize.height: height //photoSourceSize
         clip: true
         onStatusChanged: {

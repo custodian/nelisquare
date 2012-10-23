@@ -1,0 +1,4 @@
+date "+var build = '%Y%m%d%H%M';" > qml/resources/build.info.js
+head -n 1 ./qtc_packaging/debian_harmattan/changelog | awk -F'[()]' '{print "var version = \""$2"\""}' >> qml/resources/build.info.js
+cp ../*.deb /s/docs/nelisquare/debs/meego/nelisquare-devel.deb
+cp qml/resources/build.info.js /s/docs/nelisquare/debs/meego/build.developer

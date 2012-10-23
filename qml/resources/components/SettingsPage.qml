@@ -1,10 +1,14 @@
 import Qt 4.7
+import "../build.info.js" as BuildInfo
 
 Rectangle {
     signal authDeleted()
     signal cacheReseted()
     signal orientationChanged(string type)
     signal mapProviderChanged(string type)
+    signal checkUpdatesChanged(string type)
+
+    property string cacheSize: "undefined"
 
     id: settings
     color: theme.backgroundSettings
@@ -23,7 +27,6 @@ Rectangle {
     Flickable{
 
         id: flickableArea
-
         anchors.top: settingsLabel.bottom
         width: parent.width
         contentWidth: parent.width
@@ -36,7 +39,7 @@ Rectangle {
 
         Column {
             onHeightChanged: {
-                flickableArea.contentHeight = height;
+                flickableArea.contentHeight = height + y;
             }
 
             width: parent.width - 20
@@ -105,6 +108,44 @@ Rectangle {
 
             }
 
+            Item {
+                height: 20
+                width: parent.width
+            }
+
+            //Check updates
+            Text {
+                color: theme.textColorOptions
+                text: "Check for updates"
+                font.pixelSize: theme.font.sizeSettigs
+            }
+            Row {
+                width: parent.width
+                spacing: 20
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: window.checkupdates == "none"
+                    label: "NONE"
+                    onClicked: checkUpdatesChanged("none")
+                }
+                ToolbarTextButton {
+                    height: 35
+                    selected: window.checkupdates == "stable"
+                    label: "STABLE"
+                    onClicked: checkUpdatesChanged("stable")
+                }
+                ToolbarTextButton {
+                    height: 35
+                    selected: window.checkupdates == "developer"
+                    label: "DEVELOPER"
+                    onClicked: {
+                        checkUpdatesChanged("developer")
+                    }
+                }
+
+            }
+
             Item{
                 height: 20
                 width: parent.width
@@ -147,7 +188,16 @@ Rectangle {
                     height: 35
                     selected: false
                     label: "RESET"
-                    onClicked: cacheReseted()
+                    onClicked: {
+                        cache.reset();
+                        cacheSize = cache.info();
+                    }
+                }
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: false
+                    label: "Size: " + cacheSize;
                 }
             }
 
@@ -187,6 +237,22 @@ Rectangle {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
+                text: theme.textVersionInfo + BuildInfo.version
+                color: theme.textColorOptions
+                font.pixelSize: theme.font.sizeHelp
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: theme.textBuildInfo + BuildInfo.build
+                color: theme.textColorOptions
+                font.pixelSize: theme.font.sizeHelp
+                horizontalAlignment: Text.AlignHCenter
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textHelp3
                 color: theme.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
@@ -198,7 +264,7 @@ Rectangle {
     }
 
     onStateChanged: {
-
+        cacheSize = cache.info();
     }
 
     states: [

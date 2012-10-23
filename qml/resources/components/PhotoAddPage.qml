@@ -37,7 +37,7 @@ Rectangle {
             photoUrl: model.filePath      //real
             //photoUrl: model.fileName        //sim
             photoSize: photoGrid.cellWidth
-            //photoSourceSize: photoGrid.cellWidth //commented due to sizing bug
+            photoSourceSize: photoGrid.cellWidth //commented due to sizing bug
             photoBorder: 2
             photoSmooth: false
             photoAspect: Image.PreserveAspectFit
@@ -64,6 +64,7 @@ Rectangle {
 
     onStateChanged: {
         if (state == "shown") {
+            galleryModel.reload();
             photoGrid.model = galleryModel;
         } else {
             photoGrid.model = emptyModel;

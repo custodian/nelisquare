@@ -9,6 +9,7 @@
 #include <QByteArray>
 #include <QCryptographicHash>
 #include <QDesktopServices>
+#include <QString>
 #include <QDebug>
 
 Cache::Cache(QObject *parent) :
@@ -16,6 +17,7 @@ Cache::Cache(QObject *parent) :
 {
     QDesktopServices dirs;
     m_path = dirs.storageLocation(QDesktopServices::CacheLocation);
+    m_path += "/nelisquare/";
     qDebug() << "Cache location: " << m_path;
 
     if (m_path.length()) {
@@ -32,8 +34,6 @@ void Cache::onDownloadFinished(QNetworkReply * reply){
     QByteArray data = reply->readAll();
     QString url = reply->request().url().toString();
     QString name = m_path + "/" + md5(url);
-
-    //qDebug() << "Got url:"  << url << "Name:" << name;
 
     QFile file(name);
     file.open(QFile::WriteOnly);
@@ -67,10 +67,50 @@ QVariant Cache::get(QVariant data)
 
 QVariant Cache::info()
 {
-    return QVariant("empty");
+    qint64 total = 0;
+    QDir dir(m_path);
+    dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    QFileInfoList list = dir.entryInfoList();
+    for (int i=0; i<list.size();i++) {
+        total += list.at(i).size();
+    }
+
+    {
+        //TODO: remove legacy code
+        // Due to error in 0.4.1 will be there until 0.5.0 is out
+        QDir dir2(m_path+"/../");
+        dir2.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+        dir2.setNameFilters(QStringList("????????????????????????????????"));
+        QFileInfoList list2 = dir2.entryInfoList();
+        for (int i=0; i<list2.size();i++) {
+            total += list2.at(i).size();
+        }
+    }
+
+    double result = double(total) / 1000000;
+    return QVariant(QString("%1 MB").arg(result,0,'g',3));
 }
 
 QVariant Cache::reset()
 {
+    QDir dir(m_path);
+    dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    QFileInfoList list = dir.entryInfoList();
+    for (int i=0; i<list.size();i++) {
+        QFile(list.at(i).absoluteFilePath()).remove();
+    }
+
+    {
+        //TODO: remove legacy code
+        // Due to error in 0.4.1 will be there until 0.5.0 is out
+        QDir dir2(m_path+"/../");
+        dir2.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+        dir2.setNameFilters(QStringList("????????????????????????????????"));
+        QFileInfoList list2 = dir2.entryInfoList();
+        for (int i=0; i<list2.size();i++) {
+            QFile(list2.at(i).absoluteFilePath()).remove();
+        }
+    }
+
     return QVariant(true);
 }

@@ -2,6 +2,7 @@ import Qt 4.7
 import QtMobility.location 1.1
 import Effects 1.0
 import "components"
+import "./build.info.js" as BuildInfo
 import "js/script.js" as Script
 import "js/storage.js" as Storage
 import "js/window.js" as Window
@@ -12,8 +13,8 @@ Rectangle {
     property bool blurred: false
 
     property string orientationType: "auto"
-    property string iconset: "colorful"
     property string mapprovider: "googlemaps"
+    property string checkupdates: "none"
 
     id: window
 
@@ -21,8 +22,35 @@ Rectangle {
 
     color: theme.backGroundColor
 
-    function iconsetPath() {
-        return iconset + "/";
+    onCheckupdatesChanged: {
+        if (checkupdates!="none") {
+            Script.getUpdateInfo(checkupdates,onUpdateAvailable);
+        }
+    }
+
+    function onUpdateAvailable(build,version,url) {
+        var update = false;
+        //console.log("Current: version: " + BuildInfo.version + " build: "+ BuildInfo.build);
+        //console.log("Updated: version: " + version + " build: "+ build);
+        //console.log("Update url: " + url);
+        if (checkupdates == "developer") {
+            if (build > BuildInfo.build) {
+                //console.log("Update is available: " + version + " " + build);
+                update = true;
+            }
+        } else if (checkupdates == "stable") {
+            if (version != BuildInfo.version || build != BuildInfo.build) {
+                //console.log("Stable version " + version + " is available");
+                update = true;
+            }
+        }
+
+        if (update){
+            updateDialog.build = build;
+            updateDialog.version = version;
+            updateDialog.url = url;
+            updateDialog.state = "shown";
+        }
     }
 
     function onPictureUploaded(response) {
@@ -43,14 +71,12 @@ Rectangle {
             if (value == "") value = "auto";
             window.orientationType = value;
             windowHelper.setOrientation(value);
-        } else if (key == "settings.iconset") {
-            if (value == "") value = "original";
-            if (value == "Handdraw") value = "colorful";
-            if (value == "Classic") value = "colorful";
-            window.iconset = value;
         } else if (key == "settings.mapprovider") {
             if (value == "") value = "googlemaps";
             window.mapprovider = value;
+        } else if (key == "settings.checkupdates") {
+            if (value == "") value = "none";
+            window.checkupdates = value;
         }
     }
 
@@ -66,8 +92,8 @@ Rectangle {
         window.isPortrait = window.height > (window.width*2/3);//window.width<(window.height/2);
 
         Storage.getKeyValue("settings.orientation", window.settingLoaded);
-        //Storage.getKeyValue("settings.iconset", window.settingLoaded);
         Storage.getKeyValue("settings.mapprovider", window.settingLoaded);
+        Storage.getKeyValue("settings.checkupdates", window.settingLoaded);
     }
 
     onHeightChanged: {
@@ -127,7 +153,7 @@ Rectangle {
         notificationsList.state = "hidden";
         settings.state = "hidden";
         photoShareDialog.state = "hidden";
-        shoutDialog.state = "hidden";
+        //shoutDialog.state = "hidden";
         commentDialog.state = "hidden";
         checkinDialog.state = "hidden";
         tipDialog.state = "hidden";
@@ -511,20 +537,16 @@ Rectangle {
             onOrientationChanged: {
                 window.settingChanged("settings.orientation",type);
             }
-            /*onIconsetChanged: {
-                window.settingChanged("settings.iconset",type);
-            }*/
-            onCacheReseted: {
-                //dbg nothing here yet
+            onCheckUpdatesChanged: {
+                window.settingChanged("settings.checkupdates",type);
             }
-
             onMapProviderChanged: {
                 window.settingChanged("settings.mapprovider",type);
             }
             visible: false
         }
 
-        ShoutDialog {
+        /*ShoutDialog {
             id: shoutDialog
             width: parent.width
             state: "hidden"
@@ -538,7 +560,7 @@ Rectangle {
                 Script.addCheckin(null, realComment, true, facebook, twitter);
                 shoutDialog.state = "hidden";
             }
-        }
+        }*/
 
         CommentDialog {
             id: commentDialog
@@ -585,6 +607,10 @@ Rectangle {
                                 makepublic,facebook,twitter);
                 photoAdd.state="hidden";
             }
+        }
+
+        UpdateDialog {
+            id: updateDialog
         }
 
         Rectangle {

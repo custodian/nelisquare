@@ -1,3 +1,10 @@
+nelisquare (0.4.3) stable; urgency=low
+  * update checker implemented for developer and stable versions.
+  * photo gallery performance fix.
+  * cache size + reset option
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Tue, 23 Oct 2012 17:36:17 +0400
+
 nelisquare (0.4.2) stable; urgency=low
   * badges list for user and badge info pages added
 

@@ -36,9 +36,12 @@ Item {
     property int menuFontSize: 20
     property int menuSubFontSize: 14
 
+    property string textVersionInfo: "Version: "
+    property string textBuildInfo: "Build: "
+
     property string textHelp1: "© Design by Kim Venetvirta\n© 2012 Basil Semuonov\n© 2011 Tommi Laukkanen"
     property string textHelp2: "\nIf any problems, tweet @basil_s\n"
-    property string textHelp3: "www.nelisquare.com"
+    property string textHelp3: "http://github.com/custodian/nelisquare"
 
     property string textSplash: "Loading..."
 

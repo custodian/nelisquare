@@ -1,5 +1,7 @@
 Qt.include("utils.js")
 
+var UPDATE_BASE = "http://thecust.net/nelisquare/"
+
 var API_VERSION = "20120910";
 var CLIENT_ID = "4IFSW3ZXR4BRBXT3IIZMB13YPNGSIOK4ANEM0PP3T2CQQFWI";
 var CALLBACK_URL = "http://nelisquare.substanceofcode.com/callback.php";
@@ -860,4 +862,35 @@ function approveFriend(user) {
     var url = "users/"+user+"/approve?";
     url += getAccessTokenParameter();
     doWebRequest("POST",url,"", doNothing);
+}
+
+
+function getUpdateInfo(updatetype, callback) {
+    var os = windowHelper.isMaemo() ? "maemo" : "meego";
+    var url = "http://thecust.net/nelisquare/" + os + "/build." + updatetype
+
+    var doc = new XMLHttpRequest();
+    doc.onreadystatechange = function() {
+        if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
+            var status = doc.status;
+            if(status!=200) {
+                console.log("Auto-update returned " + status + " " + doc.statusText);
+            }
+        } else if (doc.readyState == XMLHttpRequest.DONE && doc.status == 200) {
+            var contentType = doc.getResponseHeader("Content-Type");
+            var data = doc.responseText.split(";");
+            var build = data[0].split(" = ")[1].replace(/(\r\n|\n|\r|\"|\')/gm,"");
+            var version = data[1].split(" = ")[1].replace(/(\r\n|\n|\r|\"|\')/gm,"");
+            var url = UPDATE_BASE + os + "/nelisquare";
+            if (updatetype == "developer") {
+                url += "-devel.deb";
+            } else {
+                url += "_" + version + "_armel.deb"
+            }
+            callback(build,version,url);
+        }
+    }
+
+    doc.open("GET", url);
+    doc.send();
 }
