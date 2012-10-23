@@ -77,6 +77,7 @@ Rectangle {
                 font.pixelSize: theme.font.sizeDefault
                 color: theme.toolbarDarkColor
                 wrapMode: Text.WordWrap
+                visible: venueName.length>0
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {

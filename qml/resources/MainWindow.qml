@@ -28,19 +28,14 @@ Rectangle {
         }
     }
 
-    function onUpdateAvailable(build,version,url) {
+    function onUpdateAvailable(build, version, changelog, url) {
         var update = false;
-        //console.log("Current: version: " + BuildInfo.version + " build: "+ BuildInfo.build);
-        //console.log("Updated: version: " + version + " build: "+ build);
-        //console.log("Update url: " + url);
         if (checkupdates == "developer") {
             if (build > BuildInfo.build) {
-                //console.log("Update is available: " + version + " " + build);
                 update = true;
             }
         } else if (checkupdates == "stable") {
             if (version != BuildInfo.version || build != BuildInfo.build) {
-                //console.log("Stable version " + version + " is available");
                 update = true;
             }
         }
@@ -49,6 +44,7 @@ Rectangle {
             updateDialog.build = build;
             updateDialog.version = version;
             updateDialog.url = url;
+            updateDialog.changelog = changelog;
             updateDialog.state = "shown";
         }
     }
@@ -75,7 +71,7 @@ Rectangle {
             if (value == "") value = "googlemaps";
             window.mapprovider = value;
         } else if (key == "settings.checkupdates") {
-            if (value == "") value = "none";
+            if (value == "") value = "stable";
             window.checkupdates = value;
         }
     }
@@ -143,10 +139,11 @@ Rectangle {
         friendsFeed.state = "hidden";
         venuesList.state = "hidden";
         venueDetails.state = "hidden";
-        //mainmenu.state = "hidden"
         userDetails.state = "hidden";
         userBadges.state = "hidden";
         badgeInfo.state = "hidden";
+        checkinHistory.state = "hidden";
+        mayorships.state = "hidden";
         leaderBoard.state = "hidden";
         photoDetails.state = "hidden";
         photoAdd.state = "hidden";
@@ -213,16 +210,32 @@ Rectangle {
 
     function showUserBadges(user) {
         Window.pushWindow(function(){
-                        Script.loadBadges(user);
-                        window.hideAll();
-                        userBadges.state = "shown";
+                Script.loadBadges(user);
+                window.hideAll();
+                userBadges.state = "shown";
             });
     }
 
     function showBadgeInfo() {
         Window.pushWindow(function(){
-                        window.hideAll();
-                        badgeInfo.state = "shown";
+                window.hideAll();
+                badgeInfo.state = "shown";
+            });
+    }
+
+    function showUserCheckins(user) {
+        Window.pushWindow(function(){
+                Script.loadCheckinHistory(user);
+                window.hideAll();
+                checkinHistory.state = "shown";
+            });
+    }
+
+    function showUserMayorships(user) {
+        Window.pushWindow(function(){
+                Script.loadMayorships(user);
+                window.hideAll();
+                mayorships.state = "shown";
             });
     }
 
@@ -265,19 +278,6 @@ Rectangle {
             });
     }
 
-
-    ListModel {
-        id: friendsCheckinsModel
-    }
-
-    ListModel {
-        id: placesModel
-    }
-
-    ListModel {
-        id: boardModel
-    }
-
     ThemeStyle {
         id: theme
     }
@@ -310,8 +310,7 @@ Rectangle {
                 Script.loadFriendsFeedNearby();
             }
             onClicked: {
-                var checkin = friendsCheckinsModel.get(index);
-                window.showCheckinPage(checkin.id);
+                window.showCheckinPage(checkinid);
             }
         }
 
@@ -323,6 +322,9 @@ Rectangle {
 
             onVenue: {
                 window.showVenuePage(checkinDetails.owner.venueID);
+            }
+            onLike: {
+                Script.likeCheckin(checkin, state);
             }
             onUser: {
                 window.showUserPage(user);
@@ -350,8 +352,7 @@ Rectangle {
             state:  "hidden"
 
             onClicked: {
-                var venue = placesModel.get(index);
-                window.showVenuePage(venue.id);
+                window.showVenuePage(venueid);
             }
             onSearch: {
                 Script.loadPlaces(query);
@@ -391,6 +392,9 @@ Rectangle {
             }
             onShowAddPhoto: {
                 window.showAddPhotoDialog("",venueDetails.venueID);
+            }
+            onLike: {
+                Script.likeVenue(venueid,state);
             }
         }
 
@@ -450,6 +454,12 @@ Rectangle {
             onBadges: {
                 window.showUserBadges(user);
             }
+            onCheckins: {
+                window.showUserCheckins(user);
+            }
+            onMayorships: {
+                window.showUserMayorships(user);
+            }
         }
 
         BadgesPage {
@@ -470,6 +480,22 @@ Rectangle {
             id: badgeInfo
             onVenue: {
                 window.showVenuePage(venueID);
+            }
+        }
+
+        CheckinHistoryPage {
+            id: checkinHistory
+
+            onCheckin: {
+                window.showCheckinPage(id)
+            }
+        }
+
+        MayorshipsPage {
+            id: mayorships
+
+            onVenue: {
+                window.showVenuePage(id);
             }
         }
 
@@ -653,6 +679,7 @@ Rectangle {
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
                 shown: Window.windowStash.length>0
+                bar: false
                 onClicked: {
                     Window.popWindow();
                 }
@@ -663,6 +690,7 @@ Rectangle {
                 selected: friendsFeed.state == "shown"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
+                bar: false
                 onClicked: {
                     Window.clearWindows();
                     window.showFriendsFeed();
@@ -674,6 +702,7 @@ Rectangle {
                 selected: venuesList.state == "shown"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
+                bar: false
                 onClicked: {
                     window.showVenueList("");
                 }
@@ -683,16 +712,18 @@ Rectangle {
                 label: "LISTS"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
+                bar: false
                 onClicked: {
                     window.showVenueList("todolist");
                 }
             }
 
             ToolbarTextButton {
-                label: "MYSELF"
+                label: "ME"
                 selected: userDetails.state == "shown" && userDetails.userRelationship == "self"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
+                bar: false
                 onClicked: {
                     window.showUserPage("self");
                 }

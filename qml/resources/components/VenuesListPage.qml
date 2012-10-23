@@ -2,8 +2,11 @@ import Qt 4.7
 
 Rectangle {
     id: venuesList
-    signal clicked(int index)
+    signal clicked(string venueid)
     signal search(string query)
+
+    property alias placesModel: placesModel
+
     width: parent.width
     color: "#eee"
     state: "hidden"
@@ -11,6 +14,10 @@ Rectangle {
     function hideKeyboard() {
         searchText.closeSoftwareInputPanel();
         window.focus = true;
+    }
+
+    ListModel {
+        id: placesModel
     }
 
     MouseArea {
@@ -216,7 +223,7 @@ Rectangle {
                 id: mouseArea
                 anchors.fill: parent
                 onClicked: {
-                    venuesList.clicked( index );
+                    venuesList.clicked( model.id );
                 }
             }
 

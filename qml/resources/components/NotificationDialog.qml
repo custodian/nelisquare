@@ -4,7 +4,7 @@ Rectangle {
     id: notification
     width: parent.width
     height: items.height + 50
-    color: theme.toolbarLightColor
+    color: theme.notificationBackground
     property string message: ""
     property string objectType: ""
     property string objectID: ""

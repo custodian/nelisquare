@@ -40,7 +40,7 @@ Rectangle {
 
         Rectangle {
             id: checkinShoutBox
-            height: 100
+            height: 130
             width: parent.width
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "#ccc" }
@@ -52,39 +52,61 @@ Rectangle {
             border.color: "#aaa"
             smooth: true
 
-            TextEdit {
-                id: shoutText
-                wrapMode: TextEdit.Wrap
-                text: theme.textDefaultComment
-                textFormat: TextEdit.PlainText
-                width: parent.width - 10
-                height: parent.height - 10
-                x: 5
-                y: 5
-                color: "#111"
-                font.pixelSize: 24
+            /*Flickable{
+                id: flickableArea
+                width: parent.width
+                height: parent.height
+                contentWidth: parent.width
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        shoutText.focus = true;
-                        if(shoutText.text==theme.textDefaultComment) {
-                            shoutText.text = "";
+                clip: true
+                flickableDirection: Flickable.VerticalFlick
+                boundsBehavior: Flickable.StopAtBounds
+                pressDelay: 100*/
+
+                TextEdit {
+                    id: shoutText
+                    wrapMode: TextEdit.Wrap
+                    text: theme.textDefaultComment
+                    textFormat: TextEdit.PlainText
+                    width: parent.width - 10
+                    height: parent.height - 10
+                    x: 5
+                    y: 5
+                    color: theme.textColor
+                    font.pixelSize: 24
+
+                    onTextChanged: {
+                        if (text.length > 130) {
+                            color = theme.textColorAlarm;
+                            if (text.length > 140) {
+                                text = text.substring(0,140);
+                                cursorPosition = 140;
+                            }
+                        } else {
+                            color = theme.textColor;
                         }
-                        if (shoutText.text != "") {
-                            shoutText.cursorPosition = shoutText.positionAt(mouseX,mouseY);
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            shoutText.focus = true;
+                            if(shoutText.text==theme.textDefaultComment) {
+                                shoutText.text = "";
+                            }
+                            if (shoutText.text != "") {
+                                shoutText.cursorPosition = shoutText.positionAt(mouseX,mouseY);
+                            }
                         }
                     }
                 }
-            }
+            /*}*/
         }
 
         Rectangle {
             width: parent.width
             color: theme.toolbarDarkColor
-            //border.color: "#2774aA"
-            //border.width: 1
-            height: 10 + twitterRow.y + twitterRow.height
+            height: 10 + friendsRow.y + friendsRow.height
             radius: 5
             smooth: true
 
@@ -99,8 +121,7 @@ Rectangle {
                 Rectangle {
                     border.width: 1
                     border.color: "#444"
-                    color: friendsMouseArea.pressed ? "#555" : "#111"
-                    //radius: 5
+                    color: friendsMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                     width: 42
                     height: 42
 
@@ -120,28 +141,17 @@ Rectangle {
                 }
 
                 Text {
-                    text: "Share with friends"
-                    width: parent.width - 128
+                    text: "Friends"
                     wrapMode: Text.Wrap
-                    font.pixelSize: 22
+                    font.pixelSize: theme.font.sizeSigns
                     anchors.verticalCenter: parent.verticalCenter
-                    color: "#fff"
+                    color: theme.textColorSign
                 }
-            }
-
-            Row {
-                id: facebookRow
-                y: 20 + 42
-                x: 10
-                spacing: 10
-                width: parent.width - 64
-                height: 42
 
                 Rectangle {
                     border.width: 1
                     border.color: "#444"
-                    color: facebookMouseArea.pressed ? "#555" : "#111"
-                    //radius: 5
+                    color: facebookMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                     width: 42
                     height: 42
 
@@ -161,28 +171,18 @@ Rectangle {
                 }
 
                 Text {
-                    text: "Share with Facebook"
-                    width: parent.width - 128
+                    text: "Facebook"
                     wrapMode: Text.Wrap
-                    font.pixelSize: 22
+                    font.pixelSize: theme.font.sizeSigns
                     anchors.verticalCenter: parent.verticalCenter
-                    color: "#fff"
+                    color: theme.textColorSign
                 }
-            }
 
-            Row {
-                y: 30 + 42*2
-                x: 10
-                id: twitterRow
-                spacing: 10
-                width: parent.width - 64
-                height: 42
 
                 Rectangle {
                     border.width: 1
                     border.color: "#444"
-                    color: twitterMouseArea.pressed ? "#555" : "#111"
-                    //radius: 5
+                    color: twitterMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                     width: 42
                     height: 42
 
@@ -202,12 +202,11 @@ Rectangle {
                 }
 
                 Text {
-                    text: "Share with Twitter"
-                    width: parent.width - 128
+                    text: "Twitter"
                     wrapMode: Text.Wrap
-                    font.pixelSize: 22
+                    font.pixelSize: theme.font.sizeSigns
                     anchors.verticalCenter: parent.verticalCenter
-                    color: "#fff"
+                    color: theme.textColorSign
                 }
             }
         }

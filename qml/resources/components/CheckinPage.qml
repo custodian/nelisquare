@@ -1,6 +1,7 @@
 import Qt 4.7
 
 Rectangle {
+    signal like(string checkin, bool state)
     signal venue()
     signal user(string user)
     signal photo(string photo)
@@ -16,8 +17,11 @@ Rectangle {
     state: "hidden"
 
     property string checkinID: ""
+
     property alias scoreTotal: scoreTotal.text
     property alias owner: checkinOwner
+
+    property alias likeBox: likeBox
 
     property alias scoresModel: scoresModel
     property alias badgesModel: badgesModel
@@ -62,7 +66,7 @@ Rectangle {
 
         Column {
             onHeightChanged: {
-                flickableArea.contentHeight = height;
+                flickableArea.contentHeight = height + scoreBackground.height - scoreBackground.y;
             }
 
             id: columnView
@@ -115,9 +119,12 @@ Rectangle {
                 }
             }
 
-            Text {
-                id: likeArea
-                text:  "Here will be Like / Unlike"
+            LikeBox {
+                id: likeBox
+
+                onLike: {
+                    checkin.like(checkin.checkinID,state);
+                }
             }
 
             GreenLine {

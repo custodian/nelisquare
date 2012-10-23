@@ -9,6 +9,7 @@ Rectangle {
     property string version: ""
     property string build: ""
     property string url: ""
+    property string changelog: ""
 
     Column {
         id: items
@@ -25,22 +26,36 @@ Rectangle {
         }
 
         Text {
-            text: "Type: " + window.checkupdates;
-            width: parent.width
-            font.pixelSize: theme.font.sizeDefault
-            color: theme.textColorSign
-        }
-        Text {
             text: "Version: " + update.version;
             width: parent.width
             font.pixelSize: theme.font.sizeDefault
             color: theme.textColorSign
         }
-        Text {
-            text: "Build: " + update.build;
+
+        Row {
             width: parent.width
-            font.pixelSize: theme.font.sizeDefault
+            spacing: 20
+
+            Text {
+                text: "Type: " + window.checkupdates;
+                //width: parent.width
+                font.pixelSize: theme.font.sizeDefault
+                color: theme.textColorSign
+            }
+            Text {
+                text: "Build: " + update.build;
+                //width: parent.width
+                font.pixelSize: theme.font.sizeDefault
+                color: theme.textColorSign
+            }
+        }
+
+        Text {
+            text: "Changelog: \n" + update.changelog;
+            width: parent.width
+            font.pixelSize: theme.font.sizeSigns
             color: theme.textColorSign
+            visible: update.changelog.length>0
         }
 
         Item {

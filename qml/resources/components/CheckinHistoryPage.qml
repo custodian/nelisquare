@@ -1,24 +1,16 @@
 import Qt 4.7
 
 Rectangle {
-    id: friendsFeed
-    signal clicked(string checkinid)
-    signal shout()
-    signal nearby()
-    signal recent()
-
-    property bool recentPressed: true
-    property bool nearbyPressed: false
-
-    property alias friendsCheckinsModel: friendsCheckinsModel
-
+    id: checkinHistory
+    signal checkin(string id)
+    property alias checkinHistoryModel: checkinHistoryModel
     width: parent.width
     height: parent.height
     color: "#eee"
     state: "hidden"
 
     ListModel {
-        id: friendsCheckinsModel
+        id: checkinHistoryModel
     }
 
     MouseArea {
@@ -27,62 +19,25 @@ Rectangle {
     }
 
     ListView {
-        model: friendsCheckinsModel
+        model: checkinHistoryModel
         width: parent.width
         height: parent.height - y
-        delegate: friendsFeedDelegate
+        delegate: checkinHistoryDelegate
         highlightFollowsCurrentItem: true
         clip: true
 
-        header: Column{
-            width: parent.width
-            Rectangle {
-                width: parent.width
-                height: 100
-                color: theme.toolbarDarkColor
-
-                BlueButton {
-                    label: "RECENT"
-                    y: 30
-                    x: 10
-                    width:  parent.width/2-15
-                    height: 50
-                    pressed: friendsFeed.recentPressed
-                    onClicked: {
-                        if(friendsFeed.recentPressed==false) {
-                            friendsFeed.recent();
-                        }
-                    }
-                }
-                BlueButton {
-                    label: "NEARBY"
-                    y: 30
-                    x: parent.width/2+5
-                    width: parent.width/2-15
-                    height: 50
-                    pressed: friendsFeed.nearbyPressed
-                    onClicked: {
-                        if(friendsFeed.nearbyPressed==false) {
-                            friendsFeed.nearby();
-                        }
-                    }
-                }
-            }
-            Rectangle {
-                width: parent.width
-                height: 10
-                gradient: theme.gradientGreen
-            }
+        header: GreenLine{
+            height: 30
+            text: "CHECKIN HISTORY"
         }
     }
 
     Component {
-        id: friendsFeedDelegate
+        id: checkinHistoryDelegate
 
         EventBox {
             activeWhole: true
 
-            userName: model.user
             userShout: model.shout
             userMayor: model.mayor
             venueName: model.venueName
@@ -95,7 +50,7 @@ Rectangle {
             }
 
             onAreaClicked: {
-                friendsFeed.clicked( model.id );
+                checkinHistory.checkin( model.id );
             }
         }
     }
@@ -104,21 +59,21 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: friendsFeed
+                target: checkinHistory
                 x: parent.width
             }
         },
         State {
             name: "hiddenLeft"
             PropertyChanges {
-                target: friendsFeed
+                target: checkinHistory
                 x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: friendsFeed
+                target: checkinHistory
                 x: 0
             }
         }
@@ -129,13 +84,13 @@ Rectangle {
             from: "shown"
             SequentialAnimation {
                 PropertyAnimation {
-                    target: friendsFeed
+                    target: checkinHistory
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"
                 }                
                 PropertyAction {
-                    target: friendsFeed
+                    target: checkinHistory
                     properties: "visible"
                     value: false
                 }
@@ -145,12 +100,12 @@ Rectangle {
             to: "shown"
             SequentialAnimation {
                 PropertyAction {
-                    target: friendsFeed
+                    target: checkinHistory
                     properties: "visible"
                     value: true
                 }
                 PropertyAnimation {
-                    target: friendsFeed
+                    target: checkinHistory
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"

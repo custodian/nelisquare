@@ -9,6 +9,7 @@ Rectangle {
     signal showAddPhoto()
     signal user(string user)
     signal photo(string photo)
+    signal like(string venueid, bool state)
 
     width: parent.width
     color: "#eee"
@@ -33,6 +34,7 @@ Rectangle {
     property alias tipsModel: tipsModel
     property alias photosBox: photosBox
     property alias usersBox: usersBox
+    property alias likeBox: likeBox
 
     function loadMapImage() {
         venueDetails.venueMapUrl = Utils.createMapUrl(venueMapLat,venueMapLng,venueMapZoom);
@@ -196,6 +198,16 @@ Rectangle {
                             onUserClicked: {
                                 place.user(venueMajorID);
                             }
+                        }
+                    }
+
+                    LikeBox {
+                        id: likeBox
+                        x: 10
+                        width: parent.width - 20
+
+                        onLike: {
+                            place.like(place.venueID, state);
                         }
                     }
 

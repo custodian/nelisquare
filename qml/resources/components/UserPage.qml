@@ -3,10 +3,15 @@ import Qt 4.7
 Rectangle {
     signal openLeaderBoard()
     signal user(string user)
-    signal badges(string user)
+
     signal addFriend(string user)
     signal removeFriend(string user)
     signal approveFriend(string user)
+
+    signal badges(string user)
+    signal checkins(string user)
+    signal mayorships(string user)
+
 
     id: details
     width: parent.width
@@ -56,7 +61,7 @@ Rectangle {
 
         Column {
             onHeightChanged: {
-                flickableArea.contentHeight = height;
+                flickableArea.contentHeight = height + y + spacing;
             }
 
             width: parent.width - 20
@@ -220,7 +225,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: "#ddd"
+                        color: theme.textColorSign
                         font.pixelSize: 20
                         text: details.userBadgesCount + " " + "Badges"
                     }
@@ -243,19 +248,28 @@ Rectangle {
                     smooth: true
                     radius: 5
 
-                    Text {
+                    Image {
+                        y: 10
+                        width: 64
+                        height: 64
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/bender.png")
                         anchors.horizontalCenter: parent.horizontalCenter
-                        y: 20
-                        color: "#fff"
-                        font.pixelSize: 50
-                        text: details.userCheckinsCount
                     }
+
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: "#ddd"
+                        color: theme.textColorSign
                         font.pixelSize: 20
-                        text: "Checkins"
+                        text: details.userCheckinsCount + " " + "Checkins"
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            if (userRelationship == "self") {
+                                details.checkins(userID);
+                            }
+                        }
                     }
                 }
 
@@ -269,19 +283,26 @@ Rectangle {
                     smooth: true
                     radius: 5
 
-                    Text {
+                    Image {
+                        y: 10
+                        width: 64
+                        height: 64
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/supermayor.png")
                         anchors.horizontalCenter: parent.horizontalCenter
-                        y: 20
-                        color: "#fff"
-                        font.pixelSize: 50
-                        text: details.userMayorshipsCount
                     }
+
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: "#ddd"
+                        color: theme.textColorSign
                         font.pixelSize: 20
-                        text: "Mayorships"
+                        text: details.userMayorshipsCount + " " + "Mayorships"
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            details.mayorships(userID);
+                        }
                     }
                 }
             }
@@ -314,7 +335,6 @@ Rectangle {
 
             userName: model.user
             userShout: model.shout
-            //createdAt: model.createdAt
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo

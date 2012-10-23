@@ -5,6 +5,8 @@ Item {
     property string label: ""
     property bool selected: false
     property bool shown: true
+    property bool bar: true
+
     property string colorActive: theme.textColorButton
     property string colorInactive: theme.textColorButtonInactive
     signal clicked()
@@ -22,7 +24,7 @@ Item {
             anchors.centerIn: parent
             color: selected ? colorActive : colorInactive
             font.pixelSize: theme.font.sizeToolbar
-            font.family: "Nokia Pure"//theme.font.name
+            font.family: "Nokia Pure" //theme.font.name
             font.bold: true
         }
 
@@ -31,7 +33,7 @@ Item {
             width: parent.width
             height: 6
             color: theme.toolbarLightColor
-            visible: selected
+            visible: selected && bar
         }
 
         visible: shown

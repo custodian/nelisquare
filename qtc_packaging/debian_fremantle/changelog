@@ -1,3 +1,11 @@
+nelisquare (0.4.4) stable; urgency=low
+  * likes on checkins, venues added
+  * user mayorships, checkins lists added
+  * changelog message at update dialog
+  * bug fixes, layout updates.
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Tue, 23 Oct 2012 22:08:08 +0400
+
 nelisquare (0.4.3) stable; urgency=low
   * update checker implemented for developer and stable versions.
   * photo gallery performance fix.

@@ -4,6 +4,9 @@ Rectangle {
     id: leaderBoard
     signal user( string user )
     property string rank: ""
+
+    property alias boardModel: boardModel
+
     width: parent.width
     color: "#eee"
     state: "hidden"
@@ -11,6 +14,10 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: { }
+    }
+
+    ListModel {
+        id: boardModel
     }
 
     ListView {

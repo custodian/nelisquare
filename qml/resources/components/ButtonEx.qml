@@ -8,7 +8,6 @@ Rectangle {
     property string pic: ""
     property int imageSize: 48
     signal clicked()
-    //radius: 6
 
     smooth: true
     border.color: mouse.pressed ? "#666" : "#999"

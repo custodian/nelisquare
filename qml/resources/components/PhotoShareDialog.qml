@@ -70,7 +70,7 @@ Rectangle {
                     Rectangle {
                         border.width: 1
                         border.color: "#444"
-                        color: friendsMouseArea.pressed ? "#555" : "#111"
+                        color: friendsMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                         radius: 5
                         width: 42
                         height: 42
@@ -110,7 +110,7 @@ Rectangle {
                     Rectangle {
                         border.width: 1
                         border.color: "#444"
-                        color: facebookMouseArea.pressed ? "#555" : "#111"
+                        color: facebookMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                         radius: 5
                         width: 42
                         height: 42
@@ -151,7 +151,7 @@ Rectangle {
                     Rectangle {
                         border.width: 1
                         border.color: "#444"
-                        color: twitterMouseArea.pressed ? "#555" : "#111"
+                        color: twitterMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                         radius: 5
                         width: 42
                         height: 42

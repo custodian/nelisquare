@@ -1,5 +1,7 @@
 Qt.include("utils.js")
 
+var MAX_NEARBY_DISTANCE = 100000; //100km
+
 var UPDATE_BASE = "http://thecust.net/nelisquare/"
 
 var API_VERSION = "20120910";
@@ -132,7 +134,7 @@ function showDone(data) {
     }
     waiting.hide();
     done.status = "";
-    if(typeof(data)!="undefined" && data!=null) {
+    if(data!==undefined && data!=null) {
         if(action=="read") {
             done.status = "Marked as read " + data;
         } else if(action=="unread") {
@@ -187,7 +189,7 @@ function processResponse(response) {
         showError("ErrorType: " + meta.errorType + "\n" + meta.errorDetail);
     }
     var notifications = data.notifications;
-    if (typeof(notifications)!="undefined"){
+    if (notifications!==undefined){
         notifications.forEach(function(notification) {
                 if (parse(notification.type) == "notificationTray") {
                     window.updateNotificationCount(notification.item.unreadCount);
@@ -228,6 +230,19 @@ function addCommentToModel(comment) {
                          });
 }
 
+function processLikes(likebox, data) {
+    if (data.like!==undefined) {
+        likebox.mylike = data.like;
+    }
+    if (data.dislike!==undefined) {
+        likebox.mydislike = data.dislike;
+    }
+    likebox.likes = data.likes.count;
+    if (data.likes.count > 0) {
+        likebox.likeText = data.likes.summary;
+    }
+}
+
 function loadFriendsFeed() {
     var url = "checkins/recent?" + getAccessTokenParameter();
     doWebRequest("GET", url, "", parseFriendsFeed);
@@ -244,38 +259,42 @@ function loadFriendsFeedNearby() {
 function parseFriendsFeed(response) {
     var data = processResponse(response);
     var count = 0;
-    friendsCheckinsModel.clear();
+    friendsFeed.friendsCheckinsModel.clear();
     data.recent.forEach(function(checkin) {
         //console.log("FRIEND CHECKIN: " + JSON.stringify(checkin));
         var userName = makeUserName(checkin.user);
         var createdAgo = makeTime(checkin.createdAt);
         var venueName = "";
         var venueID = "";
-        if(typeof(checkin.venue)!="undefined") {
+        var venueDistance = undefined;
+        if(checkin.venue!==undefined) {
             venueName = checkin.venue.name;
             venueID = checkin.venue.id;
+            venueDistance = checkin.venue.location.distance;
         }
-        var likes = 0;
-        if (typeof(checkin.comments)!="undefined") {
-            likes = parse(checkin.comments.count);
+        var commentsCount = 0;
+        if (checkin.comments!==undefined) {
+            commentsCount = parse(checkin.comments.count);
         }
         var venuePhoto = "";
         if (checkin.photos.count > 0) {
             venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
         }
-        friendsCheckinsModel.append({
-                           "id": checkin.id,
-                           "shout": parse(checkin.shout),
-                           "user": userName,
-                           "userID": checkin.user.id,
-                           "mayor": parse(checkin.isMayor),
-                           "photo": thumbnailPhoto(checkin.user.photo, 100),
-                           "likes": likes,
-                           "venueID": venueID,
-                           "venueName": venueName,
-                           "createdAt": createdAgo,
-                           "venuePhoto": venuePhoto
-        });
+        if (venueDistance === undefined || venueDistance < MAX_NEARBY_DISTANCE) {
+            friendsFeed.friendsCheckinsModel.append({
+                               "id": checkin.id,
+                               "shout": parse(checkin.shout),
+                               "user": userName,
+                               "userID": checkin.user.id,
+                               "mayor": parse(checkin.isMayor),
+                               "photo": thumbnailPhoto(checkin.user.photo, 100),
+                               "commentsCount": commentsCount,
+                               "venueID": venueID,
+                               "venueName": venueName,
+                               "createdAt": createdAgo,
+                               "venuePhoto": venuePhoto
+            });
+        }
         count++;
     });
     waiting.hide();
@@ -309,7 +328,7 @@ function parseIcon(icon, size) {
 }
 
 function parse(item) {
-    if(typeof(item)!="undefined") {
+    if(item!==undefined) {
         return item;
     } else {
         return "";
@@ -319,15 +338,15 @@ function parse(item) {
 function parsePlaces(response) {
     var data = processResponse(response);
     var count = 0;
-    placesModel.clear();
+    venuesList.placesModel.clear();
     waiting.hide();
     data.venues.forEach(function(place) {
         //console.log("PLACE: " + JSON.stringify(place));
         var icon = "";
-        if(place.categories!=null && typeof(place.categories[0])!="undefined") {
+        if(place.categories!=null && place.categories[0]!==undefined) {
             icon = parseIcon(place.categories[0].icon);
         }
-        placesModel.append({
+        venuesList.placesModel.append({
                            "id": place.id,
                            "name": place.name,
                            "todoComment": "",
@@ -344,6 +363,25 @@ function parsePlaces(response) {
     if(count==0) {
         showDone("No visible places");
     }
+}
+
+function likeVenue(id, state) {
+    //console.log("LIKE VENUE: " + id + " STATE: " + state);
+    var url = "venues/"+id+"/like?set="
+    if (state) {
+        url += "1";
+    } else {
+        url += "0";
+    }
+    url += "&" + getAccessTokenParameter();
+    doWebRequest("POST", url, "", parseLikeVenue);
+}
+
+function parseLikeVenue(response) {
+    //console.log("LIKE RESPONSE: " + JSON.stringify(response));
+    var data = processResponse(response);
+
+    processLikes(venueDetails.likeBox, data);
 }
 
 function loadVenue(venueID) {
@@ -369,7 +407,7 @@ function parseVenue(response) {
     waiting.hide();
     var venue = data.venue;
     var icon = "";
-    if(venue.categories!=null && typeof(venue.categories[0])!="undefined") {
+    if(venue.categories!=null && venue.categories[0]!==undefined) {
         icon = venue.categories[0].icon;
     }
     venueDetails.venueID = venue.id;
@@ -382,11 +420,17 @@ function parseVenue(response) {
         venueDetails.venueMajor = makeUserName(venue.mayor.user);
         venueDetails.venueMajorPhoto = thumbnailPhoto(venue.mayor.user.photo,100);
         venueDetails.venueMajorID = venue.mayor.user.id;
+    } else {
+        venueDetails.venueMajor = "";
+        venueDetails.venueMajorPhoto = "";
+        venueDetails.venueMajorID = "";
     }
-    if(typeof(venue.location)!="undefined") {
+    if(venue.location!==undefined) {
         venueDetails.venueMapLat = venue.location.lat;
         venueDetails.venueMapLng = venue.location.lng;
     }
+    // parse likes
+    processLikes(venueDetails.likeBox, venue);
 
     // Parse venue tips
     venueDetails.tipsModel.clear();
@@ -483,7 +527,7 @@ function addCheckin(venueID, comment, friends, facebook, twitter) {
     if(venueID!=null) {
         url += "venueId=" + venueID;
     }
-    if(typeof(comment)!="undefined" && comment!=null && comment.length>0) {
+    if(comment!==undefined && comment!=null && comment.length>0) {
         url += "&shout=" + encodeURIComponent(comment);
     }
     var broadcast = "private";
@@ -513,9 +557,13 @@ function parseAddCheckin(response) {
         //console.log("NOTIFICATION: "+ JSON.stringify(noti));
         if(noti.item.message!==undefined) {
             if(notificationDialog.message.length>6) {
-                notificationDialog.message += "<br/><br/>"
+                notificationDialog.message += "<br/><br/>";
             }
             notificationDialog.message += noti.item.message;
+            if (noti.type == "tip") {
+                notificationDialog.message += "<br/>" + noti.item.tip.text;
+            }
+            //TODO: add specials support info
         }
     });
     notificationDialog.message += "</span>";
@@ -532,9 +580,9 @@ function loadLeaderBoard() {
 function parseLeaderBoard(response) {
     waiting.hide();
     var data = eval("[" + response + "]")[0];
-    boardModel.clear();
+    leaderBoard.boardModel.clear();
     data.response.leaderboard.items.forEach(function(ranking) {
-        boardModel.append({
+        leaderBoard.boardModel.append({
                            "id": ranking.user.id,
                            "name": makeUserName(ranking.user),
                            "photo": thumbnailPhoto(ranking.user.photo,100),
@@ -560,14 +608,14 @@ function loadToDo() {
 function parseToDo(response) {
     waiting.hide();
     var data = eval("[" + response + "]")[0];
-    placesModel.clear();
+    venuesList.placesModel.clear();
     data.response.todos.items.forEach(function(todo) {
         var place = todo.tip.venue;
         var icon = "";
-        if(place.categories!=null && typeof(place.categories[0])!="undefined") {
+        if(place.categories!=null && place.categories[0]!==undefined) {
             icon = parseIcon(place.categories[0].icon);
         }
-        placesModel.append({
+        venuesList.placesModel.append({
                            "id": place.id,
                            "name": place.name,
                            "todoComment": todo.tip.text,
@@ -580,6 +628,25 @@ function parseToDo(response) {
                            "hereNow": ""
         });
     });
+}
+
+function likeCheckin(id, state) {
+    //console.log("ID: " + id + " State: " + state);
+    var url = "checkins/"+id+"/like?set="
+    if (state) {
+        url += "1";
+    } else {
+        url += "0";
+    }
+    url += "&" + getAccessTokenParameter();
+    doWebRequest("POST", url, "", parseLikeCheckin);
+}
+
+function parseLikeCheckin(response) {
+    //console.log("LIKE RESPONSE: " + JSON.stringify(response));
+    var data = processResponse(response);
+
+    processLikes(checkinDetails.likeBox, data);
 }
 
 function loadCheckin(id) {
@@ -623,7 +690,7 @@ function parseCheckin(response) {
                                "scoreMessage": score.message,
                     });
     });
-    if(typeof(checkin.badges)!="undefined") {
+    if(checkin.badges!==undefined) {
         checkin.badges.items.forEach(function(badge) {
             //console.log("CHECKIN BADGE: " + JSON.stringify(badge));
             checkinDetails.badgesModel.append({
@@ -643,7 +710,81 @@ function parseCheckin(response) {
         });
     }
 
+    processLikes(checkinDetails.likeBox, checkin);
+
     waiting.hide();
+}
+
+function loadMayorships(user) {
+    var url = "users/"+user + "/mayorships?" + getAccessTokenParameter();
+    waiting.show();
+    mayorships.mayorshipsModel.clear();
+    doWebRequest("GET", url, "", parseMayorhips);
+}
+
+function parseMayorhips(response) {
+    var data = processResponse(response);
+    waiting.hide();
+    mayorships.mayorshipsModel.clear();
+    data.mayorships.items.forEach(function(mayorship){
+        var place = mayorship.venue;
+        var icon = "";
+        if(place.categories!=null && place.categories[0]!==undefined) {
+            icon = parseIcon(place.categories[0].icon);
+        }
+        mayorships.mayorshipsModel.append({
+            "id": place.id,
+            "name": place.name,
+            "address": parse(place.location.address),
+            "city": parse(place.location.city),
+            "lat": place.location.lat,
+            "lng": place.location.lng,
+            "icon": icon,
+            "hereNow": ""
+        });
+    });
+}
+
+function loadCheckinHistory(user) {
+    var url = "users/" + user + "/checkins?limit=50&set=newestfirst&" + getAccessTokenParameter();
+    waiting.show();
+    checkinHistory.checkinHistoryModel.clear();
+    doWebRequest("GET", url, "", parseCheckinHistory);
+}
+
+function parseCheckinHistory(response) {
+    var data = processResponse(response);
+    waiting.hide();
+    checkinHistory.checkinHistoryModel.clear();
+    data.checkins.items.forEach(function(checkin) {
+        //console.log("USER CHECKIN: " + JSON.stringify(checkin));
+        var createdAgo = makeTime(checkin.createdAt);
+        var venueName = "";
+        var venueID = "";
+        if(checkin.venue!==undefined) {
+            venueName = checkin.venue.name;
+            venueID = checkin.venue.id;
+        }
+        var commentsCount = 0;
+        if (checkin.comments!==undefined) {
+            commentsCount = parse(checkin.comments.count);
+        }
+        var venuePhoto = "";
+        if (checkin.photos.count > 0) {
+            venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
+        }
+        checkinHistory.checkinHistoryModel.append({
+                           "id": checkin.id,
+                           "shout": parse(checkin.shout),
+                           "mayor": parse(checkin.isMayor),
+                           "photo": parseIcon(checkin.venue.categories[0].icon),
+                           "commentsCount": commentsCount,
+                           "venueID": venueID,
+                           "venueName": venueName,
+                           "createdAt": createdAgo,
+                           "venuePhoto": venuePhoto
+        });
+    });
 }
 
 function loadBadges(user) {
@@ -660,13 +801,14 @@ function parseBadges(response) {
          if (group.type == "all") {
              group.items.forEach(function(item){
                  var badge = data.badges[item];
+                 var venue = parse(badge.unlocks[0].checkins[0].venue);
                  userBadges.badgeModel.append({
                     "name":badge.name,
                     "image":makeImageUrl(badge.image,114),
                     "imageLarge":makeImageUrl(badge.image,300),
                     "info":badge.badgeText,
-                    "venueName":badge.unlocks[0].checkins[0].venue.name,
-                    "venueID":badge.unlocks[0].checkins[0].venue.id,
+                    "venueName":parse(venue.name),
+                    "venueID":parse(venue.id),
                     "time":prettyDate(badge.unlocks[0].checkins[0].createdAt),
                      });
              });
@@ -700,7 +842,7 @@ function parseUser(response) {
     userDetails.userMayorshipsCount = user.mayorships.count;
     var lastVenue = "";
     var lastTime = "";
-    if(typeof(user.checkins.items)!="undefined") {
+    if(user.checkins.items!==undefined) {
         lastVenue = user.checkins.items[0].venue.name;
         lastTime = makeTime(user.checkins.items[0].createdAt);
     }
@@ -714,7 +856,7 @@ function parseUser(response) {
     if (user.friends.count>0) {
         userDetails.friendsBox.caption = "TOTAL FRIENDS: <b>" + user.friends.count +"</b>";
         user.friends.groups.forEach(function(group) {
-            if (group.type == "friends") {
+            if (group.type == "friends" && user.relationship != "self" ) {
                 userDetails.friendsBox.caption += " ("+ group.name + " <b>" + group.count + "</b>)";
             }
             if (group.count>0) {
@@ -881,13 +1023,18 @@ function getUpdateInfo(updatetype, callback) {
             var data = doc.responseText.split(";");
             var build = data[0].split(" = ")[1].replace(/(\r\n|\n|\r|\"|\')/gm,"");
             var version = data[1].split(" = ")[1].replace(/(\r\n|\n|\r|\"|\')/gm,"");
+            var changelog = "";
+            if (data[2] !== undefined) {
+                changelog = data[2].split(" = ")[1].replace(/(\r\n|\n|\r|\"|\')/gm,"");
+                changelog = changelog.replace(/  - /g,'\n - ');
+            }
             var url = UPDATE_BASE + os + "/nelisquare";
             if (updatetype == "developer") {
                 url += "-devel.deb";
             } else {
                 url += "_" + version + "_armel.deb"
             }
-            callback(build,version,url);
+            callback(build,version,changelog,url);
         }
     }
 

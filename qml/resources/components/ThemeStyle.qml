@@ -2,20 +2,28 @@ import QtQuick 1.1
 
 Item {
     id: theme
-    property string backGroundColor: "#e8e3dc" //#EEEEEE"
-    property string textColor: "#222"
+
+    property string textColor: "#111"
+    property string textColorAlarm: "red"
+
+    property string notificationBackground: "#18659c"
+
+    property string checktapBackground: "#05416d"
+    property string checktapBackgroundActive: "#555"
+
+    property string backGroundColor: "#e8e3dc"
     property string toolbarDarkColor: "#17649A"
-    property string toolbarLightColor: "#40B3DF" // 40B3DF
+    property string toolbarLightColor: "#40B3DF"
     property string buttonColor: "#A8CB17"
-    property string highlightColor: "#8fd400" //green
+    property string highlightColor: "#8fd400"
     property string menuSeparator: "#ccc"
     property string menuActiveBGColor: "#ccc"
     property string menuInactiveBGColor: "#dedfdf"
 
-    property string textColorButton: "#00aad2" // white
-    property string textColorButtonInactive: "#938b82" //"gray"
+    property string textColorButton: "#35a7d9"
+    property string textColorButtonInactive: "#8e857c"
 
-    property string textColorButtonMenu: "white"
+    property string textColorButtonMenu: "#33b5e5"
     property string textColorButtonMenuInactive: "gray"
 
     property string textColorSign: "white"
