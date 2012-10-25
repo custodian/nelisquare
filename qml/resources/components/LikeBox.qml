@@ -23,9 +23,10 @@ Item {
 
         Image {
             y: 10
-            width: 48
-            height: 48
+            //width: 48
+            //height: 48
             smooth: true
+            asynchronous: true
             source: (likeBox.mylike)?"../pics/heart.png":"../pics/heart_broken.png"
 
             MouseArea {

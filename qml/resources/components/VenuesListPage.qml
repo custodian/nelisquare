@@ -8,7 +8,8 @@ Rectangle {
     property alias placesModel: placesModel
 
     width: parent.width
-    color: "#eee"
+    height: parent.height
+    color: theme.backgroundMain
     state: "hidden"
 
     function hideKeyboard() {
@@ -26,13 +27,15 @@ Rectangle {
     }
 
     ListView {
-        model: placesModel
+        y: 110
         width: parent.width
         height: parent.height - y
-        y: 110
+        model: placesModel
         delegate: venuesListDelegate
-        highlightFollowsCurrentItem: true
+        //highlightFollowsCurrentItem: true
         clip: true
+        cacheBuffer: 400
+        spacing: 5
     }
 
     GreenLine {
@@ -40,20 +43,6 @@ Rectangle {
         height: 30
         text: "PLACES NEAR YOU"
     }
-
-    /*Rectangle {
-        width: parent.width
-        height: 1
-        color: "#eee"
-        y: 80
-    }
-
-    Rectangle {
-        width: parent.width
-        height: 1
-        color: "#888"
-        y: 109
-    }*/
 
     Rectangle {
         width: parent.width
@@ -139,7 +128,7 @@ Rectangle {
 
             Rectangle {
                 id: titleContainer
-                color: mouseArea.pressed ? "#ddd" : "#eee"
+                color: mouseArea.pressed ? "#ddd" : theme.backgroundMain
                 y: 1
                 width: parent.width
                 height: statusTextArea.height + 8 < 64 ? 64 : statusTextArea.height + 8
@@ -173,51 +162,52 @@ Rectangle {
                             font.bold: true
                             wrapMode: Text.Wrap
                         }
+                    }
+                    Text {
+                        id: todoText
+                        color: "#666"
+                        font.pixelSize: 16
+                        width: parent.width
+                        text: todoComment
+                        visible: todoComment.length>0
+                        wrapMode: Text.Wrap
+                    }
 
+                    Row {
+                        width: parent.width
+                        spacing: 10
+                        Text {
+                            id: distanceText
+                            color: "#666"
+                            font.pixelSize: 16
+                            text: distance + " meters  "
+                            wrapMode: Text.Wrap
+                        }
                         Image {
                             id: hereNowImage
                             source: "../pics/peoples.png"
                             fillMode: Image.PreserveAspectFit
-                            width: 32
+                            height: distanceText.height
                             visible: hereNow > 0
                         }
 
                         Text {
                             text: hereNow
-                            font.pixelSize: 20
+                            font.pixelSize: 16
                             visible: hereNow > 0
                         }
                     }
-
-
-                        Text {
-                            id: todoText
-                            color: "#666"
-                            font.pixelSize: 16
-                            width: parent.width
-                            text: todoComment
-                            visible: todoComment.length>0
-                            wrapMode: Text.Wrap
-                        }
-
-                        Text {
-                            id: distanceText
-                            color: "#666"
-                            font.pixelSize: 16
-                            width: parent.width
-                            text: distance + " meters"
-                            wrapMode: Text.Wrap
-                        }
                 }
             }
 
+            /* //separator
             Rectangle {
                 width:  parent.width
                 x: 4
                 y: placesItem.height - 1
                 height: 1
-                color: "#ddd"
-            }
+                color: "#ccc"
+            }*/
 
             MouseArea {
                 id: mouseArea

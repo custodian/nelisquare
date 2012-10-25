@@ -92,6 +92,7 @@ Item {
 
         ProfilePhoto {
             photoUrl: model.photoThumb
+            photoCache: false
             photoSize: photosBoxComponent.photoSize
             //photoAspect: Image.PreserveAspectCrop
             //enableMouseArea: false

@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Rectangle {
-    signal badge(string name, string image, string info, string venueName, string venueID, string time)
+    signal badge(variant params)
 
     property alias badgeModel: badgeModel
 
@@ -42,20 +42,20 @@ Rectangle {
                 MouseArea {
                     anchors.fill: badgeImage
                     onClicked: {
-                        badgesPage.badge(
-                                    model.name,
-                                    model.imageLarge,
-                                    model.info,
-                                    model.venueName,
-                                    model.venueID,
-                                    model.time);
+                        badgesPage.badge({
+                                    "name":model.name,
+                                    "image":model.imageLarge,
+                                    "info":model.info,
+                                    "venueName":model.venueName,
+                                    "venueID":model.venueID,
+                                    "time":model.time});
                     }
                 }
 
             }
             Image {
                 anchors.centerIn: parent
-                source: "../pics/loader.gif"
+                source: "../pics/loader.png"
                 visible: (badgeImage.status != Image.Ready)
             }
             Text {

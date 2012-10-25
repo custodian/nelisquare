@@ -6,7 +6,7 @@ Rectangle {
     property alias checkinHistoryModel: checkinHistoryModel
     width: parent.width
     height: parent.height
-    color: "#eee"
+    color: theme.backgroundMain
     state: "hidden"
 
     ListModel {
@@ -23,8 +23,9 @@ Rectangle {
         width: parent.width
         height: parent.height - y
         delegate: checkinHistoryDelegate
-        highlightFollowsCurrentItem: true
+        //highlightFollowsCurrentItem: true
         clip: true
+        cacheBuffer: 400
 
         header: GreenLine{
             height: 30

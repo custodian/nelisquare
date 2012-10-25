@@ -28,6 +28,7 @@ Item {
 
     property string textColorSign: "white"
     property string textColorOptions: "#635959"
+    property string textColorTimestamp: "#918980"
 
     property string blueButtonBorderColor: "#18518c"
     property string blueButtonBorderColorPressed: "#2778b3"
@@ -37,6 +38,8 @@ Item {
     property string backgroundMain: "#e8e3dc"
     property string backgroundBlueDark: "#176095"
     property string backgroundSettings: "#e8e3dc"
+
+    property string backgroundSand: "#dcd4ca"
 
     property string scoreBackgroundColor: "#c1c1c1"
     property string scoreForegroundColor: "#18659c"

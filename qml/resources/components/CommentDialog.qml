@@ -4,7 +4,7 @@ Rectangle {
     id: comment
     width: parent.width
     height: items.height + 20
-    color: theme.toolbarLightColor
+    color: theme.backgroundBlueDark
     state: "hidden"
     property string checkinID: ""
     signal cancel()
@@ -37,14 +37,13 @@ Rectangle {
 
         Rectangle {
             id: commentBox
-            height: 100
+            height: 130
             width: parent.width
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "#ccc" }
                 GradientStop { position: 0.1; color: "#fafafa" }
                 GradientStop { position: 1.0; color: "#fff" }
             }
-            radius: 5
             border.width: 1
             border.color: "#aaa"
             smooth: true

@@ -3,16 +3,17 @@ import "../js/utils.js" as Utils;
 
 Rectangle {
     id: place
-    signal checkin()
-    signal markToDo()
-    signal showAddTip()
-    signal showAddPhoto()
+    signal checkin(string venueid, string venuename)
+    signal markToDo(string venueid, string venuename)
+    signal showAddTip(string venueid, string venuename)
+    signal showAddPhoto(string venueid)
     signal user(string user)
     signal photo(string photo)
     signal like(string venueid, bool state)
 
     width: parent.width
-    color: "#eee"
+    height: parent.height
+    color: theme.backgroundMain
     state: "hidden"
 
     property string venueID: ""
@@ -37,7 +38,7 @@ Rectangle {
     property alias likeBox: likeBox
 
     function loadMapImage() {
-        venueDetails.venueMapUrl = Utils.createMapUrl(venueMapLat,venueMapLng,venueMapZoom);
+        place.venueMapUrl = Utils.createMapUrl(venueMapLat,venueMapLng,venueMapZoom);
     }
 
     onVenueMajorPhotoChanged: {
@@ -75,13 +76,13 @@ Rectangle {
                 width: parent.width
 
                 onHeightChanged: {
-                    flickableArea.contentHeight = height;
+                    flickableArea.contentHeight = height + 10;
                 }
 
                 Rectangle {
                     z: 100
                     width: parent.width
-                    height: columnCheckin.height + 10
+                    height: columnCheckin.height + 30
                     color: place.color//theme.toolbarLightColor
 
                     Column {
@@ -106,30 +107,27 @@ Rectangle {
                             anchors.horizontalCenter: parent.horizontalCenter
 
                             onClicked: {
-                                place.checkin();
+                                place.checkin(place.venueID,place.venueName);
                             }
                         }
 
                         Row {
                             width: parent.width - 20
-                            height: 50
                             anchors.horizontalCenter: parent.horizontalCenter
                             spacing: 10
 
                             BlueButton {
                                 label: "ADD TIP"
                                 width: parent.width / 3 - parent.spacing
-                                anchors.left: parent.left
                                 onClicked: {
-                                    place.showAddTip();
+                                    place.showAddTip(place.venueID,place.venueName);
                                 }
                             }
                             BlueButton {
                                 label: "ADD PHOTO"
                                 width: parent.width / 3 - parent.spacing
-                                anchors.horizontalCenter: parent.horizontalCenter
                                 onClicked: {
-                                    place.showAddPhoto()
+                                    place.showAddPhoto(place.venueID)
                                 }
                             }
 
@@ -138,14 +136,14 @@ Rectangle {
                                 width: parent.width / 3 - parent.spacing
                                 anchors.right: parent.right
                                 onClicked: {
-                                    place.markToDo();
+                                    place.markToDo(place.venueID,place.venueName);
                                 }
                             }*/
 
                             BlueButton {
                                 id: venueMapButton
-                                anchors.right: parent.right
-                                width: parent.width / 3 - parent.spacing
+                                //anchors.right: parent.right
+                                width: parent.width / 3 //- parent.spacing
                                 label: venueMapBox.visible ? "HIDE MAP" :"SHOW MAP"
                                 onClicked: {
                                     venueMapBox.visible = !venueMapBox.visible;
@@ -156,28 +154,6 @@ Rectangle {
                                 visible: venueMapLat != "" && venueMapLng != ""
                             }
                         }
-
-                        Rectangle {
-                            z:100
-                            width: parent.width
-                            height: 10
-                            color: "#A8CB17"
-
-                            Rectangle {
-                                anchors.top: parent.top
-                                width: parent.width
-                                height: 1
-                                color: "#A8CB17"
-                            }
-
-                            Rectangle {
-                                anchors.bottom: parent.bottom
-                                width: parent.width
-                                height: 1
-                                color: "#888"
-                            }
-                        }
-
                     }
                 }
 
@@ -214,21 +190,22 @@ Rectangle {
                     Row {
                         id: venueMapBox
                         x: 10
-                        width: parent.width - 20
+                        anchors.horizontalCenter: parent.horizontalCenter
 
                         ProfilePhoto {
                             id: venueMapImage
-                            anchors.horizontalCenter: parent.horizontalCenter
                             photoSize: 320
                             photoSmooth: false
                             photoUrl: place.venueMapUrl
                         }
-                        Column {
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.left: venueMapImage.right
+                        Item {
+                            width: zoomInBtn.width
+                            //anchors.left: venueMapImage.right
+                            //anchors.top: venueMapImage.top
                             height: venueMapImage.height
                             ToolbarButton {
-                                anchors.top: venueMapImage.top
+                                id: zoomInBtn
+                                anchors.top: parent.top
                                 width: 48
                                 height: 48
                                 image: "zoom_in.png"

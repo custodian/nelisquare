@@ -31,8 +31,8 @@ PageStackWindow {
         }
     }
 
-    function onPictureUploaded(response) {
-        window.onPictureUploaded(response);
+    function onPictureUploaded(response, page) {
+        window.onPictureUploaded(response, page);
     }
 
     function onLockOrientation(value) {

@@ -4,7 +4,7 @@ Rectangle {
     id: tipDialog
     width: parent.width
     height: items.height + 20
-    color: theme.toolbarLightColor
+    color: theme.backgroundBlueDark
     state: "hidden"
     property string venueID: ""
     property string venueName: ""

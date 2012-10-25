@@ -5,7 +5,7 @@ Item {
     property string label: ""
     property bool selected: false
     property bool shown: true
-    property bool bar: true
+    property bool bar: false
 
     property string colorActive: theme.textColorButton
     property string colorInactive: theme.textColorButtonInactive

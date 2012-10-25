@@ -8,7 +8,9 @@ Rectangle {
     property alias boardModel: boardModel
 
     width: parent.width
-    color: "#eee"
+    height: parent.height
+
+    color: theme.backgroundMain
     state: "hidden"
 
     MouseArea {
@@ -21,132 +23,47 @@ Rectangle {
     }
 
     ListView {
-        y: 60
+        y: 40
         model: boardModel
         width: parent.width
         height: parent.height - y
         delegate: leaderBoardDelegate
-        highlightFollowsCurrentItem: true
+        //highlightFollowsCurrentItem: true
         clip: true
+
+        spacing: 5
     }
 
-    Rectangle {
-        width: parent.width
-        height: 50
-        color: theme.toolbarLightColor
-
-        Text {
-            text: "You are #" + leaderBoard.rank
-            font.pixelSize: 22
-            font.bold: true
-            color: "#111"
-            anchors.centerIn: parent
-        }
-
-    }
-
-    Rectangle {
-        width: parent.width
-        height: 10
-        color: "#A8CB17"
-        y: 50
-
-        Rectangle {
-            width: parent.width
-            height: 1
-            color: "#A8CB17"
-        }
-
-        Rectangle {
-            width: parent.width
-            height: 1
-            color: "#888"
-            y: 9
-        }
+    GreenLine {
+        height: 40
+        text: "YOU ARE #" + leaderBoard.rank
     }
 
     Image {
         id: shadow
         source: "../pics/top-shadow.png"
         width: parent.width
-        y: 60
+        y: 40
     }
 
     Component {
         id: leaderBoardDelegate
 
-        Item {
-            id: friendItem
-            width: parent.width
-            height: titleContainer.height + 2
+        EventBox {
+            activeWhole: true
+            width: leaderBoard.width
 
-            Rectangle {
-                id: titleContainer
-                color: mouseArea.pressed ? "#ddd" : "#eee"
-                y: 1
-                width: parent.width
-                height: statusTextArea.height + 16 < profileImage.height+2 ? profileImage.height + 16 : statusTextArea.height + 16
+            userName: "#" + model.rank + ". " + model.name
+            //userShout:
+            createdAt: "<b>"+model.recent+" "+"points" + "</b> " + model.checkinsCount + " " + "checkins"
 
-                ProfilePhoto {
-                    id: profileImage
-                    photoUrl: photo
-
-                    onClicked: {
-                        checkin.user(userID);
-                    }
-                }
-
-                Column {
-                    id: statusTextArea
-                    spacing: 4
-                    x: profileImage.width + 12
-                    y: 4
-                    width: parent.width - x - 12
-
-                    Text {
-                        id: messageText
-                        color: theme.toolbarDarkColor
-                        font.pixelSize: 22
-                        font.bold: true
-                        width: parent.width
-                        text: rank + ". " + name
-                        wrapMode: Text.Wrap
-                    }
-
-                    Text {
-                        color: "#555"
-                        font.pixelSize: 22
-                        width: parent.width
-                        text: recent + " points"
-                        wrapMode: Text.Wrap
-                    }
-
-                    Text {
-                        color: "#888"
-                        font.pixelSize: 20
-                        width: parent.width
-                        text: checkinsCount + " check-ins"
-                        wrapMode: Text.Wrap
-                    }
-                }
+            Component.onCompleted: {
+                userPhoto.photoUrl = model.photo
             }
 
-            Rectangle {
-                width:  parent.width
-                x: 4
-                y: friendItem.height - 1
-                height: 1
-                color: "#ddd"
+            onAreaClicked: {
+                window.showUserPage(model.user);
             }
-
-            MouseArea {
-                id: mouseArea
-                anchors.fill: parent
-                onClicked: {
-                    leaderBoard.user( id );
-                }
-            }
-
         }
     }
 

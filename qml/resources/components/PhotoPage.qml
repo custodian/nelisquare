@@ -7,52 +7,37 @@ Rectangle {
     width: parent.width
     height: parent.height
     state: "hidden"
+    color: theme.backgroundMain
 
     property string photoUrl: ""
     property alias owner: photoOwner
 
-    Column {
+
+    Image {
+        id: fullImage
         width: parent.width
-        height: parent.height
+        height: parent.height - photoOwner.height
+        anchors.top: parent.top
+        asynchronous: true
+        //cache: false
+        fillMode: Image.PreserveAspectFit
+        source: photoDetails.photoUrl
 
-        Flickable {
-            id: photoArea
-            width: parent.width
-            height: parent.height - photoOwner.height
-
-            clip: true
-            flickableDirection: Flickable.HorizontalAndVerticalFlick
-            boundsBehavior: Flickable.StopAtBounds
-
-            pressDelay: 100
-            Row {
-                onWidthChanged: {
-                    photoArea.contentWidth = width;
-                }
-                onHeightChanged: {
-                    photoArea.contentHeight = height;
-                }
-                Image {
-                    id: fullImage
-                    fillMode: Image.PreserveAspectFit
-                    source: photoDetails.photoUrl
-                }
-            }
-        }
-
-        /*Animated*/Image {
+        Image {
             id: loader
-            anchors.centerIn: parent
-            source: "../pics/loader.gif"
+            anchors.centerIn: fullImage
+            asynchronous: true
+            source: "../pics/loader.png"
             visible: (fullImage.status != Image.Ready)
         }
+    }
 
-        EventBox {
-            id: photoOwner
-            fontSize: 18
-            onAreaClicked: {
-                user(photoDetails.owner.userID);
-            }
+    EventBox {
+        id: photoOwner
+        anchors.bottom: parent.bottom
+        fontSize: 18
+        onAreaClicked: {
+            user(photoDetails.owner.userID);
         }
     }
 

@@ -17,7 +17,7 @@ Item {
     property string createdAt: ""
     property string eventOwner: ""
     property int commentsCount: 0
-    property int fontSize: 22
+    property int fontSize: theme.font.sizeSigns
 
     property alias userPhoto: profileImage
 
@@ -31,7 +31,7 @@ Item {
 
     Rectangle {
         id: titleContainer
-        color: mouseArea.pressed ? "#ddd" : "#eee"
+        color: mouseArea.pressed ? "#ddd": theme.backgroundMain // "#eee"
         y: 1
         width: parent.width
         height: 10 + Math.max(statusTextArea.height,profileImage.height)
@@ -58,17 +58,18 @@ Item {
                 Image {
                     id: mayorImage
                     anchors.verticalCenter: messageText.verticalCenter
+                    asynchronous: true
                     source: "https://foursquare.com/img/points/mayor.png"
                     visible: userMayor
                 }
 
                 Text {
                     id: messageText
-                    color: theme.toolbarDarkColor
+                    color: theme.textColorOptions
                     font.pixelSize: fontSize
                     font.bold: true
                     width: (parent.width - (userMayor?mayorImage.width+5:0))
-                    text: (userName + (venueName !="" ? ("<span style='color:#000'> @ </span>" + venueName):""))
+                    text: (userName + (venueName !="" ? ("<span style='color:"+theme.textColorTimestamp+"'> @ </span>" + venueName):""))
                     wrapMode: Text.Wrap
                     visible: messageText.text != ""
                 }
@@ -87,6 +88,7 @@ Item {
                 width: parent.width
                 ProfilePhoto {
                     photoUrl: venuePhoto
+                    photoCache: false
                     photoSize: 200
                     photoBorder: 2
                 }
@@ -94,8 +96,9 @@ Item {
             }
             Row {
                 width: parent.width
+                spacing: 10
                 Text {
-                    color: "#888"
+                    color: theme.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     width: parent.width * 0.7
                     text: createdAt
@@ -104,7 +107,8 @@ Item {
                 }
                 Image {
                     id: commentImage
-                    source: "../pics/peoples.png"
+                    source: "../pics/commentcount.png"
+                    asynchronous: true
                     smooth: true
                     //width: 32
                     height: 32
@@ -112,9 +116,8 @@ Item {
                     visible: commentsCount>0
                 }
                 Text {
-                    x: 10
                     id: commentCount
-                    color: theme.toolbarDarkColor
+                    color: theme.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: commentsCount
                     visible: commentsCount>0
@@ -131,13 +134,14 @@ Item {
 
         Rectangle {
             anchors.right: parent.right
-            color: window.color
+            color: titleContainer.color//window.color
             width: 32
             height: 32
             visible: eventOwner == "self" && showRemoveButton
 
             Image {
-                source: "../pics/checktap.png"
+                asynchronous: true
+                source: "../pics/delete.png"
                 width: parent.width
                 height: parent.height
                 smooth: true
@@ -152,13 +156,14 @@ Item {
         }
     }
 
+    /* //separator
     Rectangle {
         width:  parent.width
         y: eventItem.height - 1
         height: 1
         color: "#ccc"
         visible: showSeparator
-    }
+    }*/
 
     MouseArea {
         id: mouseArea

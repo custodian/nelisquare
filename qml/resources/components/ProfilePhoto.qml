@@ -5,6 +5,7 @@ Rectangle {
     property string photoUrl: ""
     property int photoSize: 64
     property int photoBorder: 4
+    property bool photoCache: true
     property variant photoSourceSize: undefined
     property bool enableMouseArea: true
     property alias photoSmooth: image.smooth
@@ -25,6 +26,7 @@ Rectangle {
         y: photoBorder
         asynchronous: true
         source: cache.get(photoUrl)
+        //cache: photoCache
         smooth: true
         fillMode: photoAspect
         width: photoSize - 2*photoBorder + 1
@@ -41,7 +43,7 @@ Rectangle {
     /*Animated*/Image {
         id: loader
         anchors.centerIn: image
-        source: "../pics/loader.gif"
+        source: "../pics/loader.png"
     }
 
     MouseArea {

@@ -4,13 +4,11 @@ import QtMobility.gallery 1.1
 Rectangle {
     signal uploadPhoto(string photo)
 
-    property string checkinID: ""
-    property string venueID: ""
-
     id: photoAdd
     width: parent.width
     height: parent.height
     state: "hidden"
+    color: theme.backgroundMain
 
     ListModel {
         id: emptyModel
@@ -22,30 +20,14 @@ Rectangle {
         autoUpdate: true
         scope: DocumentGallery.Image  //real
         properties: [ "filePath" ]    //real
-        //rootType: DocumentGallery.Image //Sim
-        //properties: [ "fileName" ]      //Sim
+        //rootType: DocumentGallery.Image //sim
+        //properties: [ "fileName" ]      //sim
         filter: GalleryWildcardFilter {
             property: "fileName";
             value: "*.jpg";
         }
         sortProperties: [ "-lastModified" ]
     }
-
-    Component {
-         id: photoDelegate
-         ProfilePhoto {
-            photoUrl: model.filePath      //real
-            //photoUrl: model.fileName        //sim
-            photoSize: photoGrid.cellWidth
-            photoSourceSize: photoGrid.cellWidth //commented due to sizing bug
-            photoBorder: 2
-            photoSmooth: false
-            photoAspect: Image.PreserveAspectFit
-            onClicked: {
-                photoAdd.uploadPhoto(photoUrl);
-            }
-         }
-     }
 
     GridView {
         id: photoGrid
@@ -56,11 +38,27 @@ Rectangle {
         clip: true
         model: emptyModel
         delegate: photoDelegate
-        header: Text {
+        header: GreenLine {
+            height: 30
             text: "Select photo for upload"
-            font.pixelSize: 24
         }
     }
+
+    Component {
+         id: photoDelegate
+         ProfilePhoto {
+            photoUrl: model.filePath      //real
+            //photoUrl: model.fileName        //sim
+            photoSize: photoGrid.cellWidth
+            photoSourceSize: photoGrid.cellWidth
+            photoBorder: 2
+            photoSmooth: false
+            photoAspect: Image.PreserveAspectFit
+            onClicked: {
+                photoAdd.uploadPhoto(photoUrl);
+            }
+         }
+     }
 
     onStateChanged: {
         if (state == "shown") {

@@ -2,18 +2,17 @@ import Qt 4.7
 
 Rectangle {
     signal like(string checkin, bool state)
-    signal venue()
+    signal venue(string venue)
     signal user(string user)
     signal photo(string photo)
-    signal showAddComment()
-    signal deleteComment(string commentID)
-    signal showAddPhoto()
-    y: 10
+    signal showAddComment(string checkin)
+    signal deleteComment(string checkin, string commentID)
+    signal showAddPhoto(string checkin)
     id: checkin
 
     width: parent.width
     height: parent.height
-    color: "#eee"
+    color: theme.backgroundMain
     state: "hidden"
 
     property string checkinID: ""
@@ -84,7 +83,7 @@ Rectangle {
                     checkin.user(checkin.owner.userID);
                 }
                 onAreaClicked: {
-                    checkin.venue();
+                    checkin.venue(checkin.owner.venueID);
                 }
             }
 
@@ -181,7 +180,7 @@ Rectangle {
                     width: 150
 
                     onClicked: {
-                        checkin.showAddPhoto()
+                        checkin.showAddPhoto(checkin.checkinID)
                     }
                     visible: checkin.owner.eventOwner == "self"
                 }
@@ -190,7 +189,7 @@ Rectangle {
                     label: "Add comment"
                     width: parent.width - (btnAddPhoto.visible?btnAddPhoto.width:0) - parent.spacing
                     onClicked: {
-                        checkin.showAddComment();
+                        checkin.showAddComment(checkin.checkinID);
                     }
                 }
             }
@@ -221,7 +220,7 @@ Rectangle {
                 checkin.user(model.userID);
             }
             onDeleteEvent: {
-                checkin.deleteComment(model.commentID);
+                checkin.deleteComment(checkin.checkinID, model.commentID);
             }
         }
 

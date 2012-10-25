@@ -4,7 +4,7 @@ Rectangle {
     id: checkin
     width: parent.width
     height: items.height + 20
-    color: theme.backgroundBlueDark //theme.toolbarLightColor
+    color: theme.backgroundBlueDark
     state: "hidden"
     property string venueID: ""
     property string venueName: ""

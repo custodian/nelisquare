@@ -23,8 +23,10 @@ symbian:TARGET.CAPABILITY += NetworkServices Location LocalServices ReadUserData
 
 QT += network
 
-VERSION = 0.3.13
-PACKAGENAME = com.substanceofcode.nelisquare
+DEFINES += QT_USE_FAST_CONCATENATION QT_USE_FAST_OPERATOR_PLUS
+
+VERSION = 0.4.5
+PACKAGENAME = com.thecust.nelisquare
 
 # Define QMLJSDEBUGGER to allow debugging of QML in debug builds
 # (This might significantly increase build time)

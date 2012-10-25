@@ -28,12 +28,12 @@ Rectangle {
 
         Column {
             x: 10
+            y: 20
             width: parent.width - 20
-            height: parent.height
             spacing: 20
 
             onHeightChanged: {
-                flickableArea.contentHeight = height;
+                flickableArea.contentHeight = y + height + spacing;
             }
 
             Image {
@@ -44,7 +44,7 @@ Rectangle {
 
                 Image {
                     anchors.centerIn: parent
-                    source: "../pics/loader.gif"
+                    source: "../pics/loader.png"
                     visible: (parent.status != Image.Ready)
                 }
             }

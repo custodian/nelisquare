@@ -14,7 +14,7 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: "#eee"
+    color: theme.backgroundMain
     state: "hidden"
 
     ListModel {
@@ -31,47 +31,53 @@ Rectangle {
         width: parent.width
         height: parent.height - y
         delegate: friendsFeedDelegate
-        highlightFollowsCurrentItem: true
-        clip: true
+        //highlightFollowsCurrentItem: true
+        //clip: true
+        cacheBuffer: 400
+        spacing: 10
 
         header: Column{
             width: parent.width
             Rectangle {
                 width: parent.width
-                height: 100
+                height: 90
                 color: theme.toolbarDarkColor
 
                 BlueButton {
                     label: "RECENT"
-                    y: 30
+                    y: 20
                     x: 10
                     width:  parent.width/2-15
                     height: 50
                     pressed: friendsFeed.recentPressed
                     onClicked: {
                         if(friendsFeed.recentPressed==false) {
+                            friendsFeed.recentPressed = true;
+                            friendsFeed.nearbyPressed = false;
                             friendsFeed.recent();
                         }
                     }
                 }
                 BlueButton {
                     label: "NEARBY"
-                    y: 30
+                    y: 20
                     x: parent.width/2+5
                     width: parent.width/2-15
                     height: 50
                     pressed: friendsFeed.nearbyPressed
                     onClicked: {
                         if(friendsFeed.nearbyPressed==false) {
+                            friendsFeed.recentPressed = false;
+                            friendsFeed.nearbyPressed = true;
                             friendsFeed.nearby();
                         }
                     }
                 }
             }
-            Rectangle {
-                width: parent.width
-                height: 10
-                gradient: theme.gradientGreen
+
+            GreenLine {
+                height: 30
+                text: "FRIENDS ACTIVITY"
             }
         }
     }

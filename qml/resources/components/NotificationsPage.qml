@@ -14,6 +14,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     state: "hidden"
+    color: theme.backgroundMain
 
     ListModel {
         id: notificationsModel
@@ -24,7 +25,7 @@ Rectangle {
         anchors.fill: parent
         model: notificationsModel
         delegate: notificationDelegate
-        highlightFollowsCurrentItem: true
+        //highlightFollowsCurrentItem: true
         clip: true
     }
 

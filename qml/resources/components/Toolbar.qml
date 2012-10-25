@@ -46,7 +46,7 @@ Rectangle {
 
     Image {
         id: settingsButton
-        source: ("../pics/cogwheel_"+(settings.visible?"active.png":"passive.png"))
+        source: ("../pics/cogwheel_"+(topWindowType == "Settings"?"active.png":"passive.png"))
         x: logoImage.x - width - 50
         anchors.verticalCenter: parent.verticalCenter
         MouseArea {

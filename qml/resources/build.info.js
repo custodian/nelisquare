@@ -1,3 +1,3 @@
-var build = '201210251501';
-var version = "0.4.4";
-var changelog = ' - likes on checkins, venues added  - user mayorships, checkins lists added  - changelog message at update dialog  - bug fixes, layout updates.';
+var build = '201210290038';
+var version = "0.4.5";
+var changelog = ' - photos browser at venues added.  - pages now holds their data w/o reloads.  - core window and objects updates.';

@@ -264,7 +264,6 @@ Rectangle {
     }
 
     onStateChanged: {
-        cacheSize = cache.info();
     }
 
     states: [

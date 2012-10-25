@@ -1,7 +1,7 @@
 import Qt 4.7
 
 Rectangle {
-    signal openLeaderBoard()
+    signal openLeaderboard()
     signal user(string user)
 
     signal addFriend(string user)
@@ -15,7 +15,8 @@ Rectangle {
 
     id: details
     width: parent.width
-    color: "#eee"
+    height: parent.height
+    color: theme.backgroundMain
     state: "hidden"
 
     property string userID: ""
@@ -126,9 +127,11 @@ Rectangle {
             }
 
             //scores title
-            Row {
+            Item {
                 width: parent.width
+                height: children[0].height
                 Text {
+                    id: lblScoresText
                     text: "<b>SCORES</b> (LAST 7 DAYS)"
                     font.pixelSize: theme.font.sizeHelp
                 }
@@ -140,8 +143,9 @@ Rectangle {
                 }
             }
             //scores value
-            Row {
+            Item {
                 width: parent.width
+                height: children[0].height
                 Rectangle {
                     anchors.left: parent.left
                     anchors.top: parent.top
@@ -199,10 +203,9 @@ Rectangle {
                 }
             }
 
-            Rectangle {
+            Item {
                 width: parent.width
                 height: 120
-                color: theme.toolbarLightColor
 
                 Rectangle {
                     id: badgesCount
@@ -210,7 +213,7 @@ Rectangle {
                     y: 10
                     width: (parent.width - 20) / 3 - 10
                     height: 100
-                    color: theme.toolbarDarkColor
+                    color: theme.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -225,7 +228,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.textColorSign
+                        color: theme.textColorOptions
                         font.pixelSize: 20
                         text: details.userBadgesCount + " " + "Badges"
                     }
@@ -244,7 +247,7 @@ Rectangle {
                     y: 10
                     width: (parent.width - 20) / 3 - 10
                     height: 100
-                    color: theme.toolbarDarkColor
+                    color: theme.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -259,7 +262,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.textColorSign
+                        color: theme.textColorOptions
                         font.pixelSize: 20
                         text: details.userCheckinsCount + " " + "Checkins"
                     }
@@ -279,7 +282,7 @@ Rectangle {
                     y: 10
                     width: (parent.width - 20) / 3 - 10
                     height: 100
-                    color: theme.toolbarDarkColor
+                    color: theme.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -294,7 +297,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.textColorSign
+                        color: theme.textColorOptions
                         font.pixelSize: 20
                         text: details.userMayorshipsCount + " " + "Mayorships"
                     }
@@ -334,14 +337,15 @@ Rectangle {
             width: miniLeadersboard.width
 
             userName: model.user
-            userShout: model.shout
+            //userShout:
+            createdAt: model.shout
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo
             }
 
             onAreaClicked: {
-                details.openLeaderBoard();
+                details.openLeaderboard();
             }
         }
     }

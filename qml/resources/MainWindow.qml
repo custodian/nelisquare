@@ -1,11 +1,11 @@
 import Qt 4.7
 import QtMobility.location 1.1
-import Effects 1.0
+//import Effects 1.0
 import "components"
 import "./build.info.js" as BuildInfo
 import "js/script.js" as Script
 import "js/storage.js" as Storage
-import "js/window.js" as Window
+import "js/windowmanager.js" as WM
 import "js/utils.js" as Utils
 
 Rectangle {
@@ -15,6 +15,8 @@ Rectangle {
     property string orientationType: "auto"
     property string mapprovider: "googlemaps"
     property string checkupdates: "none"
+
+    property string topWindowType: ""
 
     id: window
 
@@ -49,8 +51,8 @@ Rectangle {
         }
     }
 
-    function onPictureUploaded(response) {
-        Script.parseAddPhoto(response);
+    function onPictureUploaded(response, page) {
+        Script.parseAddPhoto(response, page);
     }
 
     function settingLoaded(key, value) {
@@ -107,12 +109,13 @@ Rectangle {
 
     Timer {
         id: signalTimer
-        interval: 1111
+        interval: 2000
         repeat: true
         onTriggered: {
-            if(positionSource.position.latitudeValid==false) {
+            if(!positionSource.position.latitudeValid) {
                 signalIcon.visible = !signalIcon.visible;
             }
+            WM.destroyWindows();
         }
     }
 
@@ -133,148 +136,390 @@ Rectangle {
         toolbar.notificationsCount.text = value
     }
 
-    function hideAll() {
-        window.focus = true;
-        checkinDetails.state = "hidden";
-        friendsFeed.state = "hidden";
-        venuesList.state = "hidden";
-        venueDetails.state = "hidden";
-        userDetails.state = "hidden";
-        userBadges.state = "hidden";
-        badgeInfo.state = "hidden";
-        checkinHistory.state = "hidden";
-        mayorships.state = "hidden";
-        leaderBoard.state = "hidden";
-        photoDetails.state = "hidden";
-        photoAdd.state = "hidden";
-        notificationsList.state = "hidden";
-        settings.state = "hidden";
-        photoShareDialog.state = "hidden";
-        //shoutDialog.state = "hidden";
-        commentDialog.state = "hidden";
-        checkinDialog.state = "hidden";
-        tipDialog.state = "hidden";
-    }
-
-    function isSmallScreen() {
-        if(window.width<400 || window.height<400) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    function showLeaderBoard() {
-        Window.pushWindow(function() {
-                Script.loadLeaderBoard();
-                window.hideAll();
-                leaderBoard.state = "shown";
-                });
-    }
-
     function showFriendsFeed() {
-        Script.loadFriendsFeed();
-        Window.pushWindow(function() {
-            window.hideAll();
-            friendsFeed.state = "shown";
+        WM.buildPage(
+            viewPort,
+            "FriendsFeed",
+            {
+                "update": function(page) {
+                              Script.loadFriendsFeed(page);
+                          }
+            },
+            function(page) {
+                page.recent.connect(function() {
+                    Script.loadFriendsFeed(page);
+                });
+                page.nearby.connect(function() {
+                    Script.loadFriendsFeedNearby(page);
+                });
+                page.clicked.connect(function(id) {
+                    window.showCheckinPage(id);
+                });
+                page.state = "shown"
             });
     }
 
-    function showVenueList(query) {
-        Window.pushWindow(function() {
-                if (query == "todolist") {
-                    Script.loadToDo();
-                } else {
-                    Script.loadPlaces(query);
-                }
-                window.hideAll();
-                venuesList.state = "shown";
+    function showCheckinPage(checkinID) {
+        WM.buildPage(
+            viewPort,
+            "Checkin",
+            {
+                "id": checkinID,
+                "update": function(page) {
+                      Script.loadCheckin(page, checkinID);
+                  }
+            },
+            function(page){
+                page.venue.connect(function(venue){
+                    window.showVenuePage(venue);
+                });
+                page.like.connect(function(checkin, state) {
+                    Script.likeCheckin(page,checkin,state);
+                });
+                page.user.connect(function(user){
+                    window.showUserPage(user);
+                });
+                page.photo.connect(function(photo){
+                    window.showPhotoPage(photo);
+                });
+                page.showAddComment.connect(function(checkin){
+                    commentDialog.reset();
+                    commentDialog.checkinID = checkin;
+                    commentDialog.state = "shown";
+                });
+                page.deleteComment.connect(function(checkin, comment){
+                    Script.deleteComment(page,checkin,comment);
+                });
+                page.showAddPhoto.connect(function(checkin){
+                    window.showPhotoAddPage({
+                        "type": "checkin",
+                        "id": checkin,
+                        "owner": page
+                    });
+                });
+                page.state = "shown";
             });
     }
 
-    function showVenuePage(venueID) {
-        Script.loadVenue(venueID);
-        Window.pushWindow(function() {
-                window.hideAll();
-                venueDetails.state = "shown";
-            });
-    }
-
-    function showUserPage(user) {
-        Window.pushWindow(function() {
-                Script.loadUser(user);
-                window.hideAll();
-                userDetails.state = "shown";
-            });
-    }
-
-    function showUserBadges(user) {
-        Window.pushWindow(function(){
-                Script.loadBadges(user);
-                window.hideAll();
-                userBadges.state = "shown";
-            });
-    }
-
-    function showBadgeInfo() {
-        Window.pushWindow(function(){
-                window.hideAll();
-                badgeInfo.state = "shown";
-            });
-    }
-
-    function showUserCheckins(user) {
-        Window.pushWindow(function(){
-                Script.loadCheckinHistory(user);
-                window.hideAll();
-                checkinHistory.state = "shown";
-            });
-    }
-
-    function showUserMayorships(user) {
-        Window.pushWindow(function(){
-                Script.loadMayorships(user);
-                window.hideAll();
-                mayorships.state = "shown";
-            });
-    }
-
-    function showCheckinPage(checkin) {
-        Window.pushWindow(function() {
-                Script.loadCheckin(checkin);
-                window.hideAll();
-                checkinDetails.state = "shown";
-            });
-    }
-
-    function showPhotoPage(photo) {
-        Window.pushWindow(function() {
-                Script.loadPhoto(photo);
-                window.hideAll();
-                photoDetails.state = "shown";
-            });
-    }
-
-    function showAddPhotoDialog(checkinID,venueID) {
-        Window.pushWindow(function() {
-                photoAdd.checkinID = checkinID;
-                photoAdd.venueID = venueID;
-                photoAdd.state = "shown";
-            });
-    }
-
-    function showNotifications() {
-        Window.pushWindow(function() {
-                window.hideAll();
-                Script.loadNotifications();
-                notificationsList.state = "shown";
+    function showUserPage(userid) {
+        WM.buildPage(
+            viewPort,
+            "User",
+            {
+                "id": userid,
+                "update": function(page) {
+                      Script.loadUser(page,userid);
+                  }
+            },
+            function(page){
+                page.addFriend.connect(function(user){
+                    Script.addFriend(user);
+                    page.userRelationship = "updated";
+                });
+                page.removeFriend.connect(function(user){
+                    Script.removeFriend(user);
+                    page.userRelationship = "updated";
+                });
+                page.approveFriend.connect(function(user){
+                    Script.approveFriend(user);
+                    page.userRelationship = "updated";
+                });
+                page.user.connect(function(user){
+                    window.showUserPage(user);
+                });
+                page.openLeaderboard.connect(function(){
+                    window.showLeaderboard();
+                });
+                page.badges.connect(function(user){
+                    window.showUserBadges(user);
+                });
+                page.mayorships.connect(function(user){
+                    window.showUserMayorships(user);
+                });
+                page.checkins.connect(function(user){
+                    window.showUserCheckins(user);
+                });
+                page.state = "shown";
             });
     }
 
     function showSettingsPage() {
-        Window.pushWindow(function() {
-                window.hideAll();
-                settings.state = "shown";
+        WM.buildPage(
+            viewPort,
+            "Settings",
+            {
+                "update": function(page) {
+                    page.cacheSize = cache.info();
+                }
+            },
+            function(page) {
+                page.authDeleted.connect(function(){
+                    splashDialog.state = "shown";
+                    splashHider.start();
+                    window.settingChanged("accesstoken","");
+                });
+                page.orientationChanged.connect(function(type) {
+                    window.settingChanged("settings.orientation",type);
+                });
+                page.checkUpdatesChanged.connect(function(type) {
+                    window.settingChanged("settings.checkupdates",type);
+                });
+                page.mapProviderChanged.connect(function(type) {
+                    window.settingChanged("settings.mapprovider",type);
+                });
+                page.state = "shown";
+        });
+    }
+
+    function showLeaderboard() {
+        WM.buildPage(
+            viewPort,
+            "LeaderBoard",
+            {
+                "update":function(page){
+                         Script.loadLeaderBoard(page);
+                     }
+            },
+            function(page) {
+                page.user.connect(function(user) {
+                    window.showUserPage(user);
+                });
+                page.state = "shown";
+        });
+    }
+
+    function showVenueList(query) {
+        WM.buildPage(
+            viewPort,
+            "VenuesList",
+            {
+                "id": query,
+                "update":function(page){
+                     if (query == "todolist") {
+                        Script.loadToDo(page);
+                    } else {
+                        Script.loadPlaces(page,query);
+                    }
+                 }
+            },
+            function(page) {
+                page.clicked.connect(function(venueid) {
+                    window.showVenuePage(venueid);
+                });
+                page.search.connect(function(query) {
+                    Script.loadPlaces(page, query);
+                });
+                page.state = "shown";
+            });
+    }
+
+    function showVenuePage(venue) {
+        WM.buildPage(
+            viewPort,
+            "Venue",
+            {
+                "id": venue,
+                "update":function(page){
+                    Script.loadVenue(page, venue);
+                 }
+            },
+            function(page) {
+                page.checkin.connect(function(venueID, venueName) {
+                    checkinDialog.reset();
+                    checkinDialog.venueID = venueID;
+                    checkinDialog.venueName = venueName;
+                    checkinDialog.state = "shown";
+                });
+                page.showAddTip.connect(function(venueID, venueName) {
+                    tipDialog.reset();
+                    tipDialog.venueID = venueID;
+                    tipDialog.venueName = venueName;
+                    tipDialog.action = 0;
+                    tipDialog.state = "shown";
+                });
+                page.markToDo.connect(function(venueID, venueName) {
+                    tipDialog.reset();
+                    tipDialog.venueID = venueID;
+                    tipDialog.venueName = venueName;
+                    tipDialog.action = 1;
+                    tipDialog.state = "shown";
+                });
+                page.user.connect(function(user) {
+                    window.showUserPage(user);
+                });
+                page.photo.connect(function() {
+                    window.showVenuePhotos(venue);
+                });
+                page.showAddPhoto.connect(function(venueID) {
+                    window.showPhotoAddPage({
+                        "type": "venue",
+                        "id": venueID,
+                        "owner": page
+                    });
+                });
+                page.like.connect(function(venueID,state) {
+                    Script.likeVenue(venueID,state);
+                });
+                page.state = "shown";
+            });
+    }
+
+    function showVenuePhotos(venue) {
+        WM.buildPage(
+            viewPort,
+            "VenuePhotos",
+            {
+                "id": venue,
+                "update": function(page) {
+                    Script.loadVenuePhotos(page,venue);
+                }
+            },
+            function(page){
+                page.photo.connect(function(photo){
+                    window.showPhotoPage(photo);
+                });
+                page.state = "shown";
+            });
+    }
+
+    function showUserBadges(user) {
+        WM.buildPage(
+            viewPort,
+            "Badges",
+            {
+                "id": user,
+                "update":function(page){
+                    Script.loadBadges(page,user);
+                 }
+            },
+            function(page){
+
+                page.badge.connect(function(params) {
+                    window.showBadgeInfo(params);
+                });
+                page.state = "shown";
+            });
+    }
+
+    function showBadgeInfo(params) {
+        WM.buildPage(
+            viewPort,
+            "BadgeInfo",
+            {
+                "update": function(page){}
+            },
+            function(page){
+                page.venue.connect(function(venueID) {
+                    window.showVenuePage(venueID);
+                });
+                page.name = params.name;
+                page.image = params.image;
+                page.info = params.info;
+                page.venueName = params.venueName;
+                page.venueID = params.venueID;
+                page.time = params.time;
+
+                page.state = "shown";
+            });
+    }
+
+    function showUserCheckins(user) {
+        WM.buildPage(
+            viewPort,
+            "CheckinHistory",
+            {
+                "id": user,
+                "update": function(page){
+                        Script.loadCheckinHistory(page,user);
+                    }
+            },
+            function(page){
+
+                page.checkin.connect(function(id) {
+                    window.showCheckinPage(id)
+                });
+                page.state = "shown";
+            });
+    }
+
+    function showUserMayorships(user) {
+        WM.buildPage(
+            viewPort,
+            "Mayorships",
+            {
+                "id":user,
+                "update":function(page){
+                             Script.loadMayorships(page,user);
+                         }
+            },
+            function(page){
+                page.venue.connect(function(id) {
+                    window.showVenuePage(id);
+                });
+                page.state = "shown";
+            });
+    }
+
+
+    function showPhotoPage(photo) {
+        WM.buildPage(
+            viewPort,
+            "Photo",
+            {
+                "id":photo,
+                "update":function(page) {
+                            Script.loadPhoto(page,photo);
+                         }
+            },
+            function(page) {
+                page.user.connect(function(user) {
+                    window.showUserPage(user);
+                });
+                page.state = "shown";
+            });
+    }
+
+    function showNotifications() {
+        WM.buildPage(
+            viewPort,
+            "Notifications",
+            {
+                "update":function(page){
+                        Script.loadNotifications(page);
+                    }
+            },
+            function(page) {
+                page.user.connect(function(user) {
+                    window.showUserPage(user);
+                });
+                page.checkin.connect(function(checkin) {
+                    window.showCheckinPage(checkin);
+                });
+                page.venue.connect(function(venue) {
+                    window.showVenuePage(venue);
+                });
+                page.markNotificationsRead(function(time) {
+                    Script.markNotificationsRead(page,time);
+                });
+                page.state = "shown";
+            });
+    }
+
+    function showPhotoAddPage(options) {
+        WM.buildPage(
+            viewPort,
+            "PhotoAdd",
+            {
+                "update": function(page){}
+            },
+            function(page) {
+                page.uploadPhoto.connect(function(photo){
+                    photoShareDialog.options = options;
+                    photoShareDialog.owner = page;
+                    photoShareDialog.photoUrl = photo;
+                    photoShareDialog.state = "shown";
+                });
+                page.state = "shown";
             });
     }
 
@@ -292,114 +537,9 @@ Rectangle {
             blurRadius: blurred ? 2.0 : 0.0
         }*/
 
-        FriendsFeedPage {
-            id: friendsFeed
-            state: "shown"
-            width: parent.width
-            height: parent.height
-            recentPressed: true
-            nearbyPressed: false
-            onRecent: {
-                friendsFeed.recentPressed = true;
-                friendsFeed.nearbyPressed = false;
-                Script.loadFriendsFeed();
-            }
-            onNearby: {
-                friendsFeed.recentPressed = false;
-                friendsFeed.nearbyPressed = true;
-                Script.loadFriendsFeedNearby();
-            }
-            onClicked: {
-                window.showCheckinPage(checkinid);
-            }
-        }
-
-        CheckinPage {
-            id: checkinDetails
-            width: parent.width
-            height: parent.height
-            state: "hidden"
-
-            onVenue: {
-                window.showVenuePage(checkinDetails.owner.venueID);
-            }
-            onLike: {
-                Script.likeCheckin(checkin, state);
-            }
-            onUser: {
-                window.showUserPage(user);
-            }
-            onPhoto: {
-                window.showPhotoPage(photo);
-            }
-            onShowAddComment: {
-                commentDialog.reset();
-                commentDialog.checkinID = checkinDetails.checkinID;
-                commentDialog.state = "shown";
-            }
-            onDeleteComment: {
-                Script.deleteComment(checkinDetails.checkinID,commentID);
-            }
-            onShowAddPhoto: {
-                window.showAddPhotoDialog(checkinDetails.checkinID,"");
-            }
-        }
-
-        VenuesListPage {
-            id: venuesList
-            width: parent.width
-            height: parent.height
-            state:  "hidden"
-
-            onClicked: {
-                window.showVenuePage(venueid);
-            }
-            onSearch: {
-                Script.loadPlaces(query);
-            }
-        }
-
-        VenuePage {
-            id: venueDetails
-            width: parent.width
-            height: parent.height
-            state: "hidden"
-            onCheckin: {
-                checkinDialog.reset();
-                checkinDialog.venueID = venueDetails.venueID;
-                checkinDialog.venueName = venueDetails.venueName;
-                checkinDialog.state = "shown";
-            }
-            onShowAddTip: {
-                tipDialog.reset();
-                tipDialog.venueID = venueDetails.venueID;
-                tipDialog.venueName = venueDetails.venueName;
-                tipDialog.action = 0;
-                tipDialog.state = "shown";
-            }
-            onMarkToDo: {
-                tipDialog.reset();
-                tipDialog.venueID = venueDetails.venueID;
-                tipDialog.venueName = venueDetails.venueName;
-                tipDialog.action = 1;
-                tipDialog.state = "shown";
-            }
-            onUser: {
-                window.showUserPage(user);
-            }
-            onPhoto: {
-                window.showPhotoPage(photo);
-            }
-            onShowAddPhoto: {
-                window.showAddPhotoDialog("",venueDetails.venueID);
-            }
-            onLike: {
-                Script.likeVenue(venueid,state);
-            }
-        }
-
         CheckinDialog {
             id: checkinDialog
+            z: 1
             width: parent.width
             state: "hidden"
 
@@ -414,130 +554,9 @@ Rectangle {
             }
         }
 
-        LeaderBoardPage {
-            id: leaderBoard
-            width: parent.width
-            height: parent.height
-            state: "hidden"
-
-            onUser: {
-                window.showUserPage(user);
-            }
-        }
-
-        UserPage {
-            id: userDetails
-            width: parent.width
-            height: parent.height
-            state: "hidden"
-            onAddFriend: {
-                Script.addFriend(user);
-                userRelationship = "updated";
-                //window.showUserPage(user);
-            }
-            onRemoveFriend: {
-                Script.removeFriend(user);
-                userRelationship = "updated";
-                //window.showUserPage(user);
-            }
-            onApproveFriend: {
-                Script.approveFriend(user);
-                userRelationship = "updated";
-                //window.showUserPage(user);
-            }
-            onUser: {
-                window.showUserPage(user);
-            }
-            onOpenLeaderBoard: {
-                window.showLeaderBoard();
-            }
-            onBadges: {
-                window.showUserBadges(user);
-            }
-            onCheckins: {
-                window.showUserCheckins(user);
-            }
-            onMayorships: {
-                window.showUserMayorships(user);
-            }
-        }
-
-        BadgesPage {
-            id: userBadges
-            onBadge: {
-                //string name, string image, string text, string venueName, string time
-                badgeInfo.name = name;
-                badgeInfo.image = image;
-                badgeInfo.info = info;
-                badgeInfo.venueName = venueName;
-                badgeInfo.venueID = venueID;
-                badgeInfo.time = time;
-                window.showBadgeInfo();
-            }
-        }
-
-        BadgeInfoPage {
-            id: badgeInfo
-            onVenue: {
-                window.showVenuePage(venueID);
-            }
-        }
-
-        CheckinHistoryPage {
-            id: checkinHistory
-
-            onCheckin: {
-                window.showCheckinPage(id)
-            }
-        }
-
-        MayorshipsPage {
-            id: mayorships
-
-            onVenue: {
-                window.showVenuePage(id);
-            }
-        }
-
-        PhotoPage {
-            id: photoDetails
-            width: parent.width
-            height: parent.height
-            state: "hidden"
-            onUser: {
-                window.showUserPage(user);
-            }
-        }
-
-        PhotoAddPage {
-            id: photoAdd
-            width: parent.width
-            height: parent.height
-            state: "hidden"
-            onUploadPhoto: {
-                photoShareDialog.photoUrl = photo;
-                photoShareDialog.state = "shown";
-            }
-        }
-
-        NotificationsPage {
-            id: notificationsList
-            onUser: {
-                window.showUserPage(user);
-            }
-            onCheckin: {
-                window.showCheckinPage(checkin);
-            }
-            onVenue: {
-                window.showVenuePage(venue);
-            }
-            onMarkNotificationsRead: {
-                Script.markNotificationsRead(time);
-            }
-        }
-
         NotificationDialog {
             id: notificationDialog
+            z: 1
             width: parent.width
             state: "hidden"
             onClose: {
@@ -553,56 +572,23 @@ Rectangle {
             }
         }
 
-        SettingsPage {
-            id: settings
-            onAuthDeleted: {
-                splashDialog.state = "shown";
-                splashHider.start();
-                window.settingChanged("accesstoken","");
-            }
-            onOrientationChanged: {
-                window.settingChanged("settings.orientation",type);
-            }
-            onCheckUpdatesChanged: {
-                window.settingChanged("settings.checkupdates",type);
-            }
-            onMapProviderChanged: {
-                window.settingChanged("settings.mapprovider",type);
-            }
-            visible: false
-        }
-
-        /*ShoutDialog {
-            id: shoutDialog
-            width: parent.width
-            state: "hidden"
-
-            onCancel: { shoutDialog.state = "hidden"; }
-            onShout: {
-                var realComment = comment;
-                if(realComment.indexOf("Write here")>-1) {
-                    realComment = "";
-                }
-                Script.addCheckin(null, realComment, true, facebook, twitter);
-                shoutDialog.state = "hidden";
-            }
-        }*/
-
         CommentDialog {
             id: commentDialog
+            z: 1
             width: parent.width
             state: "hidden"
 
             onCancel: { commentDialog.state = "hidden"; }
             onShout: {
                 //console.log("COMMENT FOR: " + checkinID + " VALUE: " + comment);
-                Script.addComment(checkinID,comment);
+                Script.addComment(WM.topWindow().page, checkinID,comment);
                 commentDialog.state = "hidden";
             }
         }
 
         TipDialog {
             id: tipDialog
+            z: 1
             width: parent.width
             state: "hidden"
             onCancel: {tipDialog.state = "hidden";}
@@ -618,8 +604,9 @@ Rectangle {
             }
         }
 
-        PhotoShareDialog{
+        PhotoShareDialog {
             id: photoShareDialog
+            z: 1
             width: parent.width
             state: "hidden"
             onCancel:{
@@ -627,20 +614,19 @@ Rectangle {
             }
             onUploadPhoto: {
                 photoShareDialog.state="hidden";
-                Script.addPhoto(photoAdd.checkinID,
-                                photoAdd.venueID,
-                                photoShareDialog.photoUrl,
-                                makepublic,facebook,twitter);
-                photoAdd.state="hidden";
+                Script.addPhoto(params);
+                owner.state="hidden";
             }
         }
 
         UpdateDialog {
             id: updateDialog
+            z: 10
         }
 
         Rectangle {
             id: signalIcon
+            z: 1
             radius: 6
             color: "#d66"
             width: 32
@@ -671,38 +657,35 @@ Rectangle {
             //width: menubar.width
             anchors.horizontalCenter: parent.horizontalCenter
             height: menubar.height
-            spacing: window.isSmallScreen() ? 5 : 15
+            spacing: 15
 
             ToolbarTextButton {
                 id: backwardsButton
                 label: "BACK"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
-                shown: Window.windowStash.length>0
-                bar: false
+                shown: WM.windowStash.length>1
                 onClicked: {
-                    Window.popWindow();
+                    WM.popWindow();
                 }
             }
 
             ToolbarTextButton {
                 label: "FEED"
-                selected: friendsFeed.state == "shown"
+                selected: topWindowType == "FriendsFeed"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
-                bar: false
                 onClicked: {
-                    Window.clearWindows();
+                    WM.clearWindows();
                     window.showFriendsFeed();
                 }
             }
 
             ToolbarTextButton {
                 label: "PLACES"
-                selected: venuesList.state == "shown"
+                selected: topWindowType == "VenuesList" && WM.topWindow().params.id != "todolist"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
-                bar: false
                 onClicked: {
                     window.showVenueList("");
                 }
@@ -710,9 +693,9 @@ Rectangle {
 
             ToolbarTextButton {
                 label: "LISTS"
+                selected: topWindowType == "VenuesList" && WM.topWindow().params.id == "todolist"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
-                bar: false
                 onClicked: {
                     window.showVenueList("todolist");
                 }
@@ -720,10 +703,9 @@ Rectangle {
 
             ToolbarTextButton {
                 label: "ME"
-                selected: userDetails.state == "shown" && userDetails.userRelationship == "self"
+                selected: topWindowType == "User" && WM.topWindow().params.id == "self"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
-                bar: false
                 onClicked: {
                     window.showUserPage("self");
                 }

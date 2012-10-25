@@ -16,11 +16,13 @@ var AUTHENTICATE_URL = "https://foursquare.com/oauth2/authenticate" +
 
 var accessToken = "";
 
-function doWebRequest(method, url, params, callback) {
-    var doc = new XMLHttpRequest();
-    url = "https://api.foursquare.com/v2/" + url;
-    //console.log(method + " " + url);
+var defaultVenueIcon = {"prefix":"https://foursquare.com/img/categories_v2/none_","suffix":".png"}
 
+function doWebRequest(method, url, params, callback) {
+    //console.log(method + " " + url);
+    url = "https://api.foursquare.com/v2/" + url;
+
+    var doc = new XMLHttpRequest();
     doc.onreadystatechange = function() {
         if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
             var status = doc.status;
@@ -31,20 +33,15 @@ function doWebRequest(method, url, params, callback) {
             var data;
             var contentType = doc.getResponseHeader("Content-Type");
             data = doc.responseText;
-            callback(data);
+            callback(data,params);
         }
     }
 
     doc.open(method, url);
-    if(params.length) {
-        doc.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        doc.send(params);
-    } else {        
-        doc.send();
-    }
+    doc.send();
 }
 
-function doNothing(response) {
+function doNothing(response,page) {
     // Nothing...
     processResponse(response);
 }
@@ -199,9 +196,9 @@ function processResponse(response) {
     return data.response;
 }
 
-function addTipToModel(tip) {
+function addTipToModel(page,tip) {
     //console.log("VENUE TIP: " + JSON.stringify(tip));
-    venueDetails.tipsModel.append({
+    page.tipsModel.append({
                      "userID": tip.user.id,
                      "userPhoto": thumbnailPhoto(tip.user.photo,100),
                      "tipID": tip.id,
@@ -210,7 +207,7 @@ function addTipToModel(tip) {
     });
 }
 
-function addCommentToModel(comment) {
+function addCommentToModel(page, comment) {
     //console.log("CHECKIN COMMENT: " + JSON.stringify(comment));
     var createdAgo = makeTime(comment.createdAt);
     var userID = comment.user.id;
@@ -219,7 +216,7 @@ function addCommentToModel(comment) {
     var text = comment.text;
     var relationship = parse(comment.user.relationship);
 
-    checkinDetails.commentsModel.append({
+    page.commentsModel.append({
                              "commentID":comment.id,
                              "createdAt":createdAgo,
                              "user":userName,
@@ -243,23 +240,23 @@ function processLikes(likebox, data) {
     }
 }
 
-function loadFriendsFeed() {
+function loadFriendsFeed(page) {
     var url = "checkins/recent?" + getAccessTokenParameter();
-    doWebRequest("GET", url, "", parseFriendsFeed);
+    doWebRequest("GET", url, page, parseFriendsFeed);
     waiting.show();
 }
 
-function loadFriendsFeedNearby() {
+function loadFriendsFeedNearby(page) {
     var url = "checkins/recent?" +
         getLocationParameter() + "&" + getAccessTokenParameter();
-    doWebRequest("GET", url, "", parseFriendsFeed);
+    doWebRequest("GET", url, page, parseFriendsFeed);
     waiting.show();
 }
 
-function parseFriendsFeed(response) {
+function parseFriendsFeed(response, page) {
     var data = processResponse(response);
     var count = 0;
-    friendsFeed.friendsCheckinsModel.clear();
+    page.friendsCheckinsModel.clear();
     data.recent.forEach(function(checkin) {
         //console.log("FRIEND CHECKIN: " + JSON.stringify(checkin));
         var userName = makeUserName(checkin.user);
@@ -281,7 +278,7 @@ function parseFriendsFeed(response) {
             venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
         }
         if (venueDistance === undefined || venueDistance < MAX_NEARBY_DISTANCE) {
-            friendsFeed.friendsCheckinsModel.append({
+            page.friendsCheckinsModel.append({
                                "id": checkin.id,
                                "shout": parse(checkin.shout),
                                "user": userName,
@@ -309,14 +306,14 @@ function getLocationParameter() {
     return "ll=" + lat + "," + lon;
 }
 
-function loadPlaces(query) {
+function loadPlaces(page, query) {
     var url = "venues/search?" +
         getLocationParameter();
     if(query!=null && query.length>0) {
         url += "&query=" + query;
     }
     url += "&" + getAccessTokenParameter();
-    doWebRequest("GET", url, "", parsePlaces);
+    doWebRequest("GET", url, page, parsePlaces);
     waiting.show();
 }
 
@@ -335,18 +332,21 @@ function parse(item) {
     }
 }
 
-function parsePlaces(response) {
+function parsePlaces(response, page) {
     var data = processResponse(response);
     var count = 0;
-    venuesList.placesModel.clear();
+    page.placesModel.clear();
     waiting.hide();
     data.venues.forEach(function(place) {
         //console.log("PLACE: " + JSON.stringify(place));
         var icon = "";
         if(place.categories!=null && place.categories[0]!==undefined) {
             icon = parseIcon(place.categories[0].icon);
+        } else {
+            icon = parseIcon(defaultVenueIcon);
         }
-        venuesList.placesModel.append({
+
+        page.placesModel.append({
                            "id": place.id,
                            "name": place.name,
                            "todoComment": "",
@@ -365,7 +365,7 @@ function parsePlaces(response) {
     }
 }
 
-function likeVenue(id, state) {
+function likeVenue(page, id, state) {
     //console.log("LIKE VENUE: " + id + " STATE: " + state);
     var url = "venues/"+id+"/like?set="
     if (state) {
@@ -374,34 +374,34 @@ function likeVenue(id, state) {
         url += "0";
     }
     url += "&" + getAccessTokenParameter();
-    doWebRequest("POST", url, "", parseLikeVenue);
+    doWebRequest("POST", url, page, parseLikeVenue);
 }
 
-function parseLikeVenue(response) {
+function parseLikeVenue(response, page) {
     //console.log("LIKE RESPONSE: " + JSON.stringify(response));
     var data = processResponse(response);
 
-    processLikes(venueDetails.likeBox, data);
+    processLikes(page.likeBox, data);
 }
 
-function loadVenue(venueID) {
+function loadVenue(page, venueID) {
     var url = "venues/" + venueID + "?" + getAccessTokenParameter();
     waiting.show();
-    venueDetails.venueID = venueID;
-    venueDetails.venueName = "";
-    venueDetails.venueAddress = "";
-    venueDetails.venueCity = "";
-    venueDetails.venueMajor = "";
-    venueDetails.photosBox.photosModel.clear();
-    venueDetails.usersBox.photosModel.clear();
-    venueDetails.venueMapUrl = "";
-    venueDetails.venueMapLat = "";
-    venueDetails.venueMapLng = "";
+    page.venueID = venueID;
+    page.venueName = "";
+    page.venueAddress = "";
+    page.venueCity = "";
+    page.venueMajor = "";
+    page.photosBox.photosModel.clear();
+    page.usersBox.photosModel.clear();
+    page.venueMapUrl = "";
+    page.venueMapLat = "";
+    page.venueMapLng = "";
     //venueDetails.venueMapZoom = 15; //do not reset on each venue
-    doWebRequest("GET", url, "", parseVenue);
+    doWebRequest("GET", url, page, parseVenue);
 }
 
-function parseVenue(response) {
+function parseVenue(response, page) {
     var data = processResponse(response);
     //console.log("VENUE: "+ JSON.stringify(data));
     waiting.hide();
@@ -410,91 +410,121 @@ function parseVenue(response) {
     if(venue.categories!=null && venue.categories[0]!==undefined) {
         icon = venue.categories[0].icon;
     }
-    venueDetails.venueID = venue.id;
-    venueDetails.venueName = venue.name;
-    venueDetails.venueAddress = parse(venue.location.address);
-    venueDetails.venueCity = parse(venue.location.city);
+    page.venueID = venue.id;
+    page.venueName = venue.name;
+    page.venueAddress = parse(venue.location.address);
+    page.venueCity = parse(venue.location.city);
     if (venue.categories[0]!== undefined)
-        venueDetails.venueTypeUrl = parseIcon(venue.categories[0].icon);
+        page.venueTypeUrl = parseIcon(venue.categories[0].icon);
+    else
+        page.venueTypeUrl = parseIcon(defaultVenueIcon);
     if(venue.mayor.count>0) {
-        venueDetails.venueMajor = makeUserName(venue.mayor.user);
-        venueDetails.venueMajorPhoto = thumbnailPhoto(venue.mayor.user.photo,100);
-        venueDetails.venueMajorID = venue.mayor.user.id;
+        page.venueMajor = makeUserName(venue.mayor.user);
+        page.venueMajorPhoto = thumbnailPhoto(venue.mayor.user.photo,100);
+        page.venueMajorID = venue.mayor.user.id;
     } else {
-        venueDetails.venueMajor = "";
-        venueDetails.venueMajorPhoto = "";
-        venueDetails.venueMajorID = "";
+        page.venueMajor = "";
+        page.venueMajorPhoto = "";
+        page.venueMajorID = "";
     }
     if(venue.location!==undefined) {
-        venueDetails.venueMapLat = venue.location.lat;
-        venueDetails.venueMapLng = venue.location.lng;
+        page.venueMapLat = venue.location.lat;
+        page.venueMapLng = venue.location.lng;
     }
     // parse likes
-    processLikes(venueDetails.likeBox, venue);
+    processLikes(page.likeBox, venue);
 
     // Parse venue tips
-    venueDetails.tipsModel.clear();
+    page.tipsModel.clear();
     if(venue.tips.count>0) {
-        venue.tips.groups[0].items.forEach(function(tip) {
-            addTipToModel(tip);
-        });
+        venue.tips.groups.forEach(function (group) {
+                group.items.forEach(function(tip) {
+                    addTipToModel(page,tip);
+                })
+            });
     }
     if(venue.photos.count>0) {
-        venueDetails.photosBox.caption = venue.photos.summary;
+        page.photosBox.caption = venue.photos.summary;
         venue.photos.groups.forEach(function(group) {
-            if (group.count>0 && group.type == "venue") {
+            if (group.count>0) {
                 group.items.forEach(function(photo){
-                    venueDetails.photosBox.photosModel.append(
+                    page.photosBox.photosModel.append(
                         makePhoto(photo,300) );
                 });
             }
         });
     }
     if (venue.hereNow.count>0) {
-        venueDetails.usersBox.caption = venue.hereNow.summary;
+        page.usersBox.caption = venue.hereNow.summary;
         venue.hereNow.groups.forEach(function(group) {
             if (group.count>0) {
                 group.items.forEach(function(user){
-                    venueDetails.usersBox.photosModel.append({
+                    page.usersBox.photosModel.append({
                         "objectID": user.user.id,
                         "photoThumb": thumbnailPhoto(user.user.photo,100) });
                 });
             }
         });
-
     }
 }
 
-function addComment(checkinID, text) {
+function loadVenuePhotos(page, venue) {
+    page.photosModel.clear();
+    waiting.show();
+    var url = "/venues/" + venue + "/photos?group=venue&limit=100"
+    var url2 = "/venues/" + venue + "/photos?group=checkin&limit=100"
+
+    var urlfull = "multi?requests="
+            + encodeURIComponent(url)
+            + "," + encodeURIComponent(url2)
+            + "&" + getAccessTokenParameter();
+
+    doWebRequest("GET", urlfull, page, parseVenuePhotos);
+}
+
+function parseVenuePhotos(multiresponse, page) {
+    var multidata = processResponse(multiresponse);
+    waiting.hide();
+    multidata.responses.forEach(function(response){
+        var data = response.response;
+        data.photos.items.forEach(function(photo){
+              page.photosModel.append(
+                  makePhoto(photo,300)
+              );
+          });
+    });
+}
+
+function addComment(page, checkinID, text) {
     waiting.show();
     var url = "checkins/" + checkinID + "/addcomment?"
     url += "CHECKIN_ID=" + checkinID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, "", parseAddComment);
+    doWebRequest("POST", url, page, parseAddComment);
 }
 
-function parseAddComment(response) {
+function parseAddComment(response, page) {
     var data = processResponse(response);
     waiting.hide();
-    addCommentToModel(data.comment);
+    addCommentToModel(page, data.comment);
 }
 
-function deleteComment(checkinID, commentID) {
+function deleteComment(page, checkinID, commentID) {
     waiting.show();
     var url = "checkins/" + checkinID + "/deletecomment?"
     url += "CHECKIN_ID=" + checkinID + "&";
     url += "commentId=" + commentID + "&";
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, "", parseDeleteComment);
+    doWebRequest("POST", url, page, parseDeleteComment);
 }
 
-function parseDeleteComment(response) {
+function parseDeleteComment(response, page) {
     var data = processResponse(response);
     waiting.hide();
-    commentsModel.clear();
+    page.commentsModel.clear();
     data.checkin.comments.items.forEach(function(comment) {
-        addCommentToModel(comment);
+        addCommentToModel(page,comment);
     });
 }
 
@@ -510,7 +540,7 @@ function addTip(venueID, text) {
 function parseAddTip(response){
     var data = processResponse(response);
     waiting.hide();
-    addTipToModel(data.tip);
+    addTipToModel(page,data.tip);
 }
 
 function markVenueToDo(venueID, text) {
@@ -571,19 +601,19 @@ function parseAddCheckin(response) {
     window.showCheckinPage(data.checkin.id);
 }
 
-function loadLeaderBoard() {
+function loadLeaderBoard(page) {
     var url = "users/leaderboard?" + getAccessTokenParameter();
     waiting.show();
-    doWebRequest("GET", url, "", parseLeaderBoard);
+    doWebRequest("GET", url, page, parseLeaderBoard);
 }
 
-function parseLeaderBoard(response) {
+function parseLeaderBoard(response, page) {
     waiting.hide();
-    var data = eval("[" + response + "]")[0];
-    leaderBoard.boardModel.clear();
-    data.response.leaderboard.items.forEach(function(ranking) {
-        leaderBoard.boardModel.append({
-                           "id": ranking.user.id,
+    var data = processResponse(response);
+    page.boardModel.clear();
+    data.leaderboard.items.forEach(function(ranking) {
+        page.boardModel.append({
+                           "user": ranking.user.id,
                            "name": makeUserName(ranking.user),
                            "photo": thumbnailPhoto(ranking.user.photo,100),
                            "recent": ranking.scores.recent,
@@ -592,30 +622,32 @@ function parseLeaderBoard(response) {
                            "rank": ranking.rank
         });
         if(ranking.user.relationship=="self") {
-            leaderBoard.rank = ranking.rank;
+            page.rank = ranking.rank;
         }
     });
 }
 
-function loadToDo() {
+function loadToDo(page) {
     var url = "users/self/todos?" +
         getLocationParameter() + "&" +
         getAccessTokenParameter();
     waiting.show();
-    doWebRequest("GET", url, "", parseToDo);
+    doWebRequest("GET", url, page, parseToDo);
 }
 
-function parseToDo(response) {
+function parseToDo(response, page) {
     waiting.hide();
-    var data = eval("[" + response + "]")[0];
-    venuesList.placesModel.clear();
-    data.response.todos.items.forEach(function(todo) {
+    var data = processResponse(response);
+    page.placesModel.clear();
+    data.todos.items.forEach(function(todo) {
         var place = todo.tip.venue;
         var icon = "";
         if(place.categories!=null && place.categories[0]!==undefined) {
             icon = parseIcon(place.categories[0].icon);
+        } else {
+            icon = parseIcon(defaultVenueIcon);
         }
-        venuesList.placesModel.append({
+        page.placesModel.append({
                            "id": place.id,
                            "name": place.name,
                            "todoComment": todo.tip.text,
@@ -630,7 +662,7 @@ function parseToDo(response) {
     });
 }
 
-function likeCheckin(id, state) {
+function likeCheckin(page, id, state) {
     //console.log("ID: " + id + " State: " + state);
     var url = "checkins/"+id+"/like?set="
     if (state) {
@@ -639,52 +671,48 @@ function likeCheckin(id, state) {
         url += "0";
     }
     url += "&" + getAccessTokenParameter();
-    doWebRequest("POST", url, "", parseLikeCheckin);
+    doWebRequest("POST", url, page, parseLikeCheckin);
 }
 
-function parseLikeCheckin(response) {
+function parseLikeCheckin(response, page) {
     //console.log("LIKE RESPONSE: " + JSON.stringify(response));
     var data = processResponse(response);
 
-    processLikes(checkinDetails.likeBox, data);
+    processLikes(page.likeBox, data);
 }
 
-function loadCheckin(id) {
+function loadCheckin(page,id) {
     waiting.show();
-    //var id = "4fa6a2cae4b089a95b316999"; //points
-    //var id = "4fa74812e4b0cbe2e15e6ada"; //bages
-    //var id = "4fa6634ce4b0fd4c3fb0af77"; //points + badges
-    //var id = "4fa3ecd8e4b0ace472d9569c"; //comments + points + badge
     var url = "checkins/" + id + "?" + getAccessTokenParameter();
 
-    checkinDetails.scoreTotal = "--";
-    checkinDetails.scoresModel.clear();
-    checkinDetails.badgesModel.clear();
-    checkinDetails.commentsModel.clear();
-    checkinDetails.photosBox.photosModel.clear();
-    doWebRequest("GET",url,"",parseCheckin);
+    page.scoreTotal = "--";
+    page.scoresModel.clear();
+    page.badgesModel.clear();
+    page.commentsModel.clear();
+    page.photosBox.photosModel.clear();
+    doWebRequest("GET",url,page,parseCheckin);
 }
 
-function parseCheckin(response) {
+function parseCheckin(response, page) {
     var checkin = processResponse(response).checkin;
-    //console.log("CHECKIN INFO: " + JSON.stringify(data.checkin) + "\n");
+    //console.log("CHECKIN INFO: " + JSON.stringify(checkin) + "\n");
 
-    checkinDetails.checkinID = checkin.id;
-    checkinDetails.scoreTotal = checkin.score.total;
-    checkinDetails.owner.userID = checkin.user.id;
-    checkinDetails.owner.userName = makeUserName(checkin.user);
-    checkinDetails.owner.createdAt = makeTime(checkin.createdAt);
-    checkinDetails.owner.userPhoto.photoUrl = thumbnailPhoto(checkin.user.photo,100);
-    checkinDetails.owner.venueID = checkin.venue.id;
-    checkinDetails.owner.venueName = checkin.venue.name;
-    checkinDetails.owner.venueAddress = parse(checkin.venue.location.address);
-    checkinDetails.owner.venueCity = parse(checkin.venue.location.city);
-    checkinDetails.owner.eventOwner = parse(checkin.user.relationship);
-    checkinDetails.owner.userShout = parse(checkin.user.shout);
+    page.checkinID = checkin.id;
+    page.scoreTotal = checkin.score.total;
+    page.owner.userID = checkin.user.id;
+    page.owner.userName = makeUserName(checkin.user);
+    page.owner.createdAt = makeTime(checkin.createdAt);
+    page.owner.userPhoto.photoUrl = thumbnailPhoto(checkin.user.photo,100);
+    page.owner.venueID = checkin.venue.id;
+    page.owner.venueName = checkin.venue.name;
+    page.owner.venueAddress = parse(checkin.venue.location.address);
+    page.owner.venueCity = parse(checkin.venue.location.city);
+    page.owner.eventOwner = parse(checkin.user.relationship);
+    page.owner.userShout = parse(checkin.shout);
 
     checkin.score.scores.forEach(function(score) {
         //console.log("CHECKIN SCORE: " + JSON.stringify(score));
-        checkinDetails.scoresModel.append({
+        page.scoresModel.append({
                                "scorePoints": score.points,
                                "scoreImage": score.icon,
                                "scoreMessage": score.message,
@@ -693,46 +721,48 @@ function parseCheckin(response) {
     if(checkin.badges!==undefined) {
         checkin.badges.items.forEach(function(badge) {
             //console.log("CHECKIN BADGE: " + JSON.stringify(badge));
-            checkinDetails.badgesModel.append({
+            page.badgesModel.append({
                                    "badgeTitle":badge.name,
                                    "badgeMessage":badge.description,
                                    "badgeImage":badge.image.prefix + badge.image.sizes[1] + badge.image.name})
         });
     }
     checkin.comments.items.forEach(function(comment) {
-        addCommentToModel(comment);
+        addCommentToModel(page,comment);
     });
 
     if (checkin.photos.count>0) {
         checkin.photos.items.forEach(function (photo) {
-            checkinDetails.photosBox.photosModel.append(
+            page.photosBox.photosModel.append(
                 makePhoto(photo,300));
         });
     }
 
-    processLikes(checkinDetails.likeBox, checkin);
+    processLikes(page.likeBox, checkin);
 
     waiting.hide();
 }
 
-function loadMayorships(user) {
+function loadMayorships(page, user) {
     var url = "users/"+user + "/mayorships?" + getAccessTokenParameter();
     waiting.show();
-    mayorships.mayorshipsModel.clear();
-    doWebRequest("GET", url, "", parseMayorhips);
+    page.mayorshipsModel.clear();
+    doWebRequest("GET", url, page, parseMayorhips);
 }
 
-function parseMayorhips(response) {
+function parseMayorhips(response, page) {
     var data = processResponse(response);
     waiting.hide();
-    mayorships.mayorshipsModel.clear();
+    page.mayorshipsModel.clear();
     data.mayorships.items.forEach(function(mayorship){
         var place = mayorship.venue;
         var icon = "";
         if(place.categories!=null && place.categories[0]!==undefined) {
             icon = parseIcon(place.categories[0].icon);
+        } else {
+            icon = parseIcon(defaultVenueIcon);
         }
-        mayorships.mayorshipsModel.append({
+        page.mayorshipsModel.append({
             "id": place.id,
             "name": place.name,
             "address": parse(place.location.address),
@@ -740,22 +770,22 @@ function parseMayorhips(response) {
             "lat": place.location.lat,
             "lng": place.location.lng,
             "icon": icon,
-            "hereNow": ""
+            "hereNow": 0
         });
     });
 }
 
-function loadCheckinHistory(user) {
+function loadCheckinHistory(page, user) {
     var url = "users/" + user + "/checkins?limit=50&set=newestfirst&" + getAccessTokenParameter();
     waiting.show();
-    checkinHistory.checkinHistoryModel.clear();
-    doWebRequest("GET", url, "", parseCheckinHistory);
+    page.checkinHistoryModel.clear();
+    doWebRequest("GET", url, page, parseCheckinHistory);
 }
 
-function parseCheckinHistory(response) {
+function parseCheckinHistory(response, page) {
     var data = processResponse(response);
     waiting.hide();
-    checkinHistory.checkinHistoryModel.clear();
+    page.checkinHistoryModel.clear();
     data.checkins.items.forEach(function(checkin) {
         //console.log("USER CHECKIN: " + JSON.stringify(checkin));
         var createdAgo = makeTime(checkin.createdAt);
@@ -773,11 +803,14 @@ function parseCheckinHistory(response) {
         if (checkin.photos.count > 0) {
             venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
         }
-        checkinHistory.checkinHistoryModel.append({
+        var icon = parseIcon(defaultVenueIcon);
+        if (checkin.venue.categories!=null && checkin.venue.categories[0]!==undefined)
+            icon = parseIcon(checkin.venue.categories[0].icon);
+        page.checkinHistoryModel.append({
                            "id": checkin.id,
                            "shout": parse(checkin.shout),
                            "mayor": parse(checkin.isMayor),
-                           "photo": parseIcon(checkin.venue.categories[0].icon),
+                           "photo": icon,
                            "commentsCount": commentsCount,
                            "venueID": venueID,
                            "venueName": venueName,
@@ -787,14 +820,14 @@ function parseCheckinHistory(response) {
     });
 }
 
-function loadBadges(user) {
+function loadBadges(page,user) {
     var url = "users/" + user + "/badges?" + getAccessTokenParameter();
     waiting.show();
-    userBadges.badgeModel.clear();
-    doWebRequest("GET", url, "", parseBadges);
+    page.badgeModel.clear();
+    doWebRequest("GET", url, page, parseBadges);
 }
 
-function parseBadges(response) {
+function parseBadges(response, page) {
     var data = processResponse(response);
     waiting.hide();
     data.sets.groups.forEach(function(group){
@@ -802,7 +835,7 @@ function parseBadges(response) {
              group.items.forEach(function(item){
                  var badge = data.badges[item];
                  var venue = parse(badge.unlocks[0].checkins[0].venue);
-                 userBadges.badgeModel.append({
+                 page.badgeModel.append({
                     "name":badge.name,
                     "image":makeImageUrl(badge.image,114),
                     "imageLarge":makeImageUrl(badge.image,300),
@@ -816,52 +849,52 @@ function parseBadges(response) {
     });
 }
 
-function loadUser(user) {
+function loadUser(page, user) {
     var url = "users/" + user + "?" + getAccessTokenParameter();
     waiting.show();
-    userDetails.boardModel.clear();
-    userDetails.friendsBox.photosModel.clear();
-    doWebRequest("GET", url, "", parseUser);
+    page.boardModel.clear();
+    page.friendsBox.photosModel.clear();
+    doWebRequest("GET", url, page, parseUser);
     if (user == "self") {
         url = "users/leaderboard?neighbors=2&" + getAccessTokenParameter();
-        doWebRequest("GET",url,"", parseUserBoard);
+        doWebRequest("GET",url, page, parseUserBoard);
     }
 }
 
-function parseUser(response) {
+function parseUser(response, page) {
     var data = processResponse(response);
     //console.log("USER: " + JSON.stringify(data))
     waiting.hide();
     var user = data.user;
-    userDetails.userName = makeUserName(user);
-    userDetails.userPhoto = thumbnailPhoto(user.photo,100);
-    userDetails.userBadgesCount = user.badges.count;
-    userDetails.userCheckinsCount = user.checkins.count;
-    userDetails.userFriendsCount = user.friends.count;
-    userDetails.userID = user.id;
-    userDetails.userMayorshipsCount = user.mayorships.count;
+    page.userName = makeUserName(user);
+    page.userPhoto = thumbnailPhoto(user.photo,100);
+    page.userBadgesCount = user.badges.count;
+    page.userCheckinsCount = user.checkins.count;
+    page.userFriendsCount = user.friends.count;
+    page.userID = user.id;
+    page.userMayorshipsCount = user.mayorships.count;
     var lastVenue = "";
     var lastTime = "";
     if(user.checkins.items!==undefined) {
         lastVenue = user.checkins.items[0].venue.name;
         lastTime = makeTime(user.checkins.items[0].createdAt);
     }
-    userDetails.lastVenue = lastVenue;
-    userDetails.lastTime = lastTime;
+    page.lastVenue = lastVenue;
+    page.lastTime = lastTime;
 
-    userDetails.scoreRecent = user.scores.recent;
-    userDetails.scoreMax = user.scores.max;
-    userDetails.userRelationship = parse(user.relationship);
+    page.scoreRecent = user.scores.recent;
+    page.scoreMax = user.scores.max;
+    page.userRelationship = parse(user.relationship);
 
     if (user.friends.count>0) {
-        userDetails.friendsBox.caption = "TOTAL FRIENDS: <b>" + user.friends.count +"</b>";
+        page.friendsBox.caption = "TOTAL FRIENDS: <b>" + user.friends.count +"</b>";
         user.friends.groups.forEach(function(group) {
             if (group.type == "friends" && user.relationship != "self" ) {
-                userDetails.friendsBox.caption += " ("+ group.name + " <b>" + group.count + "</b>)";
+                page.friendsBox.caption += " ("+ group.name + " <b>" + group.count + "</b>)";
             }
             if (group.count>0) {
                 group.items.forEach(function(user){
-                    userDetails.friendsBox.photosModel.append({
+                    page.friendsBox.photosModel.append({
                         "objectID": user.id,
                         "photoThumb": thumbnailPhoto(user.photo,100) });
                 });
@@ -871,40 +904,33 @@ function parseUser(response) {
     }
 }
 
-function parseUserBoard(response) {
+function parseUserBoard(response, page) {
     var data = processResponse(response);
     //console.log("USER: " + JSON.stringify(data))
     data.leaderboard.items.forEach(function(ranking) {
         if (ranking.user.relationship == "self")
-            userDetails.userLeadersboardRank = ranking.rank;
-        userDetails.boardModel.append({
+            page.userLeadersboardRank = ranking.rank;
+            page.boardModel.append({
                "user": "#" + ranking.rank + ". " +makeUserName(ranking.user),
                "shout": "<b>"+ranking.scores.recent+" "+"points" + "</b> " + ranking.scores.checkinsCount + " " + "checkins",
                "photo": thumbnailPhoto(ranking.user.photo,100),
         });
-        if(ranking.user.relationship=="self") {
-            leaderBoard.rank = ranking.rank;
-        }
     });
 }
 
-function addPhoto(checkinID, venueID, photopath, makepublic, facebook, twitter) {
+function addPhoto(params) {
     waiting.show();
     var url = "https://api.foursquare.com/v2/photos/add?";
-    if (checkinID!="") {
-        url += "checkinId=" + checkinID;
-    }
-    if (venueID!=""){
-        url += "venueId=" +venueID;
-    }
-    if (makepublic == "1") {
+    url += params.type;
+    url += "Id=" + params.id;
+    if (params.makepublic == "1") {
         url += "&public=1";
     }
     var broadcast = "";
-    if (facebook) {
+    if (params.facebook) {
         broadcast = "facebook";
     }
-    if (twitter) {
+    if (params.twitter) {
         if (broadcast!="") broadcast += ",";
         broadcast += "twitter";
     }
@@ -913,60 +939,53 @@ function addPhoto(checkinID, venueID, photopath, makepublic, facebook, twitter) 
     }
     url += "&" + getAccessTokenParameter();
     //console.log("PHOTOUPLOAD: "+url);
-    if (!pictureHelper.upload(url,photopath)) {
+    if (!pictureHelper.upload(url, params.path, params.owner)) {
         showError("Error uploading photo!");
     }
 }
 
-function parseAddPhoto(response) {
+function parseAddPhoto(response, page) {
     waiting.hide();
     var photo = processResponse(response).photo;    
-    console.log("ADDED PHOTO: " + JSON.stringify(photo));
-    if (photoAdd.checkinID!="") {
-        checkinDetails.photosBox.photosModel.insert(0,
-                    makePhoto(photo,300));
-    }
-    if (photoAdd.venueID!="") {
-        venueDetails.photosBox.photosModel.insert(0,
-                    makePhoto(photo,300));
-    }
+    //console.log("ADDED PHOTO: " + JSON.stringify(photo));
+    page.photosBox.photosModel.insert(0,
+                makePhoto(photo,300));
 }
 
-function loadPhoto(photoid) {
+function loadPhoto(page, photoid) {
     var url = "photos/" + photoid + "?" + getAccessTokenParameter();
     waiting.show();
-    doWebRequest("GET", url, "", parsePhoto);
+    doWebRequest("GET", url, page, parsePhoto);
 }
 
-function parsePhoto(response) {
+function parsePhoto(response, page) {
     var photo = processResponse(response).photo;
     //console.log("PHOTO: " + JSON.stringify(photo))
-
-    photoDetails.photoUrl = thumbnailPhoto(photo);
-    photoDetails.owner.userID = photo.user.id;
-    photoDetails.owner.userName = "<span style='color:#000'>Uploaded by </span>" + makeUserName(photo.user);
-    photoDetails.owner.userPhoto.photoUrl = thumbnailPhoto(photo.user.photo,100);
-    photoDetails.owner.userShout = "via " + parse(photo.source.name);
-    photoDetails.owner.createdAt = makeTime(photo.createdAt);
-
     waiting.hide();
+
+    page.photoUrl = thumbnailPhoto(photo);
+    page.owner.userID = photo.user.id;
+    page.owner.userName = "<span style='color:#000'>Uploaded by </span>" + makeUserName(photo.user);
+    page.owner.userPhoto.photoUrl = thumbnailPhoto(photo.user.photo,100);
+    page.owner.userShout = "via " + parse(photo.source.name);
+    page.owner.createdAt = makeTime(photo.createdAt);
 }
 
-function loadNotifications() {
+function loadNotifications(page) {
     var url = "updates/notifications?" + getAccessTokenParameter();
     waiting.show();
-    doWebRequest("GET",url,"", parseNotifications);
+    doWebRequest("GET",url,page, parseNotifications);
 }
 
-function markNotificationsRead(time) {
+function markNotificationsRead(page, time) {
     var url = "updates/marknotificationsread?";
     url += "highWatermark=" + time;
     url += "&" + getAccessTokenParameter();
-    notificationsList.notificationsModel.clear();
-    doWebRequest("POST",url,"", doNothing);
+    page.notificationsModel.clear();
+    doWebRequest("POST", url, page, doNothing);
 }
 
-function parseNotifications(response) {
+function parseNotifications(response, page) {
     var notis = processResponse(response).notifications;
     //console.log("NOTIFICATIONS: " + JSON.stringify(notis));
     waiting.hide();
@@ -975,7 +994,7 @@ function parseNotifications(response) {
         var objectID = noti.target.object.id;
         if (noti.target.type == "tip")
             objectID = noti.target.object.venue.id;
-        notificationsList.notificationsModel
+        page.notificationsModel
             .append({
                         "type": noti.target.type,
                         "objectID": objectID,

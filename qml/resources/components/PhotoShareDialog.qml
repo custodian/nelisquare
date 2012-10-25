@@ -5,16 +5,18 @@ Rectangle {
     id: photoShare
     width: parent.width
     height: items.height + 20
-    color: theme.toolbarLightColor
+    color: theme.backgroundBlueDark
     state: "hidden"
 
     signal cancel()
-    signal uploadPhoto(string photo, bool makepublic, bool facebook, bool twitter)
+    signal uploadPhoto(variant params)
+
+    property variant options //type, id, owner page.
+    property variant owner //owner page (photo selection page)
 
     property string photoUrl: ""
     property bool useFacebook: false
     property bool useTwitter: false
-    property bool useVenue: false
     property bool makePublic: false
 
     onPhotoUrlChanged: {
@@ -80,6 +82,14 @@ Rectangle {
                             source: "../pics/checktap.png"
                             visible: photoShare.makePublic
                         }
+
+                        MouseArea {
+                            id: friendsMouseArea
+                            anchors.fill: parent
+                            onClicked: {
+                                photoShare.makePublic = !photoShare.makePublic;
+                            }
+                        }
                     }
 
                     Text {
@@ -89,13 +99,6 @@ Rectangle {
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
                         color: "#fff"
-                    }
-                    MouseArea {
-                        id: friendsMouseArea
-                        anchors.fill: parent
-                        onClicked: {
-                            photoShare.makePublic = !photoShare.makePublic;
-                        }
                     }
                 }
 
@@ -120,6 +123,14 @@ Rectangle {
                             source: "../pics/checktap.png"
                             visible: photoShare.useFacebook
                         }
+
+                        MouseArea {
+                            id: facebookMouseArea
+                            anchors.fill: parent
+                            onClicked: {
+                                photoShare.useFacebook = !photoShare.useFacebook;
+                            }
+                        }
                     }
 
                     Text {
@@ -129,14 +140,6 @@ Rectangle {
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
                         color: "#fff"
-                    }
-
-                    MouseArea {
-                        id: facebookMouseArea
-                        anchors.fill: parent
-                        onClicked: {
-                            photoShare.useFacebook = !photoShare.useFacebook;
-                        }
                     }
                 }
 
@@ -161,6 +164,14 @@ Rectangle {
                             source: "../pics/checktap.png"
                             visible: photoShare.useTwitter
                         }
+
+                        MouseArea {
+                            id: twitterMouseArea
+                            anchors.fill: parent
+                            onClicked: {
+                                photoShare.useTwitter = !photoShare.useTwitter;
+                            }
+                        }
                     }
 
                     Text {
@@ -170,14 +181,6 @@ Rectangle {
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
                         color: "#fff"
-                    }
-
-                    MouseArea {
-                        id: twitterMouseArea
-                        anchors.fill: parent
-                        onClicked: {
-                            photoShare.useTwitter = !photoShare.useTwitter;
-                        }
                     }
                 }
             }
@@ -191,8 +194,14 @@ Rectangle {
                 id: checkinButton
                 label: "Upload photo"
                 width: parent.width - 130
-                onClicked: photoShare.uploadPhoto( photoUrl, makePublic, useVenue, useFacebook, useTwitter )
-
+                onClicked: {
+                    var params = options;
+                    params["path"] = photoUrl;
+                    params["facebook"] = useFacebook;
+                    params["twitter"] = useTwitter;
+                    params["public"] = makePublic;
+                    photoShare.uploadPhoto(params)
+                }
             }
 
             GreenButton {

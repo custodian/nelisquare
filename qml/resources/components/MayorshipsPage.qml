@@ -31,7 +31,7 @@ Rectangle {
         width: parent.width
         height: parent.height - y
         delegate: mayorshipsDelegate
-        highlightFollowsCurrentItem: true
+        //highlightFollowsCurrentItem: true
         clip: true
     }
 

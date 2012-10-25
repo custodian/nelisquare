@@ -49,10 +49,17 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.engine()->addPluginPath(QString("/opt/qtm12/plugins"));
 #endif
 
+    viewer.setAttribute(Qt::WA_OpaquePaintEvent);
+    viewer.setAttribute(Qt::WA_NoSystemBackground);
+    viewer.viewport()->setAttribute(Qt::WA_OpaquePaintEvent);
+    viewer.viewport()->setAttribute(Qt::WA_NoSystemBackground);
+
+    /*
     qmlRegisterType<QGraphicsBlurEffect>("Effects",1,0,"Blur");
     qmlRegisterType<QGraphicsColorizeEffect>("Effects",1,0,"Colorize");
     qmlRegisterType<QGraphicsDropShadowEffect>("Effects",1,0,"DropShadow");
     qmlRegisterType<QGraphicsOpacityEffect>("Effects",1,0,"OpacityEffect");
+    */
 
     WindowHelper *windowHelper = new WindowHelper(&viewer);
     PictureHelper *pictureHelper = new PictureHelper();
@@ -78,7 +85,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #endif
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
-    rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant)),SLOT(onPictureUploaded(QVariant)));
+    rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
     rootObject->connect(windowHelper,SIGNAL(visibilityChanged(QVariant)), SLOT(onVisibililityChange(QVariant)));
     viewer.showFullScreen();
