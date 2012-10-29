@@ -12,7 +12,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#00aedb"
+        color: theme.backgroundSplash
     }
 
     Image {
@@ -41,7 +41,7 @@ Item {
                 color: theme.textColorSign
                 font.pixelSize: theme.font.sizeDefault
             }
-            GreenButton {
+            ButtonGreen {
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: loginButton
                 label: "Login"

@@ -1,7 +1,9 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
     id: venuesList
+    signal checkin(string venueid, string venuename)
     signal clicked(string venueid)
     signal search(string query)
 
@@ -38,7 +40,7 @@ Rectangle {
         spacing: 5
     }
 
-    GreenLine {
+    LineGreen {
         y: 80
         height: 30
         text: "PLACES NEAR YOU"
@@ -55,13 +57,9 @@ Rectangle {
             width: parent.width - 150
             x: 10
             y: 20
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#ccc" }
-                GradientStop { position: 0.1; color: "#fafafa" }
-                GradientStop { position: 1.0; color: "#fff" }
-            }
+            gradient: theme.gradientTextBox
             border.width: 1
-            border.color: "#aaa"
+            border.color: theme.textboxBorderColor
             smooth: true
 
             TextInput {
@@ -71,12 +69,12 @@ Rectangle {
                 height: parent.height - 10
                 x: 5
                 y: 5
-                color: "#111"
+                color: theme.textColor
                 font.pixelSize: 24
 
                 onAccepted: {
                     var query = searchText.text;
-                    if(query==theme.textSearchVenue) {
+                    if(query===theme.textSearchVenue) {
                         query = "";
                     }
                     venuesList.search(query);
@@ -86,7 +84,7 @@ Rectangle {
                     anchors.fill: parent
                     onClicked: {
                         searchText.focus = true;
-                        if(searchText.text==theme.textSearchVenue) {
+                        if(searchText.text===theme.textSearchVenue) {
                             searchText.text = "";
                         }
                         if (searchText.text != "") {
@@ -97,7 +95,7 @@ Rectangle {
             }
         }
 
-        BlueButton {
+        ButtonBlue {
             x: parent.width - width - 10
             y: 20
             height: 40
@@ -107,7 +105,7 @@ Rectangle {
             onClicked: {
                 // Search
                 var query = searchText.text;
-                if(query==theme.textSearchVenue) {
+                if(query===theme.textSearchVenue) {
                     query = "";
                 }
                 hideKeyboard();
@@ -121,102 +119,30 @@ Rectangle {
     Component {
         id: venuesListDelegate
 
-        Item {
-            id: placesItem
-            width: parent.width
-            height: titleContainer.height + 2
+        EventBox {
+            activeWhole: true
 
-            Rectangle {
-                id: titleContainer
-                color: mouseArea.pressed ? "#ddd" : theme.backgroundMain
-                y: 1
-                width: parent.width
-                height: statusTextArea.height + 8 < 64 ? 64 : statusTextArea.height + 8
+            userShout: model.todoComment
+            //userMayor: model.mayor
+            venueName: model.name
+            venuePhoto: model.photo !== undefined ? model.photo : ""
+            createdAt: model.distance + " meters"
+            peoplesCount: model.peoplesCount
 
-                Image {
-                    x: 8
-                    y: 4
-                    id: buildingImage
-                    source: cache.get(icon)
-                    width: 32
-                    height: 32
-                }
-
-                Column {
-                    id: statusTextArea
-                    spacing: 4
-                    x: buildingImage.width + 16
-                    y: 4
-                    width: parent.width - x - 16
-
-                    Row {
-                        spacing: 10
-                        width: parent.width
-
-                        Text {
-                            id: messageText
-                            color: "#333"
-                            font.pixelSize: 24
-                            //width: parent.width / 2
-                            text: name
-                            font.bold: true
-                            wrapMode: Text.Wrap
-                        }
-                    }
-                    Text {
-                        id: todoText
-                        color: "#666"
-                        font.pixelSize: 16
-                        width: parent.width
-                        text: todoComment
-                        visible: todoComment.length>0
-                        wrapMode: Text.Wrap
-                    }
-
-                    Row {
-                        width: parent.width
-                        spacing: 10
-                        Text {
-                            id: distanceText
-                            color: "#666"
-                            font.pixelSize: 16
-                            text: distance + " meters  "
-                            wrapMode: Text.Wrap
-                        }
-                        Image {
-                            id: hereNowImage
-                            source: "../pics/peoples.png"
-                            fillMode: Image.PreserveAspectFit
-                            height: distanceText.height
-                            visible: hereNow > 0
-                        }
-
-                        Text {
-                            text: hereNow
-                            font.pixelSize: 16
-                            visible: hereNow > 0
-                        }
-                    }
-                }
+            Component.onCompleted: {
+                userPhoto.photoUrl = model.icon
             }
 
-            /* //separator
-            Rectangle {
-                width:  parent.width
-                x: 4
-                y: placesItem.height - 1
-                height: 1
-                color: "#ccc"
-            }*/
-
             MouseArea {
-                id: mouseArea
                 anchors.fill: parent
+
                 onClicked: {
                     venuesList.clicked( model.id );
                 }
+                onPressAndHold: {
+                    venuesList.checkin( model.id, model.name);
+                }
             }
-
         }
     }
 

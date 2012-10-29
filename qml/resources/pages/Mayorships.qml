@@ -1,11 +1,10 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
-    id: leaderBoard
-    signal user( string user )
-    property string rank: ""
-
-    property alias boardModel: boardModel
+    id: mayorships
+    signal venue(string id)
+    property alias mayorshipsModel: mayorshipsModel
 
     width: parent.width
     height: parent.height
@@ -13,56 +12,45 @@ Rectangle {
     color: theme.backgroundMain
     state: "hidden"
 
+    ListModel{
+        id: mayorshipsModel
+    }
+
     MouseArea {
         anchors.fill: parent
         onClicked: { }
     }
 
-    ListModel {
-        id: boardModel
+    LineGreen {
+        height: 30
+        text: "MAYORSHIPS"
     }
 
     ListView {
-        y: 40
-        model: boardModel
+        model: mayorshipsModel
+        y: 30
         width: parent.width
         height: parent.height - y
-        delegate: leaderBoardDelegate
+        delegate: mayorshipsDelegate
         //highlightFollowsCurrentItem: true
         clip: true
-
-        spacing: 5
-    }
-
-    GreenLine {
-        height: 40
-        text: "YOU ARE #" + leaderBoard.rank
-    }
-
-    Image {
-        id: shadow
-        source: "../pics/top-shadow.png"
-        width: parent.width
-        y: 40
     }
 
     Component {
-        id: leaderBoardDelegate
+        id: mayorshipsDelegate
 
         EventBox {
             activeWhole: true
-            width: leaderBoard.width
 
-            userName: "#" + model.rank + ". " + model.name
-            //userShout:
-            createdAt: "<b>"+model.recent+" "+"points" + "</b> " + model.checkinsCount + " " + "checkins"
+            venueName: model.name
+            createdAt: model.address
 
             Component.onCompleted: {
-                userPhoto.photoUrl = model.photo
+                userPhoto.photoUrl = model.icon
             }
 
             onAreaClicked: {
-                window.showUserPage(model.user);
+                mayorships.venue( model.id );
             }
         }
     }
@@ -71,14 +59,21 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: leaderBoard
+                target: mayorships
                 x: parent.width
+            }
+        },
+        State {
+            name: "hiddenLeft"
+            PropertyChanges {
+                target: mayorships
+                x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: leaderBoard
+                target: mayorships
                 x: 0
             }
         }
@@ -89,13 +84,13 @@ Rectangle {
             from: "shown"
             SequentialAnimation {
                 PropertyAnimation {
-                    target: leaderBoard
+                    target: mayorships
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"
                 }
                 PropertyAction {
-                    target: leaderBoard
+                    target: mayorships
                     properties: "visible"
                     value: false
                 }
@@ -105,12 +100,12 @@ Rectangle {
             to: "shown"
             SequentialAnimation {
                 PropertyAction {
-                    target: leaderBoard
+                    target: mayorships
                     properties: "visible"
                     value: true
                 }
                 PropertyAnimation {
-                    target: leaderBoard
+                    target: mayorships
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"

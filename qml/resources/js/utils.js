@@ -16,6 +16,10 @@ function createMapUrl(lat,lng,zoom) {
     return url;
 }
 
+function getCurrentTime() {
+    return (new Date()).getTime()/1000;
+}
+
 function makeTime(date) {
     var pretty = prettyDate(new Date(parseInt(date,10)*1000));
     return pretty;
@@ -28,7 +32,7 @@ function prettyDate(date){
 
         if ( isNaN(day_diff) || day_diff >= 31 ) {
             //console.log("Days: " + day_diff);
-            return "some time ago";
+            return date.toLocaleDateString();//"some time ago";
         } else if (day_diff < 0) {
             //console.log("day_diff: " + day_diff);
             return "just now";

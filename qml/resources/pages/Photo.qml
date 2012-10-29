@@ -1,7 +1,11 @@
 import Qt 4.7
+import QtQuick 1.1
+import "../components"
 
 Rectangle {
     signal user(string user)
+    signal prevPhoto()
+    signal nextPhoto()
 
     id: photoDetails
     width: parent.width
@@ -12,7 +16,6 @@ Rectangle {
     property string photoUrl: ""
     property alias owner: photoOwner
 
-
     Image {
         id: fullImage
         width: parent.width
@@ -21,14 +24,38 @@ Rectangle {
         asynchronous: true
         //cache: false
         fillMode: Image.PreserveAspectFit
-        source: photoDetails.photoUrl
+        source: photoDetails.photoUrl // + "hjgjh"
+        onProgressChanged: {
+            loadProgress.percent = progress*100;
+        }
 
-        Image {
-            id: loader
+        ProgressBar {
+            id: loadProgress
             anchors.centerIn: fullImage
-            asynchronous: true
-            source: "../pics/loader.png"
+            radiusValue: 5
+            height: 16
+            width: parent.width*0.8
             visible: (fullImage.status != Image.Ready)
+        }
+
+        /*PinchArea {
+            anchors.fill: parent
+            pinch.target: fullImage
+            enabled: true
+
+            onPinchFinished: {
+                console.log("PINCH: " + JSON.stringify(pinch));
+            }
+        }*/
+
+        SwypeArea {
+            onSwype: {
+                if (type === direction.LEFT || type === direction.UP) {
+                    photoDetails.prevPhoto();
+                } else if (type === direction.RIGHT || type === direction.DOWN) {
+                    photoDetails.nextPhoto();
+                }
+            }
         }
     }
 
@@ -47,6 +74,13 @@ Rectangle {
             PropertyChanges {
                 target: photoDetails
                 x: parent.width
+            }
+        },
+        State {
+            name: "hiddenLeft"
+            PropertyChanges {
+                target: photoDetails
+                x: -parent.width
             }
         },
         State {

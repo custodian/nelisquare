@@ -1,3 +1,3 @@
-var build = '201210290038';
-var version = "0.4.5";
-var changelog = ' - photos browser at venues added.  - pages now holds their data w/o reloads.  - core window and objects updates.';
+var build = '201211031921';
+var version = "0.4.6";
+var changelog = ' - likes, comments count preview at checkin feed and history  - checkins feed autoupdate  - gps uplock timeout  - notification fixes  - Molo.me integration is supported. Make cool photos for upload at nelisquare with one click.  - photo swype while at venue gallery.  - layout and theme updates';

@@ -7,6 +7,7 @@
 #include "picturehelper.h"
 #include "windowhelper.h"
 #include "cache.h"
+#include "molome.h"
 #include <QInputContext>
 
 #include <qplatformdefs.h>
@@ -64,9 +65,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     WindowHelper *windowHelper = new WindowHelper(&viewer);
     PictureHelper *pictureHelper = new PictureHelper();
     Cache *cache = new Cache();
+    Molome *molome = new Molome();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.rootContext()->setContextProperty("cache", cache);
+    viewer.rootContext()->setContextProperty("molome", molome);
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
@@ -86,6 +89,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
     rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
+    rootObject->connect(molome,SIGNAL(infoUpdated(QVariant,QVariant)),SLOT(onMolomeInfoUpdate(QVariant,QVariant)));
+    rootObject->connect(molome,SIGNAL(photoRecieved(QVariant,QVariant)),SLOT(onMolomePhoto(QVariant,QVariant)));
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
     rootObject->connect(windowHelper,SIGNAL(visibilityChanged(QVariant)), SLOT(onVisibililityChange(QVariant)));
     viewer.showFullScreen();

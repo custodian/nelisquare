@@ -37,7 +37,7 @@ Rectangle {
             text: "Selected photo"
             width: parent.width
             font.pixelSize: 24
-            color: "#fff"
+            color: theme.textColorSign
         }
 
         Row {
@@ -71,7 +71,7 @@ Rectangle {
 
                     Rectangle {
                         border.width: 1
-                        border.color: "#444"
+                        border.color: theme.checktapBorderColor
                         color: friendsMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                         radius: 5
                         width: 42
@@ -98,7 +98,7 @@ Rectangle {
                         wrapMode: Text.Wrap
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
-                        color: "#fff"
+                        color: theme.textColorSign
                     }
                 }
 
@@ -112,7 +112,7 @@ Rectangle {
 
                     Rectangle {
                         border.width: 1
-                        border.color: "#444"
+                        border.color: theme.checktapBorderColor
                         color: facebookMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                         radius: 5
                         width: 42
@@ -139,7 +139,7 @@ Rectangle {
                         wrapMode: Text.Wrap
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
-                        color: "#fff"
+                        color: theme.textColorSign
                     }
                 }
 
@@ -153,7 +153,7 @@ Rectangle {
 
                     Rectangle {
                         border.width: 1
-                        border.color: "#444"
+                        border.color: theme.checktapBorderColor
                         color: twitterMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                         radius: 5
                         width: 42
@@ -180,7 +180,7 @@ Rectangle {
                         wrapMode: Text.Wrap
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
-                        color: "#fff"
+                        color: theme.textColorSign
                     }
                 }
             }
@@ -190,7 +190,7 @@ Rectangle {
             width: parent.width
             height: checkinButton.height
 
-            GreenButton {
+            ButtonGreen {
                 id: checkinButton
                 label: "Upload photo"
                 width: parent.width - 130
@@ -204,7 +204,7 @@ Rectangle {
                 }
             }
 
-            GreenButton {
+            ButtonGreen {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120

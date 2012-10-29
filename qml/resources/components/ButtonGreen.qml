@@ -10,20 +10,12 @@ Rectangle {
     smooth: true
     border.color: theme.greenButtonBorderColor
     border.width: 2
-    gradient: mouse.pressed ? pressedColor : theme.gradientGreen //idleColor
-
-    Gradient {
-        id: pressedColor
-        GradientStop{position: 0; color: "#666"; }
-        GradientStop{position: 0.1; color: "#aaa"; }
-        GradientStop{position: 0.6; color: "#888"; }
-        GradientStop{position: 0.9; color: "#777"; }
-    }
+    gradient: mouse.pressed ? theme.gradientGreenPressed : theme.gradientGreen //idleColor
 
     Text {
         text: button.label
         font.pixelSize: 24
-        color: "#fff"
+        color: theme.textColorSign
         anchors.centerIn: parent
     }
 

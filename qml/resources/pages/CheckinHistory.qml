@@ -1,18 +1,17 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
-    id: mayorships
-    signal venue(string id)
-    property alias mayorshipsModel: mayorshipsModel
-
+    id: checkinHistory
+    signal checkin(string id)
+    property alias checkinHistoryModel: checkinHistoryModel
     width: parent.width
     height: parent.height
-
-    color: "#eee"
+    color: theme.backgroundMain
     state: "hidden"
 
-    ListModel{
-        id: mayorshipsModel
+    ListModel {
+        id: checkinHistoryModel
     }
 
     MouseArea {
@@ -20,37 +19,43 @@ Rectangle {
         onClicked: { }
     }
 
-    GreenLine {
-        height: 30
-        text: "MAYORSHIPS"
-    }
-
     ListView {
-        model: mayorshipsModel
-        y: 30
+        model: checkinHistoryModel
         width: parent.width
         height: parent.height - y
-        delegate: mayorshipsDelegate
+        delegate: checkinHistoryDelegate
         //highlightFollowsCurrentItem: true
-        clip: true
+        //clip: true
+        cacheBuffer: 400
+
+        header: LineGreen{
+            width: checkinHistory.width
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: 30
+            text: "CHECKIN HISTORY"
+        }
     }
 
     Component {
-        id: mayorshipsDelegate
+        id: checkinHistoryDelegate
 
         EventBox {
             activeWhole: true
 
-            venueName: model.name
-            createdAt: model.address
-            commentsCount: model.hereNow
+            userShout: model.shout
+            userMayor: model.mayor
+            venueName: model.venueName
+            venuePhoto: model.venuePhoto
+            createdAt: model.createdAt
+            commentsCount: model.commentsCount
+            likesCount: model.likesCount
 
             Component.onCompleted: {
-                userPhoto.photoUrl = model.icon
+                userPhoto.photoUrl = model.photo
             }
 
             onAreaClicked: {
-                mayorships.venue( model.id );
+                checkinHistory.checkin( model.id );
             }
         }
     }
@@ -59,21 +64,21 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: mayorships
+                target: checkinHistory
                 x: parent.width
             }
         },
         State {
             name: "hiddenLeft"
             PropertyChanges {
-                target: mayorships
+                target: checkinHistory
                 x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: mayorships
+                target: checkinHistory
                 x: 0
             }
         }
@@ -84,13 +89,13 @@ Rectangle {
             from: "shown"
             SequentialAnimation {
                 PropertyAnimation {
-                    target: mayorships
+                    target: checkinHistory
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"
-                }
+                }                
                 PropertyAction {
-                    target: mayorships
+                    target: checkinHistory
                     properties: "visible"
                     value: false
                 }
@@ -100,12 +105,12 @@ Rectangle {
             to: "shown"
             SequentialAnimation {
                 PropertyAction {
-                    target: mayorships
+                    target: checkinHistory
                     properties: "visible"
                     value: true
                 }
                 PropertyAnimation {
-                    target: mayorships
+                    target: checkinHistory
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"

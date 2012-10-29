@@ -6,14 +6,21 @@ Item {
     width: 480
     height: 800
 
-    property bool gpsActive: true
-
     function onPictureUploaded(response, page) {
         window.onPictureUploaded(response, page);
     }
 
+    function onMolomeInfoUpdate(present,installed) {
+        window.molome_present = present;
+        window.molome_installed = installed;
+    }
+
+    function onMolomePhoto(state, photoUrl) {
+        window.onMolomePhoto(state,photoUrl);
+    }
+
     function onVisibililityChange(state) {
-        mainWindowStack.gpsActive = state;
+        window.windowActive = state;
     }
 
     MainWindow {

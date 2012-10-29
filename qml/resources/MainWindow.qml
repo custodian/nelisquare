@@ -12,21 +12,41 @@ Rectangle {
     property bool isPortrait: true
     property bool blurred: false
 
+    property bool windowActive: false
+
     property string orientationType: "auto"
     property string mapprovider: "googlemaps"
     property string checkupdates: "none"
 
+    property string imageLoadType: "all"
+    property int gpsUplockTime: 0 //in seconds
+    property int feedAutoUpdate: 0 //in seconds
+
+    property int commentUpdateRate: 300 //currently hardcoded to be 5 mins
+
     property string topWindowType: ""
+
+    property bool molome_present: false
+    property bool molome_installed: false
 
     id: window
 
     anchors.fill:  parent
 
-    color: theme.backGroundColor
+    color: theme.backgroundMain
 
     onCheckupdatesChanged: {
         if (checkupdates!="none") {
             Script.getUpdateInfo(checkupdates,onUpdateAvailable);
+        }
+    }
+
+    onWindowActiveChanged: {
+        if (!windowActive) {
+            timerGPSUnlock.start();
+        } else {
+            timerGPSUnlock.stop();
+            positionSource.active = windowActive;
         }
     }
 
@@ -37,7 +57,7 @@ Rectangle {
                 update = true;
             }
         } else if (checkupdates == "stable") {
-            if (version != BuildInfo.version || build != BuildInfo.build) {
+            if (version !== BuildInfo.version || build !== BuildInfo.build) {
                 update = true;
             }
         }
@@ -51,12 +71,21 @@ Rectangle {
         }
     }
 
+    function onMolomePhoto(state, photoUrl) {
+        //console.log("MOLO PHOTO: state:" + state + " path:" + photoUrl);
+        waiting.hide();
+        if (state && topWindowType == "PhotoAdd") {
+            photoShareDialog.photoUrl = photoUrl;
+            photoShareDialog.state = "shown";
+        }
+    }
+
     function onPictureUploaded(response, page) {
         Script.parseAddPhoto(response, page);
     }
 
     function settingLoaded(key, value) {
-        if(key=="accesstoken") {
+        if(key==="accesstoken") {
             if(value.length>0) {
                 splashDialog.nextState = "hidden";
                 Script.setAccessToken(value);
@@ -65,16 +94,33 @@ Rectangle {
                 splashDialog.nextState = "login";
                 splashDialog.login();
             }
-        } else if (key == "settings.orientation") {
-            if (value == "") value = "auto";
+        } else if (key === "settings.orientation") {
+            if (value === "") value = "auto";
             window.orientationType = value;
             windowHelper.setOrientation(value);
-        } else if (key == "settings.mapprovider") {
-            if (value == "") value = "googlemaps";
+        } else if (key === "settings.mapprovider") {
+            if (value === "") value = "googlemaps";
             window.mapprovider = value;
-        } else if (key == "settings.checkupdates") {
-            if (value == "") value = "stable";
+        } else if (key === "settings.checkupdates") {
+            if (value === "") value = "stable";
             window.checkupdates = value;
+        } else if (key === "settings.molome") {
+            //TODO: make install/uninstall (first see) notification enable
+            //console.log("molome settings loaded");
+            molome.updateinfo();
+        } else if (key === "settings.imageload") {
+            if (value === "") value = "all";
+            window.imageLoadType = value;
+            cache.loadtype(value);
+        } else if (key === "settings.gpsunlock") {
+            if (value === "") value = 0;
+            window.gpsUplockTime = value;
+        } else if (key === "settings.feedupdate") {
+            if (value === "") value = 0;
+            if (value == 60) value = 120;
+            window.feedAutoUpdate = value;
+        } else {
+            console.log("Unknown setting: " + key + "=" + value);
         }
     }
 
@@ -86,12 +132,18 @@ Rectangle {
     Component.onCompleted: {
         splashHider.start();
         signalTimer.start();
+
         Storage.getKeyValue("accesstoken", window.settingLoaded);
         window.isPortrait = window.height > (window.width*2/3);//window.width<(window.height/2);
 
         Storage.getKeyValue("settings.orientation", window.settingLoaded);
         Storage.getKeyValue("settings.mapprovider", window.settingLoaded);
         Storage.getKeyValue("settings.checkupdates", window.settingLoaded);
+        Storage.getKeyValue("settings.molome", window.settingLoaded);
+
+        Storage.getKeyValue("settings.imageload", window.settingLoaded);
+        Storage.getKeyValue("settings.gpsunlock", window.settingLoaded);
+        Storage.getKeyValue("settings.feedupdate", window.settingLoaded);
     }
 
     onHeightChanged: {
@@ -104,6 +156,7 @@ Rectangle {
         repeat: false
         onTriggered: {
             splashDialog.state = splashDialog.nextState;
+            molome.updateinfo();
         }
     }
 
@@ -115,14 +168,22 @@ Rectangle {
             if(!positionSource.position.latitudeValid) {
                 signalIcon.visible = !signalIcon.visible;
             }
-            WM.destroyWindows();
+        }
+    }
+
+    Timer {
+        id: timerGPSUnlock
+        interval: window.gpsUplockTime * 1000;
+        repeat: false
+        onTriggered: {
+            positionSource.active = window.windowActive;
         }
     }
 
     PositionSource {
         id: positionSource
         updateInterval: 1000
-        active: mainWindowStack.gpsActive
+        active: false
         onPositionChanged: {
             if(positionSource.position.latitudeValid) {
                 signalIcon.visible = false;
@@ -142,18 +203,27 @@ Rectangle {
             "FriendsFeed",
             {
                 "update": function(page) {
+                              page.timerFeedUpdate.restart();
                               Script.loadFriendsFeed(page);
                           }
             },
             function(page) {
+                page.update.connect(function(lastupdate) {
+                    Script.loadFriendsFeed(page)
+                });
                 page.recent.connect(function() {
+                    page.lastUpdateTime = "0";
                     Script.loadFriendsFeed(page);
                 });
                 page.nearby.connect(function() {
+                    page.lastUpdateTime = "0";
                     Script.loadFriendsFeedNearby(page);
                 });
                 page.clicked.connect(function(id) {
                     window.showCheckinPage(id);
+                });
+                page.checkinInfo.connect(function(id){
+                    Script.loadCheckinInfo(page,id);
                 });
                 page.state = "shown"
             });
@@ -213,19 +283,26 @@ Rectangle {
             },
             function(page){
                 page.addFriend.connect(function(user){
-                    Script.addFriend(user);
+                    Script.addFriend(page,user);
                     page.userRelationship = "updated";
                 });
                 page.removeFriend.connect(function(user){
-                    Script.removeFriend(user);
+                    Script.removeFriend(page,user);
                     page.userRelationship = "updated";
                 });
                 page.approveFriend.connect(function(user){
-                    Script.approveFriend(user);
+                    Script.approveFriend(page,user);
+                    page.userRelationship = "updated";
+                });
+                page.denyFriend.connect(function(user){
+                    Script.denyFriend(page,user);
                     page.userRelationship = "updated";
                 });
                 page.user.connect(function(user){
                     window.showUserPage(user);
+                });
+                page.venue.connect(function(venue){
+                    window.showVenuePage(venue);
                 });
                 page.openLeaderboard.connect(function(){
                     window.showLeaderboard();
@@ -258,14 +335,8 @@ Rectangle {
                     splashHider.start();
                     window.settingChanged("accesstoken","");
                 });
-                page.orientationChanged.connect(function(type) {
-                    window.settingChanged("settings.orientation",type);
-                });
-                page.checkUpdatesChanged.connect(function(type) {
-                    window.settingChanged("settings.checkupdates",type);
-                });
-                page.mapProviderChanged.connect(function(type) {
-                    window.settingChanged("settings.mapprovider",type);
+                page.settingsChanged.connect(function(type,value) {
+                    window.settingChanged("settings."+type,value);
                 });
                 page.state = "shown";
         });
@@ -295,7 +366,7 @@ Rectangle {
             {
                 "id": query,
                 "update":function(page){
-                     if (query == "todolist") {
+                     if (query === "todolist") {
                         Script.loadToDo(page);
                     } else {
                         Script.loadPlaces(page,query);
@@ -303,6 +374,12 @@ Rectangle {
                  }
             },
             function(page) {
+                page.checkin.connect(function(venueID, venueName) {
+                    checkinDialog.reset();
+                    checkinDialog.venueID = venueID;
+                    checkinDialog.venueName = venueName;
+                    checkinDialog.state = "shown";
+                });
                 page.clicked.connect(function(venueid) {
                     window.showVenuePage(venueid);
                 });
@@ -358,7 +435,7 @@ Rectangle {
                     });
                 });
                 page.like.connect(function(venueID,state) {
-                    Script.likeVenue(venueID,state);
+                    Script.likeVenue(page,venueID,state);
                 });
                 page.state = "shown";
             });
@@ -376,7 +453,10 @@ Rectangle {
             },
             function(page){
                 page.photo.connect(function(photo){
-                    window.showPhotoPage(photo);
+                    window.showPhotoPage(photo,page);
+                });
+                page.update.connect(function(photo) {
+                    Script.loadPhoto(WM.topWindow().page,photo);
                 });
                 page.state = "shown";
             });
@@ -461,7 +541,7 @@ Rectangle {
     }
 
 
-    function showPhotoPage(photo) {
+    function showPhotoPage(photo, gallery) {
         WM.buildPage(
             viewPort,
             "Photo",
@@ -475,6 +555,14 @@ Rectangle {
                 page.user.connect(function(user) {
                     window.showUserPage(user);
                 });
+                if (gallery !== undefined) {
+                    page.nextPhoto.connect(function() {
+                        gallery.loadNextPhoto();
+                    });
+                    page.prevPhoto.connect(function() {
+                        gallery.loadPrevPhoto();
+                    });
+                }
                 page.state = "shown";
             });
     }
@@ -498,7 +586,10 @@ Rectangle {
                 page.venue.connect(function(venue) {
                     window.showVenuePage(venue);
                 });
-                page.markNotificationsRead(function(time) {
+                page.badge.connect(function(badge) {
+                    window.showBadgeInfo(Script.makeBadgeObject(badge))
+                });
+                page.markRead.connect(function(time) {
                     Script.markNotificationsRead(page,time);
                 });
                 page.state = "shown";
@@ -510,12 +601,13 @@ Rectangle {
             viewPort,
             "PhotoAdd",
             {
-                "update": function(page){}
+                "update": function(page){
+                      photoShareDialog.options = options;
+                      photoShareDialog.owner = page;
+                  }
             },
             function(page) {
                 page.uploadPhoto.connect(function(photo){
-                    photoShareDialog.options = options;
-                    photoShareDialog.owner = page;
                     photoShareDialog.photoUrl = photo;
                     photoShareDialog.state = "shown";
                 });
@@ -546,7 +638,7 @@ Rectangle {
             onCancel: { checkinDialog.state = "hidden"; }
             onCheckin: {
                 var realComment = comment;
-                if(realComment == theme.textDefaultComment) {
+                if(realComment === theme.textDefaultComment) {
                     realComment = "";
                 }
                 Script.addCheckin(venueID, realComment, friends, facebook, twitter);
@@ -615,7 +707,7 @@ Rectangle {
             onUploadPhoto: {
                 photoShareDialog.state="hidden";
                 Script.addPhoto(params);
-                owner.state="hidden";
+                WM.popWindow();
             }
         }
 
@@ -628,7 +720,7 @@ Rectangle {
             id: signalIcon
             z: 1
             radius: 6
-            color: "#d66"
+            color: theme.textColorAlarm
             width: 32
             height: 32
             x: parent.width - 40
@@ -650,7 +742,11 @@ Rectangle {
         height: 70
         width: parent.width
         y: parent.height - height
-        color: "#404040"
+        color: theme.backgroundMenubar
+
+        MouseArea {
+            anchors.fill: parent
+        }
 
         Flow {
             id: menubarToolbar
@@ -683,7 +779,7 @@ Rectangle {
 
             ToolbarTextButton {
                 label: "PLACES"
-                selected: topWindowType == "VenuesList" && WM.topWindow().params.id != "todolist"
+                selected: topWindowType == "VenuesList" && WM.topWindow().params.id !== "todolist"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
                 onClicked: {
@@ -693,7 +789,7 @@ Rectangle {
 
             ToolbarTextButton {
                 label: "LISTS"
-                selected: topWindowType == "VenuesList" && WM.topWindow().params.id == "todolist"
+                selected: topWindowType == "VenuesList" && WM.topWindow().params.id === "todolist"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
                 onClicked: {
@@ -703,7 +799,7 @@ Rectangle {
 
             ToolbarTextButton {
                 label: "ME"
-                selected: topWindowType == "User" && WM.topWindow().params.id == "self"
+                selected: topWindowType === "User" && WM.topWindow().params.id === "self"
                 colorActive: theme.textColorButtonMenu
                 colorInactive: theme.textColorButtonMenuInactive
                 onClicked: {
@@ -759,7 +855,7 @@ Rectangle {
         y: menubar.y - height
     }
 
-    LoginDialogPage {
+    LoginDialog {
         id: login
         anchors.fill: parent
         visible: false
@@ -777,18 +873,6 @@ Rectangle {
         onLoadFailed: {
             done.label = "Error loading page"
             done.state = "shown"
-        }
-    }
-
-    DoneIndicator {
-        id: done
-        label: "Done"
-
-        onStateChanged: {
-            if(done.label.indexOf(" 400 ")>0) {
-                login.visible = true;
-                login.reset();
-            }
         }
     }
 

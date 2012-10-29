@@ -35,72 +35,55 @@ Rectangle {
             text: checkin.venueName
             width: parent.width
             font.pixelSize: 24
-            color: "#fff"
+            color: theme.textColorSign
         }
 
         Rectangle {
             id: checkinShoutBox
             height: 130
             width: parent.width
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#ccc" }
-                GradientStop { position: 0.1; color: "#fafafa" }
-                GradientStop { position: 1.0; color: "#fff" }
-            }
-            //radius: 5
+            gradient: theme.gradientTextBox
             border.width: 1
-            border.color: "#aaa"
+            border.color: theme.textboxBorderColor
             smooth: true
 
-            /*Flickable{
-                id: flickableArea
-                width: parent.width
-                height: parent.height
-                contentWidth: parent.width
+            TextEdit {
+                id: shoutText
+                wrapMode: TextEdit.Wrap
+                text: theme.textDefaultComment
+                textFormat: TextEdit.PlainText
+                width: parent.width - 10
+                height: parent.height - 10
+                x: 5
+                y: 5
+                color: theme.textColor
+                font.pixelSize: 24
 
-                clip: true
-                flickableDirection: Flickable.VerticalFlick
-                boundsBehavior: Flickable.StopAtBounds
-                pressDelay: 100*/
-
-                TextEdit {
-                    id: shoutText
-                    wrapMode: TextEdit.Wrap
-                    text: theme.textDefaultComment
-                    textFormat: TextEdit.PlainText
-                    width: parent.width - 10
-                    height: parent.height - 10
-                    x: 5
-                    y: 5
-                    color: theme.textColor
-                    font.pixelSize: 24
-
-                    onTextChanged: {
-                        if (text.length > 130) {
-                            color = theme.textColorAlarm;
-                            if (text.length > 140) {
-                                text = text.substring(0,140);
-                                cursorPosition = 140;
-                            }
-                        } else {
-                            color = theme.textColor;
+                onTextChanged: {
+                    if (text.length > 130) {
+                        color = theme.textColorAlarm;
+                        if (text.length > 140) {
+                            text = text.substring(0,140);
+                            cursorPosition = 140;
                         }
+                    } else {
+                        color = theme.textColor;
                     }
+                }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            shoutText.focus = true;
-                            if(shoutText.text==theme.textDefaultComment) {
-                                shoutText.text = "";
-                            }
-                            if (shoutText.text != "") {
-                                shoutText.cursorPosition = shoutText.positionAt(mouseX,mouseY);
-                            }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        shoutText.focus = true;
+                        if(shoutText.text==theme.textDefaultComment) {
+                            shoutText.text = "";
+                        }
+                        if (shoutText.text != "") {
+                            shoutText.cursorPosition = shoutText.positionAt(mouseX,mouseY);
                         }
                     }
                 }
-            /*}*/
+            }
         }
 
         Rectangle {
@@ -120,7 +103,7 @@ Rectangle {
 
                 Rectangle {
                     border.width: 1
-                    border.color: "#444"
+                    border.color: theme.checktapBorderColor
                     color: friendsMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                     width: 42
                     height: 42
@@ -150,7 +133,7 @@ Rectangle {
 
                 Rectangle {
                     border.width: 1
-                    border.color: "#444"
+                    border.color: theme.checktapBorderColor
                     color: facebookMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                     width: 42
                     height: 42
@@ -181,7 +164,7 @@ Rectangle {
 
                 Rectangle {
                     border.width: 1
-                    border.color: "#444"
+                    border.color: theme.checktapBorderColor
                     color: twitterMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
                     width: 42
                     height: 42
@@ -215,7 +198,7 @@ Rectangle {
             width: parent.width
             height: checkinButton.height
 
-            GreenButton {
+            ButtonGreen {
                 id: checkinButton
                 label: "CHECK-IN HERE"
                 width: parent.width - 130
@@ -225,7 +208,7 @@ Rectangle {
                 }
             }
 
-            GreenButton {
+            ButtonGreen {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120

@@ -62,7 +62,7 @@ Rectangle {
             width: parent.width
             height: updateButton.height
 
-            GreenButton {
+            ButtonGreen {
                 id: updateButton
                 label: "Update!"
                 width: parent.width - 130
@@ -73,7 +73,7 @@ Rectangle {
                 }
             }
 
-            ButtonEx {
+            ButtonGray {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120

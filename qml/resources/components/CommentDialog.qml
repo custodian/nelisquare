@@ -32,20 +32,16 @@ Rectangle {
             text: "What is on your mind?"
             width: parent.width
             font.pixelSize: 24
-            color: "#fff"
+            color: theme.textColorSign
         }
 
         Rectangle {
             id: commentBox
             height: 130
             width: parent.width
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "#ccc" }
-                GradientStop { position: 0.1; color: "#fafafa" }
-                GradientStop { position: 1.0; color: "#fff" }
-            }
+            gradient: theme.gradientTextBox
             border.width: 1
-            border.color: "#aaa"
+            border.color: theme.textboxBorderColor
             smooth: true
 
             TextEdit {
@@ -57,7 +53,7 @@ Rectangle {
                 height: parent.height - 10
                 x: 5
                 y: 5
-                color: "#111"
+                color: theme.textColor
                 font.pixelSize: 24
 
                 MouseArea {
@@ -79,7 +75,7 @@ Rectangle {
             width: parent.width
             height: commentButton.height
 
-            GreenButton {
+            ButtonGreen {
                 id: commentButton
                 label: "Comment!"
                 width: parent.width - 130
@@ -89,7 +85,7 @@ Rectangle {
                 }
             }
 
-            GreenButton {
+            ButtonGreen {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120

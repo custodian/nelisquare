@@ -1,57 +1,69 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
-    id: checkinHistory
-    signal checkin(string id)
-    property alias checkinHistoryModel: checkinHistoryModel
+    id: leaderBoard
+    signal user( string user )
+    property string rank: ""
+
+    property alias boardModel: boardModel
+
     width: parent.width
     height: parent.height
+
     color: theme.backgroundMain
     state: "hidden"
-
-    ListModel {
-        id: checkinHistoryModel
-    }
 
     MouseArea {
         anchors.fill: parent
         onClicked: { }
     }
 
+    ListModel {
+        id: boardModel
+    }
+
     ListView {
-        model: checkinHistoryModel
+        y: 40
+        model: boardModel
         width: parent.width
         height: parent.height - y
-        delegate: checkinHistoryDelegate
+        delegate: leaderBoardDelegate
         //highlightFollowsCurrentItem: true
         clip: true
-        cacheBuffer: 400
 
-        header: GreenLine{
-            height: 30
-            text: "CHECKIN HISTORY"
-        }
+        spacing: 5
+    }
+
+    LineGreen {
+        height: 40
+        text: "YOU ARE #" + leaderBoard.rank
+    }
+
+    Image {
+        id: shadow
+        source: "../pics/top-shadow.png"
+        width: parent.width
+        y: 40
     }
 
     Component {
-        id: checkinHistoryDelegate
+        id: leaderBoardDelegate
 
         EventBox {
             activeWhole: true
+            width: leaderBoard.width
 
-            userShout: model.shout
-            userMayor: model.mayor
-            venueName: model.venueName
-            venuePhoto: model.venuePhoto
-            createdAt: model.createdAt
-            commentsCount: model.commentsCount
+            userName: "#" + model.rank + ". " + model.name
+            //userShout:
+            createdAt: "<b>"+model.recent+" "+"points" + "</b> " + model.checkinsCount + " " + "checkins"
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo
             }
 
             onAreaClicked: {
-                checkinHistory.checkin( model.id );
+                window.showUserPage(model.user);
             }
         }
     }
@@ -60,21 +72,21 @@ Rectangle {
         State {
             name: "hidden"
             PropertyChanges {
-                target: checkinHistory
+                target: leaderBoard
                 x: parent.width
             }
         },
         State {
             name: "hiddenLeft"
             PropertyChanges {
-                target: checkinHistory
+                target: leaderBoard
                 x: -parent.width
             }
         },
         State {
             name: "shown"
             PropertyChanges {
-                target: checkinHistory
+                target: leaderBoard
                 x: 0
             }
         }
@@ -85,13 +97,13 @@ Rectangle {
             from: "shown"
             SequentialAnimation {
                 PropertyAnimation {
-                    target: checkinHistory
+                    target: leaderBoard
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"
-                }                
+                }
                 PropertyAction {
-                    target: checkinHistory
+                    target: leaderBoard
                     properties: "visible"
                     value: false
                 }
@@ -101,12 +113,12 @@ Rectangle {
             to: "shown"
             SequentialAnimation {
                 PropertyAction {
-                    target: checkinHistory
+                    target: leaderBoard
                     properties: "visible"
                     value: true
                 }
                 PropertyAnimation {
-                    target: checkinHistory
+                    target: leaderBoard
                     properties: "x"
                     duration: 300
                     easing.type: "InOutQuad"

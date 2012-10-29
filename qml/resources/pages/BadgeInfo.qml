@@ -1,4 +1,5 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
     signal venue(string venueID)
@@ -6,6 +7,7 @@ Rectangle {
     id: badgeInfo
     width: parent.width
     height: parent.height
+    color: theme.backgroundMain
     state: "hidden"
 
     property string name: ""
@@ -49,15 +51,10 @@ Rectangle {
                 }
             }
 
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#ccc"
-            }
-
             Text {
                 x: 10
                 font.pixelSize: theme.font.sizeSettigs
+                color: theme.textColorOptions
                 text: name
             }
 
@@ -65,6 +62,7 @@ Rectangle {
                 x: 10
                 width: parent.width - 20
                 text: badgeInfo.info
+                color: theme.textColorOptions
                 font.pixelSize: theme.font.sizeDefault
                 wrapMode: Text.WordWrap
             }
@@ -75,7 +73,7 @@ Rectangle {
                 text: '@ ' + venueName
                 width: parent.width - 20
                 font.pixelSize: theme.font.sizeDefault
-                color: theme.toolbarDarkColor
+                color: theme.textColorOptions
                 wrapMode: Text.WordWrap
                 visible: venueName.length>0
                 MouseArea {
@@ -87,8 +85,9 @@ Rectangle {
             }
             Text {
                 x: 10
-                text: time
                 width: parent.width - 20
+                text: time
+                color: theme.textColorTimestamp
                 font.pixelSize: theme.font.sizeSigns
             }
         }
@@ -100,6 +99,13 @@ Rectangle {
             PropertyChanges {
                 target: badgeInfo
                 x: parent.width
+            }
+        },
+        State {
+            name: "hiddenLeft"
+            PropertyChanges {
+                target: badgeInfo
+                x: -parent.width
             }
         },
         State {
