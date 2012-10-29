@@ -1,12 +1,15 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
     signal openLeaderboard()
     signal user(string user)
+    signal venue(string venue);
 
     signal addFriend(string user)
     signal removeFriend(string user)
     signal approveFriend(string user)
+    signal denyFriend(string user)
 
     signal badges(string user)
     signal checkins(string user)
@@ -22,6 +25,7 @@ Rectangle {
     property string userID: ""
     property string userName: ""
     property string userPhoto: ""
+    property string userPhotoLarge: ""
     property int userBadgesCount: 0
     property int userMayorshipsCount: 0
     property int userCheckinsCount: 0
@@ -34,10 +38,28 @@ Rectangle {
     property int scoreMax: 0
 
     property string lastVenue: ""
+    property string lastVenueID: ""
     property string lastTime: ""
 
     property alias friendsBox: friendsBox
     property alias boardModel: boardModel
+
+    onUserPhotoChanged: {
+        checkinOwner.userPhoto.photoSize = 200;
+        checkinOwner.userPhoto.photoUrl = details.userPhoto;
+    }
+
+    function switchUserPhoto() {
+        if (checkinOwner.userPhoto.photoSize == checkinOwner.width) {
+            checkinOwner.userPhoto.photoSize = 200;
+            checkinOwner.userPhoto.photoUrl = details.userPhoto;
+            checkinOwner.showText = true;
+        } else {
+            checkinOwner.userPhoto.photoSize = checkinOwner.width;
+            checkinOwner.userPhoto.photoUrl = details.userPhotoLarge;
+            checkinOwner.showText = false;
+        }
+    }
 
     ListModel {
         id: boardModel
@@ -70,33 +92,24 @@ Rectangle {
             x: 10
             spacing: 10
 
-            Item {
+            EventBox {
+                id: checkinOwner
                 width: parent.width
-                height: 64
 
-                ProfilePhoto {
-                    id: profileImage
-                    //photoSize: 150
-                    photoUrl: details.userPhoto
-                }
+                userName: details.userName
+                userShout: "@ " + details.lastVenue
+                createdAt: details.lastTime
 
-                Text {
-                    text: details.userName
-                    x: 74//164
-                    font.pixelSize: 22
-                    font.bold: true
-                    color: "#111"
+                onUserClicked: {
+                    switchUserPhoto();
                 }
-                Text {
-                    x: 74//164
-                    y: 32
-                    text: details.lastTime + " @ " + details.lastVenue
-                    font.pixelSize: 20
-                    color: "#888"
+                onAreaClicked: {
+                    if (lastVenueID !== "")
+                        details.venue(lastVenueID);
                 }
             }
 
-            GreenButton {
+            ButtonGreen {
                 anchors.horizontalCenter: parent.horizontalCenter
                 label: "Add Friend"
                 width: parent.width - 130
@@ -106,17 +119,27 @@ Rectangle {
                 visible: userRelationship == ""
             }
 
-            BlueButton {
-                anchors.horizontalCenter: parent.horizontalCenter
-                label: "Approve Friend"
-                width: parent.width - 130
-                onClicked: {
-                    details.approveFriend(userID);
+            Row {
+                width: parent.width
+                spacing: 50
+                ButtonBlue {
+                    label: "Approve Friend"
+                    width: parent.width * 0.6
+                    onClicked: {
+                        details.approveFriend(userID);
+                    }
+                }
+                ButtonGray {
+                    label: "Deny"
+                    width: parent.width * 0.3
+                    onClicked: {
+                        details.denyFriend(userID);
+                    }
                 }
                 visible: userRelationship == "pendingMe"
             }
 
-            ButtonEx {
+            ButtonGray {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width - 130
                 label: "Remove Friend"
@@ -134,12 +157,14 @@ Rectangle {
                     id: lblScoresText
                     text: "<b>SCORES</b> (LAST 7 DAYS)"
                     font.pixelSize: theme.font.sizeHelp
+                    color: theme.textColorOptions
                 }
                 Text {
                     text: "BEST SCORE"
                     anchors.right: parent.right
                     font.pixelSize: theme.font.sizeHelp
                     font.bold: true
+                    color: theme.textColorOptions
                 }
             }
             //scores value
@@ -181,20 +206,16 @@ Rectangle {
                 Text {
                     text: scoreMax
                     anchors.right: parent.right
-                    color: theme.scoreForegroundColor
+                    color: theme.textColorOptions
                     font.bold: true
                     font.pixelSize: theme.font.sizeHelp
                 }
             }
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#ccc"
-            }
 
             PhotosBox {
                 id: friendsBox
-                showButtons: false
+                width: details.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 photoSize: 64
                 caption: ""
 
@@ -310,10 +331,11 @@ Rectangle {
                 }
             }
 
-            GreenLine {
-                height: 40
+            LineGreen {
+                height: 30
+                width: details.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: "YOU ARE #" + userLeadersboardRank
-
                 visible: userRelationship == "self"
             }
 
@@ -356,6 +378,13 @@ Rectangle {
             PropertyChanges {
                 target: details
                 x: parent.width
+            }
+        },
+        State {
+            name: "hiddenLeft"
+            PropertyChanges {
+                target: details
+                x: -parent.width
             }
         },
         State {

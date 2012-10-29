@@ -1,4 +1,5 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
     signal badge(variant params)
@@ -8,6 +9,7 @@ Rectangle {
     id: badgesPage
     width: parent.width
     height: parent.height
+    color: theme.backgroundMain
     state: "hidden"
 
     ListModel {
@@ -73,6 +75,13 @@ Rectangle {
             PropertyChanges {
                 target: badgesPage
                 x: parent.width
+            }
+        },
+        State {
+            name: "hiddenLeft"
+            PropertyChanges {
+                target: badgesPage
+                x: -parent.width
             }
         },
         State {

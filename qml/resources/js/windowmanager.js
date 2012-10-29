@@ -1,6 +1,5 @@
 var windowStash = [];
 var windowFactory = [];
-var windowDestructor = [];
 
 function buildPage(owner, type, params, callback) {
 
@@ -25,8 +24,10 @@ function buildPage(owner, type, params, callback) {
         };
         pushWindow(window);
         page.stateChanged.connect(function(state){
+            //console.log(window.type + " state " + state);
             if (state === "hidden") {
-                windowDestructor.push(window);
+                //console.log("Destroing " + window.type);
+                page.destroy(1000);
             }
         });
 
@@ -35,7 +36,7 @@ function buildPage(owner, type, params, callback) {
     }
 
     if (windowFactory[type] === undefined) {
-        var factory = Qt.createComponent("components/"+type + "Page.qml");
+        var factory = Qt.createComponent("pages/"+type + ".qml");
         windowFactory[type] = factory;
         if (factory.status === Component.Ready) {
             builder(factory);
@@ -52,18 +53,24 @@ function buildPage(owner, type, params, callback) {
 }
 
 function pushWindow(wnd) {
+    if (windowStash.length>0) {
+        topWindow().page.state = "hiddenLeft"
+    }
     windowStash.push(wnd);
     window.topWindowType = wnd.type;
     backwardsButton.shown = windowStash.length>1
 }
 
-function popWindow() {
-    if (windowStash.length<=1)
-        return;
-    var topwindow = windowStash.pop();
-    window.topWindowType = topWindow().type;
+function popWindow(state) {
+    if (windowStash.length>1) {
+        var lastwindow = windowStash.pop();
+        lastwindow.page.state = "hidden";
+    }
     backwardsButton.shown = windowStash.length>1
-    topwindow.page.state = "hidden";
+
+    var wnd = topWindow();
+    wnd.page.state = "shown";
+    window.topWindowType = wnd.type;
 }
 
 function clearWindows() {
@@ -71,14 +78,7 @@ function clearWindows() {
         var window = windowStash.pop();
         window.page.state = "hidden";
     }
-    backwardsButton.shown = false
-}
-
-function destroyWindows() {
-    while (windowDestructor.length > 1) {
-        var window = windowDestructor.shift();
-        window.page.destroy();
-    }
+    popWindow();
 }
 
 function topWindow() {

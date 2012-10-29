@@ -27,7 +27,7 @@ Item {
             //height: 48
             smooth: true
             asynchronous: true
-            source: (likeBox.mylike)?"../pics/heart.png":"../pics/heart_broken.png"
+            source: (likeBox.mylike)?"../pics/unlike.png":"../pics/like.png"
 
             MouseArea {
                 anchors.fill: parent

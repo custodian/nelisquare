@@ -8,11 +8,8 @@ Item {
     property bool selected: false
     property bool shown: true
     signal clicked()
-    width: imageSize + 42 //window.isSmallScreen ? 80 : 90
-    height: imageSize + 26//58
-    //border.color: mouse.pressed ? "#333" : "#555"
-    //border.width: 1
-    //gradient: mouse.pressed ? pressedColor : idleColor
+    width: imageSize + 42
+    height: imageSize + 26
 
     Rectangle {
         radius: 6

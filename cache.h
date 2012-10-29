@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QVariant>
+#include <QMap>
 #include <QtNetwork/QNetworkAccessManager>
 
 class Cache : public QObject
@@ -15,6 +16,8 @@ protected:
     QString md5(QString data);
 
     QString m_path;
+    QMap<QString,QString> m_cachemap;
+    bool m_cacheonly;
 
 public:
     explicit Cache(QObject *parent = 0);
@@ -24,6 +27,8 @@ public:
     Q_INVOKABLE QVariant info();
 
     Q_INVOKABLE QVariant reset();
+
+    Q_INVOKABLE QVariant loadtype(QVariant type);
 
 signals:
 

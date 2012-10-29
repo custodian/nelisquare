@@ -9,7 +9,7 @@ Rectangle {
     anchors.horizontalCenter: parent.horizontalCenter
     width: doneText.width+50
     height: doneText.height+30
-    color: theme.highlightColor
+    color: theme.waitingInicatorBackGroun
     radius: 2
     opacity: 0.9
     smooth: true

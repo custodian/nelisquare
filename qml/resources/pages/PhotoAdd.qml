@@ -1,5 +1,6 @@
 import Qt 4.7
 import QtMobility.gallery 1.1
+import "../components"
 
 Rectangle {
     signal uploadPhoto(string photo)
@@ -38,9 +39,33 @@ Rectangle {
         clip: true
         model: emptyModel
         delegate: photoDelegate
-        header: GreenLine {
-            height: 30
-            text: "Select photo for upload"
+        header: Column {
+            width: parent.width
+            LineGreen {
+                height: 30
+                text: "Select photo for upload"
+            }
+            Column {
+                width: parent.width
+                Item {
+                    width: parent.width
+                    height: 20
+                }
+                ButtonBlue {
+                    label: "Create Molo.me!"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: 280
+                    onClicked: {
+                        waiting.show();
+                        molome.getphoto();
+                    }
+                }
+                Item {
+                    width: parent.width
+                    height: 20
+                }
+                visible: window.molome_installed && window.molome_present
+            }
         }
     }
 
@@ -54,6 +79,7 @@ Rectangle {
             photoBorder: 2
             photoSmooth: false
             photoAspect: Image.PreserveAspectFit
+            photoCache: false
             onClicked: {
                 photoAdd.uploadPhoto(photoUrl);
             }
@@ -72,6 +98,13 @@ Rectangle {
     states: [
         State {
             name: "hidden"
+            PropertyChanges {
+                target: photoAdd
+                x: parent.width
+            }
+        },
+        State {
+            name: "hiddenLeft"
             PropertyChanges {
                 target: photoAdd
                 x: -parent.width

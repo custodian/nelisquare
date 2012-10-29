@@ -123,31 +123,11 @@ function getToken() {
     doWebRequest("GET", url, "", parseAccessToken);
 }
 
-
-function showDone(data) {
-    //console.log("DONE: " + data);
-    if(waiting.state!="shown") {
-        return;
-    }
-    waiting.hide();
-    done.status = "";
-    if(data!==undefined && data!=null) {
-        if(action=="read") {
-            done.status = "Marked as read " + data;
-        } else if(action=="unread") {
-            done.status = "Marked as unread " + data;
-        } else {
-            done.status = "" + data;
-        }
-    }
-    done.state = "shown";
-}
-
 function makeUserName(user) {
     var username = parse(user.firstName);
     var lastname = parse(user.lastName);
     if(lastname.length>0) {
-        username += " " + lastname + ".";
+        username += " " + lastname;// + ".";
     }
     return username;
 }
@@ -186,6 +166,7 @@ function processResponse(response) {
         showError("ErrorType: " + meta.errorType + "\n" + meta.errorDetail);
     }
     var notifications = data.notifications;
+    //console.log("NOTIFICATIONS: " + JSON.stringify(notifications));
     if (notifications!==undefined){
         notifications.forEach(function(notification) {
                 if (parse(notification.type) == "notificationTray") {
@@ -241,26 +222,45 @@ function processLikes(likebox, data) {
 }
 
 function loadFriendsFeed(page) {
-    var url = "checkins/recent?" + getAccessTokenParameter();
-    doWebRequest("GET", url, page, parseFriendsFeed);
-    waiting.show();
+    var url = "checkins/recent?"
+    if (page.lastUpdateTime!=="0") {
+        url += "afterTimestamp="+page.lastUpdateTime+"&";
+    } else {
+        page.timerFeedUpdate.stop();
+        waiting.show();
+    }
+    url += getAccessTokenParameter();
+    doWebRequest("GET", url, page, parseFriendsFeed);    
 }
 
 function loadFriendsFeedNearby(page) {
-    var url = "checkins/recent?" +
-        getLocationParameter() + "&" + getAccessTokenParameter();
-    doWebRequest("GET", url, page, parseFriendsFeed);
-    waiting.show();
+    var url = "checkins/recent?" + getLocationParameter() + "&"
+    if (page.lastUpdateTime!=="0") {
+        url += "afterTimestamp="+page.lastUpdateTime+"&";
+    } else {
+        page.timerFeedUpdate.stop();
+        waiting.show();
+    }
+    url += getAccessTokenParameter();
+    doWebRequest("GET", url, page, parseFriendsFeed);    
 }
 
 function parseFriendsFeed(response, page) {
     var data = processResponse(response);
     var count = 0;
-    page.friendsCheckinsModel.clear();
+    var currentTime = getCurrentTime();
+    var updateTime = page.lastUpdateTime;
+    var updating = (updateTime !== "0");
+    if (!updating) {
+        page.friendsCheckinsModel.clear();
+    }
     data.recent.forEach(function(checkin) {
         //console.log("FRIEND CHECKIN: " + JSON.stringify(checkin));
+        if (updating && checkin.createdAt <= updateTime)
+            return;
         var userName = makeUserName(checkin.user);
-        var createdAgo = makeTime(checkin.createdAt);
+        if (updateTime <= checkin.createdAt)
+            updateTime = checkin.createdAt;
         var venueName = "";
         var venueID = "";
         var venueDistance = undefined;
@@ -269,34 +269,68 @@ function parseFriendsFeed(response, page) {
             venueID = checkin.venue.id;
             venueDistance = checkin.venue.location.distance;
         }
-        var commentsCount = 0;
-        if (checkin.comments!==undefined) {
-            commentsCount = parse(checkin.comments.count);
-        }
         var venuePhoto = "";
         if (checkin.photos.count > 0) {
             venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
         }
         if (venueDistance === undefined || venueDistance < MAX_NEARBY_DISTANCE) {
-            page.friendsCheckinsModel.append({
-                               "id": checkin.id,
-                               "shout": parse(checkin.shout),
-                               "user": userName,
-                               "userID": checkin.user.id,
-                               "mayor": parse(checkin.isMayor),
-                               "photo": thumbnailPhoto(checkin.user.photo, 100),
-                               "commentsCount": commentsCount,
-                               "venueID": venueID,
-                               "venueName": venueName,
-                               "createdAt": createdAgo,
-                               "venuePhoto": venuePhoto
-            });
+            var item = {
+                "id": checkin.id,
+                "shout": parse(checkin.shout),
+                "user": userName,
+                "userID": checkin.user.id,
+                "mayor": parse(checkin.isMayor),
+                "photo": thumbnailPhoto(checkin.user.photo, 100),
+                "venueID": venueID,
+                "venueName": venueName,
+                "createdAt": makeTime(checkin.createdAt),
+                "timestamp": checkin.createdAt,
+                "venuePhoto": venuePhoto,
+                "lastUpdate": 0,
+                "commentsCount":0,
+                "likesCount":0
+            };
+            if (updating) {
+                page.friendsCheckinsModel.insert(count,item)
+            }
+            else {
+                page.friendsCheckinsModel.append(item);
+            }
         }
         count++;
     });
-    waiting.hide();
-    if(count==0) {
-        showDone("No visible checkins");
+    if (!updating) {
+        page.timerFeedUpdate.restart();
+        waiting.hide();
+    } else {
+        for (var i=0;i<page.friendsCheckinsModel.count;i++){
+            page.friendsCheckinsModel.get(i).createdAt = makeTime(page.friendsCheckinsModel.get(i).timestamp);
+        }
+    }
+    page.lastUpdateTime = updateTime;
+}
+
+function loadCheckinInfo(page, id) {
+    var url = "checkins/" + id + "?" + getAccessTokenParameter();
+    doWebRequest("GET",url,page,parseCheckinInfo);
+}
+
+function parseCheckinInfo(response,page) {
+    var currentTime = getCurrentTime();
+    var checkin = processResponse(response).checkin;
+    for (var i=0;i<page.friendsCheckinsModel.count;i++){
+        var model = page.friendsCheckinsModel.get(i);
+        if (model.id === checkin.id) {
+            model.commentsCount = checkin.comments.count;
+            model.likesCount = checkin.likes.count;
+            if (model.photo === "") {
+                if (checkin.photos.count > 0) {
+                    model.photo = thumbnailPhoto(checkin.photos.items[0], 300);
+                }
+            }
+            model.lastUpdate = currentTime;
+            return;
+        }
     }
 }
 
@@ -345,7 +379,6 @@ function parsePlaces(response, page) {
         } else {
             icon = parseIcon(defaultVenueIcon);
         }
-
         page.placesModel.append({
                            "id": place.id,
                            "name": place.name,
@@ -356,17 +389,14 @@ function parsePlaces(response, page) {
                            "lat": place.location.lat,
                            "lng": place.location.lng,
                            "icon": icon,
-                           "hereNow": parse(place.hereNow.count)
+                           "peoplesCount": parse(place.hereNow.count)
         });
         count++;
     });
-    if(count==0) {
-        showDone("No visible places");
-    }
 }
 
 function likeVenue(page, id, state) {
-    //console.log("LIKE VENUE: " + id + " STATE: " + state);
+    console.log("LIKE VENUE: " + id + " STATE: " + state);
     var url = "venues/"+id+"/like?set="
     if (state) {
         url += "1";
@@ -471,8 +501,8 @@ function parseVenue(response, page) {
 function loadVenuePhotos(page, venue) {
     page.photosModel.clear();
     waiting.show();
-    var url = "/venues/" + venue + "/photos?group=venue&limit=100"
-    var url2 = "/venues/" + venue + "/photos?group=checkin&limit=100"
+    var url = "/venues/" + venue + "/photos?group=checkin&limit=100"
+    var url2 = "/venues/" + venue + "/photos?group=venue&limit=100"
 
     var urlfull = "multi?requests="
             + encodeURIComponent(url)
@@ -488,6 +518,7 @@ function parseVenuePhotos(multiresponse, page) {
     multidata.responses.forEach(function(response){
         var data = response.response;
         data.photos.items.forEach(function(photo){
+              //console.log("PHOTO: " + JSON.stringify(photo));
               page.photosModel.append(
                   makePhoto(photo,300)
               );
@@ -549,7 +580,7 @@ function markVenueToDo(venueID, text) {
         url += "text=" + encodeURIComponent(text) + "&";
     }
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, "", showDone);
+    doWebRequest("POST", url, "", doNothing);
 }
 
 function addCheckin(venueID, comment, friends, facebook, twitter) {
@@ -657,7 +688,7 @@ function parseToDo(response, page) {
                            "lat": place.location.lat,
                            "lng": place.location.lng,
                            "icon": icon,
-                           "hereNow": ""
+                           "peoplesCount": 0
         });
     });
 }
@@ -756,6 +787,7 @@ function parseMayorhips(response, page) {
     page.mayorshipsModel.clear();
     data.mayorships.items.forEach(function(mayorship){
         var place = mayorship.venue;
+        //console.log("PLACE MAYORSHIP: " + JSON.stringify(mayorship))
         var icon = "";
         if(place.categories!=null && place.categories[0]!==undefined) {
             icon = parseIcon(place.categories[0].icon);
@@ -770,7 +802,6 @@ function parseMayorhips(response, page) {
             "lat": place.location.lat,
             "lng": place.location.lng,
             "icon": icon,
-            "hereNow": 0
         });
     });
 }
@@ -799,6 +830,10 @@ function parseCheckinHistory(response, page) {
         if (checkin.comments!==undefined) {
             commentsCount = parse(checkin.comments.count);
         }
+        var likesCount = 0;
+        if (checkin.likes!==undefined) {
+            likesCount = parse(checkin.likes.count);
+        }
         var venuePhoto = "";
         if (checkin.photos.count > 0) {
             venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
@@ -812,6 +847,7 @@ function parseCheckinHistory(response, page) {
                            "mayor": parse(checkin.isMayor),
                            "photo": icon,
                            "commentsCount": commentsCount,
+                           "likesCount": likesCount,
                            "venueID": venueID,
                            "venueName": venueName,
                            "createdAt": createdAgo,
@@ -827,6 +863,19 @@ function loadBadges(page,user) {
     doWebRequest("GET", url, page, parseBadges);
 }
 
+function makeBadgeObject(badge){
+    var venue = parse(badge.unlocks[0].checkins[0].venue);
+    return {
+        "name":badge.name,
+        "image":makeImageUrl(badge.image,114),
+        "imageLarge":makeImageUrl(badge.image,300),
+        "info":badge.badgeText,
+        "venueName":parse(venue.name),
+        "venueID":parse(venue.id),
+        "time":prettyDate(badge.unlocks[0].checkins[0].createdAt),
+         };
+}
+
 function parseBadges(response, page) {
     var data = processResponse(response);
     waiting.hide();
@@ -834,16 +883,7 @@ function parseBadges(response, page) {
          if (group.type == "all") {
              group.items.forEach(function(item){
                  var badge = data.badges[item];
-                 var venue = parse(badge.unlocks[0].checkins[0].venue);
-                 page.badgeModel.append({
-                    "name":badge.name,
-                    "image":makeImageUrl(badge.image,114),
-                    "imageLarge":makeImageUrl(badge.image,300),
-                    "info":badge.badgeText,
-                    "venueName":parse(venue.name),
-                    "venueID":parse(venue.id),
-                    "time":prettyDate(badge.unlocks[0].checkins[0].createdAt),
-                     });
+                 page.badgeModel.append(makeBadgeObject(badge));
              });
          }
     });
@@ -855,7 +895,7 @@ function loadUser(page, user) {
     page.boardModel.clear();
     page.friendsBox.photosModel.clear();
     doWebRequest("GET", url, page, parseUser);
-    if (user == "self") {
+    if (user === "self") {
         url = "users/leaderboard?neighbors=2&" + getAccessTokenParameter();
         doWebRequest("GET",url, page, parseUserBoard);
     }
@@ -867,21 +907,19 @@ function parseUser(response, page) {
     waiting.hide();
     var user = data.user;
     page.userName = makeUserName(user);
-    page.userPhoto = thumbnailPhoto(user.photo,100);
+    page.userPhoto = thumbnailPhoto(user.photo,300);
+    page.userPhotoLarge = thumbnailPhoto(user.photo,500);
     page.userBadgesCount = user.badges.count;
     page.userCheckinsCount = user.checkins.count;
     page.userFriendsCount = user.friends.count;
     page.userID = user.id;
     page.userMayorshipsCount = user.mayorships.count;
-    var lastVenue = "";
-    var lastTime = "";
-    if(user.checkins.items!==undefined) {
-        lastVenue = user.checkins.items[0].venue.name;
-        lastTime = makeTime(user.checkins.items[0].createdAt);
-    }
-    page.lastVenue = lastVenue;
-    page.lastTime = lastTime;
 
+    if(user.checkins.items!==undefined) {
+        page.lastVenueID = user.checkins.items[0].venue.id;
+        page.lastVenue = user.checkins.items[0].venue.name;
+        page.lastTime = makeTime(user.checkins.items[0].createdAt);
+    }
     page.scoreRecent = user.scores.recent;
     page.scoreMax = user.scores.max;
     page.userRelationship = parse(user.relationship);
@@ -949,7 +987,7 @@ function parseAddPhoto(response, page) {
     var photo = processResponse(response).photo;    
     //console.log("ADDED PHOTO: " + JSON.stringify(photo));
     page.photosBox.photosModel.insert(0,
-                makePhoto(photo,300));
+                makePhoto(photo,300));    
 }
 
 function loadPhoto(page, photoid) {
@@ -960,7 +998,7 @@ function loadPhoto(page, photoid) {
 
 function parsePhoto(response, page) {
     var photo = processResponse(response).photo;
-    //console.log("PHOTO: " + JSON.stringify(photo))
+    //console.log("FULL PHOTO: " + JSON.stringify(photo))
     waiting.hide();
 
     page.photoUrl = thumbnailPhoto(photo);
@@ -998,6 +1036,7 @@ function parseNotifications(response, page) {
             .append({
                         "type": noti.target.type,
                         "objectID": objectID,
+                        "object": noti.target.object,
                         "userName": makeUserName("asdf"),
                         "createdAt": noti.createdAt,
                         "time": makeTime(noti.createdAt),
@@ -1007,27 +1046,37 @@ function parseNotifications(response, page) {
         });
 }
 
-function addFriend(user) {
+function addFriend(page, user) {
     var url = "users/"+user+"/request?";
     url += getAccessTokenParameter();
-    doWebRequest("POST",url,"", doNothing);
+    doWebRequest("POST",url,page, parseFriendUpdate);
 }
 
-function removeFriend(user) {
+function removeFriend(page, user) {
     var url = "users/"+user+"/unfriend?";
     url += getAccessTokenParameter();
-    doWebRequest("POST",url,"", doNothing);
+    doWebRequest("POST",url,page, parseFriendUpdate);
 }
 
-function approveFriend(user) {
+function approveFriend(page, user) {
     var url = "users/"+user+"/approve?";
     url += getAccessTokenParameter();
-    doWebRequest("POST",url,"", doNothing);
+    doWebRequest("POST",url,page, parseFriendUpdate);
 }
 
+function denyFriend(page, user) {
+    var url = "users/"+user+"/deny?";
+    url += getAccessTokenParameter();
+    doWebRequest("POST",url,page, parseFriendUpdate);
+}
+
+function parseFriendUpdate(response,page) {
+    var data = processResponse(response);
+    page.userRelationship = parse(data.user.relationship);
+}
 
 function getUpdateInfo(updatetype, callback) {
-    var os = windowHelper.isMaemo() ? "maemo" : "meego";
+    var os = theme.platform;
     var url = "http://thecust.net/nelisquare/" + os + "/build." + updatetype
 
     var doc = new XMLHttpRequest();

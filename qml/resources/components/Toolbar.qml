@@ -8,9 +8,10 @@ Rectangle {
 
     height: 60
     width:parent.width
-    gradient: Gradient{
-        GradientStop{position: 0; color: "#3098c7"; }
-        GradientStop{position: 1.0; color: "#1477a8"; }
+    gradient: theme.gradientToolbar
+
+    MouseArea{
+        anchors.fill: parent
     }
 
     Image {
@@ -55,7 +56,7 @@ Rectangle {
         }
     }
 
-    ButtonEx {
+    ButtonGray {
         id: minimizeButton
         pic: "minimize.png"
         x: 4
@@ -67,10 +68,10 @@ Rectangle {
         onClicked: {
             windowHelper.minimize();
         }
-        visible: windowHelper.isMaemo()
+        visible: theme.platform === "maemo"
     }
 
-    ButtonEx {
+    ButtonGray {
         id: buttonClose
         pic: "close.png"
         x: parent.width - width - 4
@@ -79,7 +80,7 @@ Rectangle {
         gradient: toolbar.gradient
         border.width: 0
         onClicked: Qt.quit();
-        visible: windowHelper.isMaemo()
+        visible: theme.platform === "maemo"
     }
 
     Rectangle {

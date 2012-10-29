@@ -25,12 +25,15 @@ QT += network
 
 DEFINES += QT_USE_FAST_CONCATENATION QT_USE_FAST_OPERATOR_PLUS
 
-VERSION = 0.4.5
+VERSION = 0.4.6
 PACKAGENAME = com.thecust.nelisquare
 
-# Define QMLJSDEBUGGER to allow debugging of QML in debug builds
-# (This might significantly increase build time)
-# DEFINES += QMLJSDEBUGGER
+win32 {
+    # Define QMLJSDEBUGGER to allow debugging of QML in debug builds
+    # (This might significantly increase build time)
+    QMLJSDEBUGGER_PATH = C:\QtSDK\QtCreator\share\qtcreator\qml\qmljsdebugger
+    DEFINES += QMLJSDEBUGGER
+}
 
 # If your application uses the Qt Mobility libraries, uncomment
 # the following lines and add the respective components to the 
@@ -46,6 +49,7 @@ SOURCES += $$PWD/main.cpp \
     $$PWD/windowhelper.cpp \
     $$PWD/picturehelper.cpp \
     $$PWD/cache.cpp \
+    $$PWD/molome.cpp \
     $$PWD/extras/formpost.cpp \
     $$PWD/extras/httppostsendbuffer.cpp
 
@@ -53,6 +57,7 @@ HEADERS += \
     $$PWD/windowhelper.h \
     $$PWD/picturehelper.h \
     $$PWD/cache.h \
+    $$PWD/molome.h \
     $$PWD/extras/formpost.h \
     $$PWD/extras/httppostsendbuffer.h
 

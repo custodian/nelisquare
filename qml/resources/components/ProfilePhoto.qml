@@ -16,8 +16,8 @@ Rectangle {
     y: photoBorder
     width: photoSize
     height: photoSize
-    color: "#fff"
-    border.color: "#ccc"
+    color: theme.photoBackground
+    border.color: theme.photoBorderColor
     border.width: 1
 
     Image {
@@ -25,7 +25,7 @@ Rectangle {
         x: photoBorder
         y: photoBorder
         asynchronous: true
-        source: cache.get(photoUrl)
+        source: photoCache ? cache.get(photoUrl) : photoUrl
         //cache: photoCache
         smooth: true
         fillMode: photoAspect

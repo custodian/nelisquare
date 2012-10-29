@@ -24,10 +24,10 @@ Rectangle {
             wrapMode: Text.Wrap
             width: parent.width
             font.pixelSize: 22
-            color: "#fff"
+            color: theme.textColorSign
         }
 
-        GreenButton {
+        ButtonGreen {
             id: checkinButton
             label: "Ok"
             width: parent.width

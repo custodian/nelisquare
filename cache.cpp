@@ -15,10 +15,12 @@
 Cache::Cache(QObject *parent) :
     QObject(parent)
 {
+    m_cacheonly = false;
+
     QDesktopServices dirs;
     m_path = dirs.storageLocation(QDesktopServices::CacheLocation);
     m_path += "/nelisquare/";
-    qDebug() << "Cache location: " << m_path;
+    //qDebug() << "Cache location: " << m_path;
 
     if (m_path.length()) {
         QDir dir;
@@ -30,6 +32,16 @@ Cache::Cache(QObject *parent) :
     connect(manager,SIGNAL(finished(QNetworkReply*)),SLOT(onDownloadFinished(QNetworkReply*)));
 }
 
+QVariant Cache::loadtype(QVariant _type) {
+    QString type = _type.toString();
+    if (type == "all") {
+        m_cacheonly = false;
+    } else {
+        m_cacheonly = true;
+    }
+    return QVariant(true);
+}
+
 void Cache::onDownloadFinished(QNetworkReply * reply){
     QByteArray data = reply->readAll();
     QString url = reply->request().url().toString();
@@ -38,6 +50,9 @@ void Cache::onDownloadFinished(QNetworkReply * reply){
     QFile file(name);
     file.open(QFile::WriteOnly);
     file.write(data);
+
+    m_cachemap.insert(url,name);
+    //qDebug() << "cache update";
 }
 
 QString Cache::md5(QString data)
@@ -51,15 +66,25 @@ QVariant Cache::get(QVariant data)
 {
     QString url = data.toString();
     if (url.size()) {
-        QString name = m_path + "/" + md5(url);
-        QFileInfo file(name);
-        //qDebug() << "Hash:" << name << "Status:" << file.exists() << "URL:" << url;
-        if (file.exists()) {
-            return QVariant(name);
+        QMap<QString,QString>::iterator it = m_cachemap.find(url);
+        if (it!=m_cachemap.end()) {
+            //qDebug() << "cache hit";
+            data = it.value();
         } else {
-            //post and download query
-            manager->get(QNetworkRequest(QUrl(url)));
-            return data;
+            //qDebug() << "cache miss";
+            QString name = m_path + "/" + md5(url);
+            QFileInfo file(name);
+            //qDebug() << "Hash:" << name << "Status:" << file.exists() << "URL:" << url;
+            if (file.exists()) {
+                data = QVariant(name);
+            } else {
+                if (m_cacheonly) {
+                    data = QVariant("");
+                } else {
+                    //post and download query
+                    manager->get(QNetworkRequest(QUrl(url)));
+                }
+            }
         }
     }
     return data;
@@ -93,6 +118,8 @@ QVariant Cache::info()
 
 QVariant Cache::reset()
 {
+    m_cachemap.clear();
+
     QDir dir(m_path);
     dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     QFileInfoList list = dir.entryInfoList();

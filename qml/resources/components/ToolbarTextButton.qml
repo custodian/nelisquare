@@ -10,11 +10,8 @@ Item {
     property string colorActive: theme.textColorButton
     property string colorInactive: theme.textColorButtonInactive
     signal clicked()
-    width: buttonText.width + 10 //window.isSmallScreen ? 80 : 90
+    width: buttonText.width + 10
     height: 58
-    //border.color: mouse.pressed ? "#333" : "#555"
-    //border.width: 1
-    //gradient: mouse.pressed ? pressedColor : idleColor
 
     Item {
         anchors.fill: parent

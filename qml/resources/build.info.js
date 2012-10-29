@@ -1,3 +1,3 @@
-var build = '201210290038';
-var version = "0.4.5";
-var changelog = ' - photos browser at venues added.  - pages now holds their data w/o reloads.  - core window and objects updates.';
+var build = '201211031719';
+var version = "0.4.6";
+var changelog = ' - photo swype at venue gallery  - gps uplock, feed autoupdate.  - molo.me integration for N9!  - notification fixes  - layout & performance updates';

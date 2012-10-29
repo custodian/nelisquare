@@ -1,4 +1,5 @@
 import Qt 4.7
+import "../components"
 
 Rectangle {
     signal like(string checkin, bool state)
@@ -65,7 +66,7 @@ Rectangle {
 
         Column {
             onHeightChanged: {
-                flickableArea.contentHeight = height + scoreBackground.height - scoreBackground.y;
+                flickableArea.contentHeight = height;
             }
 
             id: columnView
@@ -126,9 +127,11 @@ Rectangle {
                 }
             }
 
-            GreenLine {
+            LineGreen {
                 text: "Earned badges"
                 height: 30
+                width: checkin.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 size: theme.font.sizeDefault
                 visible: badgesModel.count>0
             }
@@ -141,22 +144,19 @@ Rectangle {
                 visible: badgesModel.count>0
             }
 
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#ccc"
-                visible: badgesModel.count>0
-            }
-
             PhotosBox {
                 id: photosBox
+                width: checkin.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 onItemSelected: {
                     checkin.photo(object);
                 }
             }
 
-            GreenLine {
+            LineGreen {
                 text: "Comments"
+                width: checkin.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 height: 30
                 size: theme.font.sizeDefault
                 visible: commentsModel.count>0
@@ -174,7 +174,7 @@ Rectangle {
                 width:parent.width
                 spacing: 10
 
-                BlueButton {
+                ButtonBlue {
                     id: btnAddPhoto
                     label: "Add photo"
                     width: 150
@@ -185,19 +185,13 @@ Rectangle {
                     visible: checkin.owner.eventOwner == "self"
                 }
 
-                BlueButton{
+                ButtonBlue{
                     label: "Add comment"
                     width: parent.width - (btnAddPhoto.visible?btnAddPhoto.width:0) - parent.spacing
                     onClicked: {
                         checkin.showAddComment(checkin.checkinID);
                     }
                 }
-            }
-
-            Rectangle {
-                width: parent.width
-                height: 1
-                color: "#ccc"
             }
         }
     }
@@ -266,12 +260,13 @@ Rectangle {
                     width: badgeRepeater.width * 0.95
                     text: badgeTitle
                     font.pixelSize: 24
+                    color: theme.textColorOptions
                 }
                 Text {
                     width: parent.width * 0.8
                     wrapMode: Text.Wrap
                     text: badgeMessage
-                    color: "#111"
+                    color: theme.textColorShout
                     font.pixelSize: 18
                 }
             }

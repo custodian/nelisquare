@@ -7,7 +7,7 @@ Rectangle {
     signal finished(string url)
     signal loadFailed()
     anchors.fill: parent
-    color: "#fff"
+    color: theme.backgroundMain
 
     function reset() {
         webView.url = Script.AUTHENTICATE_URL;

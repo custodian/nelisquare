@@ -1,5 +1,6 @@
 import Qt 4.7
 import "../js/utils.js" as Utils;
+import "../components"
 
 Rectangle {
     id: place
@@ -83,7 +84,7 @@ Rectangle {
                     z: 100
                     width: parent.width
                     height: columnCheckin.height + 30
-                    color: place.color//theme.toolbarLightColor
+                    color: place.color
 
                     Column {
                         id: columnCheckin
@@ -101,7 +102,7 @@ Rectangle {
                             userShout: place.venueAddress
                         }
 
-                        GreenButton {
+                        ButtonGreen {
                             label: "CHECK-IN HERE!"
                             width: parent.width - 20
                             anchors.horizontalCenter: parent.horizontalCenter
@@ -116,22 +117,24 @@ Rectangle {
                             anchors.horizontalCenter: parent.horizontalCenter
                             spacing: 10
 
-                            BlueButton {
+                            ButtonBlue {
                                 label: "ADD TIP"
                                 width: parent.width / 3 - parent.spacing
+                                fontDeltaSize: -2
                                 onClicked: {
                                     place.showAddTip(place.venueID,place.venueName);
                                 }
                             }
-                            BlueButton {
+                            ButtonBlue {
                                 label: "ADD PHOTO"
                                 width: parent.width / 3 - parent.spacing
+                                fontDeltaSize: -2
                                 onClicked: {
                                     place.showAddPhoto(place.venueID)
                                 }
                             }
 
-                            /*BlueButton {
+                            /*ButtonBlue {
                                 label: "Mark to-do"
                                 width: parent.width / 3 - parent.spacing
                                 anchors.right: parent.right
@@ -140,11 +143,11 @@ Rectangle {
                                 }
                             }*/
 
-                            BlueButton {
+                            ButtonBlue {
                                 id: venueMapButton
-                                //anchors.right: parent.right
                                 width: parent.width / 3 //- parent.spacing
                                 label: venueMapBox.visible ? "HIDE MAP" :"SHOW MAP"
+                                fontDeltaSize: -2
                                 onClicked: {
                                     venueMapBox.visible = !venueMapBox.visible;
                                     if (venueMapBox.visible) {
@@ -234,13 +237,6 @@ Rectangle {
                         visible: false
                     }
 
-                    Rectangle {
-                        width: parent.width
-                        height: 1
-                        color: "#ccc"
-                        visible: venueMapBox.visible
-                    }
-
                     PhotosBox {
                         id: photosBox
                         onItemSelected: {
@@ -250,14 +246,13 @@ Rectangle {
 
                     PhotosBox {
                         id: usersBox
-                        showButtons: false
                         photoSize: 64
                         onItemSelected: {
                             place.user(object)
                         }
                     }
 
-                    GreenLine {
+                    LineGreen {
                         height: 30
                         text: "USER TIPS"
                     }

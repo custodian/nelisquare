@@ -1,7 +1,11 @@
 import Qt 4.7
+import "../js/utils.js" as Utils
+import "../components"
 
 Rectangle {
     id: friendsFeed
+    signal update()
+    signal checkinInfo(string checkinid)
     signal clicked(string checkinid)
     signal shout()
     signal nearby()
@@ -10,12 +14,29 @@ Rectangle {
     property bool recentPressed: true
     property bool nearbyPressed: false
 
+    property string lastUpdateTime: "0"
+
+    /*onLastUpdateTimeChanged: {
+        console.log("last update: " + lastUpdateTime);
+    }*/
+
     property alias friendsCheckinsModel: friendsCheckinsModel
+    property alias timerFeedUpdate: timerFeedUpdate
 
     width: parent.width
     height: parent.height
     color: theme.backgroundMain
     state: "hidden"
+
+    Timer {
+        id: timerFeedUpdate
+        interval: window.feedAutoUpdate * 1000
+        repeat: true
+        onTriggered: {
+            friendsFeed.update()
+            //console.log("update triggered");
+        }
+    }
 
     ListModel {
         id: friendsCheckinsModel
@@ -27,6 +48,7 @@ Rectangle {
     }
 
     ListView {
+        id: friendsCheckinsView
         model: friendsCheckinsModel
         width: parent.width
         height: parent.height - y
@@ -43,7 +65,7 @@ Rectangle {
                 height: 90
                 color: theme.toolbarDarkColor
 
-                BlueButton {
+                ButtonBlue {
                     label: "RECENT"
                     y: 20
                     x: 10
@@ -58,7 +80,7 @@ Rectangle {
                         }
                     }
                 }
-                BlueButton {
+                ButtonBlue {
                     label: "NEARBY"
                     y: 20
                     x: parent.width/2+5
@@ -75,7 +97,7 @@ Rectangle {
                 }
             }
 
-            GreenLine {
+            LineGreen {
                 height: 30
                 text: "FRIENDS ACTIVITY"
             }
@@ -86,6 +108,7 @@ Rectangle {
         id: friendsFeedDelegate
 
         EventBox {
+            id: eventbox
             activeWhole: true
 
             userName: model.user
@@ -95,9 +118,25 @@ Rectangle {
             venuePhoto: model.venuePhoto
             createdAt: model.createdAt
             commentsCount: model.commentsCount
+            likesCount: model.likesCount
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo
+                timerFeedUpdate.triggered.connect(eventbox.updateEventBox);
+                updateEventBox();
+            }
+
+            Component.onDestruction: {
+                timerFeedUpdate.triggered.disconnect(eventbox.updateEventBox);
+            }
+
+            function updateEventBox() {
+                if (window.feedAutoUpdate > 0) {
+                    if ((Utils.getCurrentTime() - model.lastUpdate) >  window.commentUpdateRate) {
+                        //console.log("updating checkin");
+                        friendsFeed.checkinInfo( model.id ); //DBG
+                    }
+                }
             }
 
             onAreaClicked: {
