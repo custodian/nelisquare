@@ -9,6 +9,8 @@ import "js/windowmanager.js" as WM
 import "js/utils.js" as Utils
 
 Rectangle {
+    id: window
+
     property bool isPortrait: true
     property bool blurred: false
 
@@ -29,7 +31,7 @@ Rectangle {
     property bool molome_present: false
     property bool molome_installed: false
 
-    id: window
+    property alias positionSource: positionSource
 
     anchors.fill:  parent
 
@@ -182,7 +184,7 @@ Rectangle {
 
     PositionSource {
         id: positionSource
-        updateInterval: 1000
+        updateInterval: 5000
         active: false
         onPositionChanged: {
             if(positionSource.position.latitudeValid) {
@@ -427,6 +429,9 @@ Rectangle {
                 page.photo.connect(function() {
                     window.showVenuePhotos(venue);
                 });
+                page.showMap.connect(function() {
+                    window.showVenueMap(page);
+                });
                 page.showAddPhoto.connect(function(venueID) {
                     window.showPhotoAddPage({
                         "type": "venue",
@@ -437,6 +442,25 @@ Rectangle {
                 page.like.connect(function(venueID,state) {
                     Script.likeVenue(page,venueID,state);
                 });
+                page.state = "shown";
+            });
+    }
+
+    function showVenueMap(venuepage) {
+        WM.buildPage(
+            viewPort,
+            "VenueMap",
+            {
+                "update":function(page){
+                             page.loadMapImage();
+                         }
+            },
+            function(page) {
+                page.venueMapLat = venuepage.venueMapLat;
+                page.venueMapLng = venuepage.venueMapLng;
+                page.venueName = venuepage.venueName;
+                page.venueTypeUrl = venuepage.venueTypeUrl;
+                page.venueAddress = venuepage.venueAddress;
                 page.state = "shown";
             });
     }

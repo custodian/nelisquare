@@ -8,6 +8,7 @@ Rectangle {
     signal markToDo(string venueid, string venuename)
     signal showAddTip(string venueid, string venuename)
     signal showAddPhoto(string venueid)
+    signal showMap()
     signal user(string user)
     signal photo(string photo)
     signal like(string venueid, bool state)
@@ -27,20 +28,16 @@ Rectangle {
     property string venueHereNow: ""
     property string venueCheckinsCount: ""
     property string venueUsersCount: ""
+
     property string venueMapLat: ""
     property string venueMapLng: ""
-    property string venueMapUrl: ""
+
     property string venueTypeUrl: ""
-    property int venueMapZoom: 15
 
     property alias tipsModel: tipsModel
     property alias photosBox: photosBox
     property alias usersBox: usersBox
     property alias likeBox: likeBox
-
-    function loadMapImage() {
-        place.venueMapUrl = Utils.createMapUrl(venueMapLat,venueMapLng,venueMapZoom);
-    }
 
     onVenueMajorPhotoChanged: {
         venueMayorDetails.userPhoto.photoUrl = place.venueMajorPhoto;
@@ -146,13 +143,10 @@ Rectangle {
                             ButtonBlue {
                                 id: venueMapButton
                                 width: parent.width / 3 //- parent.spacing
-                                label: venueMapBox.visible ? "HIDE MAP" :"SHOW MAP"
+                                label: "SHOW MAP"
                                 fontDeltaSize: -2
                                 onClicked: {
-                                    venueMapBox.visible = !venueMapBox.visible;
-                                    if (venueMapBox.visible) {
-                                        loadMapImage();
-                                    }
+                                    place.showMap()
                                 }
                                 visible: venueMapLat != "" && venueMapLng != ""
                             }
@@ -188,53 +182,6 @@ Rectangle {
                         onLike: {
                             place.like(place.venueID, state);
                         }
-                    }
-
-                    Row {
-                        id: venueMapBox
-                        x: 10
-                        anchors.horizontalCenter: parent.horizontalCenter
-
-                        ProfilePhoto {
-                            id: venueMapImage
-                            photoSize: 320
-                            photoSmooth: false
-                            photoUrl: place.venueMapUrl
-                        }
-                        Item {
-                            width: zoomInBtn.width
-                            //anchors.left: venueMapImage.right
-                            //anchors.top: venueMapImage.top
-                            height: venueMapImage.height
-                            ToolbarButton {
-                                id: zoomInBtn
-                                anchors.top: parent.top
-                                width: 48
-                                height: 48
-                                image: "zoom_in.png"
-                                onClicked: {
-                                    venueMapZoom++;
-                                    if (venueMapZoom > 18)
-                                        venueMapZoom = 18;
-                                    else
-                                        loadMapImage();
-                                }
-                            }
-                            ToolbarButton {
-                                anchors.bottom: parent.bottom
-                                width: 48
-                                height: 48
-                                image: "zoom_out.png"
-                                onClicked: {
-                                    venueMapZoom--;
-                                    if (venueMapZoom < 1)
-                                        venueMapZoom = 1;
-                                    else
-                                        loadMapImage();
-                                }
-                            }
-                        }
-                        visible: false
                     }
 
                     PhotosBox {
@@ -301,20 +248,12 @@ Rectangle {
                 target: place
                 x: parent.width
             }
-            PropertyChanges {
-                target: venueMapImage
-                photoUrl: ""
-            }
         },
         State {
             name: "hiddenLeft"
             PropertyChanges {
                 target: place
                 x: -parent.width
-            }
-            PropertyChanges {
-                target: venueMapImage
-                photoUrl: ""
             }
         },
         State {

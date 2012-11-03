@@ -24,7 +24,7 @@ Rectangle {
         asynchronous: true
         //cache: false
         fillMode: Image.PreserveAspectFit
-        source: photoDetails.photoUrl // + "hjgjh"
+        source: photoDetails.photoUrl
         onProgressChanged: {
             loadProgress.percent = progress*100;
         }

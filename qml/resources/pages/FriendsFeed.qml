@@ -134,7 +134,7 @@ Rectangle {
                 if (window.feedAutoUpdate > 0) {
                     if ((Utils.getCurrentTime() - model.lastUpdate) >  window.commentUpdateRate) {
                         //console.log("updating checkin");
-                        friendsFeed.checkinInfo( model.id ); //DBG
+                        //friendsFeed.checkinInfo( model.id ); //DBG
                     }
                 }
             }

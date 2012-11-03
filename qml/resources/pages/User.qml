@@ -30,7 +30,7 @@ Rectangle {
     property int userMayorshipsCount: 0
     property int userCheckinsCount: 0
     property int userFriendsCount: 0
-    property string userRelationship: ""
+    property string userRelationship: "undefined"
 
     property int userLeadersboardRank: 0
 

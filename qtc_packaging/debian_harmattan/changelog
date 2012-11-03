@@ -1,3 +1,8 @@
+nelisquare (0.4.7) stable; urgency=low
+  * <Add change description here>
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Sat, 03 Nov 2012 17:28:20 +0400
+
 nelisquare (0.4.6) stable; urgency=low
   * likes, comments count preview at checkin feed and history
   * checkins feed autoupdate

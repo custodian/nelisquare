@@ -1,18 +1,27 @@
 
-function createMapUrl(lat,lng,zoom) {
+function createMapUrl(settings,user) {
     var url = "";
+    //lat,lng,zoom,width,height
     if (window.mapprovider == "googlemaps") {
         url = "http://maps.googleapis.com/maps/api/staticmap?"+
-                "zoom="+zoom+"&size=320x320&maptype=roadmap"+
-                "&center="+lat+","+lng+
-                "&markers=size:small|"+lat+","+lng+"&sensor=false";
+                "zoom="+settings.zoom+"&size="+settings.width+"x"+settings.height+"&maptype=roadmap"+
+                "&center="+settings.lat+","+settings.lng;
+        if (user!==undefined) {
+            url += "&markers=color:blue|label:U|"+user.lat+","+user.lng;
+        }
+        url += "&markers=color:red|"+settings.lat+","+settings.lng
+                + "&sensor=false";
     } else if (window.mapprovider == "osm") {
         //NOTE: lng and lat inverted at API
         url = "http://pafciu17.dev.openstreetmap.org/?module=map"+
-                "&zoom="+zoom+"&type=mapnik&width=320&height=320"+
-                "&center="+lng+","+lat+
-                "&points="+lng+","+lat;//+",pointImagePattern=redA";
+                "&zoom="+settings.zoom+"&type=mapnik&width="+settings.width+"&height="+settings.height+
+                "&center="+settings.lng+","+settings.lat+
+                "&points="+settings.lng+","+settings.lat;// + ",pointImagePattern:sight_point";
+        if (user!==undefined) {
+            url += ";"+user.lng+","+user.lat + ",pointImagePattern:redU";
+        }
     }
+    //console.log("MAP URL: " + url);
     return url;
 }
 

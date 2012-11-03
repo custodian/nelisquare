@@ -424,10 +424,8 @@ function loadVenue(page, venueID) {
     page.venueMajor = "";
     page.photosBox.photosModel.clear();
     page.usersBox.photosModel.clear();
-    page.venueMapUrl = "";
     page.venueMapLat = "";
     page.venueMapLng = "";
-    //venueDetails.venueMapZoom = 15; //do not reset on each venue
     doWebRequest("GET", url, page, parseVenue);
 }
 

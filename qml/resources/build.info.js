@@ -1,3 +1,3 @@
-var build = '201211031719';
-var version = "0.4.6";
-var changelog = ' - photo swype at venue gallery  - gps uplock, feed autoupdate.  - molo.me integration for N9!  - notification fixes  - layout & performance updates';
+var build = '201211031913';
+var version = "0.4.7";
+var changelog = ' - separate venuemap page';
