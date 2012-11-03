@@ -11,7 +11,7 @@ Rectangle {
     width: parent.width
     height: parent.height
 
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     MouseArea {

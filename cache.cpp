@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QDateTime>
 #include <QByteArray>
 #include <QCryptographicHash>
 #include <QDesktopServices>
@@ -92,12 +93,20 @@ QVariant Cache::get(QVariant data)
 
 QVariant Cache::info()
 {
+    QDateTime today;
+    today = QDateTime::currentDateTime();
     qint64 total = 0;
     QDir dir(m_path);
     dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     QFileInfoList list = dir.entryInfoList();
     for (int i=0; i<list.size();i++) {
-        total += list.at(i).size();
+        QDateTime modif = list.at(i).lastModified();
+        if (modif.daysTo(today) > 14) {
+            QFile(list.at(i).absoluteFilePath()).remove();
+        }
+        else {
+            total += list.at(i).size();
+        }
     }
 
     {

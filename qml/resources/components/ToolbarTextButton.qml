@@ -7,8 +7,8 @@ Item {
     property bool shown: true
     property bool bar: false
 
-    property string colorActive: theme.textColorButton
-    property string colorInactive: theme.textColorButtonInactive
+    property string colorActive: theme.colors.textButtonText
+    property string colorInactive: theme.colors.textButtonTextInactive
     signal clicked()
     width: buttonText.width + 10
     height: 58
@@ -29,7 +29,7 @@ Item {
             anchors.top: buttonText.bottom
             width: parent.width
             height: 6
-            color: theme.toolbarLightColor
+            color: theme.colors.toolbarLightColor
             visible: selected && bar
         }
 

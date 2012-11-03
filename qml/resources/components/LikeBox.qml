@@ -27,7 +27,7 @@ Item {
             //height: 48
             smooth: true
             asynchronous: true
-            source: (likeBox.mylike)?"../pics/unlike.png":"../pics/like.png"
+            source: "../pics/"+theme.name+"/"+((likeBox.mylike)?"heart_liked.png":"heart_like.png")
 
             MouseArea {
                 anchors.fill: parent
@@ -45,6 +45,7 @@ Item {
             Text {
                 text: likeBox.likes + " " + "like(s)"
                 font.pixelSize: theme.font.sizeSigns
+                color: theme.colors.textColorOptions
                 visible: likeBox.likes>0
             }
 
@@ -52,6 +53,7 @@ Item {
                 text: likeBox.likeText
                 width: parent.width
                 font.pixelSize: theme.font.sizeSigns
+                color: theme.colors.textColorTimestamp
                 wrapMode: Text.Wrap
                 visible: likeBox.likes>0
             }

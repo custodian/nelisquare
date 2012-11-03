@@ -7,7 +7,7 @@ Rectangle {
     id: badgeInfo
     width: parent.width
     height: parent.height
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     property string name: ""
@@ -46,7 +46,7 @@ Rectangle {
 
                 Image {
                     anchors.centerIn: parent
-                    source: "../pics/loader.png"
+                    source: "../pics/"+theme.name+"/loader.png"
                     visible: (parent.status != Image.Ready)
                 }
             }
@@ -54,7 +54,7 @@ Rectangle {
             Text {
                 x: 10
                 font.pixelSize: theme.font.sizeSettigs
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: name
             }
 
@@ -62,7 +62,7 @@ Rectangle {
                 x: 10
                 width: parent.width - 20
                 text: badgeInfo.info
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 font.pixelSize: theme.font.sizeDefault
                 wrapMode: Text.WordWrap
             }
@@ -73,7 +73,7 @@ Rectangle {
                 text: '@ ' + venueName
                 width: parent.width - 20
                 font.pixelSize: theme.font.sizeDefault
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 wrapMode: Text.WordWrap
                 visible: venueName.length>0
                 MouseArea {
@@ -87,7 +87,7 @@ Rectangle {
                 x: 10
                 width: parent.width - 20
                 text: time
-                color: theme.textColorTimestamp
+                color: theme.colors.textColorTimestamp
                 font.pixelSize: theme.font.sizeSigns
             }
         }

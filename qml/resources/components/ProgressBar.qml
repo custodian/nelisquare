@@ -17,7 +17,7 @@ Item {
         radius: radiusValue
         height: parent.height
         width: parent.width
-        color: theme.scoreBackgroundColor
+        color: theme.colors.scoreBackgroundColor
     }
     Rectangle {
         anchors.left: parent.left
@@ -25,14 +25,16 @@ Item {
         radius: radiusValue
         height: parent.height
         width: parent.width * percent / percentMax
-        color: theme.scoreForegroundColor
+        color: theme.colors.scoreForegroundColor
         onWidthChanged: {
             if (width > 50) {
                 percentText.anchors.left = undefined;
                 percentText.anchors.right = right;
+                percentText.color = theme.colors.textColorSign;
             } else {
                 percentText.anchors.right = undefined;
                 percentText.anchors.left = right;
+                percentText.color = theme.colors.textColorOptions;
             }
         }
         Text {
@@ -40,7 +42,7 @@ Item {
             text: "  " + percent + progress.types + "  "
             font.pixelSize: theme.font.sizeHelp
             anchors.verticalCenter: parent.verticalCenter
-            color: theme.textColorSign
+            color: theme.colors.textColorSign
             visible: showPercent>0
         }
     }

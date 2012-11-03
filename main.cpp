@@ -3,14 +3,25 @@
 #include <QDeclarativeContext>
 #include <QDeclarativeEngine>
 #include <QGraphicsObject>
+#include <QInputContext>
+#include <QSplashScreen>
 #include "qmlapplicationviewer.h"
 #include "picturehelper.h"
 #include "windowhelper.h"
 #include "cache.h"
 #include "molome.h"
-#include <QInputContext>
 
 #include <qplatformdefs.h>
+
+class EventDisabler : public QObject
+{
+protected:
+    bool eventFilter(QObject *, QEvent *) {
+        return true;
+    }
+private:
+    QWidget *prevFocusWidget;
+};
 
 class EventFilter : public QObject
 {
@@ -44,6 +55,19 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
+#if defined(VS_ENABLE_SPLASH) && defined(Q_WS_MAEMO_5)
+    QPixmap pixmap("/opt/nelisquare/qml/resources/pics/splash-turned.png");
+    QSplashScreen splash(pixmap);
+    EventDisabler eventDisabler;
+    splash.installEventFilter(&eventDisabler);
+    //Qt::WidgetAttribute attribute;
+    //attribute = Qt::WA_LockPortraitOrientation;
+    //splash.setAttribute(attribute, true);
+    splash.showFullScreen();
+    //splash.showMessage("Initializating...",Qt::AlignHCenter|Qt::AlignVCenter, Qt::white);
+    //app.processEvents();
+#endif
+
     QmlApplicationViewer viewer;
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
     viewer.addImportPath(QString("/opt/qtm12/imports"));
@@ -72,6 +96,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("molome", molome);
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 
+#if defined(VS_ENABLE_SPLASH) && defined(Q_WS_MAEMO_5)
+    //splash.showMessage("Loading...",Qt::AlignHCenter|Qt::AlignVCenter, Qt::white);
+    //app.processEvents();
+#endif
+
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
     viewer.setMainQmlFile(QLatin1String("qml/resources/Maemo.qml"));
 #elif defined(MEEGO_EDITION_HARMATTAN)
@@ -99,6 +128,9 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.showExpanded();
 #else
     viewer.showExpanded();
+#endif
+#if defined(VS_ENABLE_SPLASH) && defined(Q_WS_MAEMO_5)
+    splash.finish(&viewer);
 #endif
 
     return app.exec();

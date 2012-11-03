@@ -138,24 +138,26 @@ function makeImageUrl(image, size) {
 
 function thumbnailPhoto(photo, width_, height_) {
     var url = "";
-    var width = photo.width;
-    var height = photo.height;
-    if (width_ !== undefined)
-        width = width_;
-    if (height_ !== undefined)
-        height = height_;
-    if (width === undefined)
-        width = 100;
-    if (height === undefined)
-        height = width
-    url = photo.prefix + width+"x"+height + photo.suffix;
+    if (photo) {
+        var width = photo.width;
+        var height = photo.height;
+        if (width_ !== undefined)
+            width = width_;
+        if (height_ !== undefined)
+            height = height_;
+        if (width === undefined)
+            width = 100;
+        if (height === undefined)
+            height = width
+        url = photo.prefix + width+"x"+height + photo.suffix;
+    }
     return url;
 }
 
 function makePhoto(photo,minsize) {
     return {
        "objectID": photo.id,
-       "photoThumb":thumbnailPhoto(photo,minsize)
+       "photoThumb":thumbnailPhoto(photo,minsize,minsize)
    }
 }
 
@@ -181,10 +183,15 @@ function addTipToModel(page,tip) {
     //console.log("VENUE TIP: " + JSON.stringify(tip));
     page.tipsModel.append({
                      "userID": tip.user.id,
+                     "userName": makeUserName(tip.user),
                      "userPhoto": thumbnailPhoto(tip.user.photo,100),
                      "tipID": tip.id,
                      "tipText": tip.text,
-                     "tipAge": "Added " + makeTime(tip.createdAt)
+                     "tipAge": "Added " + makeTime(tip.createdAt),
+                     "tipPhoto": thumbnailPhoto(tip.photo, 300, 300),
+                     "venueName": parse(tip.venueName),
+                     "likesCount": tip.likes.count,
+                     "peoplesCount": ((tip.done)?tip.done.count:tip.todo.count),
     });
 }
 
@@ -271,7 +278,7 @@ function parseFriendsFeed(response, page) {
         }
         var venuePhoto = "";
         if (checkin.photos.count > 0) {
-            venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
+            venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300, 300);
         }
         if (venueDistance === undefined || venueDistance < MAX_NEARBY_DISTANCE) {
             var item = {
@@ -288,7 +295,8 @@ function parseFriendsFeed(response, page) {
                 "venuePhoto": venuePhoto,
                 "lastUpdate": 0,
                 "commentsCount":0,
-                "likesCount":0
+                "likesCount":0,
+                "photosCount": checkin.photos.count
             };
             if (updating) {
                 page.friendsCheckinsModel.insert(count,item)
@@ -325,7 +333,7 @@ function parseCheckinInfo(response,page) {
             model.likesCount = checkin.likes.count;
             if (model.photo === "") {
                 if (checkin.photos.count > 0) {
-                    model.photo = thumbnailPhoto(checkin.photos.items[0], 300);
+                    model.photo = thumbnailPhoto(checkin.photos.items[0], 300, 300);
                 }
             }
             model.lastUpdate = currentTime;
@@ -355,7 +363,7 @@ function parseIcon(icon, size) {
     if (size === undefined) {
         size = 32
     }
-    return icon.prefix+"bg_"+size+icon.suffix;
+    return icon.prefix+theme.colors.iconbg+size+icon.suffix;
 }
 
 function parse(item) {
@@ -447,6 +455,7 @@ function parseVenue(response, page) {
     else
         page.venueTypeUrl = parseIcon(defaultVenueIcon);
     if(venue.mayor.count>0) {
+        page.venueMajorCount = venue.mayor.count;
         page.venueMajor = makeUserName(venue.mayor.user);
         page.venueMajorPhoto = thumbnailPhoto(venue.mayor.user.photo,100);
         page.venueMajorID = venue.mayor.user.id;
@@ -465,9 +474,11 @@ function parseVenue(response, page) {
     // Parse venue tips
     page.tipsModel.clear();
     if(venue.tips.count>0) {
+        //console.log("TIPS: "+JSON.stringify(venue.tips));
         venue.tips.groups.forEach(function (group) {
                 group.items.forEach(function(tip) {
-                    addTipToModel(page,tip);
+                    if (page.tipsModel.count <= 10)
+                        addTipToModel(page,tip);
                 })
             });
     }
@@ -497,31 +508,67 @@ function parseVenue(response, page) {
 }
 
 function loadVenuePhotos(page, venue) {
-    page.photosModel.clear();
     waiting.show();
-    var url = "/venues/" + venue + "/photos?group=checkin&limit=100"
-    var url2 = "/venues/" + venue + "/photos?group=venue&limit=100"
+
+    var url = "/venues/" + venue + "/photos?group=checkin&offset="+page.options.get(0).offset+"&limit="+page.batchsize
+    var url2 = "/venues/" + venue + "/photos?group=venue&offset="+page.options.get(1).offset+"&limit="+page.batchsize
 
     var urlfull = "multi?requests="
             + encodeURIComponent(url)
             + "," + encodeURIComponent(url2)
             + "&" + getAccessTokenParameter();
 
-    doWebRequest("GET", urlfull, page, parseVenuePhotos);
+    doWebRequest("GET", urlfull, page, parsePhotosGallery);
 }
 
-function parseVenuePhotos(multiresponse, page) {
+function loadUserPhotos(page, user) {
+    waiting.show();
+
+    var url = "/users/" + user + "/photos?offset="+page.options.get(0).offset+"&limit="+page.batchsize
+    var urlfull = "multi?requests="
+            + encodeURIComponent(url)
+            + "&" + getAccessTokenParameter();
+
+    doWebRequest("GET", urlfull, page, parsePhotosGallery);
+}
+
+function parsePhotosGallery(multiresponse, page) {
     var multidata = processResponse(multiresponse);
     waiting.hide();
-    multidata.responses.forEach(function(response){
-        var data = response.response;
+    for (var key in multidata.responses) {
+        var data = multidata.responses[key].response;
+        if (data.photos.items.length < page.batchsize) {
+            page.options.get(key).completed = true;
+        }
+        page.options.get(key).offset += data.photos.items.length;
+        page.loaded += data.photos.items.length;
         data.photos.items.forEach(function(photo){
-              //console.log("PHOTO: " + JSON.stringify(photo));
-              page.photosModel.append(
-                  makePhoto(photo,300)
-              );
-          });
-    });
+            page.photosModel.append(
+                makePhoto(photo,300)
+            );
+        });
+    };
+}
+
+function loadUserFriends(page, user) {
+    page.usersModel.clear();
+    waiting.show();
+    var url = "users/" + user + "/friends?" + getAccessTokenParameter();
+    doWebRequest("GET",url,page,parseUsersList)
+}
+
+function parseUsersList(response, page) {
+    waiting.hide();
+    var data = processResponse(response);
+    //console.log("USERS LISTS: " + JSON.stringify(data));
+    data.friends.items.forEach(function(user) {
+         page.usersModel.append({
+            "id":user.id,
+            "name":makeUserName(user),
+            "city":parse(user.homeCity),
+            "photo":thumbnailPhoto(user.photo,100)
+        });
+     });
 }
 
 function addComment(page, checkinID, text) {
@@ -557,16 +604,16 @@ function parseDeleteComment(response, page) {
     });
 }
 
-function addTip(venueID, text) {
+function addTip(page,venueID, text) {
     waiting.show();
     var url = "tips/add?";
     url += "venueId=" + venueID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, "", parseAddTip);
+    doWebRequest("POST", url, page, parseAddTip);
 }
 
-function parseAddTip(response){
+function parseAddTip(response, page){
     var data = processResponse(response);
     waiting.hide();
     addTipToModel(page,data.tip);
@@ -805,16 +852,20 @@ function parseMayorhips(response, page) {
 }
 
 function loadCheckinHistory(page, user) {
-    var url = "users/" + user + "/checkins?limit=50&set=newestfirst&" + getAccessTokenParameter();
+    var url = "users/" + user + "/checkins?set=newestfirst&"
+        +"offset="+page.loaded+"&limit="+page.batchsize
+        +"&" + getAccessTokenParameter();
     waiting.show();
-    page.checkinHistoryModel.clear();
     doWebRequest("GET", url, page, parseCheckinHistory);
 }
 
 function parseCheckinHistory(response, page) {
     var data = processResponse(response);
     waiting.hide();
-    page.checkinHistoryModel.clear();
+    if (data.checkins.items.length < page.batchsize) {
+        page.completed = true;
+    }
+    page.loaded += data.checkins.items.length;
     data.checkins.items.forEach(function(checkin) {
         //console.log("USER CHECKIN: " + JSON.stringify(checkin));
         var createdAgo = makeTime(checkin.createdAt);
@@ -832,9 +883,13 @@ function parseCheckinHistory(response, page) {
         if (checkin.likes!==undefined) {
             likesCount = parse(checkin.likes.count);
         }
+        var photosCount = 0;
+        if (checkin.photos!==undefined) {
+            photosCount = parse(checkin.photos.count);
+        }
         var venuePhoto = "";
         if (checkin.photos.count > 0) {
-            venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300);
+            venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300, 300);
         }
         var icon = parseIcon(defaultVenueIcon);
         if (checkin.venue.categories!=null && checkin.venue.categories[0]!==undefined)
@@ -846,6 +901,7 @@ function parseCheckinHistory(response, page) {
                            "photo": icon,
                            "commentsCount": commentsCount,
                            "likesCount": likesCount,
+                           "photosCount": photosCount,
                            "venueID": venueID,
                            "venueName": venueName,
                            "createdAt": createdAgo,
@@ -887,11 +943,107 @@ function parseBadges(response, page) {
     });
 }
 
+function loadTipsList(page, objectid) {
+    //page baseType == "venue" baseType == "user"
+    var url;
+    if (page.baseType === "user") {
+        url = "lists"
+    } else {
+        url = page.baseType;
+    }
+    url += "/" + objectid + "/tips?"
+        + "sort="+page.sortType
+        + "&offset="+page.loaded+"&limit="+page.batchsize
+        + "&" + getAccessTokenParameter();
+
+    waiting.show();
+    doWebRequest("GET", url, page, parseTipsList);
+}
+
+function parseTipsList(response,page){
+    var data = processResponse(response);
+    waiting.hide();
+    //console.log("TIPS LIST: " + JSON.stringify(data));
+    var tips;
+    if (data.tips === undefined) {
+        tips = [];
+        data.list.listItems.items.forEach(function(item){
+            item.tip.venueName = item.venue.name;
+            tips.push(item.tip);
+        });
+    } else {
+        tips = data.tips.items;
+    }
+
+    if (tips.length < page.batchsize) {
+        page.completed = true;
+    }
+    page.loaded += tips.length;
+    tips.forEach(function(tip){
+        addTipToModel(page,tip);
+    });
+}
+
+function loadTipInfo(page, tip) {
+    var url = "tips/" + tip + "?" + getAccessTokenParameter();
+    waiting.show();
+    doWebRequest("GET", url, page, parseTipInfo);
+}
+
+function parseTipInfo(response, page) {
+    var data = processResponse(response);
+    waiting.hide();
+    //console.log("FULL TIP: " + JSON.stringify(data));
+    var tip = data.tip;
+
+    //load tip to page
+    page.ownerVenue.venueID = tip.venue.id;
+    page.ownerVenue.venueName = tip.venue.name;
+    page.ownerVenue.venueAddress = parse(tip.venue.location.address);
+    var venuePhoto;
+    if(tip.venue.categories!=null && tip.venue.categories[0]!==undefined) {
+        venuePhoto = parseIcon(tip.venue.categories[0].icon);
+    } else {
+        venuePhoto = parseIcon(defaultVenueIcon);
+    }
+    page.ownerVenue.userPhoto.photoUrl = venuePhoto;
+    page.ownerVenue.createdAt = makeTime(tip.createdAt);
+
+    page.ownerUser.userID = tip.user.id;
+    page.ownerUser.userName = makeUserName(tip.user);
+    page.ownerUser.userPhoto.photoUrl = thumbnailPhoto(tip.user.photo, 100)
+    page.ownerUser.userShout = tip.text;
+    if (tip.photo!==undefined) {
+        page.tipPhoto.photoUrl = thumbnailPhoto(tip.photo, 300, 300);
+        page.tipPhotoID = tip.photo.id;
+    }
+    //page.ownerUser.createdAt = makeTime(tip.createdAt);
+
+    processLikes(page.likeBox,tip);
+}
+
+function likeTip(page, id, state) {
+    var url = "tips/"+id+"/like?set="
+    waiting.show();
+    if (state) {
+        url += "1";
+    } else {
+        url += "0";
+    }
+    url += "&" + getAccessTokenParameter();
+    doWebRequest("POST", url, page, parseLikeTip);
+}
+
+function parseLikeTip(response, page) {
+    waiting.hide();
+    var data = processResponse(response);
+    processLikes(page.likeBox, data);
+}
+
 function loadUser(page, user) {
     var url = "users/" + user + "?" + getAccessTokenParameter();
     waiting.show();
     page.boardModel.clear();
-    page.friendsBox.photosModel.clear();
     doWebRequest("GET", url, page, parseUser);
     if (user === "self") {
         url = "users/leaderboard?neighbors=2&" + getAccessTokenParameter();
@@ -905,11 +1057,17 @@ function parseUser(response, page) {
     waiting.hide();
     var user = data.user;
     page.userName = makeUserName(user);
-    page.userPhoto = thumbnailPhoto(user.photo,300);
-    page.userPhotoLarge = thumbnailPhoto(user.photo,500);
+    page.userPhoto = thumbnailPhoto(user.photo, 300, 300);
+    page.userPhotoLarge = thumbnailPhoto(user.photo, 500, 500);
+    page.userContactPhone = parse(user.contact.phone);
+    page.userContactEmail = parse(user.contact.email);
+    page.userContactTwitter = parse(user.contact.twitter);
+    page.userContactFacebook = parse(user.contact.facebook);
     page.userBadgesCount = user.badges.count;
     page.userCheckinsCount = user.checkins.count;
     page.userFriendsCount = user.friends.count;
+    page.userPhotosCount = user.photos.count;
+    page.userTipsCount = user.tips.count;
     page.userID = user.id;
     page.userMayorshipsCount = user.mayorships.count;
 
@@ -921,23 +1079,6 @@ function parseUser(response, page) {
     page.scoreRecent = user.scores.recent;
     page.scoreMax = user.scores.max;
     page.userRelationship = parse(user.relationship);
-
-    if (user.friends.count>0) {
-        page.friendsBox.caption = "TOTAL FRIENDS: <b>" + user.friends.count +"</b>";
-        user.friends.groups.forEach(function(group) {
-            if (group.type == "friends" && user.relationship != "self" ) {
-                page.friendsBox.caption += " ("+ group.name + " <b>" + group.count + "</b>)";
-            }
-            if (group.count>0) {
-                group.items.forEach(function(user){
-                    page.friendsBox.photosModel.append({
-                        "objectID": user.id,
-                        "photoThumb": thumbnailPhoto(user.photo,100) });
-                });
-            }
-        });
-
-    }
 }
 
 function parseUserBoard(response, page) {
@@ -1001,14 +1142,14 @@ function parsePhoto(response, page) {
 
     page.photoUrl = thumbnailPhoto(photo);
     page.owner.userID = photo.user.id;
-    page.owner.userName = "<span style='color:#000'>Uploaded by </span>" + makeUserName(photo.user);
+    page.owner.userName = makeUserName(photo.user);
     page.owner.userPhoto.photoUrl = thumbnailPhoto(photo.user.photo,100);
     page.owner.userShout = "via " + parse(photo.source.name);
     page.owner.createdAt = makeTime(photo.createdAt);
 }
 
 function loadNotifications(page) {
-    var url = "updates/notifications?" + getAccessTokenParameter();
+    var url = "updates/notifications?limit=100&" + getAccessTokenParameter();
     waiting.show();
     doWebRequest("GET",url,page, parseNotifications);
 }
@@ -1017,7 +1158,6 @@ function markNotificationsRead(page, time) {
     var url = "updates/marknotificationsread?";
     url += "highWatermark=" + time;
     url += "&" + getAccessTokenParameter();
-    page.notificationsModel.clear();
     doWebRequest("POST", url, page, doNothing);
 }
 
@@ -1028,18 +1168,21 @@ function parseNotifications(response, page) {
     notis.items.forEach(function(noti) {
         //console.log("NOTIFICATIONS: " + JSON.stringify(noti));
         var objectID = noti.target.object.id;
-        if (noti.target.type == "tip")
-            objectID = noti.target.object.venue.id;
+        var photo = noti.image.fullPath;
+        if (noti.target.type == "badge") {
+            photo = makeImageUrl(noti.image,114);
+        }
         page.notificationsModel
             .append({
                         "type": noti.target.type,
                         "objectID": objectID,
                         "object": noti.target.object,
-                        "userName": makeUserName("asdf"),
+                        //"userName": makeUserName("asdf"),
                         "createdAt": noti.createdAt,
                         "time": makeTime(noti.createdAt),
                         "text": noti.text,
-                        "photo": noti.image.fullPath
+                        "unreaded": noti.unread,
+                        "photo": photo
                 })
         });
 }

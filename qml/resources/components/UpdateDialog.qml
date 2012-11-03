@@ -4,7 +4,7 @@ Rectangle {
     id: update
     width: parent.width
     height: items.height + 20
-    color: theme.toolbarLightColor
+    color: theme.colors.backgroundBlueDark
     state: "hidden"
     property string version: ""
     property string build: ""
@@ -22,14 +22,14 @@ Rectangle {
             text: "New update is available!"
             width: parent.width
             font.pixelSize: theme.font.sizeSettigs
-            color: theme.textColorSign
+            color: theme.colors.textHeader
         }
 
         Text {
             text: "Version: " + update.version;
             width: parent.width
             font.pixelSize: theme.font.sizeDefault
-            color: theme.textColorSign
+            color: theme.colors.textHeader
         }
 
         Row {
@@ -40,13 +40,13 @@ Rectangle {
                 text: "Type: " + window.checkupdates;
                 //width: parent.width
                 font.pixelSize: theme.font.sizeDefault
-                color: theme.textColorSign
+                color: theme.colors.textHeader
             }
             Text {
                 text: "Build: " + update.build;
                 //width: parent.width
                 font.pixelSize: theme.font.sizeDefault
-                color: theme.textColorSign
+                color: theme.colors.textHeader
             }
         }
 
@@ -54,7 +54,7 @@ Rectangle {
             text: "Changelog: \n" + update.changelog;
             width: parent.width
             font.pixelSize: theme.font.sizeSigns
-            color: theme.textColorSign
+            color: theme.colors.textHeader
             visible: update.changelog.length>0
         }
 

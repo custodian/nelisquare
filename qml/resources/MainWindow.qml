@@ -2,6 +2,7 @@ import Qt 4.7
 import QtMobility.location 1.1
 //import Effects 1.0
 import "components"
+import "themes"
 import "./build.info.js" as BuildInfo
 import "js/script.js" as Script
 import "js/storage.js" as Storage
@@ -35,7 +36,7 @@ Rectangle {
 
     anchors.fill:  parent
 
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
 
     onCheckupdatesChanged: {
         if (checkupdates!="none") {
@@ -45,7 +46,11 @@ Rectangle {
 
     onWindowActiveChanged: {
         if (!windowActive) {
-            timerGPSUnlock.start();
+            if (positionSource.position.latitudeValid) {
+                timerGPSUnlock.start();
+            } else {
+                positionSource.active = windowActive;
+            }
         } else {
             timerGPSUnlock.stop();
             positionSource.active = windowActive;
@@ -121,6 +126,9 @@ Rectangle {
             if (value === "") value = 0;
             if (value == 60) value = 120;
             window.feedAutoUpdate = value;
+        } else if (key === "settings.theme") {
+            if (value === "") value = "light";
+            theme.loadTheme(value);
         } else {
             console.log("Unknown setting: " + key + "=" + value);
         }
@@ -133,7 +141,9 @@ Rectangle {
 
     Component.onCompleted: {
         splashHider.start();
-        signalTimer.start();
+        if (theme.platform === "maemo") {
+            signalTimer.start();
+        }
 
         Storage.getKeyValue("accesstoken", window.settingLoaded);
         window.isPortrait = window.height > (window.width*2/3);//window.width<(window.height/2);
@@ -146,6 +156,7 @@ Rectangle {
         Storage.getKeyValue("settings.imageload", window.settingLoaded);
         Storage.getKeyValue("settings.gpsunlock", window.settingLoaded);
         Storage.getKeyValue("settings.feedupdate", window.settingLoaded);
+        Storage.getKeyValue("settings.theme", window.settingLoaded);
     }
 
     onHeightChanged: {
@@ -154,7 +165,7 @@ Rectangle {
 
     Timer {
         id: splashHider
-        interval: 3000 //dbg
+        interval: 1000
         repeat: false
         onTriggered: {
             splashDialog.state = splashDialog.nextState;
@@ -269,7 +280,6 @@ Rectangle {
                         "owner": page
                     });
                 });
-                page.state = "shown";
             });
     }
 
@@ -318,7 +328,15 @@ Rectangle {
                 page.checkins.connect(function(user){
                     window.showUserCheckins(user);
                 });
-                page.state = "shown";
+                page.friends.connect(function(user) {
+                    window.showUserFriends(user);
+                });
+                page.photos.connect(function(user) {
+                    window.showUserPhotos(user);
+                });
+                page.tips.connect(function(user) {
+                    window.showTipsList("user",user);
+                });
             });
     }
 
@@ -340,7 +358,6 @@ Rectangle {
                 page.settingsChanged.connect(function(type,value) {
                     window.settingChanged("settings."+type,value);
                 });
-                page.state = "shown";
         });
     }
 
@@ -357,7 +374,6 @@ Rectangle {
                 page.user.connect(function(user) {
                     window.showUserPage(user);
                 });
-                page.state = "shown";
         });
     }
 
@@ -388,7 +404,6 @@ Rectangle {
                 page.search.connect(function(query) {
                     Script.loadPlaces(page, query);
                 });
-                page.state = "shown";
             });
     }
 
@@ -414,6 +429,7 @@ Rectangle {
                     tipDialog.venueID = venueID;
                     tipDialog.venueName = venueName;
                     tipDialog.action = 0;
+                    tipDialog.ownerPage = page;
                     tipDialog.state = "shown";
                 });
                 page.markToDo.connect(function(venueID, venueName) {
@@ -425,6 +441,12 @@ Rectangle {
                 });
                 page.user.connect(function(user) {
                     window.showUserPage(user);
+                });
+                page.tip.connect(function(tip){
+                    window.showTipPage(tip);
+                });
+                page.tips.connect(function(){
+                    window.showTipsList("venues", venue);
                 });
                 page.photo.connect(function() {
                     window.showVenuePhotos(venue);
@@ -442,7 +464,6 @@ Rectangle {
                 page.like.connect(function(venueID,state) {
                     Script.likeVenue(page,venueID,state);
                 });
-                page.state = "shown";
             });
     }
 
@@ -461,28 +482,57 @@ Rectangle {
                 page.venueName = venuepage.venueName;
                 page.venueTypeUrl = venuepage.venueTypeUrl;
                 page.venueAddress = venuepage.venueAddress;
-                page.state = "shown";
             });
     }
 
     function showVenuePhotos(venue) {
         WM.buildPage(
             viewPort,
-            "VenuePhotos",
+            "PhotosGallery",
             {
                 "id": venue,
                 "update": function(page) {
-                    Script.loadVenuePhotos(page,venue);
+                    page.update();
                 }
             },
             function(page){
+                page.caption = "VENUE PHOTOS";
+                page.options.append({"offset":0,"completed":false});
+                page.options.append({"offset":0,"completed":false});
                 page.photo.connect(function(photo){
                     window.showPhotoPage(photo,page);
                 });
-                page.update.connect(function(photo) {
+                page.change.connect(function(photo) {
                     Script.loadPhoto(WM.topWindow().page,photo);
                 });
-                page.state = "shown";
+                page.update.connect(function(){
+                    Script.loadVenuePhotos(page,venue);
+                });
+            });
+    }
+
+    function showUserPhotos(user) {
+        WM.buildPage(
+            viewPort,
+            "PhotosGallery",
+            {
+                "id": user,
+                "update": function(page) {
+                    page.update();
+                }
+            },
+            function(page){
+                page.caption = "USER PHOTOS";
+                page.options.append({"offset":0,"completed":false});
+                page.photo.connect(function(photo){
+                    window.showPhotoPage(photo,page);
+                });
+                page.change.connect(function(photo) {
+                    Script.loadPhoto(WM.topWindow().page,photo);
+                });
+                page.update.connect(function(){
+                    Script.loadUserPhotos(page,user);
+                });
             });
     }
 
@@ -497,11 +547,26 @@ Rectangle {
                  }
             },
             function(page){
-
                 page.badge.connect(function(params) {
                     window.showBadgeInfo(params);
                 });
-                page.state = "shown";
+            });
+    }
+
+    function showUserFriends(user) {
+        WM.buildPage(
+            viewPort,
+            "UsersList",
+            {
+                "id": user,
+                "update":function(page){
+                     Script.loadUserFriends(page,user);
+                 }
+            },
+            function(page){
+                page.user.connect(function(params){
+                    window.showUserPage(params);
+                });
             });
     }
 
@@ -522,8 +587,6 @@ Rectangle {
                 page.venueName = params.venueName;
                 page.venueID = params.venueID;
                 page.time = params.time;
-
-                page.state = "shown";
             });
     }
 
@@ -534,15 +597,16 @@ Rectangle {
             {
                 "id": user,
                 "update": function(page){
-                        Script.loadCheckinHistory(page,user);
+                        page.update();
                     }
             },
             function(page){
-
                 page.checkin.connect(function(id) {
                     window.showCheckinPage(id)
                 });
-                page.state = "shown";
+                page.update.connect(function(){
+                    Script.loadCheckinHistory(page,user);
+                })
             });
     }
 
@@ -560,7 +624,6 @@ Rectangle {
                 page.venue.connect(function(id) {
                     window.showVenuePage(id);
                 });
-                page.state = "shown";
             });
     }
 
@@ -587,7 +650,6 @@ Rectangle {
                         gallery.loadPrevPhoto();
                     });
                 }
-                page.state = "shown";
             });
     }
 
@@ -613,10 +675,12 @@ Rectangle {
                 page.badge.connect(function(badge) {
                     window.showBadgeInfo(Script.makeBadgeObject(badge))
                 });
+                page.tip.connect(function(tip){
+                     window.showTipPage(tip);
+                });
                 page.markRead.connect(function(time) {
                     Script.markNotificationsRead(page,time);
                 });
-                page.state = "shown";
             });
     }
 
@@ -635,11 +699,63 @@ Rectangle {
                     photoShareDialog.photoUrl = photo;
                     photoShareDialog.state = "shown";
                 });
-                page.state = "shown";
             });
     }
 
-    ThemeStyle {
+    function showTipPage(tip) {
+        WM.buildPage(
+            viewPort,
+            "TipPage",
+            {
+                "id":tip,
+                "update": function(page){
+                    Script.loadTipInfo(page,tip);
+                }
+            },
+            function(page){
+                page.like.connect(function(state){
+                    Script.likeTip(page, tip, state)
+                });
+                page.user.connect(function(user){
+                    window.showUserPage(user)
+                });
+                page.venue.connect(function(venue){
+                    window.showVenuePage(venue);
+                });
+                page.photo.connect(function(photo){
+                    window.showPhotoPage(photo);
+                });
+                page.save.connect(function(){
+                    Script.showError("Lists not implemented yet!");
+                });
+                page.markDone.connect(function(){
+                    Script.showError("Lists not implemented yet!");
+                });
+            });
+    }
+
+    function showTipsList(type, objectid){
+        WM.buildPage(
+            viewPort,
+            "TipsList",
+            {
+                "id": objectid,
+                "update": function(page) {
+                      page.update();
+                  },
+            },
+            function(page) {
+                page.baseType = type;
+                page.tip.connect(function(tip) {
+                    window.showTipPage(tip);
+                });
+                page.update.connect(function(){
+                    Script.loadTipsList(page, objectid);
+                });
+            });
+    }
+
+    ThemeLoader {
         id: theme
     }
 
@@ -652,10 +768,14 @@ Rectangle {
         /*effect: Blur {
             blurRadius: blurred ? 2.0 : 0.0
         }*/
+        WaitingIndicator {
+            id: waiting
+            z: 10
+        }
 
         CheckinDialog {
             id: checkinDialog
-            z: 1
+            z: 20
             width: parent.width
             state: "hidden"
 
@@ -672,7 +792,7 @@ Rectangle {
 
         NotificationDialog {
             id: notificationDialog
-            z: 1
+            z: 20
             width: parent.width
             state: "hidden"
             onClose: {
@@ -690,7 +810,7 @@ Rectangle {
 
         CommentDialog {
             id: commentDialog
-            z: 1
+            z: 20
             width: parent.width
             state: "hidden"
 
@@ -704,14 +824,14 @@ Rectangle {
 
         TipDialog {
             id: tipDialog
-            z: 1
+            z: 20
             width: parent.width
             state: "hidden"
             onCancel: {tipDialog.state = "hidden";}
             onAddTip: {
                 if(tipDialog.action==0) {
                     //console.log("Tip: " + comment + " on " + tipDialog.venueID);
-                    Script.addTip(tipDialog.venueID, comment);
+                    Script.addTip(tipDialog.ownerPage, tipDialog.venueID, comment);
                 } else {
                     //console.log("mark: " + comment + " on " + tipDialog.venueID);
                     Script.markVenueToDo(tipDialog.venueID, comment);
@@ -722,7 +842,7 @@ Rectangle {
 
         PhotoShareDialog {
             id: photoShareDialog
-            z: 1
+            z: 20
             width: parent.width
             state: "hidden"
             onCancel:{
@@ -737,14 +857,14 @@ Rectangle {
 
         UpdateDialog {
             id: updateDialog
-            z: 10
+            z: 30
         }
 
         Rectangle {
             id: signalIcon
             z: 1
             radius: 6
-            color: theme.textColorAlarm
+            color: theme.colors.textColorAlarm
             width: 32
             height: 32
             x: parent.width - 40
@@ -766,7 +886,7 @@ Rectangle {
         height: 70
         width: parent.width
         y: parent.height - height
-        color: theme.backgroundMenubar
+        color: theme.colors.backgroundMenubar
 
         MouseArea {
             anchors.fill: parent
@@ -782,8 +902,8 @@ Rectangle {
             ToolbarTextButton {
                 id: backwardsButton
                 label: "BACK"
-                colorActive: theme.textColorButtonMenu
-                colorInactive: theme.textColorButtonMenuInactive
+                colorActive: theme.colors.textButtonTextMenu
+                colorInactive: theme.colors.textButtonTextMenuInactive
                 shown: WM.windowStash.length>1
                 onClicked: {
                     WM.popWindow();
@@ -793,8 +913,8 @@ Rectangle {
             ToolbarTextButton {
                 label: "FEED"
                 selected: topWindowType == "FriendsFeed"
-                colorActive: theme.textColorButtonMenu
-                colorInactive: theme.textColorButtonMenuInactive
+                colorActive: theme.colors.textButtonTextMenu
+                colorInactive: theme.colors.textButtonTextMenuInactive
                 onClicked: {
                     WM.clearWindows();
                     window.showFriendsFeed();
@@ -804,8 +924,8 @@ Rectangle {
             ToolbarTextButton {
                 label: "PLACES"
                 selected: topWindowType == "VenuesList" && WM.topWindow().params.id !== "todolist"
-                colorActive: theme.textColorButtonMenu
-                colorInactive: theme.textColorButtonMenuInactive
+                colorActive: theme.colors.textButtonTextMenu
+                colorInactive: theme.colors.textButtonTextMenuInactive
                 onClicked: {
                     window.showVenueList("");
                 }
@@ -814,8 +934,8 @@ Rectangle {
             ToolbarTextButton {
                 label: "LISTS"
                 selected: topWindowType == "VenuesList" && WM.topWindow().params.id === "todolist"
-                colorActive: theme.textColorButtonMenu
-                colorInactive: theme.textColorButtonMenuInactive
+                colorActive: theme.colors.textButtonTextMenu
+                colorInactive: theme.colors.textButtonTextMenuInactive
                 onClicked: {
                     window.showVenueList("todolist");
                 }
@@ -824,8 +944,8 @@ Rectangle {
             ToolbarTextButton {
                 label: "ME"
                 selected: topWindowType === "User" && WM.topWindow().params.id === "self"
-                colorActive: theme.textColorButtonMenu
-                colorInactive: theme.textColorButtonMenuInactive
+                colorActive: theme.colors.textButtonTextMenu
+                colorInactive: theme.colors.textButtonTextMenuInactive
                 onClicked: {
                     window.showUserPage("self");
                 }
@@ -895,13 +1015,8 @@ Rectangle {
         }
 
         onLoadFailed: {
-            done.label = "Error loading page"
-            done.state = "shown"
-        }
-    }
 
-    WaitingIndicator {
-        id: waiting
+        }
     }
 
     SplashDialog {

@@ -25,7 +25,7 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     Timer {
@@ -63,7 +63,7 @@ Rectangle {
             Rectangle {
                 width: parent.width
                 height: 90
-                color: theme.toolbarDarkColor
+                color: theme.colors.toolbarDarkColor
 
                 ButtonBlue {
                     label: "RECENT"
@@ -118,6 +118,7 @@ Rectangle {
             venuePhoto: model.venuePhoto
             createdAt: model.createdAt
             commentsCount: model.commentsCount
+            photosCount: model.photosCount
             likesCount: model.likesCount
 
             Component.onCompleted: {
@@ -134,7 +135,7 @@ Rectangle {
                 if (window.feedAutoUpdate > 0) {
                     if ((Utils.getCurrentTime() - model.lastUpdate) >  window.commentUpdateRate) {
                         //console.log("updating checkin");
-                        //friendsFeed.checkinInfo( model.id ); //DBG
+                        friendsFeed.checkinInfo( model.id ); //DBG
                     }
                 }
             }

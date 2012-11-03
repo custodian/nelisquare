@@ -10,7 +10,7 @@ Rectangle {
     property string cacheSize: "undefined"
 
     id: settings
-    color: theme.backgroundSettings
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     width: parent.width
@@ -48,7 +48,7 @@ Rectangle {
 
             //Check updates
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "Check for updates"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -83,7 +83,7 @@ Rectangle {
 
             //OrientationLock
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "Screen orientation"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -119,7 +119,7 @@ Rectangle {
 
             //Map provider
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "Map provider"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -149,7 +149,7 @@ Rectangle {
 
             //Molome integration
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "MOLO.me integration (beta)"
                 font.pixelSize: theme.font.sizeSettigs
                 visible: theme.platform === "meego"
@@ -218,7 +218,7 @@ Rectangle {
 
             //Image loading settings
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "Load images"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -247,7 +247,7 @@ Rectangle {
 
             //GPS Unlock time
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "GPS Unlock timeout"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -282,7 +282,7 @@ Rectangle {
             }
 
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "Feed autoupdate"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -324,7 +324,7 @@ Rectangle {
             }
 
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "Nelisquare theme"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -334,14 +334,14 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: theme.themeName === "light"
+                    selected: theme.name === "light"
                     label: "LIGHT"
                     onClicked: settingsChanged("theme","light");
                 }
 
                 ToolbarTextButton {
                     height: 35
-                    selected: theme.themeName === "dark"
+                    selected: theme.name === "dark"
                     label: "DARK"
                     onClicked: settingsChanged("theme","dark");
                 }
@@ -353,7 +353,7 @@ Rectangle {
 
             //App cache
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "App Cache"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -385,7 +385,7 @@ Rectangle {
 
             //Revoke auth token
             Text {
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 text: "Reset authentication"
                 font.pixelSize: theme.font.sizeSettigs
             }
@@ -408,7 +408,7 @@ Rectangle {
 
             Image {
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: "../pics/separator.png"
+                source: "../pics/"+theme.name+"/separator.png"
             }
 
             Item{
@@ -419,7 +419,7 @@ Rectangle {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textHelp1
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
 
                 horizontalAlignment: Text.AlignHCenter
@@ -428,7 +428,7 @@ Rectangle {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textHelp2
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
                 font.bold: true
 
@@ -438,7 +438,7 @@ Rectangle {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textVersionInfo + BuildInfo.version
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -446,7 +446,7 @@ Rectangle {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textBuildInfo + BuildInfo.build
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
                 horizontalAlignment: Text.AlignHCenter
             }
@@ -454,7 +454,7 @@ Rectangle {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: theme.textHelp3
-                color: theme.textColorOptions
+                color: theme.colors.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
 
                 horizontalAlignment: Text.AlignHCenter

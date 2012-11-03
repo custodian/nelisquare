@@ -11,7 +11,7 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     function hideKeyboard() {
@@ -49,7 +49,7 @@ Rectangle {
     Rectangle {
         width: parent.width
         height: 80
-        color: theme.backgroundBlueDark
+        color: theme.colors.backgroundBlueDark
 
         Rectangle {
             id: textContainer
@@ -59,7 +59,7 @@ Rectangle {
             y: 20
             gradient: theme.gradientTextBox
             border.width: 1
-            border.color: theme.textboxBorderColor
+            border.color: theme.colors.textboxBorderColor
             smooth: true
 
             TextInput {
@@ -69,7 +69,7 @@ Rectangle {
                 height: parent.height - 10
                 x: 5
                 y: 5
-                color: theme.textColor
+                color: theme.colors.textColor
                 font.pixelSize: 24
 
                 onAccepted: {
@@ -133,15 +133,12 @@ Rectangle {
                 userPhoto.photoUrl = model.icon
             }
 
-            MouseArea {
-                anchors.fill: parent
+            onAreaClicked: {
+                venuesList.clicked( model.id );
+            }
 
-                onClicked: {
-                    venuesList.clicked( model.id );
-                }
-                onPressAndHold: {
-                    venuesList.checkin( model.id, model.name);
-                }
+            onAreaPressAndHold: {
+                venuesList.checkin( model.id, model.name);
             }
         }
     }

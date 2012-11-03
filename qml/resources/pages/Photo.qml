@@ -11,7 +11,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     state: "hidden"
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
 
     property string photoUrl: ""
     property alias owner: photoOwner

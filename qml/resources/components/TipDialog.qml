@@ -4,10 +4,11 @@ Rectangle {
     id: tipDialog
     width: parent.width
     height: items.height + 20
-    color: theme.backgroundBlueDark
+    color: theme.colors.backgroundBlueDark
     state: "hidden"
     property string venueID: ""
     property string venueName: ""
+    property variant ownerPage
     property int action: 0
     signal cancel()
     signal addTip(string comment)
@@ -33,7 +34,7 @@ Rectangle {
             text: tipDialog.venueName
             width: parent.width
             font.pixelSize: 24
-            color: theme.textColorSign
+            color: theme.colors.textColorSign
         }
 
         Rectangle {
@@ -43,7 +44,7 @@ Rectangle {
             gradient: theme.gradientTextBox
             radius: 5
             border.width: 1
-            border.color: theme.textboxBorderColor
+            border.color: theme.colors.textboxBorderColor
             smooth: true
 
             TextEdit {
@@ -55,7 +56,7 @@ Rectangle {
                 height: parent.height - 10
                 x: 5
                 y: 5
-                color: theme.textColor
+                color: theme.colors.textColor
                 font.pixelSize: 24
 
                 MouseArea {
@@ -86,7 +87,7 @@ Rectangle {
                         shoutText.text = "";
                     } else {
                         hideKeyboard();
-                        tipDialog.addTip( comment );
+                        tipDialog.addTip( shoutText.text );
                     }
                 }
             }

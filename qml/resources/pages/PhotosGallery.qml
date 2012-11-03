@@ -4,16 +4,31 @@ import "../components"
 
 Rectangle {
     signal photo(string photo)
-    signal update(string photo)
+    signal change(string photo)
+    signal update()
+
+    property string caption: "VENUE PHOTOS"
 
     property alias photosModel: photosModel
     property int currentPhotoIndex: 0
+
+    property int loaded: 0
+    property int batchsize: 20
+    property alias options: options
 
     id: venuePhotos
     width: parent.width
     height: parent.height
     state: "hidden"
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
+
+    function done() {
+        var result = true;
+        for(var i=0;i<options.count;i++){
+            result &= options.get(i).completed;
+        }
+        return result;
+    }
 
     function loadNextPhoto() {
         if (currentPhotoIndex >= photosModel.count - 1 ) {
@@ -21,7 +36,7 @@ Rectangle {
         } else {
             //console.log("LOADING NEXT PHOTO");
             currentPhotoIndex = currentPhotoIndex + 1
-            venuePhotos.update(photosModel.get(currentPhotoIndex).objectID);
+            venuePhotos.change(photosModel.get(currentPhotoIndex).objectID);
         }
     }
     function loadPrevPhoto() {
@@ -30,8 +45,12 @@ Rectangle {
         } else {
             //console.log("LOADING PREV PHOTO");
             currentPhotoIndex = currentPhotoIndex - 1
-            venuePhotos.update(photosModel.get(currentPhotoIndex).objectID);
+            venuePhotos.change(photosModel.get(currentPhotoIndex).objectID);
         }
+    }
+
+    ListModel {
+        id: options
     }
 
     ListModel {
@@ -50,7 +69,7 @@ Rectangle {
         delegate: photoDelegate
         header: LineGreen {
             height: 30
-            text: "VENUE PHOTOS"
+            text: caption
         }
     }
 
@@ -66,7 +85,15 @@ Rectangle {
                  currentPhotoIndex = index;
                  venuePhotos.photo(model.objectID);
              }
-         }
+
+             Component.onCompleted: {
+                 if (loaded === (index + 1)){
+                     if (!done()) {
+                         update();
+                     }
+                 }
+             }
+         }         
      }
 
     states: [

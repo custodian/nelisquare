@@ -4,11 +4,18 @@ import "../components"
 Rectangle {
     id: checkinHistory
     signal checkin(string id)
+    signal update()
+
     property alias checkinHistoryModel: checkinHistoryModel
+
     width: parent.width
     height: parent.height
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
+
+    property int loaded: 0
+    property int batchsize: 20
+    property bool completed: false
 
     ListModel {
         id: checkinHistoryModel
@@ -48,10 +55,17 @@ Rectangle {
             venuePhoto: model.venuePhoto
             createdAt: model.createdAt
             commentsCount: model.commentsCount
+            photosCount: model.photosCount
             likesCount: model.likesCount
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo
+
+                if (loaded === (index + 1)){
+                    if (!completed) {
+                        update();
+                    }
+                }
             }
 
             onAreaClicked: {

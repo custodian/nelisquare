@@ -12,10 +12,12 @@ Rectangle {
     signal user(string user)
     signal photo(string photo)
     signal like(string venueid, bool state)
+    signal tip(string tipid)
+    signal tips()
 
     width: parent.width
     height: parent.height
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     property string venueID: ""
@@ -24,6 +26,7 @@ Rectangle {
     property string venueCity: ""
     property string venueMajor: ""
     property string venueMajorID: ""
+    property int venueMajorCount: 0
     property string venueMajorPhoto: ""
     property string venueHereNow: ""
     property string venueCheckinsCount: ""
@@ -167,6 +170,7 @@ Rectangle {
                             width: parent.width - venueMapButton.width
                             userName: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
                             userShout: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
+                            createdAt: place.venueMajorCount > 0 ? place.venueMajorCount + " checkins" : ""
 
                             onUserClicked: {
                                 place.user(venueMajorID);
@@ -185,13 +189,6 @@ Rectangle {
                     }
 
                     PhotosBox {
-                        id: photosBox
-                        onItemSelected: {
-                            place.photo(object);
-                        }
-                    }
-
-                    PhotosBox {
                         id: usersBox
                         photoSize: 64
                         onItemSelected: {
@@ -199,17 +196,23 @@ Rectangle {
                         }
                     }
 
+                    PhotosBox {
+                        id: photosBox
+                        onItemSelected: {
+                            place.photo(object);
+                        }
+                    }
+
                     LineGreen {
                         height: 30
-                        text: "USER TIPS"
+                        text: "BEST USERS TIPS"
+                        visible: tipsModel.count>0
                     }
 
                     Repeater {
                         id: tipRepeater
-
-                        //x: 10
-                        width: parent.width //- 20
-
+                        x: 10
+                        width: parent.width - 20
                         model: tipsModel
                         delegate: tipDelegate
                         visible: tipsModel.count>0
@@ -223,20 +226,29 @@ Rectangle {
         id: tipDelegate
 
         EventBox {
-            x: 10
-            width: tipRepeater.width - 20
+            activeWhole: true
+            width: tipRepeater.width
 
+            userName: model.userName
             userShout: model.tipText
             createdAt: model.tipAge
-            fontSize: 18
+            likesCount: model.likesCount
+            peoplesCount: model.peoplesCount
+            venuePhoto: model.tipPhoto
+            venuePhotoSize: 150
+            fontSize: 18 //TODO: tie with font settings
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.userPhoto
                 userPhoto.photoSize = 48
                 userPhoto.photoBorder = 2
             }
-            onUserClicked: {
-                place.user(model.userID);
+            onAreaClicked: {
+                if (tipsModel.count >= 10)
+                    place.tips()
+                else {
+                    place.tip(model.tipID);
+                }
             }
         }
     }

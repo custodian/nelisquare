@@ -10,7 +10,7 @@ Rectangle {
     signal clicked()
 
     smooth: true
-    border.color: mouse.pressed ? theme.grayButtonBorderColorPressed : theme.grayButtonBorderColor
+    border.color: mouse.pressed ? theme.colors.grayButtonBorderColorPressed : theme.colors.grayButtonBorderColor
     border.width: 1
     gradient: mouse.pressed ? theme.gradientGrayPressed : theme.gradientGray
 
@@ -26,7 +26,7 @@ Rectangle {
     Text {
         text: button.label
         font.pixelSize: 24
-        color: theme.textColorSign
+        color: button.pressed ? theme.colors.textColorButtonPressed : theme.colors.textColorButton
         anchors.centerIn: parent
         visible: button.label.length>0
     }

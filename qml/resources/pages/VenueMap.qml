@@ -9,7 +9,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     state: "hidden"
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
 
     property string venueMapLat: ""
     property string venueMapLng: ""
@@ -20,20 +20,23 @@ Rectangle {
     property string venueAddress: ""
     property string venueTypeUrl: ""
 
+    property variant userLocation
+    property variant centerLocation
+    property variant route
+
     property alias venue: venue
 
     function loadMapImage() {
-        venueMap.venueMapUrl = Utils.createMapUrl({
-                                                      "lat":venueMapLat,
-                                                      "lng":venueMapLng,
-                                                      "zoom":venueMapZoom,
-                                                      "width":fullImage.width,
-                                                      "height":fullImage.height
-                                                  },
-                                                  {
-                                                      "lat": window.positionSource.position.coordinate.latitude,
-                                                      "lng": window.positionSource.position.coordinate.longitude
-                                                  });
+        Utils.createMapUrl(
+            venueMap,
+            {
+                "lat":venueMapLat,
+                "lng":venueMapLng,
+                "zoom":venueMapZoom,
+                "width":fullImage.width,
+                "height":fullImage.height,
+            },
+            userLocation);
     }
 
     onVenueTypeUrlChanged: {
@@ -104,6 +107,19 @@ Rectangle {
                     venueMapZoom = 18;
                 else
                     loadMapImage();
+            }
+        }
+        ButtonBlue {
+            id: routeButton
+            width: 200
+            anchors.horizontalCenter: parent.horizontalCenter
+            label: "GET ROUTE"
+            onClicked: {
+                userLocation = {
+                    "lat": window.positionSource.position.coordinate.latitude,
+                    "lng": window.positionSource.position.coordinate.longitude
+                };
+                loadMapImage();
             }
         }
         ToolbarButton {

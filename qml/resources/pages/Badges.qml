@@ -9,7 +9,7 @@ Rectangle {
     id: badgesPage
     width: parent.width
     height: parent.height
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     ListModel {
@@ -26,6 +26,10 @@ Rectangle {
 
         model: badgeModel
         delegate: badgeDelegate
+        header: Item {
+                width: parent.width
+                height: 20
+            }
     }
 
     Component {
@@ -53,18 +57,18 @@ Rectangle {
                                     "time":model.time});
                     }
                 }
-
-            }
-            Image {
-                anchors.centerIn: parent
-                source: "../pics/loader.png"
-                visible: (badgeImage.status != Image.Ready)
+                Image {
+                    anchors.centerIn: badgeImage
+                    source: "../pics/"+theme.name+"/loader.png"
+                    visible: (badgeImage.status != Image.Ready)
+                }
             }
             Text {
                 text: model.name;
                 y: badgeImage.y + badgeImage.height
                 anchors.horizontalCenter: parent.horizontalCenter
                 font.pixelSize: theme.font.sizeSigns
+                color: theme.colors.textColorOptions
             }
         }
     }

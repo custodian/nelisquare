@@ -13,7 +13,7 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     property string checkinID: ""
@@ -100,12 +100,12 @@ Rectangle {
                     Text {
                         width: parent.width * 0.90
                         text: "TOTAL POINTS"
-                        color: theme.textColorSign
+                        color: theme.colors.textPoints
                         font.pixelSize: theme.font.sizeDefault
                     }
                     Text {
                         id: scoreTotal
-                        color: theme.textColorSign
+                        color: theme.colors.textPoints
                         font.pixelSize: theme.font.sizeDefault
                     }
                 }
@@ -193,6 +193,11 @@ Rectangle {
                     }
                 }
             }
+
+            Item {
+                width: parent.width
+                height: parent.spacing
+            }
         }
     }
 
@@ -237,13 +242,13 @@ Rectangle {
                 width: parent.width * 0.8
                 wrapMode: Text.Wrap
                 text: scoreMessage
-                color: theme.textColorSign
+                color: theme.colors.textPoints
                 font.pixelSize: theme.font.sizeSigns
             }
             Text {
                 wrapMode: Text.NoWrap
                 text: "+"+scorePoints
-                color: theme.textColorSign
+                color: theme.colors.textPoints
                 font.pixelSize: theme.font.sizeSigns
             }
         }
@@ -260,13 +265,13 @@ Rectangle {
                     width: badgeRepeater.width * 0.95
                     text: badgeTitle
                     font.pixelSize: 24
-                    color: theme.textColorOptions
+                    color: theme.colors.textColorOptions
                 }
                 Text {
                     width: parent.width * 0.8
                     wrapMode: Text.Wrap
                     text: badgeMessage
-                    color: theme.textColorShout
+                    color: theme.colors.textColorShout
                     font.pixelSize: 18
                 }
             }

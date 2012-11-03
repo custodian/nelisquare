@@ -3,6 +3,7 @@ import Qt 4.7
 Item {
     signal userClicked()
     signal areaClicked()
+    signal areaPressAndHold()
     signal deleteEvent()
 
     property string userID: ""
@@ -12,7 +13,8 @@ Item {
     property string venueID: ""
     property string venueName: ""
     property string venueCity: ""
-    property string venuePhoto: "" //TODO remove when switch to PhotosBox
+    property string venuePhoto: "" //TODO add photo2, photo3 as tiles
+    property int venuePhotoSize: 200
     property string venueAddress: ""
     property string createdAt: ""
     property string eventOwner: ""
@@ -22,6 +24,7 @@ Item {
     property int commentsCount: 0
     property int peoplesCount: 0
     property int likesCount: 0
+    property int photosCount: 0
 
     property alias userPhoto: profileImage
 
@@ -29,6 +32,7 @@ Item {
     property bool showRemoveButton: true
     property bool showSeparator: true
     property bool showText: true
+    property bool highlight: false
 
     id: eventItem
     width: parent.width
@@ -36,7 +40,7 @@ Item {
 
     Rectangle {
         id: titleContainer
-        color: mouseArea.pressed ? theme.backgroundSand : theme.backgroundMain
+        color: mouseArea.pressed || highlight ? theme.colors.backgroundSand : theme.colors.backgroundMain
         y: 1
         width: parent.width
         height: 10 + (showText ? Math.max(statusTextArea.height,profileImage.height) : profileImage.height)
@@ -70,11 +74,11 @@ Item {
 
                 Text {
                     id: messageText
-                    color: theme.textColorOptions
+                    color: theme.colors.textColorOptions
                     font.pixelSize: fontSize
                     font.bold: true
                     width: (parent.width - (userMayor?mayorImage.width+5:0))
-                    text: (userName + (venueName !="" ? ( (userName != "" ? "<span style='color:"+theme.textColorTimestamp+"'> @ </span>": "") + venueName):""))
+                    text: (userName + (venueName !="" ? ( (userName != "" ? "<span style='color:"+theme.colors.textColorTimestamp+"'> @ </span>": "") + venueName):""))
                     wrapMode: Text.Wrap
                     visible: messageText.text != ""
                 }
@@ -82,7 +86,7 @@ Item {
 
             Text {
                 id: commentText
-                color: theme.textColorShout
+                color: theme.colors.textColorShout
                 font.pixelSize: fontSize
                 width: parent.width
                 text: userShout!="" ? userShout : (venueAddress + " " + venueCity)
@@ -91,11 +95,12 @@ Item {
             }
             Row {
                 width: parent.width
-                //TODO: change to PhotosBox
+                //TODO: add Tiles as photo2 photo3
                 ProfilePhoto {
                     photoUrl: venuePhoto
                     photoCache: true
-                    photoSize: 200
+                    photoHeight: venuePhotoSize
+                    photoWidth: parent.width
                     photoBorder: 2
                 }
                 visible: venuePhoto.length>0
@@ -104,7 +109,8 @@ Item {
                 width: parent.width
                 spacing: 10
                 Text {
-                    color: theme.textColorTimestamp
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: theme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: createdAt
                     wrapMode: Text.Wrap
@@ -113,7 +119,7 @@ Item {
                 Image {
                     id: peoplesImage
                     anchors.verticalCenter: parent.verticalCenter
-                    source: "../pics/persons.png"
+                    source: "../pics/"+theme.name+"/persons.png"
                     asynchronous: true
                     smooth: true
                     height: 32
@@ -122,7 +128,8 @@ Item {
                 }
                 Text {
                     id: textPeoples
-                    color: theme.textColorTimestamp
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: theme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: peoplesCount
                     visible: peoplesCount>0
@@ -130,7 +137,7 @@ Item {
                 Image {
                     id: commentImage
                     anchors.verticalCenter: parent.verticalCenter
-                    source: "../pics/commentcount.png"
+                    source: "../pics/"+theme.name+"/commentcount.png"
                     asynchronous: true
                     smooth: true
                     height: 32
@@ -139,15 +146,34 @@ Item {
                 }
                 Text {
                     id: textComment
-                    color: theme.textColorTimestamp
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: theme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: commentsCount
                     visible: commentsCount>0
                 }
                 Image {
+                    id: photoImage
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "../pics/"+theme.name+"/photocount.png"
+                    asynchronous: true
+                    smooth: true
+                    height: 32
+                    fillMode: Image.PreserveAspectFit
+                    visible: photosCount>0
+                }
+                Text {
+                    id: textPhotos
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: theme.colors.textColorTimestamp
+                    font.pixelSize: fontSize - 2
+                    text: photosCount
+                    visible: photosCount>0
+                }
+                Image {
                     id: likesImage
                     anchors.verticalCenter: parent.verticalCenter
-                    source: "../pics/venuelikes_heart.png"
+                    source: "../pics/"+theme.name+"/venuelikes_heart.png"
                     asynchronous: true
                     smooth: true
                     height: 32
@@ -156,12 +182,13 @@ Item {
                 }
                 Text {
                     id: textLikes
-                    color: theme.textColorTimestamp
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: theme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: likesCount
                     visible: likesCount>0
                 }
-                visible: createdAt.length>0 || commentsCount>0 || likesCount>0 || peoplesCount>0
+                visible: createdAt.length>0 || commentsCount>0 || likesCount>0 || peoplesCount>0 || photosCount>0
             }
             visible: showText
         }
@@ -169,6 +196,9 @@ Item {
             anchors.fill: statusTextArea
             onClicked: {
                 eventItem.areaClicked();
+            }
+            onPressAndHold: {
+                eventItem.areaPressAndHold();
             }
         }
 
@@ -181,7 +211,7 @@ Item {
 
             Image {
                 asynchronous: true
-                source: "../pics/delete.png"
+                source: "../pics/"+theme.name+"/delete.png"
                 width: parent.width
                 height: parent.height
                 smooth: true
@@ -201,6 +231,9 @@ Item {
         anchors.fill: parent
         onClicked: {
             eventItem.areaClicked();
+        }
+        onPressAndHold: {
+            eventItem.areaPressAndHold();
         }
         visible: activeWhole
     }

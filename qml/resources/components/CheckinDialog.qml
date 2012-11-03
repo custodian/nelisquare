@@ -4,7 +4,7 @@ Rectangle {
     id: checkin
     width: parent.width
     height: items.height + 20
-    color: theme.backgroundBlueDark
+    color: theme.colors.backgroundBlueDark
     state: "hidden"
     property string venueID: ""
     property string venueName: ""
@@ -35,7 +35,7 @@ Rectangle {
             text: checkin.venueName
             width: parent.width
             font.pixelSize: 24
-            color: theme.textColorSign
+            color: theme.colors.textColorSign
         }
 
         Rectangle {
@@ -44,7 +44,7 @@ Rectangle {
             width: parent.width
             gradient: theme.gradientTextBox
             border.width: 1
-            border.color: theme.textboxBorderColor
+            border.color: theme.colors.textboxBorderColor
             smooth: true
 
             TextEdit {
@@ -56,18 +56,19 @@ Rectangle {
                 height: parent.height - 10
                 x: 5
                 y: 5
-                color: theme.textColor
+                color: theme.colors.textColor
                 font.pixelSize: 24
 
                 onTextChanged: {
                     if (text.length > 130) {
-                        color = theme.textColorAlarm;
+                        color = theme.colors.textColorAlarm;
                         if (text.length > 140) {
                             text = text.substring(0,140);
                             cursorPosition = 140;
                         }
                     } else {
-                        color = theme.textColor;
+                        if (text != theme.textDefaultComment)
+                            color = theme.colors.textColor;
                     }
                 }
 
@@ -88,7 +89,7 @@ Rectangle {
 
         Rectangle {
             width: parent.width
-            color: theme.toolbarDarkColor
+            color: theme.colors.toolbarDarkColor
             height: 10 + friendsRow.y + friendsRow.height
             radius: 5
             smooth: true
@@ -103,14 +104,14 @@ Rectangle {
 
                 Rectangle {
                     border.width: 1
-                    border.color: theme.checktapBorderColor
-                    color: friendsMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
+                    border.color: theme.colors.checktapBorderColor
+                    color: friendsMouseArea.pressed ? theme.colors.checktapBackgroundActive : theme.colors.checktapBackground
                     width: 42
                     height: 42
 
                     Image {
                         anchors.centerIn: parent
-                        source: "../pics/checktap.png"
+                        source: "../pics/"+theme.name+"/checktap.png"
                         visible: checkin.useFriends
                     }
 
@@ -128,19 +129,19 @@ Rectangle {
                     wrapMode: Text.Wrap
                     font.pixelSize: theme.font.sizeSigns
                     anchors.verticalCenter: parent.verticalCenter
-                    color: theme.textColorSign
+                    color: theme.colors.textColorSign
                 }
 
                 Rectangle {
                     border.width: 1
-                    border.color: theme.checktapBorderColor
-                    color: facebookMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
+                    border.color: theme.colors.checktapBorderColor
+                    color: facebookMouseArea.pressed ? theme.colors.checktapBackgroundActive : theme.colors.checktapBackground
                     width: 42
                     height: 42
 
                     Image {
                         anchors.centerIn: parent
-                        source: "../pics/checktap.png"
+                        source: "../pics/"+theme.name+"/checktap.png"
                         visible: checkin.useFacebook
                     }
 
@@ -158,20 +159,20 @@ Rectangle {
                     wrapMode: Text.Wrap
                     font.pixelSize: theme.font.sizeSigns
                     anchors.verticalCenter: parent.verticalCenter
-                    color: theme.textColorSign
+                    color: theme.colors.textColorSign
                 }
 
 
                 Rectangle {
                     border.width: 1
-                    border.color: theme.checktapBorderColor
-                    color: twitterMouseArea.pressed ? theme.checktapBackgroundActive : theme.checktapBackground
+                    border.color: theme.colors.checktapBorderColor
+                    color: twitterMouseArea.pressed ? theme.colors.checktapBackgroundActive : theme.colors.checktapBackground
                     width: 42
                     height: 42
 
                     Image {
                         anchors.centerIn: parent
-                        source: "../pics/checktap.png"
+                        source: "../pics/"+theme.name+"/checktap.png"
                         visible: checkin.useTwitter
                     }
 
@@ -189,7 +190,7 @@ Rectangle {
                     wrapMode: Text.Wrap
                     font.pixelSize: theme.font.sizeSigns
                     anchors.verticalCenter: parent.verticalCenter
-                    color: theme.textColorSign
+                    color: theme.colors.textColorSign
                 }
             }
         }

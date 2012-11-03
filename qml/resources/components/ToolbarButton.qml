@@ -42,7 +42,7 @@ Item {
 
 
     Image {
-        source: "../pics/" + toolbarButton.image
+        source: "../pics/"+theme.name+"/" + toolbarButton.image
         anchors.horizontalCenter: parent.horizontalCenter
         y: 8
         width: imageSize

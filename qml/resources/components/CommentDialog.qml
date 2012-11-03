@@ -4,7 +4,7 @@ Rectangle {
     id: comment
     width: parent.width
     height: items.height + 20
-    color: theme.backgroundBlueDark
+    color: theme.colors.backgroundBlueDark
     state: "hidden"
     property string checkinID: ""
     signal cancel()
@@ -32,7 +32,7 @@ Rectangle {
             text: "What is on your mind?"
             width: parent.width
             font.pixelSize: 24
-            color: theme.textColorSign
+            color: theme.colors.textColorSign
         }
 
         Rectangle {
@@ -41,7 +41,7 @@ Rectangle {
             width: parent.width
             gradient: theme.gradientTextBox
             border.width: 1
-            border.color: theme.textboxBorderColor
+            border.color: theme.colors.textboxBorderColor
             smooth: true
 
             TextEdit {
@@ -53,7 +53,7 @@ Rectangle {
                 height: parent.height - 10
                 x: 5
                 y: 5
-                color: theme.textColor
+                color: theme.colors.textColor
                 font.pixelSize: 24
 
                 MouseArea {

@@ -9,12 +9,12 @@ Rectangle   {
     width: parent.width
     height: 30
 
-    gradient: theme.gradientGreen
+    gradient: theme.gradientHeader
 
     Text {
-        color: theme.textColorSign
         text: greenLine.text
-        font.pixelSize: theme.font.sizeSigns
+        color: theme.colors.textHeader
+        font.pixelSize: size
         anchors.centerIn: parent
     }
 }

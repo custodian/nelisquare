@@ -37,7 +37,7 @@ Rectangle {
             font.family: theme.font.name
             text: "0"
             //visible: text > 0
-            color: theme.textColorSign
+            color: theme.colors.textHeader
         }
         MouseArea {
             anchors.fill: parent
@@ -56,30 +56,31 @@ Rectangle {
         }
     }
 
-    ButtonGray {
+    Image {
         id: minimizeButton
-        pic: "minimize.png"
         x: 4
         anchors.verticalCenter: parent.verticalCenter
+        source: "../pics/minimize.png"
         width: 48
         height: 48
-        border.width: 0
-        gradient: toolbar.gradient
-        onClicked: {
-            windowHelper.minimize();
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: windowHelper.minimize();
         }
         visible: theme.platform === "maemo"
     }
 
-    ButtonGray {
+    Image {
         id: buttonClose
-        pic: "close.png"
         x: parent.width - width - 4
-        width: 48
         anchors.verticalCenter: parent.verticalCenter
-        gradient: toolbar.gradient
-        border.width: 0
-        onClicked: Qt.quit();
+        source: "../pics/close.png"
+        width: 48
+        MouseArea {
+            anchors.fill: parent
+            onClicked: Qt.quit();
+        }
         visible: theme.platform === "maemo"
     }
 
@@ -87,7 +88,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         width: parent.width
         height: 2
-        color: theme.toolbarLightColor
+        color: theme.colors.toolbarLightColor
     }
 
     Image {

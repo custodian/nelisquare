@@ -24,6 +24,7 @@ symbian:TARGET.CAPABILITY += NetworkServices Location LocalServices ReadUserData
 QT += network
 
 DEFINES += QT_USE_FAST_CONCATENATION QT_USE_FAST_OPERATOR_PLUS
+DEFINES += VS_ENABLE_SPLASH
 
 VERSION = 0.4.6
 PACKAGENAME = com.thecust.nelisquare

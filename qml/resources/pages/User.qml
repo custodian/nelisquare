@@ -14,22 +14,33 @@ Rectangle {
     signal badges(string user)
     signal checkins(string user)
     signal mayorships(string user)
-
+    signal friends(string user)
+    signal photos(string user)
+    signal tips(string user)
 
     id: details
     width: parent.width
     height: parent.height
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
     state: "hidden"
 
     property string userID: ""
     property string userName: ""
     property string userPhoto: ""
     property string userPhotoLarge: ""
+
+    property string userContactPhone: ""
+    property string userContactEmail: ""
+    property string userContactTwitter: ""
+    property string userContactFacebook: ""
+
     property int userBadgesCount: 0
     property int userMayorshipsCount: 0
     property int userCheckinsCount: 0
     property int userFriendsCount: 0
+    property int userPhotosCount: 0
+    property int userTipsCount: 0
+
     property string userRelationship: "undefined"
 
     property int userLeadersboardRank: 0
@@ -41,8 +52,11 @@ Rectangle {
     property string lastVenueID: ""
     property string lastTime: ""
 
-    property alias friendsBox: friendsBox
     property alias boardModel: boardModel
+
+    Component.onCompleted: {
+        checkinOwner.userPhoto.photoSize = 200;
+    }
 
     onUserPhotoChanged: {
         checkinOwner.userPhoto.photoSize = 200;
@@ -54,10 +68,12 @@ Rectangle {
             checkinOwner.userPhoto.photoSize = 200;
             checkinOwner.userPhoto.photoUrl = details.userPhoto;
             checkinOwner.showText = true;
+            //socialRow.visible = true;
         } else {
             checkinOwner.userPhoto.photoSize = checkinOwner.width;
             checkinOwner.userPhoto.photoUrl = details.userPhotoLarge;
             checkinOwner.showText = false;
+            //socialRow.visible = false;
         }
     }
 
@@ -106,6 +122,79 @@ Rectangle {
                 onAreaClicked: {
                     if (lastVenueID !== "")
                         details.venue(lastVenueID);
+                }
+
+                Row {
+                    id: socialRow
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 10
+                    anchors.right: parent.right
+                    spacing: 10
+
+                    Image {
+                        width: 48
+                        height: 48
+                        smooth: true
+                        source: "../pics/phone.png"
+
+                        MouseArea {
+                            anchors. fill: parent
+                            onClicked: {
+                                waiting.show();
+                                Qt.openUrlExternally("tel:" + userContactPhone);
+                                waiting.hide();
+                            }
+                        }
+                        visible: userContactPhone !== ""
+                    }
+                    Image {
+                        width: 48
+                        height: 48
+                        smooth: true
+                        source: "../pics/email.png"
+
+                        MouseArea {
+                            anchors. fill: parent
+                            onClicked: {
+                                waiting.show();
+                                Qt.openUrlExternally("mailto:" + userContactEmail + "?subject=Ping from Foursquare");
+                                waiting.hide();
+                            }
+                        }
+                        visible: userContactEmail !== ""
+                    }
+                    Image {
+                        width: 48
+                        height: 48
+                        smooth: true
+                        source: "../pics/twitter.png"
+
+                        MouseArea {
+                            anchors. fill: parent
+                            onClicked: {
+                                waiting.show();
+                                Qt.openUrlExternally("https://twitter.com/" + userContactTwitter);
+                                waiting.hide();
+                            }
+                        }
+                        visible: userContactTwitter !== ""
+                    }
+                    Image {
+                        width: 48
+                        height: 48
+                        smooth: true
+                        source: "../pics/facebook.png"
+
+                        MouseArea {
+                            anchors. fill: parent
+                            onClicked: {
+                                waiting.show();
+                                Qt.openUrlExternally("https://facebook.com/" + userContactFacebook);
+                                waiting.hide();
+                            }
+                        }
+                        visible: userContactFacebook !== ""
+                    }
                 }
             }
 
@@ -157,84 +246,50 @@ Rectangle {
                     id: lblScoresText
                     text: "<b>SCORES</b> (LAST 7 DAYS)"
                     font.pixelSize: theme.font.sizeHelp
-                    color: theme.textColorOptions
+                    color: theme.colors.textColorOptions
                 }
                 Text {
                     text: "BEST SCORE"
                     anchors.right: parent.right
                     font.pixelSize: theme.font.sizeHelp
                     font.bold: true
-                    color: theme.textColorOptions
+                    color: theme.colors.textColorOptions
                 }
             }
             //scores value
             Item {
                 width: parent.width
                 height: children[0].height
-                Rectangle {
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    height: 32
-                    width: parent.width * 0.85
-                    color: theme.scoreBackgroundColor
-                }
-                Rectangle {
-                    anchors.left: parent.left
-                    anchors.top: parent.top
-                    height: 32
-                    width: parent.width * 0.85 * scoreRecent / scoreMax
-                    color: theme.scoreForegroundColor
-                    onWidthChanged: {
-                        if (width > 50) {
-                            scoreRecentText.anchors.left = undefined;
-                            scoreRecentText.anchors.right = right;
-                        } else {
-                            scoreRecentText.anchors.right = undefined;
-                            scoreRecentText.anchors.left = right;
-                        }
-                    }
-                    Text {
-                        id: scoreRecentText
-                        text: "  " + scoreRecent + "  "
-                        font.pixelSize: theme.font.sizeHelp
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: theme.textColorSign
-                        visible: scoreRecent>0
 
-                    }
+                ProgressBar {
+                    width: parent.width * 0.85
+                    percent: scoreRecent
+                    percentMax: scoreMax
+                    showPercent: true
                 }
                 Text {
                     text: scoreMax
                     anchors.right: parent.right
-                    color: theme.textColorOptions
+                    color: theme.colors.textColorOptions
                     font.bold: true
                     font.pixelSize: theme.font.sizeHelp
                 }
             }
 
-            PhotosBox {
-                id: friendsBox
-                width: details.width
-                anchors.horizontalCenter: parent.horizontalCenter
-                photoSize: 64
-                caption: ""
-
-                onItemSelected: {
-                    details.user(object)
-                }
-            }
-
             Item {
                 width: parent.width
-                height: 120
+                height: 230
 
                 Rectangle {
                     id: badgesCount
-                    x: 10
-                    y: 10
-                    width: (parent.width - 20) / 3 - 10
+                    anchors.top: parent.top
+                    anchors.topMargin: 10
+                    anchors.right: checkinsCount.left
+                    anchors.rightMargin: 10
+
+                    width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.backgroundSand
+                    color: theme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -249,7 +304,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.textColorOptions
+                        color: theme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userBadgesCount + " " + "Badges"
                     }
@@ -264,11 +319,12 @@ Rectangle {
 
                 Rectangle {
                     id: checkinsCount
-                    x: badgesCount.x + badgesCount.width + 10
-                    y: 10
-                    width: (parent.width - 20) / 3 - 10
+                    anchors.top: parent.top
+                    anchors.topMargin: 10
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.backgroundSand
+                    color: theme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -283,7 +339,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.textColorOptions
+                        color: theme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userCheckinsCount + " " + "Checkins"
                     }
@@ -299,11 +355,13 @@ Rectangle {
 
                 Rectangle {
                     id: mayorCount
-                    x: checkinsCount.x + checkinsCount.width + 10
-                    y: 10
-                    width: (parent.width - 20) / 3 - 10
+                    anchors.top: parent.top
+                    anchors.topMargin: 10
+                    anchors.left: checkinsCount.right
+                    anchors.leftMargin: 10
+                    width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.backgroundSand
+                    color: theme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -318,7 +376,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.textColorOptions
+                        color: theme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userMayorshipsCount + " " + "Mayorships"
                     }
@@ -329,6 +387,113 @@ Rectangle {
                         }
                     }
                 }
+
+                Rectangle {
+                    id: friendsCount
+                    anchors.top: checkinsCount.bottom
+                    anchors.topMargin: 10
+                    anchors.right: checkinsCount.left
+                    anchors.rightMargin: 10
+                    width: (parent.width - 40) / 3
+                    height: 100
+                    color: theme.colors.backgroundSand
+                    smooth: true
+                    radius: 5
+
+                    Image {
+                        y: 10
+                        width: 64
+                        height: 64
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/entourage.png")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: parent.height - height - 2
+                        color: theme.colors.textColorProfile
+                        font.pixelSize: 20
+                        text: details.userFriendsCount + " " + "Friends"
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            details.friends(userID);
+                        }
+                    }
+                }
+
+                Rectangle {
+                    id: photosCount
+                    anchors.top: checkinsCount.bottom
+                    anchors.topMargin: 10
+                    anchors.horizontalCenter: checkinsCount.horizontalCenter
+                    width: (parent.width - 40) / 3
+                    height: 100
+                    color: theme.colors.backgroundSand
+                    smooth: true
+                    radius: 5
+
+                    Image {
+                        y: 10
+                        width: 64
+                        height: 64
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/photogenic.png")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: parent.height - height - 2
+                        color: theme.colors.textColorProfile
+                        font.pixelSize: 20
+                        text: details.userPhotosCount + " " + "Photos"
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            details.photos(userID);
+                        }
+                    }
+                }
+
+                Rectangle {
+                    id: tipsCount
+                    anchors.top: checkinsCount.bottom
+                    anchors.topMargin: 10
+                    anchors.left: checkinsCount.right
+                    anchors.leftMargin: 10
+                    width: (parent.width - 40) / 3
+                    height: 100
+                    color: theme.colors.backgroundSand
+                    smooth: true
+                    radius: 5
+
+                    Image {
+                        y: 10
+                        width: 64
+                        height: 64
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/bookworm.png")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                    }
+
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        y: parent.height - height - 2
+                        color: theme.colors.textColorProfile
+                        font.pixelSize: 20
+                        text: details.userTipsCount + " " + "Tips"
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            details.tips(userID);
+                        }
+                    }
+                }
             }
 
             LineGreen {
@@ -336,7 +501,7 @@ Rectangle {
                 width: details.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "YOU ARE #" + userLeadersboardRank
-                visible: userRelationship == "self"
+                visible: userRelationship == "self" && userLeadersboardRank > 0
             }
 
             Repeater {
@@ -345,7 +510,7 @@ Rectangle {
                 width: parent.width
                 delegate: leaderBoardDelegate
                 clip: true
-                visible: userRelationship == "self"
+                visible: userRelationship == "self" && userLeadersboardRank > 0
             }
 
         }

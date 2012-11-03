@@ -32,6 +32,7 @@ function buildPage(owner, type, params, callback) {
         });
 
         callback(page);
+        page.state = "shown";
         params.update(page);
     }
 

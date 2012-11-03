@@ -1,7 +1,12 @@
 nelisquare (0.4.7) stable; urgency=low
-  * <Add change description here>
+  * tips support
+  * unreaded notifications marked
+  * dark theme (beta)
+  * user profile updates
+  * venuemap page, route to venue (beta)
+  * layout updates, batch loading of stuff
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Sat, 03 Nov 2012 17:28:20 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 07 Nov 2012 23:00:00 +0400
 
 nelisquare (0.4.6) stable; urgency=low
   * likes, comments count preview at checkin feed and history

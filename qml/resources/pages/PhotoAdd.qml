@@ -9,7 +9,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     state: "hidden"
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
 
     ListModel {
         id: emptyModel

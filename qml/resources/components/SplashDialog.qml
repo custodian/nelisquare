@@ -8,11 +8,11 @@ Item {
 
     width: parent.width
     height: parent.height
-    state: "shown"
+    state: "hidden"//"shown"
 
     Rectangle {
         anchors.fill: parent
-        color: theme.backgroundSplash
+        color: theme.colors.backgroundSplash
     }
 
     Image {
@@ -24,7 +24,7 @@ Item {
         id: textRelease
         text: theme.textSplash
         anchors.centerIn: parent
-        color: theme.textColorSign
+        color: theme.colors.textColorSign
         font.pixelSize: theme.font.sizeDefault
         font.family: theme.font.name
     }
@@ -35,10 +35,11 @@ Item {
         anchors.centerIn: parent
         Column{
             width: parent.width
+            spacing: 20
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Please, login!"
-                color: theme.textColorSign
+                text: "Please, login with Foursquare!"
+                color: theme.colors.textColorSign
                 font.pixelSize: theme.font.sizeDefault
             }
             ButtonGreen {
@@ -50,7 +51,41 @@ Item {
                     splashPage.state = "hidden"
                 }
             }
+
+            Item {
+                width: parent.width
+                height: 50
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Foursquare privacy policy"
+                color: theme.colors.textColorSign
+                font.underline: true
+                font.pixelSize: theme.font.sizeDefault
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        Qt.openUrlExternally("https://foursquare.com/legal/terms")
+                    }
+                }
+            }
+
+            Text {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Nelisquare privacy policy"
+                color: theme.colors.textColorSign
+                font.underline: true
+                font.pixelSize: theme.font.sizeDefault
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        Qt.openUrlExternally("http://thecust.net/nelisquare/privacy.txt")
+                    }
+                }
+            }
         }
+
         visible: false
     }
 

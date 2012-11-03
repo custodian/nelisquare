@@ -1,7 +1,38 @@
 
-function createMapUrl(settings,user) {
+
+function getRoutePoints(pointA,pointB,callback) {
+    //dirflg =
+    //d - driver
+    //w - walk
+    var url = "http://maps.google.com/maps/nav?output=js&dirflg=w&hl=en&mapclient=jsapi&q=from%3A%20"
+        + pointA.lat + "%2C" + pointA.lng
+        + "%20to%3A%20"
+        + pointB.lat + "%2C" + pointB.lng;
+
+    console.log("ROUTE URL: " + url);
+
+    var doc = new XMLHttpRequest();
+    doc.onreadystatechange = function() {
+        if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
+            var status = doc.status;
+            if(status!=200) {
+                console.log("Routes returned " + status + " " + doc.statusText);
+            }
+        } else if (doc.readyState == XMLHttpRequest.DONE && doc.status == 200) {
+            var contentType = doc.getResponseHeader("Content-Type");
+            var data = JSON.parse(doc.responseText);
+
+            callback(data);
+        }
+    }
+
+    doc.open("GET", url);
+    doc.send();
+}
+
+function drawMap(settings,user,route) {
     var url = "";
-    //lat,lng,zoom,width,height
+
     if (window.mapprovider == "googlemaps") {
         url = "http://maps.googleapis.com/maps/api/staticmap?"+
                 "zoom="+settings.zoom+"&size="+settings.width+"x"+settings.height+"&maptype=roadmap"+
@@ -9,8 +40,14 @@ function createMapUrl(settings,user) {
         if (user!==undefined) {
             url += "&markers=color:blue|label:U|"+user.lat+","+user.lng;
         }
-        url += "&markers=color:red|"+settings.lat+","+settings.lng
-                + "&sensor=false";
+        url += "&markers=color:red|"+settings.lat+","+settings.lng;
+        if (route!==undefined) {
+            url += "&path=color:0x0000ff|weight:5";
+            route.Directions.Routes[0].Steps.forEach(function(step) {
+                url += "|" + step.Point.coordinates[1] + "," + step.Point.coordinates[0];
+            });
+        }
+        url += "&sensor=false";
     } else if (window.mapprovider == "osm") {
         //NOTE: lng and lat inverted at API
         url = "http://pafciu17.dev.openstreetmap.org/?module=map"+
@@ -20,9 +57,32 @@ function createMapUrl(settings,user) {
         if (user!==undefined) {
             url += ";"+user.lng+","+user.lat + ",pointImagePattern:redU";
         }
+        if (route!==undefined) {
+            url += "&paths=";
+            route.Directions.Routes[0].Steps.forEach(function(step) {
+                url += step.Point.coordinates[0] + "," + step.Point.coordinates[1] + ",";
+            });
+            url += "thickness:5,transparency:80;-90,40,-80,40,color:0:255:0";
+        }
     }
     //console.log("MAP URL: " + url);
     return url;
+}
+
+function createMapUrl(map, settings, user) {
+    if (user!==undefined) {
+        if (map.route !== undefined) {
+            map.venueMapUrl = drawMap(settings,user,map.route);
+        } else {
+            getRoutePoints(user,settings,
+                function(route){
+                    map.route = route;
+                    map.venueMapUrl = drawMap(settings,user,route);
+                });
+        }
+    } else {
+        map.venueMapUrl = drawMap(settings,user);
+    }
 }
 
 function getCurrentTime() {

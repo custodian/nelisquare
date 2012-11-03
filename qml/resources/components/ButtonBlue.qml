@@ -12,7 +12,7 @@ Rectangle {
     width: 100
     height: 50
     border.width: 2
-    border.color: pressed?theme.blueButtonBorderColorPressed:theme.blueButtonBorderColor
+    border.color: pressed?theme.colors.blueButtonBorderColorPressed:theme.colors.blueButtonBorderColor
 
     smooth: true
     gradient: button.pressed ? theme.gradientBluePressed : (mouse.pressed ? theme.gradientBluePressed : theme.gradientBlue)
@@ -20,7 +20,7 @@ Rectangle {
     Text {
         text: button.label
         font.pixelSize: theme.font.sizeDefault + fontDeltaSize
-        color: theme.textColorSign
+        color: button.pressed ? theme.colors.textColorButtonPressed : theme.colors.textColorButton
         anchors.centerIn: parent
     }
 

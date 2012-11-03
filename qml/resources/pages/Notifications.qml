@@ -4,6 +4,7 @@ import "../components"
 
 Rectangle {
     signal user(string user)
+    signal tip(string tip)
     signal checkin(string checkin)
     signal venue(string venue)
     signal badge(variant badge)
@@ -15,7 +16,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     state: "hidden"
-    color: theme.backgroundMain
+    color: theme.colors.backgroundMain
 
     ListModel {
         id: notificationsModel
@@ -26,6 +27,7 @@ Rectangle {
         anchors.fill: parent
         model: notificationsModel
         delegate: notificationDelegate
+        spacing: 10
         //highlightFollowsCurrentItem: true
         clip: true
     }
@@ -37,6 +39,7 @@ Rectangle {
             activeWhole: true
             userShout: model.text
             createdAt: model.time
+            highlight: model.unreaded
             fontSize: 20
 
             Component.onCompleted: {
@@ -45,24 +48,29 @@ Rectangle {
             onAreaClicked: {
                 var readed = false;
                 console.log("NOTI TYPE: " + model.type + " OBJID: " + model.objectID);
+                //TODO: disable readed notification check!
                 if (model.type === "checkin") {
+                    readed = true;
                     notificationsList.checkin(model.objectID);
                 } else if (model.type === "tip") {
-                    //TODO: make tip readed
-                    //readed = true;
-                    notificationsList.venue(model.objectID);
+                    readed = true;
+                    notificationsList.tip(model.objectID);
                 } else if (model.type === "venue") {
                     notificationsList.venue(model.objectID);
                 } else if (model.type === "user") {
                     readed = true;
                     notificationsList.user(model.objectID);
-                } else if (mode.type === "badge") {
+                } else if (model.type === "badge") {
                     readed = true;
                     notificationsList.badge(model.object);
+                } else if (model.type === "list") {
+                    //TODO: load list "objID == 622214/todos"
+                    readed = true;
                 }
                 if (readed) {
                     notificationsList.markRead(model.createdAt);
                 }
+                highlight = false;
             }
         }
     }
