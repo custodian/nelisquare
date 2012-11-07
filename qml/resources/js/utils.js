@@ -4,12 +4,13 @@ function getRoutePoints(pointA,pointB,callback) {
     //dirflg =
     //d - driver
     //w - walk
+    waiting.show();
     var url = "http://maps.google.com/maps/nav?output=js&dirflg=w&hl=en&mapclient=jsapi&q=from%3A%20"
         + pointA.lat + "%2C" + pointA.lng
         + "%20to%3A%20"
         + pointB.lat + "%2C" + pointB.lng;
 
-    console.log("ROUTE URL: " + url);
+    //console.log("ROUTE URL: " + url);
 
     var doc = new XMLHttpRequest();
     doc.onreadystatechange = function() {
@@ -22,6 +23,7 @@ function getRoutePoints(pointA,pointB,callback) {
             var contentType = doc.getResponseHeader("Content-Type");
             var data = JSON.parse(doc.responseText);
 
+            waiting.hide();
             callback(data);
         }
     }
@@ -30,15 +32,17 @@ function getRoutePoints(pointA,pointB,callback) {
     doc.send();
 }
 
-function drawMap(settings,user,route) {
+/*
+function drawMap(settings,route) {
     var url = "";
 
-    if (window.mapprovider == "googlemaps") {
+    //DBG
+    if (window.mapprovider == "google") {
         url = "http://maps.googleapis.com/maps/api/staticmap?"+
                 "zoom="+settings.zoom+"&size="+settings.width+"x"+settings.height+"&maptype=roadmap"+
-                "&center="+settings.lat+","+settings.lng;
-        if (user!==undefined) {
-            url += "&markers=color:blue|label:U|"+user.lat+","+user.lng;
+                "&center="+settings.center.lat+","+settings.center.lng;
+        if (settings.user.lng!==undefined) {
+            url += "&markers=color:blue|label:U|"+settings.user.lat+","+settings.user.lng;
         }
         url += "&markers=color:red|"+settings.lat+","+settings.lng;
         if (route!==undefined) {
@@ -48,14 +52,14 @@ function drawMap(settings,user,route) {
             });
         }
         url += "&sensor=false";
-    } else if (window.mapprovider == "osm") {
+    } else if (window.mapprovider == "openstreetmap") {
         //NOTE: lng and lat inverted at API
         url = "http://pafciu17.dev.openstreetmap.org/?module=map"+
                 "&zoom="+settings.zoom+"&type=mapnik&width="+settings.width+"&height="+settings.height+
-                "&center="+settings.lng+","+settings.lat+
+                "&center="+settings.center.lng+","+settings.center.lat+
                 "&points="+settings.lng+","+settings.lat;// + ",pointImagePattern:sight_point";
-        if (user!==undefined) {
-            url += ";"+user.lng+","+user.lat + ",pointImagePattern:redU";
+        if (settings.user.lng!==undefined) {
+            url += ";"+settings.user.lng+","+settings.user.lat + ",pointImagePattern:redU";
         }
         if (route!==undefined) {
             url += "&paths=";
@@ -68,22 +72,26 @@ function drawMap(settings,user,route) {
     //console.log("MAP URL: " + url);
     return url;
 }
-
-function createMapUrl(map, settings, user) {
-    if (user!==undefined) {
+*/
+/*
+function createMapUrl(map, settings) {
+    //console.log("MAP SETTINGS: " + JSON.stringify(settings));
+    if (settings.user.lng!==undefined) {
         if (map.route !== undefined) {
-            map.venueMapUrl = drawMap(settings,user,map.route);
+            map.venueMapUrl = drawMap(settings,map.route);
         } else {
-            getRoutePoints(user,settings,
+            waiting.show();
+            getRoutePoints(settings.user,settings,
                 function(route){
+                    waiting.hide();
                     map.route = route;
-                    map.venueMapUrl = drawMap(settings,user,route);
+                    map.venueMapUrl = drawMap(settings,route);
                 });
         }
     } else {
-        map.venueMapUrl = drawMap(settings,user);
+        map.venueMapUrl = drawMap(settings);
     }
-}
+}*/
 
 function getCurrentTime() {
     return (new Date()).getTime()/1000;

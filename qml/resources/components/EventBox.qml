@@ -119,7 +119,7 @@ Item {
                 Image {
                     id: peoplesImage
                     anchors.verticalCenter: parent.verticalCenter
-                    source: "../pics/"+theme.name+"/persons.png"
+                    source: "../pics/persons.png"
                     asynchronous: true
                     smooth: true
                     height: 32
@@ -137,7 +137,7 @@ Item {
                 Image {
                     id: commentImage
                     anchors.verticalCenter: parent.verticalCenter
-                    source: "../pics/"+theme.name+"/commentcount.png"
+                    source: "../pics/commentcount.png"
                     asynchronous: true
                     smooth: true
                     height: 32
@@ -155,7 +155,7 @@ Item {
                 Image {
                     id: photoImage
                     anchors.verticalCenter: parent.verticalCenter
-                    source: "../pics/"+theme.name+"/photocount.png"
+                    source: "../pics/photocount.png"
                     asynchronous: true
                     smooth: true
                     height: 32
@@ -173,7 +173,7 @@ Item {
                 Image {
                     id: likesImage
                     anchors.verticalCenter: parent.verticalCenter
-                    source: "../pics/"+theme.name+"/venuelikes_heart.png"
+                    source: "../pics/venuelikes_heart.png"
                     asynchronous: true
                     smooth: true
                     height: 32

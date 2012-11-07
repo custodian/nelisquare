@@ -236,6 +236,9 @@ function loadFriendsFeed(page) {
         page.timerFeedUpdate.stop();
         waiting.show();
     }
+    if (page.showWait === true) {
+        waiting.show();
+    }
     url += getAccessTokenParameter();
     doWebRequest("GET", url, page, parseFriendsFeed);    
 }
@@ -313,6 +316,10 @@ function parseFriendsFeed(response, page) {
     } else {
         for (var i=0;i<page.friendsCheckinsModel.count;i++){
             page.friendsCheckinsModel.get(i).createdAt = makeTime(page.friendsCheckinsModel.get(i).timestamp);
+        }
+        if (page.showWait) {
+            page.showWait = false;
+            waiting.hide();
         }
     }
     page.lastUpdateTime = updateTime;
@@ -1249,4 +1256,8 @@ function getUpdateInfo(updatetype, callback) {
 
     doc.open("GET", url);
     doc.send();
+}
+
+function prepareVenueEdit(page, venue) {
+
 }

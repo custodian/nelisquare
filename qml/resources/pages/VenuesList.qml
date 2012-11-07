@@ -6,6 +6,7 @@ Rectangle {
     signal checkin(string venueid, string venuename)
     signal clicked(string venueid)
     signal search(string query)
+    signal addVenue()
 
     property alias placesModel: placesModel
 
@@ -26,24 +27,6 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: { }
-    }
-
-    ListView {
-        y: 110
-        width: parent.width
-        height: parent.height - y
-        model: placesModel
-        delegate: venuesListDelegate
-        //highlightFollowsCurrentItem: true
-        clip: true
-        cacheBuffer: 400
-        spacing: 5
-    }
-
-    LineGreen {
-        y: 80
-        height: 30
-        text: "PLACES NEAR YOU"
     }
 
     Rectangle {
@@ -112,8 +95,44 @@ Rectangle {
                 venuesList.search(query);
             }
         }
+    }
 
+    ListView {
+        id: placesView
+        y: 80
+        width: parent.width
+        height: parent.height - y
+        model: placesModel
+        delegate: venuesListDelegate
+        //highlightFollowsCurrentItem: true
+        clip: true
+        cacheBuffer: 400
+        spacing: 5
+        header:
+            LineGreen {
+                height: 30
+                text: "PLACES NEAR YOU"
+            }
 
+        footer: Column {
+            width: placesView.width
+            Item {
+                width: placesView.width
+                height: 10
+            }
+            ButtonBlue {
+                width: placesView.width * 0.7
+                anchors.horizontalCenter: parent.horizontalCenter
+                label: "ADD NEW VENUE"
+                onClicked: {
+                    venuesList.addVenue();
+                }
+            }
+            Item {
+                width: placesView.width
+                height: 30
+            }
+        }
     }
 
     Component {
@@ -122,7 +141,7 @@ Rectangle {
         EventBox {
             activeWhole: true
 
-            userShout: model.todoComment
+            userShout: (model.todoComment)? model.todoComment : model.address
             //userMayor: model.mayor
             venueName: model.name
             venuePhoto: model.photo !== undefined ? model.photo : ""

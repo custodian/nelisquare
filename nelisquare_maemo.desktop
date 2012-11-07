@@ -4,7 +4,7 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=Nelisquare
-Exec=/opt/nelisquare/bin/nelisquare
+Exec=sh -c "LD_PRELOAD=/opt/qtm12/lib/libQtLocation.so /opt/nelisquare/bin/nelisquare"
 Icon=/opt/usr/share/icons/hicolor/64x64/apps/nelisquare64.png
 #X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true

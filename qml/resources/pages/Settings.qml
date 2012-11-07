@@ -129,15 +129,21 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.mapprovider === "googlemaps"
-                    label: "GOOGLE MAPS"
-                    onClicked: settingsChanged("mapprovider","googlemaps")
+                    selected: window.mapprovider === "google"
+                    label: "GOOGLE"
+                    onClicked: settingsChanged("mapprovider","google")
                 }
                 ToolbarTextButton {
                     height: 35
-                    selected: window.mapprovider === "osm"
-                    label: "OPENSTREETMAP"
-                    onClicked: settingsChanged("mapprovider","osm")
+                    selected: window.mapprovider === "openstreetmap"
+                    label: "OSM"
+                    onClicked: settingsChanged("mapprovider","openstreetmap")
+                }
+                ToolbarTextButton {
+                    height: 35
+                    selected: window.mapprovider === "nokia"
+                    label: "NOKIA"
+                    onClicked: settingsChanged("mapprovider","nokia")
                 }
 
             }

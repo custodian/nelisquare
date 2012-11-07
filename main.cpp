@@ -71,8 +71,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QmlApplicationViewer viewer;
 #if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
     viewer.addImportPath(QString("/opt/qtm12/imports"));
+    viewer.engine()->addImportPath(QString("/opt/qtm12/imports"));
     viewer.engine()->addPluginPath(QString("/opt/qtm12/plugins"));
 #endif
+
+    QCoreApplication::addLibraryPath(QString("/opt/nelisquare/plugins"));
 
     viewer.setAttribute(Qt::WA_OpaquePaintEvent);
     viewer.setAttribute(Qt::WA_NoSystemBackground);

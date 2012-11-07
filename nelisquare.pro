@@ -4,9 +4,19 @@ unix {
 } else: win32 {
     folder_01.source = qml/resources
 }
-    folder_01.target = qml
-    DEPLOYMENTFOLDERS = folder_01
+folder_01.target = qml
+DEPLOYMENTFOLDERS = folder_01
 
+#Geoservices providers
+unix {
+    maemo5 {
+        folder_02.source = $$PWD/plugins/maemo/geoservices
+    } else {
+        folder_02.source = $$PWD/plugins/meego/geoservices
+    }
+    folder_02.target = plugins
+    DEPLOYMENTFOLDERS += folder_02
+}
 
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
@@ -26,7 +36,7 @@ QT += network
 DEFINES += QT_USE_FAST_CONCATENATION QT_USE_FAST_OPERATOR_PLUS
 DEFINES += VS_ENABLE_SPLASH
 
-VERSION = 0.4.6
+VERSION = 0.4.7
 PACKAGENAME = com.thecust.nelisquare
 
 win32 {
@@ -40,7 +50,7 @@ win32 {
 # the following lines and add the respective components to the 
 # MOBILITY variable. 
 maemo5 {
-  CONFIG += mobility11 qdbus
+  CONFIG += mobility12 qdbus
 } else {
   CONFIG += mobility
 }

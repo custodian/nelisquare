@@ -35,6 +35,8 @@ Item {
 
     property string textDefaultWait: "ONE MOMENT..."
 
+    property string textEnterVenueName: "Type venue name..."
+
     FontLoader {
         id: font;
         source: "../fonts/TitilliumText25L001.otf"

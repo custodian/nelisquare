@@ -11,6 +11,8 @@ Rectangle {
     signal nearby()
     signal recent()
 
+    property bool showWait: false
+
     property bool recentPressed: true
     property bool nearbyPressed: false
 

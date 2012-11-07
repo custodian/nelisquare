@@ -18,7 +18,7 @@ Rectangle {
     property bool windowActive: false
 
     property string orientationType: "auto"
-    property string mapprovider: "googlemaps"
+    property string mapprovider: "google"
     property string checkupdates: "none"
 
     property string imageLoadType: "all"
@@ -106,7 +106,7 @@ Rectangle {
             window.orientationType = value;
             windowHelper.setOrientation(value);
         } else if (key === "settings.mapprovider") {
-            if (value === "") value = "googlemaps";
+            if (value === "") value = "google";
             window.mapprovider = value;
         } else if (key === "settings.checkupdates") {
             if (value === "") value = "stable";
@@ -124,7 +124,7 @@ Rectangle {
             window.gpsUplockTime = value;
         } else if (key === "settings.feedupdate") {
             if (value === "") value = 0;
-            if (value == 60) value = 120;
+            if (value === 60) value = 120;
             window.feedAutoUpdate = value;
         } else if (key === "settings.theme") {
             if (value === "") value = "light";
@@ -211,6 +211,13 @@ Rectangle {
     }
 
     function showFriendsFeed() {
+        if (topWindowType === "FriendsFeed" ) {
+            if (window.feedAutoUpdate === 0) {
+                WM.topWindow().page.lastUpdateTime = "0";
+            } else {
+                WM.topWindow().page.showWait = true;
+            }
+        }
         WM.buildPage(
             viewPort,
             "FriendsFeed",
@@ -377,6 +384,26 @@ Rectangle {
         });
     }
 
+    function showVenueEdit(venue) {
+        WM.buildPage(
+            viewPort,
+            "VenueEdit",
+            {
+                "id":"",
+                "update": function(page) {
+                    Script.prepareVenueEdit(page,venue);
+                }
+            },
+            function(page) {
+                page.update.connect(function(params){
+                    Script.updateVenueInfo(page,params);
+                });
+                page.updateCompleted.connect(function(venue){
+                    window.showVenuePage(venue);
+                });
+            });
+    }
+
     function showVenueList(query) {
         WM.buildPage(
             viewPort,
@@ -403,6 +430,9 @@ Rectangle {
                 });
                 page.search.connect(function(query) {
                     Script.loadPlaces(page, query);
+                });
+                page.addVenue.connect(function(){
+                    window.showVenueEdit();
                 });
             });
     }
@@ -468,12 +498,13 @@ Rectangle {
     }
 
     function showVenueMap(venuepage) {
+        waiting.show();
         WM.buildPage(
             viewPort,
             "VenueMap",
             {
                 "update":function(page){
-                             page.loadMapImage();
+                             page.updateMap();
                          }
             },
             function(page) {
@@ -483,6 +514,7 @@ Rectangle {
                 page.venueTypeUrl = venuepage.venueTypeUrl;
                 page.venueAddress = venuepage.venueAddress;
             });
+        waiting.hide();
     }
 
     function showVenuePhotos(venue) {
@@ -860,16 +892,16 @@ Rectangle {
             z: 30
         }
 
-        Rectangle {
+        Item {
             id: signalIcon
             z: 1
-            radius: 6
-            color: theme.colors.textColorAlarm
             width: 32
             height: 32
             x: parent.width - 40
             y: parent.height - 40
             Image {
+                width: 32
+                height: 32
                 anchors.centerIn: parent
                 source: "pics/sat_dish.png"
             }
