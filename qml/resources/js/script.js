@@ -1247,6 +1247,8 @@ function getUpdateInfo(updatetype, callback) {
             var url = UPDATE_BASE + os + "/nelisquare";
             if (updatetype == "developer") {
                 url += "-devel.deb";
+            } else if (updatetype == "alpha") {
+                url += "-alpha.deb";
             } else {
                 url += "_" + version + "_armel.deb"
             }

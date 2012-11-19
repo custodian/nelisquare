@@ -63,6 +63,10 @@ Rectangle {
             if (build > BuildInfo.build) {
                 update = true;
             }
+        } else if (checkupdates == "alpha") {
+            if (build > BuildInfo.build) {
+                update = true;
+            }
         } else if (checkupdates == "stable") {
             if (version !== BuildInfo.version || build !== BuildInfo.build) {
                 update = true;

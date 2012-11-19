@@ -74,7 +74,12 @@ Rectangle {
                     label: "BETA"
                     onClicked: settingsChanged("checkupdates","developer")
                 }
-
+                ToolbarTextButton {
+                    height: 35
+                    selected: window.checkupdates === "alpha"
+                    label: "ALPHA"
+                    onClicked: settingsChanged("checkupdates","alpha")
+                }
             }
             Item{
                 height: 20
