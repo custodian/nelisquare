@@ -18,17 +18,12 @@ Rectangle {
 
     property string lastUpdateTime: "0"
 
-    /*onLastUpdateTimeChanged: {
-        console.log("last update: " + lastUpdateTime);
-    }*/
-
     property alias friendsCheckinsModel: friendsCheckinsModel
     property alias timerFeedUpdate: timerFeedUpdate
 
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
 
     Timer {
         id: timerFeedUpdate
@@ -147,63 +142,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: friendsFeed
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: friendsFeed
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: friendsFeed
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: friendsFeed
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }                
-                PropertyAction {
-                    target: friendsFeed
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: friendsFeed
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: friendsFeed
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

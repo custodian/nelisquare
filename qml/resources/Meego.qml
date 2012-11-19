@@ -20,7 +20,7 @@ PageStackWindow {
             id: window
         }
     }
-    showToolBar: false
+    showToolBar: true//false
 
     Menu {
         id: myMenu

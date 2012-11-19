@@ -3,6 +3,7 @@ import QtMobility.location 1.1
 //import Effects 1.0
 import "components"
 import "themes"
+import "stack"
 import "./build.info.js" as BuildInfo
 import "js/script.js" as Script
 import "js/storage.js" as Storage
@@ -94,12 +95,12 @@ Rectangle {
     function settingLoaded(key, value) {
         if(key==="accesstoken") {
             if(value.length>0) {
-                splashDialog.nextState = "hidden";
+                //splashDialog.nextState = "hidden"; //PAGESTACK:
                 Script.setAccessToken(value);
                 window.showFriendsFeed();
             } else {
-                splashDialog.nextState = "login";
-                splashDialog.login();
+                //splashDialog.nextState = "login"; //PAGESTACK:
+                //splashDialog.login(); //PAGESTACK:
             }
         } else if (key === "settings.orientation") {
             if (value === "") value = "auto";
@@ -168,7 +169,7 @@ Rectangle {
         interval: 1000
         repeat: false
         onTriggered: {
-            splashDialog.state = splashDialog.nextState;
+            //splashDialog.state = splashDialog.nextState; //PAGESTACK:
             molome.updateinfo();
         }
     }
@@ -198,10 +199,12 @@ Rectangle {
         updateInterval: 5000
         active: false
         onPositionChanged: {
-            if(positionSource.position.latitudeValid) {
-                signalIcon.visible = false;
-            } else {
-                signalIcon.visible = true;
+            if (theme.platform === "maemo") {
+                if(positionSource.position.latitudeValid) {
+                    signalIcon.visible = false;
+                } else {
+                    signalIcon.visible = true;
+                }
             }
         }
     }
@@ -211,6 +214,22 @@ Rectangle {
     }
 
     function showFriendsFeed() {
+        var page;
+        if (pageStack.depth == 0) {
+            page = pageStack.push(Qt.resolvedUrl("pages/FriendsFeed.qml"));
+        } else {
+            pageStack.pop();
+            page = pageStack.currentPage;
+        }
+        Script.loadFriendsFeed(page);
+    }
+
+    function showVenueList(query) {
+        var page = pageStack.push(Qt.resolvedUrl("pages/VenuesList.qml"));
+        Script.loadPlaces(page,"");
+    }
+
+    /*function showFriendsFeed() {
         if (topWindowType === "FriendsFeed" ) {
             if (window.feedAutoUpdate === 0) {
                 WM.topWindow().page.lastUpdateTime = "0";
@@ -786,24 +805,17 @@ Rectangle {
                 });
             });
     }
+    */
 
     ThemeLoader {
         id: theme
     }
 
-    Item {
+    /*Item {
         id: viewPort
         y: toolbar.height
         height: window.isPortrait ? parent.height - menubar.height - toolbar.height : parent.height - toolbar.height
         width: window.isPortrait ? parent.width : parent.width - menubar.width
-
-        /*effect: Blur {
-            blurRadius: blurred ? 2.0 : 0.0
-        }*/
-        WaitingIndicator {
-            id: waiting
-            z: 10
-        }
 
         CheckinDialog {
             id: checkinDialog
@@ -819,24 +831,6 @@ Rectangle {
                 }
                 Script.addCheckin(venueID, realComment, friends, facebook, twitter);
                 checkinDialog.state = "hidden";
-            }
-        }
-
-        NotificationDialog {
-            id: notificationDialog
-            z: 20
-            width: parent.width
-            state: "hidden"
-            onClose: {
-                if (objectID != "") {
-                    objectType = "";
-                    objectID = "";
-                    if(objectType=="checkin") {
-                        window.showCheckinPage(objectID);
-                    }
-                }
-                notificationDialog.state = "hidden";
-
             }
         }
 
@@ -907,131 +901,55 @@ Rectangle {
             }
         }
 
+    }*/
+
+    PageStack {
+        id: pageStack
+        y: toolbar.height
+        height: window.isPortrait ? parent.height - menubar.height - toolbar.height : parent.height - toolbar.height
+        width: window.isPortrait ? parent.width : parent.width - menubar.width
+
+        WaitingIndicator {
+            id: waiting
+            z: 10
+        }
+
+        NotificationDialog {
+            id: notificationDialog
+            z: 20
+            width: parent.width
+            state: "hidden"
+            onClose: {
+                if (objectID != "") {
+                    objectType = "";
+                    objectID = "";
+                    if(objectType=="checkin") {
+                        window.showCheckinPage(objectID);
+                    }
+                }
+                notificationDialog.state = "hidden";
+
+            }
+        }
     }
 
     Toolbar {
         id: toolbar
     }
 
-    Rectangle {
+    Menubar {
         id: menubar
-        height: 70
-        width: parent.width
-        y: parent.height - height
-        color: theme.colors.backgroundMenubar
-
-        MouseArea {
-            anchors.fill: parent
-        }
-
-        Flow {
-            id: menubarToolbar
-            //width: menubar.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            height: menubar.height
-            spacing: 15
-
-            ToolbarTextButton {
-                id: backwardsButton
-                label: "BACK"
-                colorActive: theme.colors.textButtonTextMenu
-                colorInactive: theme.colors.textButtonTextMenuInactive
-                shown: WM.windowStash.length>1
-                onClicked: {
-                    WM.popWindow();
-                }
-            }
-
-            ToolbarTextButton {
-                label: "FEED"
-                selected: topWindowType == "FriendsFeed"
-                colorActive: theme.colors.textButtonTextMenu
-                colorInactive: theme.colors.textButtonTextMenuInactive
-                onClicked: {
-                    WM.clearWindows();
-                    window.showFriendsFeed();
-                }
-            }
-
-            ToolbarTextButton {
-                label: "PLACES"
-                selected: topWindowType == "VenuesList" && WM.topWindow().params.id !== "todolist"
-                colorActive: theme.colors.textButtonTextMenu
-                colorInactive: theme.colors.textButtonTextMenuInactive
-                onClicked: {
-                    window.showVenueList("");
-                }
-            }
-
-            ToolbarTextButton {
-                label: "LISTS"
-                selected: topWindowType == "VenuesList" && WM.topWindow().params.id === "todolist"
-                colorActive: theme.colors.textButtonTextMenu
-                colorInactive: theme.colors.textButtonTextMenuInactive
-                onClicked: {
-                    window.showVenueList("todolist");
-                }
-            }
-
-            ToolbarTextButton {
-                label: "ME"
-                selected: topWindowType === "User" && WM.topWindow().params.id === "self"
-                colorActive: theme.colors.textButtonTextMenu
-                colorInactive: theme.colors.textButtonTextMenuInactive
-                onClicked: {
-                    window.showUserPage("self");
-                }
-            }
-
-        }
-
-        state: window.isPortrait ? "bottom" : "right"
-
-        states: [
-            State {
-                name: "bottom"
-                PropertyChanges {
-                    target: menubar
-                    height: 70
-                    width: parent.width
-                    y: parent.height - menubar.height
-                    x: 0
-                }
-                PropertyChanges {
-                    target: menubarToolbar
-                    y: 5
-                    x: 5//(menubar.width - backwardsButton.width*5 - 4*menubarToolbar.spacing)/2
-                    width: undefined
-                }
-            },
-            State {
-                name: "right"
-                PropertyChanges {
-                    target: menubar
-                    width: 100
-                    height: parent.height - toolbar.height
-                    x: parent.width - width
-                    y: toolbar.height
-                }
-                PropertyChanges {
-                    target: menubarToolbar
-                    y: 5//(menubar.height - backwardsButton.height*5 - 4*menubarToolbar.spacing)/2
-                    x: 5
-                    width: menubar.width
-                }
-            }
-        ]
     }
 
     Image {
         id: bottomShadow
+        width: parent.width
+        anchors.bottom: menubar.top
         visible: menubar.visible
         source:  "pics/bottom-shadow.png"
-        width: parent.width
-        y: menubar.y - height
     }
 
-    LoginDialog {
+    /*LoginDialog {
         id: login
         anchors.fill: parent
         visible: false
@@ -1049,14 +967,14 @@ Rectangle {
         onLoadFailed: {
 
         }
-    }
+    }*/
 
-    SplashDialog {
+    /*SplashDialog {
         id: splashDialog
 
         onLogin: {
             login.reset();
             login.visible = true;
         }
-    }
+    }*/
 }

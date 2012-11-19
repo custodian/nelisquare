@@ -13,7 +13,7 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
+    //state: "hidden"
 
     function hideKeyboard() {
         searchText.closeSoftwareInputPanel();

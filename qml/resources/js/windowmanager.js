@@ -1,3 +1,4 @@
+//custom window manager
 var windowStash = [];
 var windowFactory = [];
 
@@ -39,7 +40,7 @@ function buildPage(owner, type, params, callback) {
     if (windowFactory[type] === undefined) {
         var factory = Qt.createComponent("pages/"+type + ".qml");
         windowFactory[type] = factory;
-        if (factory.status === Component.Ready) {
+        if (factory.status === 1/*Component.Ready*/) {
             builder(factory);
         } else {
             console.log("delayed ready page: " + factory.errorString());
