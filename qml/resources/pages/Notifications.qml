@@ -2,6 +2,8 @@ import Qt 4.7
 import QtMobility.gallery 1.1
 import "../components"
 
+import "../js/api-notifications.js" as NotiAPI
+
 Rectangle {
     signal user(string user)
     signal tip(string tip)
@@ -15,8 +17,31 @@ Rectangle {
     id: notificationsList
     width: parent.width
     height: parent.height
-    state: "hidden"
+
     color: theme.colors.backgroundMain
+
+    function load() {
+        var page = notificationsList;
+        page.user.connect(function(user) {
+            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+        });
+        page.checkin.connect(function(checkin) {
+            pageStack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":checkin});
+        });
+        page.venue.connect(function(venue) {
+            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+        });
+        page.badge.connect(function(badge) {
+            pageStack.push(Qt.resolvedUrl("BadgeInfo.qml"),NotiAPI.makeBadgeObject(badge));
+        });
+        page.tip.connect(function(tip){
+            pageStack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
+        });
+        page.markRead.connect(function(time) {
+            NotiAPI.markNotificationsRead(page,time);
+        });
+        NotiAPI.loadNotifications(page);
+    }
 
     ListModel {
         id: notificationsModel
@@ -74,63 +99,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: notificationsList
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: notificationsList
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: notificationsList
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: notificationsList
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: notificationsList
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: notificationsList
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: notificationsList
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

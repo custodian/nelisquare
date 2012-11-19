@@ -3,6 +3,7 @@ import QtQuick 1.1
 Item {
     id: lightTheme
     property variant colors
+    property bool inverted: false
 
     Gradient {
         id: gradientTextBox

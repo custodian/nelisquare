@@ -23,7 +23,7 @@ Item {
     }
 
     Component.onCompleted: {
-        if (theme.platform !== "maemo") {
+        if (configuration.platform !== "maemo") {
             Qt.createQmlObject("import QtQuick 1.1; \
                 PinchArea { \
                     anchors.fill: parent; \

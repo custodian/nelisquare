@@ -5,7 +5,6 @@ Rectangle {
     property int waitCount: 0
     property string currentMessage: theme.textDefaultWait
 
-    y: 80
     anchors.horizontalCenter: parent.horizontalCenter
     width: doneText.width+90
     height: doneText.height+35
@@ -56,7 +55,7 @@ Rectangle {
         anchors.topMargin: 5
     }
 
-    AnimatedImage {
+    /*Animated*/Image {
         id: loader
         source: "../pics/waiting.gif"
         anchors.top: doneText.bottom

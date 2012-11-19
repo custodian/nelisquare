@@ -1,16 +1,26 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-user.js" as UserAPI
+
 Rectangle {
     signal badge(variant params)
 
+    property string userID: ""
     property alias badgeModel: badgeModel
 
     id: badgesPage
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
+
+    function load() {
+        var page = badgesPage;
+        page.badge.connect(function(params) {
+            pageStack.push(Qt.resolvedUrl("BadgeInfo.qml"),params);
+        });
+        UserAPI.loadBadges(page,userID);
+    }
 
     ListModel {
         id: badgeModel
@@ -48,13 +58,16 @@ Rectangle {
                 MouseArea {
                     anchors.fill: badgeImage
                     onClicked: {
-                        badgesPage.badge({
-                                    "name":model.name,
-                                    "image":model.imageLarge,
-                                    "info":model.info,
-                                    "venueName":model.venueName,
-                                    "venueID":model.venueID,
-                                    "time":model.time});
+                        //var badgeObj = model;
+                        /*{
+                            "name":model.name,
+                            "image":model.imageLarge,
+                            "info":model.info,
+                            "venueName":model.venueName,
+                            "venueID":model.venueID,
+                            "time":model.time
+                        }*/
+                        badgesPage.badge(model);
                     }
                 }
                 Image {
@@ -72,63 +85,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: badgesPage
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: badgesPage
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: badgesPage
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: badgesPage
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: badgesPage
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: badgesPage
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: badgesPage
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

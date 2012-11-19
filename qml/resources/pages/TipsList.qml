@@ -1,6 +1,8 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-tip.js" as TipAPI
+
 Rectangle {
     id: tipsList
     signal tip(string id)
@@ -11,13 +13,24 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
 
+    property string baseID: ""
     property string baseType: "venues" //"venues/ID/tips" , "lists/ID/todos"("users/ID/tips")
     property string sortType: "popular" //"friends|nearby", "popular", "recent"
     property int loaded: 0
     property int batchsize: 20
     property bool completed: false
+
+    function load() {
+        var page = tipsList;
+        page.tip.connect(function(tip) {
+            pageStack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
+        });
+        page.update.connect(function(){
+            TipAPI.loadTipsList(page, baseID);
+        });
+        page.update();
+    }
 
     ListModel {
         id: tipsModel
@@ -72,63 +85,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: tipsList
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: tipsList
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: tipsList
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: tipsList
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }                
-                PropertyAction {
-                    target: tipsList
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: tipsList
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: tipsList
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

@@ -1,14 +1,11 @@
 import Qt 4.7
 import "."
 
+import "../js/api.js" as Api
+
 Rectangle {
     id: menubar
     height: 70
-    anchors{
-        left: parent.left
-        right: parent.right
-        bottom: parent.bottom
-    }
     color: theme.colors.backgroundMenubar
 
     MouseArea {
@@ -35,7 +32,7 @@ Rectangle {
 
         ToolbarTextButton {
             label: "FEED"
-            selected: topWindowType == "FriendsFeed"
+            selected: (pageStack.currentPage!=null && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/FriendsFeed.qml"))
             colorActive: theme.colors.textButtonTextMenu
             colorInactive: theme.colors.textButtonTextMenuInactive
             onClicked: {
@@ -45,37 +42,40 @@ Rectangle {
 
         ToolbarTextButton {
             label: "PLACES"
-            selected: topWindowType == "VenuesList" && WM.topWindow().params.id !== "todolist"
+            selected: (pageStack.currentPage!=null && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/VenuesList.qml"))
             colorActive: theme.colors.textButtonTextMenu
             colorInactive: theme.colors.textButtonTextMenuInactive
             onClicked: {
-                window.showVenueList("");
+                pageStack.push(Qt.resolvedUrl("../pages/VenuesList.qml"));
             }
         }
 
         ToolbarTextButton {
             label: "LISTS"
-            selected: topWindowType == "VenuesList" && WM.topWindow().params.id === "todolist"
+            selected: false//"VenuesList"
             colorActive: theme.colors.textButtonTextMenu
             colorInactive: theme.colors.textButtonTextMenuInactive
             onClicked: {
-                window.showVenueList("todolist");
+                Api.showError("Lists not implemented yet!");
             }
         }
 
         ToolbarTextButton {
             label: "ME"
-            selected: topWindowType === "User" && WM.topWindow().params.id === "self"
+            selected: (pageStack.currentPage!=null && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/User.qml"))
             colorActive: theme.colors.textButtonTextMenu
             colorInactive: theme.colors.textButtonTextMenuInactive
             onClicked: {
-                window.showUserPage("self");
+                pageStack.push(Qt.resolvedUrl("../pages/User.qml"),{"userID":"self"});
             }
         }
 
     }
 
     state: window.isPortrait ? "bottom" : "right"
+    onStateChanged:  {
+        console.log("state:" + state);
+    }
 
     states: [
         State {
@@ -99,8 +99,8 @@ Rectangle {
             PropertyChanges {
                 target: menubar
                 width: 100
-                height: parent.height - toolbar.height
-                x: parent.width - width
+                height: menubar.parent.height - toolbar.height
+                x: menubar.parent.width - width
                 y: toolbar.height
             }
             PropertyChanges {

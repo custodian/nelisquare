@@ -1,6 +1,8 @@
 import Qt 4.7
-import "../js/utils.js" as Utils;
 import "../components"
+
+import "../js/api-venue.js" as VenueAPI
+import "../js/utils.js" as Utils;
 
 Rectangle {
     id: place
@@ -18,7 +20,6 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
 
     property string venueID: ""
     property string venueName: ""
@@ -42,6 +43,67 @@ Rectangle {
     property alias usersBox: usersBox
     property alias likeBox: likeBox
 
+    function load() {
+        var page = place;
+        page.checkin.connect(function(venueID, venueName) {
+            checkinDialog.reset();
+            checkinDialog.venueID = venueID;
+            checkinDialog.venueName = venueName;
+            checkinDialog.state = "shown";
+        });
+        page.showAddTip.connect(function(venueID, venueName) {
+            tipDialog.reset();
+            tipDialog.venueName = venueName;
+            tipDialog.action = 0;
+            tipDialog.state = "shown";
+        });
+        page.markToDo.connect(function(venueID, venueName) {
+            tipDialog.reset();
+            tipDialog.venueName = venueName;
+            tipDialog.action = 1;
+            tipDialog.state = "shown";
+        });
+        page.user.connect(function(user) {
+            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+        });
+        page.tip.connect(function(tip){
+            pageStack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
+        });
+        page.tips.connect(function(){
+            pageStack.push(Qt.resolvedUrl("TipsList.qml"),{"baseType":"venues","baseID":venueID});
+        });
+        page.photo.connect(function() {
+            var photogallery = pageStack.push(Qt.resolvedUrl("PhotosGallery.qml"));
+            photogallery.update.connect(function(){
+               VenueAPI.loadVenuePhotos(photogallery,venueID);
+            });
+            photogallery.caption = "VENUE PHOTOS";
+            photogallery.options.append({"offset":0,"completed":false});
+            photogallery.options.append({"offset":0,"completed":false});
+            photogallery.update();
+        });
+        page.showMap.connect(function() {
+            pageStack.push(Qt.resolvedUrl("VenueMap.qml"),{
+                               "venueMapLat": page.venueMapLat,
+                               "venueMapLng": page.venueMapLng,
+                               "venueName": page.venueName,
+                               "venueTypeUrl": page.venueTypeUrl,
+                               "venueAddress": page.venueAddress,
+                           });
+        });
+        page.showAddPhoto.connect(function(venueID) {
+            pageStack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
+                "type": "venue",
+                "id": venueID,
+                "owner": page
+            }});
+        });
+        page.like.connect(function(venueID,state) {
+            VenueAPI.likeVenue(page,venueID,state);
+        });
+        VenueAPI.loadVenue(page, venueID);
+    }
+
     onVenueMajorPhotoChanged: {
         venueMayorDetails.userPhoto.photoUrl = place.venueMajorPhoto;
     }
@@ -57,6 +119,25 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: { }
+    }
+
+    //TODO: remove to single "Sheet"
+    TipDialog {
+        id: tipDialog
+        z: 20
+        width: parent.width
+        state: "hidden"
+        onCancel: {tipDialog.state = "hidden";}
+        onAddTip: {
+            if(tipDialog.action==0) {
+                //console.log("Tip: " + comment + " on " + tipDialog.venueID);
+                VenueAPI.addTip(place, venueID, comment);
+            } else {
+                //console.log("mark: " + comment + " on " + tipDialog.venueID);
+                VenueAPI.markVenueToDo(venueID, comment);
+            }
+            tipDialog.state = "hidden";
+        }
     }
 
     Column {
@@ -252,63 +333,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: place
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: place
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: place
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: place
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: place
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: place
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: place
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

@@ -2,6 +2,8 @@ import Qt 4.7
 import QtMobility.gallery 1.1
 import "../components"
 
+import "../js/api-photo.js" as PhotoAPI
+
 Rectangle {
     signal photo(string photo)
     signal change(string photo)
@@ -19,8 +21,23 @@ Rectangle {
     id: venuePhotos
     width: parent.width
     height: parent.height
-    state: "hidden"
     color: theme.colors.backgroundMain
+
+    function load() {
+        var page = venuePhotos;
+        page.photo.connect(function(photo){
+            var photopage = pageStack.push(Qt.resolvedUrl("Photo.qml"),{"photoID":photo});
+            photopage.nextPhoto.connect(function() {
+                page.loadNextPhoto();
+            });
+            photopage.prevPhoto.connect(function() {
+                page.loadPrevPhoto();
+            });
+        });
+        page.change.connect(function(photo) {
+            PhotoAPI.loadPhoto(pageStack.currentPage,photo);
+        });
+    }
 
     function done() {
         var result = true;
@@ -95,63 +112,4 @@ Rectangle {
              }
          }         
      }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: venuePhotos
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: venuePhotos
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: venuePhotos
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: venuePhotos
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: venuePhotos
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: venuePhotos
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: venuePhotos
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

@@ -20,9 +20,9 @@ PageStackWindow {
             id: window
         }
     }
-    showToolBar: true//false
+    showToolBar: false
 
-    Menu {
+    /*Menu {
         id: myMenu
         visualParent: pageStack
         MenuLayout {
@@ -33,7 +33,7 @@ PageStackWindow {
                 visible: mainWindowStack.pageStack.currentPage.updateContent !== undefined
             }
         }
-    }
+    }*/
 
     function onPictureUploaded(response, page) {
         window.onPictureUploaded(response, page);

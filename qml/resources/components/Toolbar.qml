@@ -41,18 +41,19 @@ Rectangle {
         }
         MouseArea {
             anchors.fill: parent
-            onClicked: window.showNotifications();
+            onClicked: pageStack.push(Qt.resolvedUrl("../pages/Notifications.qml"));
         }
     }
 
     Image {
         id: settingsButton
-        source: ("../pics/cogwheel_"+(topWindowType == "Settings"?"active.png":"passive.png"))
+        source: ("../pics/cogwheel_"+((pageStack.currentPage && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/Settings.qml"))?"active.png":"passive.png"))
+
         x: logoImage.x - width - 50
         anchors.verticalCenter: parent.verticalCenter
         MouseArea {
             anchors.fill: parent
-            onClicked: window.showSettingsPage();
+            onClicked: pageStack.push(Qt.resolvedUrl("../pages/Settings.qml"));
         }
     }
 
@@ -68,7 +69,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: windowHelper.minimize();
         }
-        visible: theme.platform === "maemo"
+        visible: configuration.platform === "maemo"
     }
 
     Image {
@@ -81,7 +82,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: Qt.quit();
         }
-        visible: theme.platform === "maemo"
+        visible: configuration.platform === "maemo"
     }
 
     Rectangle {

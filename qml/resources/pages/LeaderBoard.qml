@@ -1,6 +1,8 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-user.js" as UserAPI
+
 Rectangle {
     id: leaderBoard
     signal user( string user )
@@ -12,7 +14,14 @@ Rectangle {
     height: parent.height
 
     color: theme.colors.backgroundMain
-    state: "hidden"
+
+    function load() {
+        var page = leaderBoard;
+        page.user.connect(function(user) {
+            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+        });
+        UserAPI.loadLeaderBoard(page);
+    }
 
     MouseArea {
         anchors.fill: parent
@@ -63,67 +72,8 @@ Rectangle {
             }
 
             onAreaClicked: {
-                window.showUserPage(model.user);
+                pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":model.user});
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: leaderBoard
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: leaderBoard
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: leaderBoard
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: leaderBoard
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: leaderBoard
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: leaderBoard
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: leaderBoard
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

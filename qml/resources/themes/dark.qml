@@ -3,6 +3,7 @@ import QtQuick 1.1
 Item {
     id: darkTheme
     property variant colors
+    property bool inverted: true
 
     Gradient{
         id: gradientToolbar

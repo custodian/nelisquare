@@ -136,6 +136,8 @@ Item {
             // The states correspond to the different possible positions of the container.
             state: "Hidden"
 
+            property string url: ""
+
             // The page held by this container.
             property Item page: null
 

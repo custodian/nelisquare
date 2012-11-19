@@ -2,6 +2,8 @@ import Qt 4.7
 import QtQuick 1.1
 import "../components"
 
+import "../js/api-photo.js" as PhotoAPI
+
 Rectangle {
     signal user(string user)
     signal prevPhoto()
@@ -10,11 +12,20 @@ Rectangle {
     id: photoDetails
     width: parent.width
     height: parent.height
-    state: "hidden"
+
     color: theme.colors.backgroundMain
 
+    property string photoID: ""
     property string photoUrl: ""
     property alias owner: photoOwner
+
+    function load() {
+        var page = photoDetails;
+        page.user.connect(function(user) {
+            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+        });
+        PhotoAPI.loadPhoto(page,photoID);
+    }
 
     Item {
         id: imageHolder
@@ -125,63 +136,4 @@ Rectangle {
             user(photoDetails.owner.userID);
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: photoDetails
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: photoDetails
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: photoDetails
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: photoDetails
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: photoDetails
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: photoDetails
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: photoDetails
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

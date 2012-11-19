@@ -1,22 +1,33 @@
 import Qt 4.7
-import "../js/utils.js" as Utils
+
 import "../components"
+
+import "../js/api-feed.js" as FeedAPI
+import "../js/utils.js" as Utils
 
 Rectangle {
     id: friendsFeed
     signal update()
+    signal loadHistory()
     signal checkinInfo(string checkinid)
     signal clicked(string checkinid)
     signal shout()
     signal nearby()
     signal recent()
 
-    property bool showWait: false
-
     property bool recentPressed: true
     property bool nearbyPressed: false
 
     property string lastUpdateTime: "0"
+    property string leadingMarker: ""
+    property string trailingMarker: ""
+    property bool moreData: false
+
+    property int loaded: 0
+
+    property int batchSize: 20
+
+    property bool updating: false
 
     property alias friendsCheckinsModel: friendsCheckinsModel
     property alias timerFeedUpdate: timerFeedUpdate
@@ -25,9 +36,49 @@ Rectangle {
     height: parent.height
     color: theme.colors.backgroundMain
 
+    function reset() {
+        moreData = false;
+        loaded = 0;
+        friendsCheckinsModel.clear();
+
+        lastUpdateTime = "0";
+        leadingMarker = "";
+        trailingMarker = "";
+    }
+
+    function load() {
+        var page = friendsFeed;
+        page.update.connect(function(lastupdate) {
+            if (configuration.feedAutoUpdate === 0) {
+                page.reset();
+            }
+            FeedAPI.loadFriendsFeed(page)
+        });
+        page.loadHistory.connect(function(){
+            console.log("FEED: loading history");
+            FeedAPI.loadFriendsFeed(page,true);
+        });
+        page.recent.connect(function() {
+            page.reset();
+            FeedAPI.loadFriendsFeed(page);
+        });
+        page.nearby.connect(function() {
+            page.reset();
+            FeedAPI.loadFriendsFeed(page);
+        });
+        page.clicked.connect(function(id) {
+            pageStack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});
+        });
+        page.checkinInfo.connect(function(id){
+            FeedAPI.loadCheckinInfo(page,id);
+        });
+        timerFeedUpdate.restart(); //Start autoupdate
+        update();
+    }
+
     Timer {
         id: timerFeedUpdate
-        interval: window.feedAutoUpdate * 1000
+        interval: configuration.feedAutoUpdate * 1000
         repeat: true
         onTriggered: {
             friendsFeed.update()
@@ -120,19 +171,11 @@ Rectangle {
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo
-                timerFeedUpdate.triggered.connect(eventbox.updateEventBox);
-                updateEventBox();
-            }
 
-            Component.onDestruction: {
-                timerFeedUpdate.triggered.disconnect(eventbox.updateEventBox);
-            }
-
-            function updateEventBox() {
-                if (window.feedAutoUpdate > 0) {
-                    if ((Utils.getCurrentTime() - model.lastUpdate) >  window.commentUpdateRate) {
-                        //console.log("updating checkin");
-                        friendsFeed.checkinInfo( model.id ); //DBG
+                //console.log("LOADED: " + loaded + " index:"+ (index+1));
+                if (loaded === (index + 1)){
+                    if (moreData) {
+                        loadHistory();
                     }
                 }
             }

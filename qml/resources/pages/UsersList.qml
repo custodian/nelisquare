@@ -1,16 +1,27 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-user.js" as UserAPI
+
 Rectangle {
     id: usersList
     signal user(string id)
+
+    property string userID: ""
     property alias usersModel: usersModel
 
     width: parent.width
     height: parent.height
 
     color: theme.colors.backgroundMain
-    state: "hidden"
+
+    function load() {
+        var page = usersList;
+        page.user.connect(function(params){
+            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":params});
+        });
+        UserAPI.loadUserFriends(page,userID);
+    }
 
     ListModel{
         id: usersModel
@@ -53,63 +64,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: usersList
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: usersList
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: usersList
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: usersList
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: usersList
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: usersList
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: usersList
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

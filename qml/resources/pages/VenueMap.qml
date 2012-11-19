@@ -8,7 +8,6 @@ Rectangle {
     id: venueMap
     width: parent.width
     height: parent.height
-    state: "hidden"
     color: theme.colors.backgroundMain
 
     property string venueMapLat: "0"
@@ -23,7 +22,11 @@ Rectangle {
     property variant userLocation: {}
     property variant route
 
-    property string provider: window.mapprovider
+    property string provider: configuration.mapprovider
+
+    function load() {
+        venueMap.updateMap();
+    }
 
     onProviderChanged: {
         mapProvider.name = provider;
@@ -34,7 +37,7 @@ Rectangle {
 
     Plugin {
         id: mapProvider
-        name : window.mapprovider
+        name : configuration.mapprovider
     }
 
     onRouteChanged: {
@@ -116,7 +119,7 @@ Rectangle {
         }
 
         Component.onCompleted: {
-            if (theme.platform !== "maemo") {
+            if (configuration.platform !== "maemo") {
                Qt.createQmlObject("import QtQuick 1.1; \
                         PinchArea { \
                             id: pincharea; \
@@ -224,63 +227,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: venueMap
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: venueMap
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: venueMap
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: venueMap
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: venueMap
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: venueMap
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: venueMap
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

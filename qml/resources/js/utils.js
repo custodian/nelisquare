@@ -1,4 +1,8 @@
+/*
+ * General utility functions
+ */
 
+//.pragma library
 
 function getRoutePoints(pointA,pointB,callback) {
     //dirflg =
@@ -31,67 +35,6 @@ function getRoutePoints(pointA,pointB,callback) {
     doc.open("GET", url);
     doc.send();
 }
-
-/*
-function drawMap(settings,route) {
-    var url = "";
-
-    //DBG
-    if (window.mapprovider == "google") {
-        url = "http://maps.googleapis.com/maps/api/staticmap?"+
-                "zoom="+settings.zoom+"&size="+settings.width+"x"+settings.height+"&maptype=roadmap"+
-                "&center="+settings.center.lat+","+settings.center.lng;
-        if (settings.user.lng!==undefined) {
-            url += "&markers=color:blue|label:U|"+settings.user.lat+","+settings.user.lng;
-        }
-        url += "&markers=color:red|"+settings.lat+","+settings.lng;
-        if (route!==undefined) {
-            url += "&path=color:0x0000ff|weight:5";
-            route.Directions.Routes[0].Steps.forEach(function(step) {
-                url += "|" + step.Point.coordinates[1] + "," + step.Point.coordinates[0];
-            });
-        }
-        url += "&sensor=false";
-    } else if (window.mapprovider == "openstreetmap") {
-        //NOTE: lng and lat inverted at API
-        url = "http://pafciu17.dev.openstreetmap.org/?module=map"+
-                "&zoom="+settings.zoom+"&type=mapnik&width="+settings.width+"&height="+settings.height+
-                "&center="+settings.center.lng+","+settings.center.lat+
-                "&points="+settings.lng+","+settings.lat;// + ",pointImagePattern:sight_point";
-        if (settings.user.lng!==undefined) {
-            url += ";"+settings.user.lng+","+settings.user.lat + ",pointImagePattern:redU";
-        }
-        if (route!==undefined) {
-            url += "&paths=";
-            route.Directions.Routes[0].Steps.forEach(function(step) {
-                url += step.Point.coordinates[0] + "," + step.Point.coordinates[1] + ",";
-            });
-            url += "thickness:5,transparency:80;-90,40,-80,40,color:0:255:0";
-        }
-    }
-    //console.log("MAP URL: " + url);
-    return url;
-}
-*/
-/*
-function createMapUrl(map, settings) {
-    //console.log("MAP SETTINGS: " + JSON.stringify(settings));
-    if (settings.user.lng!==undefined) {
-        if (map.route !== undefined) {
-            map.venueMapUrl = drawMap(settings,map.route);
-        } else {
-            waiting.show();
-            getRoutePoints(settings.user,settings,
-                function(route){
-                    waiting.hide();
-                    map.route = route;
-                    map.venueMapUrl = drawMap(settings,route);
-                });
-        }
-    } else {
-        map.venueMapUrl = drawMap(settings);
-    }
-}*/
 
 function getCurrentTime() {
     return (new Date()).getTime()/1000;
@@ -169,22 +112,4 @@ function parseDate(stamp)
         //console.log("Error while parsing date: " + err);
         return new Date();
     }
-}
-
-function stringToBytes ( str ) {
-  var ch, st, re = [];
-  for (var i = 0; i < str.length; i++ ) {
-    ch = str.charCodeAt(i);  // get char
-    st = [];                 // set up "stack"
-    do {
-      st.push( ch & 0xFF );  // push byte to stack
-      ch = ch >> 8;          // shift value down by 1 byte
-    }
-    while ( ch );
-    // add stack contents to result
-    // done because chars have "wrong" endianness
-    re = re.concat( st.reverse() );
-  }
-  // return an array of bytes
-  return re;
 }

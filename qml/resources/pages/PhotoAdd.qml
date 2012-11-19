@@ -5,14 +5,21 @@ import "../components"
 Rectangle {
     signal uploadPhoto(string photo)
 
+    property variant options: {}
+
     id: photoAdd
     width: parent.width
     height: parent.height
-    state: "hidden"
     color: theme.colors.backgroundMain
 
-    ListModel {
-        id: emptyModel
+    function load() {
+        var page = photoAdd;
+        page.uploadPhoto.connect(function(photo){
+            photoShareDialog.photoUrl = photo;
+            photoShareDialog.state = "shown";
+        });
+        photoShareDialog.options = options;
+        photoShareDialog.owner = page;
     }
 
     DocumentGalleryModel {
@@ -37,7 +44,7 @@ Rectangle {
         cellWidth: Math.min((width-5)/3,height)
         cellHeight: cellWidth
         clip: true
-        model: emptyModel
+        model: galleryModel
         delegate: photoDelegate
         header: Column {
             width: parent.width
@@ -86,73 +93,8 @@ Rectangle {
          }
      }
 
-    onStateChanged: {
-        if (state == "shown") {
+    //TODO: reload on "reload" toolbar action
+    /*onReload: {
             galleryModel.reload();
-            photoGrid.model = galleryModel;
-        } else {
-            photoGrid.model = emptyModel;
-        }
-    }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: photoAdd
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: photoAdd
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: photoAdd
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: photoAdd
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                ScriptAction {
-                    script: {
-                        photoAdd.visible = false;
-                        photoGrid.model = emptyModel;
-                    }
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                ScriptAction {
-                    script: {
-                        photoAdd.visible = true;
-                        photoGrid.model = galleryModel;
-                    }
-                }
-                PropertyAnimation {
-                    target: photoAdd
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
+    }*/
 }

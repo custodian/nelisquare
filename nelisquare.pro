@@ -52,7 +52,7 @@ win32 {
 maemo5 {
   CONFIG += mobility12 qdbus
 } else {
-  CONFIG += mobility
+  CONFIG += mobility meegotouchevents
 }
 MOBILITY += location
 
@@ -60,6 +60,7 @@ SOURCES += $$PWD/main.cpp \
     $$PWD/windowhelper.cpp \
     $$PWD/picturehelper.cpp \
     $$PWD/cache.cpp \
+    $$PWD/eventfeed.cpp \
     $$PWD/molome.cpp \
     $$PWD/extras/formpost.cpp \
     $$PWD/extras/httppostsendbuffer.cpp
@@ -68,6 +69,7 @@ HEADERS += \
     $$PWD/windowhelper.h \
     $$PWD/picturehelper.h \
     $$PWD/cache.h \
+    $$PWD/eventfeed.h \
     $$PWD/molome.h \
     $$PWD/extras/formpost.h \
     $$PWD/extras/httppostsendbuffer.h

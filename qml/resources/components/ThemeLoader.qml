@@ -2,11 +2,11 @@ import QtQuick 1.1
 
 Item {
     id: theme
-
-    property string platform: windowHelper.isMaemo() ? "maemo" : "meego"
     property string name: "light"
 
     property variant colors
+    property bool inverted: false
+    property string colorString: "red"
 
     property variant gradientTextBox
     property variant gradientToolbar
@@ -41,7 +41,7 @@ Item {
         id: font;
         source: "../fonts/TitilliumText25L001.otf"
         property int sizeDefault: 24
-        property int sizeToolbar: sizeDefault + (theme.platform === "maemo"?(-1):(1))
+        property int sizeToolbar: sizeDefault + (configuration.platform === "maemo"?(-1):(1))
         property int sizeSettigs: sizeDefault + 4
         property int sizeSigns: sizeDefault - 2
         property int sizeHelp: sizeDefault - 4
@@ -78,5 +78,6 @@ Item {
         theme.gradientGrayPressed = loadedTheme.getGradient("gradientGrayPressed");
 
         theme.name = theme.colors.name;
+        theme.inverted = loadedTheme.inverted;
     }
 }

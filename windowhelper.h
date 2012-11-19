@@ -25,6 +25,7 @@ signals:
     void lockOrientation(QVariant result);
 
 public slots:
+    void showNelisquare(const QUrl &url);
 
 };
 

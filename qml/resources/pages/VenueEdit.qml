@@ -1,26 +1,34 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-venue.js" as VenueAPI
+
 Rectangle {
     id: venueEdit
     signal update(variant venue)
     signal updateCompleted(string venue)
 
+    property string venueID: ""
     property alias venueCategories: venueCategories
 
     width: parent.width
     height: parent.height
 
     color: theme.colors.backgroundMain
-    state: "hidden"
+
+    function load() {
+        var page = venueEdit;
+        page.update.connect(function(params){
+            VenueAPI.updateVenueInfo(page,params);
+        });
+        page.updateCompleted.connect(function(venue){
+            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+        });
+        VenueAPI.prepareVenueEdit(page,venueID);
+    }
 
     ListModel{
         id: venueCategories
-    }
-
-    function hideKeyboard() {
-        textName.closeSoftwareInputPanel();
-        venueEdit.focus = true;
     }
 
     MouseArea {
@@ -54,7 +62,7 @@ Rectangle {
                 flickableArea.contentHeight = height + y;
             }
 
-            y: 10
+            x: 10
             width: parent.width - 20
             spacing: 10
 
@@ -71,64 +79,41 @@ Rectangle {
                 font.family: "Nokia Pure" //theme.font.name
                 font.bold: true
 
-                Rectangle {
+                LineEdit {
+                    text: theme.textEnterVenueName
                     anchors.left: textNameLabel.right
                     anchors.leftMargin: 20
                     anchors.verticalCenter: textNameLabel.verticalCenter
-                    height: 40
-
-                    width: parent.width - 150
-                    gradient: theme.gradientTextBox
-                    border.width: 1
-                    border.color: theme.colors.textboxBorderColor
-                    smooth: true
-
-                    TextInput {
-                        id: textName
-
-
-                        text: theme.textEnterVenueName
-                        width: venueEdit.width - textNameLabel.width - 20
-                        //height: parent.height - 10
-                        color: theme.colors.textColor
-                        font.pixelSize: 24
-
-                        onAccepted: {
-                            var query = textName.text;
-                            if(query===theme.textEnterVenueName) {
-                                query = "";
-                            }
-                            hideKeyboard();
+                    width: parent.parent.width - textNameLabel.width - 20
+                    onAccepted: {
+                        var query = text;
+                        if(query===theme.textEnterVenueName) {
+                            query = "";
                         }
-
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                textName.focus = true;
-                                if(textName.text===theme.textEnterVenueName) {
-                                    textName.text = "";
-                                }
-                                if (textName.text != "") {
-                                    textName.cursorPosition = textName.positionAt(mouseX,mouseY);
-                                }
-                            }
-                        }
+                        hideKeyboard();
                     }
                 }
             }
 
             LineGreen{
                 height: 30
+                width: venueEdit.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: "VENUE LOCATION"
             }
 
             LineGreen{
                 height: 30
+                width: venueEdit.width
+                anchors.horizontalCenter: parent.horizontalCenter
                 text: "VENUE CATEGORY"
             }
             //Category icon and type
             EventBox {
-
+                userName: "Main category"
+            }
+            EventBox {
+                userName: "Secondary category"
             }
 
             LineGreen{
@@ -136,8 +121,9 @@ Rectangle {
                 text: "VENUE DESCRIPTION"
             }
 
-            ButtonGreen {
+            ButtonBlue {
                 width: parent.width * 0.7
+                anchors.horizontalCenter: parent.horizontalCenter
                 label: "CREATE VENUE"
             }
 
@@ -147,64 +133,4 @@ Rectangle {
             }
         }
     }
-
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: venueEdit
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: venueEdit
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: venueEdit
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: venueEdit
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: venueEdit
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: venueEdit
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: venueEdit
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

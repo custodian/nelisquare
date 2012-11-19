@@ -1,6 +1,8 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-user.js" as UserAPI
+
 Rectangle {
     signal openLeaderboard()
     signal user(string user)
@@ -22,7 +24,6 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
 
     property string userID: ""
     property string userName: ""
@@ -53,6 +54,60 @@ Rectangle {
     property string lastTime: ""
 
     property alias boardModel: boardModel
+
+    function load() {
+        var page = details;
+        page.addFriend.connect(function(user){
+            UserAPI.addFriend(page,user);
+            page.userRelationship = "updated";
+        });
+        page.removeFriend.connect(function(user){
+            UserAPI.removeFriend(page,user);
+            page.userRelationship = "updated";
+        });
+        page.approveFriend.connect(function(user){
+            UserAPI.approveFriend(page,user);
+            page.userRelationship = "updated";
+        });
+        page.denyFriend.connect(function(user){
+            UserAPI.denyFriend(page,user);
+            page.userRelationship = "updated";
+        });
+        page.user.connect(function(user){
+            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+        });
+        page.venue.connect(function(venue){
+            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+        });
+        page.openLeaderboard.connect(function(){
+            pageStack.push(Qt.resolvedUrl("LeaderBoard.qml"));
+        });
+        page.badges.connect(function(user){
+            pageStack.push(Qt.resolvedUrl("Badges.qml"),{"userID":user});
+        });
+        page.mayorships.connect(function(user){
+            pageStack.push(Qt.resolvedUrl("Mayorships.qml"),{"userID":user});
+        });
+        page.checkins.connect(function(user){
+            pageStack.push(Qt.resolvedUrl("CheckinHistory.qml"),{"userID":user});
+        });
+        page.friends.connect(function(user) {
+            pageStack.push(Qt.resolvedUrl("UsersList.qml"),{"userID":user});
+        });
+        page.photos.connect(function(user) {
+            var photogallery = pageStack.push(Qt.resolvedUrl("PhotosGallery.qml"));
+            photogallery.update.connect(function(){
+               UserAPI.loadUserPhotos(photogallery,user);
+            });
+            photogallery.caption = "USER PHOTOS";
+            photogallery.options.append({"offset":0,"completed":false});
+            photogallery.update();
+        });
+        page.tips.connect(function(user) {
+            pageStack.push(Qt.resolvedUrl("TipsList.qml"),{"baseType":"user","baseID":user});
+        });
+        UserAPI.loadUser(page,userID);
+    }
 
     Component.onCompleted: {
         checkinOwner.userPhoto.photoSize = 200;
@@ -346,9 +401,7 @@ Rectangle {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            if (userRelationship == "self") {
-                                details.checkins(userID);
-                            }
+                            details.checkins(userID);
                         }
                     }
                 }
@@ -536,63 +589,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: details
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: details
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: details
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: details
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: details
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: details
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: details
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

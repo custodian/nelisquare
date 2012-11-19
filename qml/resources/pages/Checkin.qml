@@ -1,6 +1,8 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-checkin.js" as CheckinAPI
+
 Rectangle {
     signal like(string checkin, bool state)
     signal venue(string venue)
@@ -14,7 +16,6 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
 
     property string checkinID: ""
 
@@ -27,6 +28,39 @@ Rectangle {
     property alias badgesModel: badgesModel
     property alias commentsModel: commentsModel
     property alias photosBox: photosBox
+
+    function load() {
+        var page = checkin;
+        page.venue.connect(function(venue){
+            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+        });
+        page.like.connect(function(checkin, state) {
+            CheckinAPI.likeCheckin(page,checkin,state);
+        });
+        page.user.connect(function(user){
+            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+        });
+        page.photo.connect(function(photo){
+            pageStack.push(Qt.resolvedUrl("Photo.qml"),{"photoID":photo});
+        });
+        page.showAddComment.connect(function(checkin){
+            //TODO: add comment dialog "Sheet"
+            commentDialog.reset();
+            commentDialog.state = "shown";
+        });
+        page.deleteComment.connect(function(checkin, comment){
+            CheckinAPI.deleteComment(page,checkin,comment);
+        });
+        page.showAddPhoto.connect(function(checkin){
+            pageStack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
+                "type": "checkin",
+                "id": checkin,
+                "owner": page
+            }});
+        });
+        CheckinAPI.loadCheckin(page, checkinID);
+    }
+
     ListModel {
         id: scoresModel
     }
@@ -42,6 +76,21 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: {
+        }
+    }
+
+    //TODO: remove to single "Sheet"
+    CommentDialog {
+        id: commentDialog
+        z: 20
+        width: parent.width
+        state: "hidden"
+
+        onCancel: { commentDialog.state = "hidden"; }
+        onShout: {
+            //console.log("COMMENT FOR: " + checkinID + " VALUE: " + comment);
+            CheckinAPI.addComment(checkin, checkinID, comment);
+            commentDialog.state = "hidden";
         }
     }
 
@@ -283,63 +332,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: checkin
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: checkin
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: checkin
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: checkin
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: checkin
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: checkin
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: checkin
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

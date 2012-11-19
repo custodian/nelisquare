@@ -11,6 +11,7 @@ Item {
     }
 
     function onMolomeInfoUpdate(present,installed) {
+        console.log("MOLOME MAEMO: present: "+present+" installed: "+installed);
         window.molome_present = present;
         window.molome_installed = installed;
     }

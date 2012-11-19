@@ -1,6 +1,8 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-venue.js" as VenueAPI
+
 Rectangle {
     id: venuesList
     signal checkin(string venueid, string venuename)
@@ -13,11 +15,27 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    //state: "hidden"
 
-    function hideKeyboard() {
-        searchText.closeSoftwareInputPanel();
-        window.focus = true;
+    function load() {
+        var page = venuesList;
+        page.checkin.connect(function(venueID, venueName) {
+            //TODO: create "Sheet" checkin dialog
+            checkinDialog.reset();
+            checkinDialog.venueID = venueID;
+            checkinDialog.venueName = venueName;
+            checkinDialog.state = "shown";
+
+        });
+        page.clicked.connect(function(venueid) {
+            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
+        });
+        page.search.connect(function(query) {
+            VenueAPI.loadVenues(page, query);
+        });
+        page.addVenue.connect(function(){
+            pageStack.push(Qt.resolvedUrl("VenueEdit.qml"),{"venueID":""});
+        });
+        search("");
     }
 
     ListModel {
@@ -34,47 +52,19 @@ Rectangle {
         height: 80
         color: theme.colors.backgroundBlueDark
 
-        Rectangle {
-            id: textContainer
-            height: 40
+        LineEdit {
+            id: searchText
+            text: theme.textSearchVenue
             width: parent.width - 150
             x: 10
             y: 20
-            gradient: theme.gradientTextBox
-            border.width: 1
-            border.color: theme.colors.textboxBorderColor
-            smooth: true
 
-            TextInput {
-                id: searchText
-                text: theme.textSearchVenue
-                width: parent.width - 10
-                height: parent.height - 10
-                x: 5
-                y: 5
-                color: theme.colors.textColor
-                font.pixelSize: 24
-
-                onAccepted: {
-                    var query = searchText.text;
-                    if(query===theme.textSearchVenue) {
-                        query = "";
-                    }
-                    venuesList.search(query);
+            onAccepted: {
+                var query = text;
+                if(query===theme.textSearchVenue) {
+                    query = "";
                 }
-
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        searchText.focus = true;
-                        if(searchText.text===theme.textSearchVenue) {
-                            searchText.text = "";
-                        }
-                        if (searchText.text != "") {
-                            searchText.cursorPosition = searchText.positionAt(mouseX,mouseY);
-                        }
-                    }
-                }
+                venuesList.search(query);
             }
         }
 
@@ -91,7 +81,7 @@ Rectangle {
                 if(query===theme.textSearchVenue) {
                     query = "";
                 }
-                hideKeyboard();
+                searchText.hideKeyboard();
                 venuesList.search(query);
             }
         }
@@ -114,6 +104,7 @@ Rectangle {
                 text: "PLACES NEAR YOU"
             }
 
+        /* //DBG
         footer: Column {
             width: placesView.width
             Item {
@@ -132,7 +123,7 @@ Rectangle {
                 width: placesView.width
                 height: 30
             }
-        }
+        }*/
     }
 
     Component {
@@ -161,63 +152,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: venuesList
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: venuesList
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: venuesList
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: venuesList
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: venuesList
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: venuesList
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: venuesList
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

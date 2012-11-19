@@ -37,7 +37,7 @@ Rectangle {
             spacing: 20
 
             Text {
-                text: "Type: " + window.checkupdates;
+                text: "Type: " + configuration.checkupdates;
                 //width: parent.width
                 font.pixelSize: theme.font.sizeDefault
                 color: theme.colors.textHeader

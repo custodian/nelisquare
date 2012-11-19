@@ -1,14 +1,22 @@
 import Qt 4.7
+import "../components"
 
 Item {
-    id: splashPage
+    id: welcomePage
     signal login()
 
-    property string nextState: "hidden"
+    width: window.width
+    height: window.height
 
-    width: parent.width
-    height: parent.height
-    state: "hidden"//"shown"
+    property bool newuser: false
+
+    function load() {
+        welcomePage.login.connect(function(){
+            //loginArea.visible = true;
+            //create login Component
+            loginStack.push(Qt.resolvedUrl("Login24sq.qml"));
+        });
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -21,12 +29,12 @@ Item {
     }
 
     Text {
-        id: textRelease
         text: theme.textSplash
         anchors.centerIn: parent
         color: theme.colors.textColorSign
         font.pixelSize: theme.font.sizeDefault
         font.family: theme.font.name
+        visible: !newuser
     }
 
     Item {
@@ -48,7 +56,7 @@ Item {
                 label: "Login"
                 width: parent.width - 130
                 onClicked: {
-                    splashPage.state = "hidden"
+                    welcomePage.login();
                 }
             }
 
@@ -86,77 +94,6 @@ Item {
             }
         }
 
-        visible: false
+        visible: newuser
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: splashPage
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: textRelease
-                visible: true
-            }
-            PropertyChanges {
-                target: loginBox
-                visible: false
-            }
-            PropertyChanges {
-                target: splashPage
-                x: 0
-            }
-        },
-        State {
-            name: "login"
-            PropertyChanges {
-                target: textRelease
-                visible: false
-            }
-            PropertyChanges {
-                target: loginBox
-                visible: true
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            to: "hidden"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: splashPage
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: splashPage
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: splashPage
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: splashPage
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

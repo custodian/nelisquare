@@ -11,6 +11,8 @@
 #include "cache.h"
 #include "molome.h"
 
+//#include <meventfeed.h>
+
 #include <qplatformdefs.h>
 
 class EventDisabler : public QObject
@@ -135,6 +137,21 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #if defined(VS_ENABLE_SPLASH) && defined(Q_WS_MAEMO_5)
     splash.finish(&viewer);
 #endif
+
+    molome->updateinfo();
+
+    /*QDesktopServices::setUrlHandler("nelisquare",windowHelper,"showNelisquare");
+
+    MEventFeed::instance()->addItem(QString("icon name"),
+       QString("title text"),
+       QString("body text"),
+       QStringList(), //ImageList
+       QDateTime::currentDateTime(),
+       QString("footer text"),
+       false,
+       QUrl("nelisquare://checkin/123"),
+       QString("nelisquare"),
+       QString("Nelisquare"));*/
 
     return app.exec();
 }

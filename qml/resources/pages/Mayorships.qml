@@ -1,16 +1,27 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-user.js" as UserAPI
+
 Rectangle {
     id: mayorships
     signal venue(string id)
+
+    property string userID: ""
     property alias mayorshipsModel: mayorshipsModel
 
     width: parent.width
     height: parent.height
 
     color: theme.colors.backgroundMain
-    state: "hidden"
+
+    function load() {
+        var page = mayorships;
+        page.venue.connect(function(id) {
+            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":id});
+        });
+        UserAPI.loadMayorships(page,userID);
+    }
 
     ListModel{
         id: mayorshipsModel
@@ -54,63 +65,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: mayorships
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: mayorships
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: mayorships
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: mayorships
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: mayorships
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: mayorships
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: mayorships
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

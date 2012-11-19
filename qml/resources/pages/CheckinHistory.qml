@@ -1,21 +1,38 @@
 import Qt 4.7
 import "../components"
 
+import "../js/api-user.js" as UserAPI
+
 Rectangle {
     id: checkinHistory
     signal checkin(string id)
     signal update()
+
+    property string userID: ""
+
+    property int loaded: 0
+    property int batchsize: 20
+    property bool completed: false
 
     property alias checkinHistoryModel: checkinHistoryModel
 
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
 
-    property int loaded: 0
-    property int batchsize: 20
-    property bool completed: false
+    function load() {
+        var page = checkinHistory;
+        page.checkin.connect(function(id) {
+            pageStack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});
+        });
+        page.update.connect(function(){
+            if (userID === "self")
+                UserAPI.loadCheckinHistory(page,userID);
+            else
+                UserAPI.loadActivityHistory(page,userID);
+        })
+        page.update();
+    }
 
     ListModel {
         id: checkinHistoryModel
@@ -73,63 +90,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: checkinHistory
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: checkinHistory
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: checkinHistory
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: checkinHistory
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }                
-                PropertyAction {
-                    target: checkinHistory
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: checkinHistory
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: checkinHistory
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

@@ -6,7 +6,6 @@ Rectangle {
     height: items.height + 20
     color: theme.colors.backgroundBlueDark
     state: "hidden"
-    property string checkinID: ""
     signal cancel()
     signal shout(string comment)
 
@@ -37,34 +36,58 @@ Rectangle {
 
         Rectangle {
             id: commentBox
-            height: 130
+            height: 135
             width: parent.width
             gradient: theme.gradientTextBox
             border.width: 1
             border.color: theme.colors.textboxBorderColor
             smooth: true
 
-            TextEdit {
-                id: commentText
-                wrapMode: TextEdit.Wrap
-                text: theme.textDefaultComment
-                textFormat: TextEdit.PlainText
-                width: parent.width - 10
-                height: parent.height - 10
-                x: 5
-                y: 5
-                color: theme.colors.textColor
-                font.pixelSize: 24
+            Flickable {
+                 id: flick
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        commentText.focus = true;
-                        if(commentText.text == theme.textDefaultComment) {
-                            commentText.text = "";
-                        }
-                        if (commentText.text != "") {
-                            commentText.cursorPosition = commentText.positionAt(mouseX,mouseY);
+                 width: parent.width;
+                 height: parent.height;
+                 //contentWidth: commentText.paintedWidth
+                 //contentHeight: commentText.paintedHeight
+                 clip: true
+
+                 function ensureVisible(r)
+                  {
+                      if (contentX >= r.x)
+                          contentX = r.x;
+                      else if (contentX+width <= r.x+r.width)
+                          contentX = r.x+r.width-width;
+                      if (contentY >= r.y)
+                          contentY = r.y;
+                      else if (contentY+height <= r.y+r.height)
+                          contentY = r.y+r.height-height;
+                  }
+
+                TextEdit {
+                    id: commentText
+                    wrapMode: TextEdit.Wrap
+                    text: theme.textDefaultComment
+                    textFormat: TextEdit.PlainText
+                    width: parent.width - 10
+                    height: parent.height - 10
+                    x: 5
+                    y: 5
+                    color: theme.colors.textColor
+                    font.pixelSize: 24
+                    onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
+
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            commentText.focus = true;
+                            if(commentText.text == theme.textDefaultComment) {
+                                commentText.text = "";
+                            }
+                            if (commentText.text != "") {
+                                commentText.cursorPosition = commentText.positionAt(mouseX,mouseY);
+                            }
                         }
                     }
                 }

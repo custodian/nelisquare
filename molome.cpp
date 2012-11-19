@@ -38,7 +38,7 @@ void Molome::updateinfo() {
     } else {
         m_installed = false;
     }
-    //qDebug() << "Molome present:" <<  m_present << "installed:" << m_installed;
+    //qDebug() << "MOLOME present:" <<  m_present << "installed:" << m_installed;
     emit infoUpdated(QVariant(m_present),QVariant(m_installed));
 }
 

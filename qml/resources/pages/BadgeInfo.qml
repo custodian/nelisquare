@@ -8,14 +8,21 @@ Rectangle {
     width: parent.width
     height: parent.height
     color: theme.colors.backgroundMain
-    state: "hidden"
 
     property string name: ""
     property string image: ""
+    property string imageLarge: ""
     property string info: ""
     property string venueName: ""
     property string venueID: ""
     property string time: ""
+
+    function load() {
+        var page = badgeInfo;
+        page.venue.connect(function(venueID) {
+            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueID});
+        });
+    }
 
     Flickable{
         id: flickableArea
@@ -42,7 +49,7 @@ Rectangle {
                 width: 300
                 height: 300
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: image
+                source: imageLarge
 
                 Image {
                     anchors.centerIn: parent
@@ -92,63 +99,4 @@ Rectangle {
             }
         }
     }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: badgeInfo
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: badgeInfo
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: badgeInfo
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: badgeInfo
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: badgeInfo
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: badgeInfo
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: badgeInfo
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

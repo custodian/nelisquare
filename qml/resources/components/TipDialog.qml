@@ -6,9 +6,7 @@ Rectangle {
     height: items.height + 20
     color: theme.colors.backgroundBlueDark
     state: "hidden"
-    property string venueID: ""
     property string venueName: ""
-    property variant ownerPage
     property int action: 0
     signal cancel()
     signal addTip(string comment)

@@ -112,6 +112,7 @@ function initPage(page, properties) {
     } else if (typeof page == "string") {
         // page defined as string (a url)
         pageComp = Qt.createComponent(page);
+        container.url = page;
     }
     if (pageComp) {
         if (pageComp.status == Component.Error) {
@@ -136,8 +137,15 @@ function initPage(page, properties) {
 
     // copy properties to the page
     for (var prop in properties) {
-        page[prop] = properties[prop];
+        if (page[prop]!==undefined)
+            page[prop] = properties[prop];
+        else
+            console.log("PAGE DBG: Unexisting propery found: " + prop);
     }
+
+    //load page with data
+    if(page.load)
+        page.load();
 
     return container;
 }

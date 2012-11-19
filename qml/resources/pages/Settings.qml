@@ -2,19 +2,40 @@ import Qt 4.7
 import "../build.info.js" as BuildInfo
 import "../components"
 
+//TODO: dont forget about PAGESTACK:
+
 Rectangle {
     signal authDeleted()
 
     signal settingsChanged(string type, string value);
 
-    property string cacheSize: "undefined"
+    property string cacheSize: "updating..."
 
     id: settings
     color: theme.colors.backgroundMain
-    state: "hidden"
 
     width: parent.width
     height: parent.height    
+
+    function load() {
+        var page = settings;
+        page.authDeleted.connect(function(){
+            configuration.settingChanged("accesstoken","");
+        });
+        page.settingsChanged.connect(function(type,value) {
+            configuration.settingChanged("settings."+type,value);
+        });
+        cacheUpdater.start();
+    }
+
+    Timer {
+        id: cacheUpdater
+        interval: 50
+        repeat: false
+        onTriggered: {
+            cacheSize = cache.info();
+        }
+    }
 
     LineGreen {
         id: settingsLabel
@@ -58,23 +79,28 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.checkupdates === "none"
+                    selected: configuration.checkupdates === "none"
                     label: "NONE"
                     onClicked: settingsChanged("checkupdates","none")
                 }
                 ToolbarTextButton {
                     height: 35
-                    selected: window.checkupdates === "stable"
+                    selected: configuration.checkupdates === "stable"
                     label: "STABLE"
                     onClicked: settingsChanged("checkupdates","stable")
                 }
                 ToolbarTextButton {
                     height: 35
-                    selected: window.checkupdates === "developer"
+                    selected: configuration.checkupdates === "developer"
                     label: "BETA"
                     onClicked: settingsChanged("checkupdates","developer")
                 }
-
+                ToolbarTextButton {
+                    height: 35
+                    selected: configuration.checkupdates === "alpha"
+                    label: "ALPHA"
+                    onClicked: settingsChanged("checkupdates","alpha")
+                }
             }
             Item{
                 height: 20
@@ -94,19 +120,19 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.orientationType === "auto"
+                    selected: configuration.orientationType === "auto"
                     label: "AUTO"
                     onClicked: settingsChanged("orientation","auto")
                 }
                 ToolbarTextButton {
                     height: 35
-                    selected: window.orientationType === "landscape"
+                    selected: configuration.orientationType === "landscape"
                     label: "LANDSCAPE"
                     onClicked: settingsChanged("orientation","landscape")
                 }
                 ToolbarTextButton {
                     height: 35
-                    selected: window.orientationType === "portrait"
+                    selected: configuration.orientationType === "portrait"
                     label: "PORTRAIT"
                     onClicked: settingsChanged("orientation","portrait")
                 }
@@ -129,19 +155,19 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.mapprovider === "google"
+                    selected: configuration.mapprovider === "google"
                     label: "GOOGLE"
                     onClicked: settingsChanged("mapprovider","google")
                 }
                 ToolbarTextButton {
                     height: 35
-                    selected: window.mapprovider === "openstreetmap"
+                    selected: configuration.mapprovider === "openstreetmap"
                     label: "OSM"
                     onClicked: settingsChanged("mapprovider","openstreetmap")
                 }
                 ToolbarTextButton {
                     height: 35
-                    selected: window.mapprovider === "nokia"
+                    selected: configuration.mapprovider === "nokia"
                     label: "NOKIA"
                     onClicked: settingsChanged("mapprovider","nokia")
                 }
@@ -158,7 +184,7 @@ Rectangle {
                 color: theme.colors.textColorOptions
                 text: "MOLO.me integration (beta)"
                 font.pixelSize: theme.font.sizeSettigs
-                visible: theme.platform === "meego"
+                visible: configuration.platform === "meego"
             }
             Row {
                 width: parent.width
@@ -214,12 +240,12 @@ Rectangle {
                         }
                     }
                 }
-                visible: theme.platform === "meego";
+                visible: configuration.platform === "meego";
             }
             Item{
                 height: 20
                 width: parent.width
-                visible: theme.platform === "meego";
+                visible: configuration.platform === "meego";
             }
 
             //Image loading settings
@@ -234,14 +260,14 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.imageLoadType === "cached"
+                    selected: configuration.imageLoadType === "cached"
                     label: "CACHED"
                     onClicked: settingsChanged("imageload","cached");
                 }
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.imageLoadType === "all"
+                    selected: configuration.imageLoadType === "all"
                     label: "ALL"
                     onClicked: settingsChanged("imageload","all");
                 }
@@ -263,21 +289,21 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.gpsUplockTime === 0
+                    selected: configuration.gpsUplockTime === 0
                     label: "AT ONCE"
                     onClicked: settingsChanged("gpsunlock",0);
                 }
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.gpsUplockTime === 30
+                    selected: configuration.gpsUplockTime === 30
                     label: "30 SEC"
                     onClicked: settingsChanged("gpsunlock",30);
                 }
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.gpsUplockTime === 60
+                    selected: configuration.gpsUplockTime === 60
                     label: "60 SEC"
                     onClicked: settingsChanged("gpsunlock",60);
                 }
@@ -298,28 +324,28 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.feedAutoUpdate === 0
+                    selected: configuration.feedAutoUpdate === 0
                     label: "OFF"
                     onClicked: settingsChanged("feedupdate",0);
                 }
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.feedAutoUpdate === 120
+                    selected: configuration.feedAutoUpdate === 120
                     label: "2 MIN"
                     onClicked: settingsChanged("feedupdate",120);
                 }
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.feedAutoUpdate === 300
+                    selected: configuration.feedAutoUpdate === 300
                     label: "5 MIN"
                     onClicked: settingsChanged("feedupdate",300);
                 }
 
                 ToolbarTextButton {
                     height: 35
-                    selected: window.feedAutoUpdate === 600
+                    selected: configuration.feedAutoUpdate === 600
                     label: "10 MIN"
                     onClicked: settingsChanged("feedupdate", 600);
                 }
@@ -468,66 +494,4 @@ Rectangle {
 
         }
     }
-
-    onStateChanged: {
-    }
-
-    states: [
-        State {
-            name: "hidden"
-            PropertyChanges {
-                target: settings
-                x: parent.width
-            }
-        },
-        State {
-            name: "hiddenLeft"
-            PropertyChanges {
-                target: settings
-                x: -parent.width
-            }
-        },
-        State {
-            name: "shown"
-            PropertyChanges {
-                target: settings
-                x: 0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PropertyAnimation {
-                    target: settings
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-                PropertyAction {
-                    target: settings
-                    properties: "visible"
-                    value: false
-                }
-            }
-        },
-        Transition {
-            to: "shown"
-            SequentialAnimation {
-                PropertyAction {
-                    target: settings
-                    properties: "visible"
-                    value: true
-                }
-                PropertyAnimation {
-                    target: settings
-                    properties: "x"
-                    duration: 300
-                    easing.type: "InOutQuad"
-                }
-            }
-        }
-    ]
 }

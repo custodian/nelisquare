@@ -83,3 +83,7 @@ Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
     emit lockOrientation(value);
 #endif
 }
+
+void WindowHelper::showNelisquare(const QUrl &url) {
+    qDebug() << "URL CALL:" << url.toString();
+}
