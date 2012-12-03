@@ -45,6 +45,7 @@ binary-arch: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
+#	LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):/opt/qtm12/lib dh_shlibdeps
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums

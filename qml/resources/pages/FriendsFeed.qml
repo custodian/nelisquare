@@ -9,8 +9,9 @@ Rectangle {
     id: friendsFeed
     signal update()
     signal loadHistory()
-    signal checkinInfo(string checkinid)
-    signal clicked(string checkinid)
+    signal user(string userid)
+    signal checkin(string checkinid)
+
     signal shout()
     signal nearby()
     signal recent()
@@ -66,11 +67,11 @@ Rectangle {
             page.reset();
             FeedAPI.loadFriendsFeed(page);
         });
-        page.clicked.connect(function(id) {
+        page.checkin.connect(function(id) {
             pageStack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});
         });
-        page.checkinInfo.connect(function(id){
-            FeedAPI.loadCheckinInfo(page,id);
+        page.user.connect(function(id){
+            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":id});
         });
         timerFeedUpdate.restart(); //Start autoupdate
         update();
@@ -181,7 +182,11 @@ Rectangle {
             }
 
             onAreaClicked: {
-                friendsFeed.clicked( model.id );
+                if (model.id) {
+                    friendsFeed.checkin( model.id );
+                } else {
+                    friendsFeed.user( model.userID );
+                }
             }
         }
     }

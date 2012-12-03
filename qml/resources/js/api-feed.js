@@ -84,14 +84,25 @@ function parseFriendsFeed(response, page, history) {
         page.trailingMarker = activities.trailingMarker;
 
     var feedObjParser = function(object) {
-        if (updateTime <= object.object.createdAt)
-            updateTime = object.object.createdAt;
+        var timeObj = object;
+        if (timeObj.object !== undefined)
+            timeObj=timeObj.object;
+        if (updateTime <= timeObj.createdAt)
+            updateTime = timeObj.createdAt;
         if (object.type === "checkin") {
             var append = (!updating || history!==undefined);
-            feedObjParserCheckin(page, object.object, append, count);
-            count++;
+            if (feedObjParserCheckin(page, object.object, append, count))
+                count++;
         } else if (object.type === "photo") {
             feedObjParserPhoto(page,object.object);
+        } else if (object.type === "friend" ) {
+            var append2 = (!updating || history!==undefined);
+            feedObjParserFriend(page, object, append2, count);
+            count++;
+        } else if (object.type === "tip") {
+            //TODO: make show tip
+            page.loaded -= 1;
+            console.log("TIP EVENT: " + JSON.stringify(object.type));
         } else {
             page.loaded -= 1;
             console.log("CONTENT TYPE: " + object.type);
@@ -103,21 +114,25 @@ function parseFriendsFeed(response, page, history) {
     activities.items.forEach(
     function(activity){
         //console.log("ACTIVITY: " + JSON.stringify(activity));
-        if (activity.type !== "create") {
+        if (activity.type === "create") {
+            var content = activity.content;
+
+            if (content.type === "aggregation") {
+                page.loaded -= 1;
+                page.loaded += content.object.items.length;
+                content.object.items.forEach(function(item) {
+                    feedObjParser(item);
+                });
+            } else {
+                feedObjParser(content);
+            }
+        } else if (activity.type === "friend") {
+            feedObjParser(activity);
+        } else {
             page.loaded -= 1;
             console.log("ACTIVITY TYPE: " + activity.type);
+            //console.log("ACTIVITY CONTENT: " + JSON.stringify(activity.content));
             return;
-        }
-        var content = activity.content;
-
-        if (content.type === "aggregation") {
-            page.loaded -= 1;
-            page.loaded += content.object.items.length;
-            content.object.items.forEach(function(item) {
-                feedObjParser(item);
-            });
-        } else {
-            feedObjParser(content);
         }
     });
 
@@ -144,6 +159,7 @@ function parseFriendsFeed(response, page, history) {
 }
 
 function feedObjParserCheckin(page, checkin, append, count) {
+    var result = true;
     var userName = makeUserName(checkin.user);
     var venueName = "";
     var venueID = "";
@@ -175,13 +191,18 @@ function feedObjParserCheckin(page, checkin, append, count) {
             "photosCount": checkin.photos.count
         };
         if (append) {
-            //console.log("adding item at end");
+            //console.log("adding checkin at end");
             page.friendsCheckinsModel.append(item);
         } else {
-            //console.log("adding item at head");
+            //console.log("adding checkin at head");
             page.friendsCheckinsModel.insert(count,item)
         }
+        result = true;
+    } else if (venueDistance !== undefined) {
+        page.loaded -= 1;
+        result = false;
     }
+    return result;
 }
 
 function feedObjParserPhoto(page, photo) {
@@ -200,5 +221,36 @@ function feedObjParserPhoto(page, photo) {
         );
 
         break;
+    }
+}
+
+function feedObjParserFriend(page, friend, append, count) {
+    if (friend.content.type === "aggregation") {
+        //TODO: change if aggregation will be enabled
+        //page.loaded -= 1;
+        //page.loaded -= friend.content.object.items.length;
+    }
+    var item = {
+        "id": "",
+        "shout": "",
+        "user": friend.summary.text,
+        "userID": friend.thumbnails[0].id,
+        "mayor": false,
+        "photo": friend.thumbnails[0].photo,
+        "venueID": "",
+        "venueName": "",
+        "createdAt": makeTime(friend.createdAt),
+        "timestamp": friend.createdAt,
+        "venuePhoto": "",
+        "commentsCount": "0",
+        "likesCount": "0",
+        "photosCount": "0"
+    };
+    if (append) {
+        //console.log("adding friend at end");
+        page.friendsCheckinsModel.append(item);
+    } else {
+        //console.log("adding friend at head");
+        page.friendsCheckinsModel.insert(count,item)
     }
 }

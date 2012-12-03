@@ -8,6 +8,9 @@ Rectangle {
     property string message: ""
     property string objectType: ""
     property string objectID: ""
+
+    property alias hider: hider
+
     signal close()
     state: "hidden"
 
@@ -29,7 +32,7 @@ Rectangle {
 
         ButtonGreen {
             id: checkinButton
-            label: "Ok"
+            label: "OK"
             width: parent.width
             onClicked: {
                 notification.close();
@@ -37,6 +40,15 @@ Rectangle {
             }
         }
 
+    }
+
+    Timer {
+        id: hider
+        interval: 10000
+        onTriggered: {
+            notification.message = "";
+            notification.state = "hidden";
+        }
     }
 
     Image {

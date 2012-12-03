@@ -112,8 +112,8 @@ Rectangle {
                 color: theme.colors.textColorOptions
                 text: "Screen orientation"
                 font.pixelSize: theme.font.sizeSettigs
+                visible: (configuration.platform === "maemo")
             }
-
             Row {
                 width: parent.width
                 spacing: 20
@@ -136,6 +136,7 @@ Rectangle {
                     label: "PORTRAIT"
                     onClicked: settingsChanged("orientation","portrait")
                 }
+                visible: (configuration.platform === "maemo")
             }
 
             Item{
@@ -182,7 +183,7 @@ Rectangle {
             //Molome integration
             Text {
                 color: theme.colors.textColorOptions
-                text: "MOLO.me integration (beta)"
+                text: "MOLO.me integration"
                 font.pixelSize: theme.font.sizeSettigs
                 visible: configuration.platform === "meego"
             }
@@ -192,7 +193,7 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    label: "DOWNLOAD MOLO.ME NOW!"
+                    label: "DOWNLOAD MOLO.ME FIRST!"
                     onClicked: {
                         Qt.openUrlExternally("http://molo.me/meego");
                     }
@@ -355,6 +356,7 @@ Rectangle {
                 width: parent.width
             }
 
+            //THEME
             Text {
                 color: theme.colors.textColorOptions
                 text: "Nelisquare theme"
@@ -376,6 +378,37 @@ Rectangle {
                     selected: theme.name === "dark"
                     label: "DARK"
                     onClicked: settingsChanged("theme","dark");
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //Image loading settings
+            Text {
+                color: theme.colors.textColorOptions
+                text: "Push notifications"
+                font.pixelSize: theme.font.sizeSettigs
+            }
+            Row {
+                width: parent.width
+                spacing: 20
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: false//configuration.imageLoadType === "cached"
+                    label: "ENABLED"
+                    onClicked: {
+                        pushNotificationDialog.state = "shown";
+                    }
+                }
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: true//configuration.imageLoadType === "all"
+                    label: "DISABLED"
+                    onClicked: settingsChanged("push.enabled","0");
                 }
             }
             Item{

@@ -40,6 +40,8 @@ Item   {
         Storage.getKeyValue("settings.gpsunlock", settingLoaded);
         Storage.getKeyValue("settings.feedupdate", settingLoaded);
         Storage.getKeyValue("settings.theme", settingLoaded);
+
+        Storage.getKeyValue("settings.push.enabled",settingLoaded);
     }
 
     function settingLoaded(key, value) {
@@ -74,6 +76,9 @@ Item   {
         } else if (key === "settings.theme") {
             if (value === "") value = "light";
             theme.loadTheme(value);
+        } else if (key === "settings.push.enabled") {
+            if (value === "")
+                pushNotificationDialog.state = "shown";
         } else {
             console.log("Unknown setting: " + key + "=" + value);
         }

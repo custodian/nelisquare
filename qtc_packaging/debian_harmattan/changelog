@@ -1,7 +1,11 @@
 nelisquare (0.4.8) stable; urgency=low
-  * active dev
+  * api key changed
+  * feed updates & all latest checkins
+  * pan&pinch on maps and full photos
+  * new theming engine & api update
+  * bug fixes, layout updates
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 08 Nov 2012 15:02:27 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 03 Dec 2012 20:51:15 +0400
 
 nelisquare (0.4.7) stable; urgency=low
   * tips support

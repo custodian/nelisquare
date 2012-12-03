@@ -27,4 +27,5 @@ function showError(msg) {
     //error.reason = msg;
     notificationDialog.message += msg + "<br/>"
     notificationDialog.state = "shown";
+    notificationDialog.hider.restart();
 }

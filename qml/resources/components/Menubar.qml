@@ -46,7 +46,11 @@ Rectangle {
             colorActive: theme.colors.textButtonTextMenu
             colorInactive: theme.colors.textButtonTextMenuInactive
             onClicked: {
-                pageStack.push(Qt.resolvedUrl("../pages/VenuesList.qml"));
+                if (pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/VenuesList.qml")) {
+                    pageStack.replace(Qt.resolvedUrl("../pages/VenuesList.qml"),{},true);
+                } else {
+                    pageStack.push(Qt.resolvedUrl("../pages/VenuesList.qml"));
+                }
             }
         }
 

@@ -154,6 +154,22 @@ Rectangle {
         }
 
         NotificationDialog {
+            id: pushNotificationDialog
+            z: 30
+            width: parent.width
+            state: "hidden"
+            message: ""
+            onStateChanged: {
+                if (state === "shown")
+                    message = "<span><font='+1'>Push notifications</font><br/><br/>Incoming notifications are not supported at this version and are disabled by default.<br/>You will be promted again when they will be available at future versions.</span>"
+            }
+            onClose: {
+                configuration.settingChanged("settings.push.enabled","0");
+                pushNotificationDialog.state = "hidden";
+            }
+        }
+
+        NotificationDialog {
             id: notificationDialog
             z: 20
             width: parent.width

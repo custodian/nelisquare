@@ -14,6 +14,5 @@ Check out https://github.com/custodian/nelisquare/wiki for packages and instruct
 ## Branches
 
     master - latest easy to use "release"
-    topsquare - if exists, active development branch with unstable improvements
     nelisquare - original nelisquare client as of 0.2.6
 

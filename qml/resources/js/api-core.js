@@ -68,7 +68,11 @@ function doWebRequest(method, url, params, callback) {
                 data = doc.responseText;
                 callback(data,params);
             } else {
-                showError("General error: " + doc.status);
+                if (doc.status == 0) {
+                    showError("Network connection error");
+                } else {
+                    showError("General error: " + doc.status);
+                }
             }
         }
     }
