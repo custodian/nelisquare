@@ -35,6 +35,14 @@ PageStackWindow {
         }
     }*/
 
+    function processUINotification(id) {
+        window.processUINotification(id);
+    }
+
+    function processURI(url) {
+        window.processURI(url);
+    }
+
     function onPictureUploaded(response, page) {
         window.onPictureUploaded(response, page);
     }

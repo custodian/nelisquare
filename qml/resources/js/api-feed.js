@@ -45,7 +45,7 @@ function parseFriendsFeedUpdate(response, page) {
                     if (page.friendsCheckinsModel.get(i).id !== update.id)
                         continue;
                     console.log("FOUND CHECKIN in MODEL: " + update.id);
-                    page.friendsCheckinsModel.set(i,
+                    page.updateItem(i,
                         {
                         "commentsCount": update.comments.count,
                         "likesCount": update.likes.count
@@ -84,20 +84,20 @@ function parseFriendsFeed(response, page, history) {
         page.trailingMarker = activities.trailingMarker;
 
     var feedObjParser = function(object) {
+        var append = (!updating || history!==undefined);
+
         var timeObj = object;
         if (timeObj.object !== undefined)
             timeObj=timeObj.object;
         if (updateTime <= timeObj.createdAt)
             updateTime = timeObj.createdAt;
         if (object.type === "checkin") {
-            var append = (!updating || history!==undefined);
             if (feedObjParserCheckin(page, object.object, append, count))
                 count++;
         } else if (object.type === "photo") {
             feedObjParserPhoto(page,object.object);
         } else if (object.type === "friend" ) {
-            var append2 = (!updating || history!==undefined);
-            feedObjParserFriend(page, object, append2, count);
+            feedObjParserFriend(page, object, append, count);
             count++;
         } else if (object.type === "tip") {
             //TODO: make show tip
@@ -143,13 +143,14 @@ function parseFriendsFeed(response, page, history) {
         //Limit all checkins //TODO: Make options at settings of feed length
         if (history===undefined) {
             var currentsize = page.friendsCheckinsModel.count;
-            for (var i=100;i<currentsize;i++){
-                page.friendsCheckinsModel.remove(100);
+            var maxsize = 100;
+            for (var i=maxsize;i<currentsize;i++){
+                page.removeItem(maxsize);
                 page.loaded -= 1;
                 page.moreData = true;
             }
-            if (currentsize>99)
-                page.trailingMarker = page.friendsCheckinsModel.get(99).id;
+            if (currentsize>(maxsize-1))
+                page.trailingMarker = page.friendsCheckinsModel.get(maxsize-1).id;
         }
         for (var i=0;i<page.friendsCheckinsModel.count;i++){
             page.friendsCheckinsModel.setProperty(i,"createdAt", makeTime(page.friendsCheckinsModel.get(i).timestamp));
@@ -192,10 +193,10 @@ function feedObjParserCheckin(page, checkin, append, count) {
         };
         if (append) {
             //console.log("adding checkin at end");
-            page.friendsCheckinsModel.append(item);
+            page.addItem(item);
         } else {
+            page.addItem(item,count);
             //console.log("adding checkin at head");
-            page.friendsCheckinsModel.insert(count,item)
         }
         result = true;
     } else if (venueDistance !== undefined) {
@@ -213,7 +214,7 @@ function feedObjParserPhoto(page, photo) {
         //console.log("UPDATE CHECKIN PHOTO: " + photo.checkin.id);
         var photosCount = page.friendsCheckinsModel.get(i).photosCount;
         photosCount++;
-        page.friendsCheckinsModel.set(i,
+        page.updateItem(i,
             {
             "venuePhoto": thumbnailPhoto(photo,300,300),
             "photosCount": photosCount,
@@ -248,9 +249,9 @@ function feedObjParserFriend(page, friend, append, count) {
     };
     if (append) {
         //console.log("adding friend at end");
-        page.friendsCheckinsModel.append(item);
+        page.addItem(item);
     } else {
         //console.log("adding friend at head");
-        page.friendsCheckinsModel.insert(count,item)
+        page.addItem(item,count);
     }
 }

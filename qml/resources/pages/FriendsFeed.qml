@@ -47,6 +47,35 @@ Rectangle {
         trailingMarker = "";
     }
 
+    function addItem(item, position) {
+        if (position === undefined) {
+            friendsCheckinsModel.append(item);
+        } else {
+            friendsCheckinsModel.insert(position,item);
+        }
+
+        if (configuration.feedAutoUpdate!== "0"
+                && configuration.feedIntegration !=="0") {
+            platformUtils.addFeedItem(item);
+        }
+    }
+
+    function updateItem(position, update) {
+        friendsCheckinsModel.set(position, update);
+        if (configuration.feedIntegration !=="0") {
+            var item = JSON.parse(JSON.stringify(friendsCheckinsModel.get(position)))
+            platformUtils.updateFeedItem(item);
+        }
+    }
+
+    function removeItem(position) {
+        if (configuration.feedIntegration !=="0") {
+            var item = JSON.parse(JSON.stringify(friendsCheckinsModel.get(position)));
+            platformUtils.removeFeedItem(item);
+        }
+        friendsCheckinsModel.remove(position);
+    }
+
     function load() {
         var page = friendsFeed;
         page.update.connect(function(lastupdate) {

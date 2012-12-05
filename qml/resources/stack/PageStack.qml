@@ -145,7 +145,7 @@ Item {
             property Item owner: null
 
             // The width of the longer screen dimension
-            property int screenWidth: Math.max(screen.displayWidth, screen.displayHeight) // root.width //themeManager.screenWidth //Math.max(screen.width, screen.height)
+            property int screenWidth: Math.max(root.width, root.height) //screen.displayWidth, screen.displayHeight // root.width //themeManager.screenWidth //Math.max(screen.width, screen.height)
 
             // Duration of transition animation (in ms)
             property int transitionDuration: 300

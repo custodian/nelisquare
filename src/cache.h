@@ -14,6 +14,7 @@ protected:
     QNetworkAccessManager * manager;
 
     QString md5(QString data);
+    QString makeCachedURL(QString url);
 
     QString m_path;
     QMap<QString,QString> m_cachemap;
@@ -23,6 +24,8 @@ public:
     explicit Cache(QObject *parent = 0);
     
     Q_INVOKABLE QVariant get(QVariant url);
+
+    Q_INVOKABLE QVariant remove(QVariant url);
 
     Q_INVOKABLE QVariant info();
 

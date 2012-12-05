@@ -1,4 +1,7 @@
 #include "molome.h"
+
+#include <QtDeclarative/QDeclarativeView>
+#include <QGraphicsObject>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -19,8 +22,6 @@ Molome::Molome(QObject *parent) :
     m_molome_bin = "/bin/MOLOME";
 
     connect(&m_molo,SIGNAL(finished(int)),SLOT(moloFinished(int)));
-
-    updateinfo();
 }
 
 void Molome::updateinfo() {
@@ -46,8 +47,9 @@ QVariant Molome::install(){
     //qDebug() << "install pressed";
     if (!m_present)
         return QVariant(false);
-
+#ifdef Q_OS_HARMATTAN
     QtConcurrent::run(this, &Molome::molome_install);
+#endif
     return QVariant(true);
 }
 
@@ -98,7 +100,9 @@ void Molome::molome_install() {
 }
 
 QVariant Molome::uninstall() {
+#ifdef Q_OS_HARMATTAN
     QtConcurrent::run(this,&Molome::molome_uninstall);
+#endif
     return QVariant(true);
 }
 void Molome::molome_uninstall() {

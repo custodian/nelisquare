@@ -39,6 +39,10 @@ Rectangle {
         onStatusChanged: {
             image.visible = (image.status == Image.Ready)
             loader.visible = (image.status != Image.Ready)
+            if (image.status == Image.Error) {
+                console.log("Remove bad cached element");
+                cache.remove(photoUrl);
+            }
         }
     }
 

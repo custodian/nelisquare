@@ -22,6 +22,8 @@ Rectangle {
 
     property alias positionSource: positionSource
 
+    property string lastNotiCount: "0"
+
     anchors.fill:  parent
 
     color: theme.colors.backgroundMain
@@ -50,6 +52,24 @@ Rectangle {
 
     function onPictureUploaded(response, page) {
         PhotoAPI.parseAddPhoto(response, page);
+    }
+
+    function processUINotification(id) {
+        pageStack.push(Qt.resolvedUrl("pages/Notifications.qml"));
+    }
+
+    function processURI(url) {
+        var params = url.split("/");
+        var type = params[0];
+        var id = params[1];
+        switch(type) {
+        case "user":
+            pageStack.push(Qt.resolvedUrl("pages/User.qml"),{"userID":id});
+            break;
+        case "checkin":
+            pageStack.push(Qt.resolvedUrl("pages/Checkin.qml"),{"checkinID":id});
+            break;
+        }
     }
 
     Component.onCompleted: {
@@ -100,6 +120,16 @@ Rectangle {
 
     function updateNotificationCount(value) {
         toolbar.notificationsCount.text = value
+        //console.log("last: " + lastNotiCount + " new: " + value);
+        if (configuration.feedNotification!=="0") {
+            if (value != lastNotiCount) {
+                platformUtils.removeNotification("nelisquare.notification");
+                if (value!="0") {
+                    platformUtils.addNotification("nelisquare.notification","New notification!","You have " + value + " unreaded notification" +((value=="1")?"":"s"), 1);
+                }
+                lastNotiCount = value;
+            }
+        }
     }
 
     function showFriendsFeed() {

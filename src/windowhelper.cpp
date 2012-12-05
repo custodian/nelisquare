@@ -22,7 +22,7 @@
 #include <QList>
 #include <QVariant>
 #include <QDebug>
-#ifdef Q_WS_MAEMO_5
+#if defined(Q_OS_MAEMO)
 #include <QtDBus>
 #include <QDBusConnection>
 #include <QDBusMessage>
@@ -39,7 +39,7 @@ WindowHelper::WindowHelper(QmlApplicationViewer *viewer, QObject *parent) :
 
 Q_INVOKABLE void WindowHelper::minimize()
 {
-#ifdef Q_WS_MAEMO_5
+#if defined(Q_OS_MAEMO)
     QDBusConnection c = QDBusConnection::sessionBus();
     QDBusMessage m = QDBusMessage::createSignal("/", "com.nokia.hildon_desktop", "exit_app_view");
     c.send(m);
@@ -49,7 +49,7 @@ Q_INVOKABLE void WindowHelper::minimize()
 
 Q_INVOKABLE bool WindowHelper::isMaemo()
 {
-#ifdef Q_WS_MAEMO_5
+#if defined(Q_OS_MAEMO)
     return true;
 #else
     return false;
@@ -70,7 +70,7 @@ bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
 }
 
 Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
-#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
+#if defined(Q_OS_MAEMO)
     QString orientation = value.toString();
     QmlApplicationViewer::ScreenOrientation type = QmlApplicationViewer::ScreenOrientationAuto;
     if (orientation == "landscape") {
@@ -79,7 +79,7 @@ Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
         type = QmlApplicationViewer::ScreenOrientationLockPortrait;
     }
     m_viewer->setOrientation(type);
-#elif defined(MEEGO_EDITION_HARMATTAN)
+#elif defined(Q_OS_HARMATTAN)
     emit lockOrientation(value);
 #endif
 }

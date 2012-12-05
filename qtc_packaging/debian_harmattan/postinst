@@ -1,0 +1,22 @@
+#!/bin/sh
+
+DEFAULT_MIMETYPES_FILE='/usr/share/applications/defaults.list'
+MIMETYPE_STR1='x-maemo-urischeme/nelisquare=nelisquare_meego.desktop'
+
+echo "Adding mimetypes"
+
+if [ -f $DEFAULT_MIMETYPES_FILE ]; then
+   if grep -qs $MIMETYPE_STR1 $DEFAULT_MIMETYPES_FILE
+   then
+      echo " x-maemo-highlight/nelisquare already set"
+   else
+      echo $MIMETYPE_STR1 >> $DEFAULT_MIMETYPES_FILE
+      echo " x-maemo-highlight/nelisquare set"
+   fi
+fi
+
+echo "Updating desktop database"
+update-desktop-database
+
+# Make sure the installation is always considered successful
+exit 0

@@ -18,6 +18,9 @@ Item   {
     property int gpsUplockTime: 0 //in seconds
     property int feedAutoUpdate: 0 //in seconds
 
+    property string feedIntegration: "0" //1 == integrate
+    property string feedNotification: "0" //1 == notify
+
     property int commentUpdateRate: 300 //currently hardcoded to be 5 mins
 
     property string accessToken: "empty"
@@ -34,14 +37,17 @@ Item   {
         Storage.getKeyValue("settings.orientation", settingLoaded);
         Storage.getKeyValue("settings.mapprovider", settingLoaded);
         Storage.getKeyValue("settings.checkupdates", settingLoaded);
-        Storage.getKeyValue("settings.molome", settingLoaded);
 
         Storage.getKeyValue("settings.imageload", settingLoaded);
         Storage.getKeyValue("settings.gpsunlock", settingLoaded);
         Storage.getKeyValue("settings.feedupdate", settingLoaded);
+        Storage.getKeyValue("settings.feed.integration", settingLoaded);
+        Storage.getKeyValue("settings.feed.notification", settingLoaded);
         Storage.getKeyValue("settings.theme", settingLoaded);
 
         Storage.getKeyValue("settings.push.enabled",settingLoaded);
+
+        Storage.getKeyValue("settings.molome", settingLoaded);
     }
 
     function settingLoaded(key, value) {
@@ -79,6 +85,12 @@ Item   {
         } else if (key === "settings.push.enabled") {
             if (value === "")
                 pushNotificationDialog.state = "shown";
+        } else if (key === "settings.feed.integration") {
+            if (value === "") value = "1";
+            configuration.feedIntegration = value;
+        } else if (key === "settings.feed.notification") {
+            if (value === "") value = "1";
+            configuration.feedNotification = value;
         } else {
             console.log("Unknown setting: " + key + "=" + value);
         }

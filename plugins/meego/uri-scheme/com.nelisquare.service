@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=com.nelisquare
+Exec=/usr/bin/invoker --splash=/opt/nelisquare/qml/resources/pics/splash-turned.png --single-instance --type=e /opt/nelisquare/bin/nelisquare

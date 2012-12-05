@@ -46,7 +46,7 @@ QVariant Cache::loadtype(QVariant _type) {
 void Cache::onDownloadFinished(QNetworkReply * reply){
     QByteArray data = reply->readAll();
     QString url = reply->request().url().toString();
-    QString name = m_path + "/" + md5(url);
+    QString name = makeCachedURL(url);
 
     QFile file(name);
     file.open(QFile::WriteOnly);
@@ -63,6 +63,21 @@ QString Cache::md5(QString data)
     return hash.result().toHex();
 }
 
+QString Cache::makeCachedURL(QString url)
+{
+    QString ext = url.right(url.size() - url.lastIndexOf("."));
+    return m_path + "/" + md5(url) + ext;
+}
+
+QVariant Cache::remove(QVariant data)
+{
+    QString url = data.toString();
+    if (url.size()) {
+        m_cachemap.remove(url);
+        QFile::remove(makeCachedURL(url));
+    }
+}
+
 QVariant Cache::get(QVariant data)
 {
     QString url = data.toString();
@@ -73,7 +88,7 @@ QVariant Cache::get(QVariant data)
             data = it.value();
         } else {
             //qDebug() << "cache miss";
-            QString name = m_path + "/" + md5(url);
+            QString name = makeCachedURL(url);
             QFileInfo file(name);
             //qDebug() << "Hash:" << name << "Status:" << file.exists() << "URL:" << url;
             if (file.exists()) {

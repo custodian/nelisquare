@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Make sure the uninstallation is always considered successful
+exit 0

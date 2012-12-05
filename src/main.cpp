@@ -11,9 +11,15 @@
 #include "cache.h"
 #include "molome.h"
 
-//#include <meventfeed.h>
-
 #include <qplatformdefs.h>
+
+#if defined(Q_OS_HARMATTAN) || defined(Q_WS_SIMULATOR) || defined(Q_OS_MAEMO)
+#include "platform_utils.h"
+#endif
+
+#if defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
+#include "nelisquare_dbus.h"
+#endif
 
 class EventDisabler : public QObject
 {
@@ -51,27 +57,22 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 {
 #ifdef Q_OS_SYMBIAN
     QApplication::setGraphicsSystem(QLatin1String("openvg"));
-#elif defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6) || defined(MEEGO_EDITION_HARMATTAN)
+#elif defined(Q_OS_MAEMO) || defined(Q_OS_HARMATTAN)
     QApplication::setGraphicsSystem(QLatin1String("opengl"));
 #endif
 
     QApplication app(argc, argv);
 
-#if defined(VS_ENABLE_SPLASH) && defined(Q_WS_MAEMO_5)
+#if defined(VS_ENABLE_SPLASH) && defined(Q_OS_MAEMO)
     QPixmap pixmap("/opt/nelisquare/qml/resources/pics/splash-turned.png");
     QSplashScreen splash(pixmap);
     EventDisabler eventDisabler;
     splash.installEventFilter(&eventDisabler);
-    //Qt::WidgetAttribute attribute;
-    //attribute = Qt::WA_LockPortraitOrientation;
-    //splash.setAttribute(attribute, true);
     splash.showFullScreen();
-    //splash.showMessage("Initializating...",Qt::AlignHCenter|Qt::AlignVCenter, Qt::white);
-    //app.processEvents();
 #endif
 
     QmlApplicationViewer viewer;
-#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
+#if defined(Q_OS_MAEMO)
     viewer.addImportPath(QString("/opt/qtm12/imports"));
     viewer.engine()->addImportPath(QString("/opt/qtm12/imports"));
     viewer.engine()->addPluginPath(QString("/opt/qtm12/plugins"));
@@ -94,64 +95,56 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     WindowHelper *windowHelper = new WindowHelper(&viewer);
     PictureHelper *pictureHelper = new PictureHelper();
     Cache *cache = new Cache();
-    Molome *molome = new Molome();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.rootContext()->setContextProperty("cache", cache);
-    viewer.rootContext()->setContextProperty("molome", molome);
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 
-#if defined(VS_ENABLE_SPLASH) && defined(Q_WS_MAEMO_5)
-    //splash.showMessage("Loading...",Qt::AlignHCenter|Qt::AlignVCenter, Qt::white);
-    //app.processEvents();
+    Molome *molome = new Molome();
+    viewer.rootContext()->setContextProperty("molome", molome);
+
+#if defined(Q_OS_HARMATTAN) || defined(Q_WS_SIMULATOR) || defined(Q_OS_MAEMO)
+    PlatformUtils platformUtils(&app,cache);
+    viewer.rootContext()->setContextProperty("platformUtils", &platformUtils);
 #endif
 
-#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
+#if defined(Q_OS_MAEMO)
+    viewer.installEventFilter(windowHelper);
+#elif defined(Q_OS_HARMATTAN)
+    viewer.installEventFilter(new EventFilter);
+#endif
+
+#if defined(Q_OS_MAEMO)
     viewer.setMainQmlFile(QLatin1String("qml/resources/Maemo.qml"));
-#elif defined(MEEGO_EDITION_HARMATTAN)
+#elif defined(Q_OS_HARMATTAN)
     viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
 #else
     viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
-#endif
-
-#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
-    viewer.installEventFilter(windowHelper);
-#elif defined(MEEGO_EDITION_HARMATTAN)
-    EventFilter ef;
-    viewer.installEventFilter(&ef);
 #endif
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
     rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
-    rootObject->connect(molome,SIGNAL(infoUpdated(QVariant,QVariant)),SLOT(onMolomeInfoUpdate(QVariant,QVariant)));
-    rootObject->connect(molome,SIGNAL(photoRecieved(QVariant,QVariant)),SLOT(onMolomePhoto(QVariant,QVariant)));
-#if defined(Q_WS_MAEMO_5) || defined(Q_WS_MAEMO_6)
+    rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));
+
+#if defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
+    new NelisquareDbus(&app, &viewer);
+#endif
+
+#if defined(Q_OS_MAEMO)
     rootObject->connect(windowHelper,SIGNAL(visibilityChanged(QVariant)), SLOT(onVisibililityChange(QVariant)));
     viewer.showFullScreen();
-#elif defined(MEEGO_EDITION_HARMATTAN)
-    rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));
+#elif defined(Q_OS_HARMATTAN)
+    rootObject->connect(molome,SIGNAL(infoUpdated(QVariant,QVariant)),SLOT(onMolomeInfoUpdate(QVariant,QVariant)));
+    rootObject->connect(molome,SIGNAL(photoRecieved(QVariant,QVariant)),SLOT(onMolomePhoto(QVariant,QVariant)));
     viewer.showExpanded();
+    molome->updateinfo();
 #else
     viewer.showExpanded();
 #endif
-#if defined(VS_ENABLE_SPLASH) && defined(Q_WS_MAEMO_5)
+
+#if defined(VS_ENABLE_SPLASH) && defined(Q_OS_MAEMO)
     splash.finish(&viewer);
 #endif
-
-    molome->updateinfo();
-
-    /*QDesktopServices::setUrlHandler("nelisquare",windowHelper,"showNelisquare");
-
-    MEventFeed::instance()->addItem(QString("icon name"),
-       QString("title text"),
-       QString("body text"),
-       QStringList(), //ImageList
-       QDateTime::currentDateTime(),
-       QString("footer text"),
-       false,
-       QUrl("nelisquare://checkin/123"),
-       QString("nelisquare"),
-       QString("Nelisquare"));*/
 
     return app.exec();
 }

@@ -4,7 +4,6 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=Nelisquare
-#Exec=/usr/bin/single-instance /opt/nelisquare/bin/nelisquare
 Exec=invoker --splash=/opt/nelisquare/qml/resources/pics/splash-turned.png --single-instance --type=e /opt/nelisquare/bin/nelisquare
 #--splash=/opt/nelisquare/qml/resources/pics/splash.png
 #--splash-landscape=/opt/nelisquare/qml/resources/pics/splash.png
@@ -12,3 +11,9 @@ Icon=/usr/share/icons/hicolor/80x80/apps/nelisquare80.png
 X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
 X-Osso-Type=application/x-executable
+#contentaction+dbus
+MimeType=x-maemo-urischeme/nelisquare;
+X-Maemo-Service=com.nelisquare
+X-Maemo-Object-Path=/com/nelisquare
+X-Maemo-Method=com.nelisquare.loadURI
+

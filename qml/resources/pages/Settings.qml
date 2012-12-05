@@ -332,23 +332,81 @@ Rectangle {
 
                 ToolbarTextButton {
                     height: 35
-                    selected: configuration.feedAutoUpdate === 120
-                    label: "2 MIN"
-                    onClicked: settingsChanged("feedupdate",120);
-                }
-
-                ToolbarTextButton {
-                    height: 35
-                    selected: configuration.feedAutoUpdate === 300
-                    label: "5 MIN"
-                    onClicked: settingsChanged("feedupdate",300);
-                }
-
-                ToolbarTextButton {
-                    height: 35
                     selected: configuration.feedAutoUpdate === 600
                     label: "10 MIN"
-                    onClicked: settingsChanged("feedupdate", 600);
+                    onClicked: settingsChanged("feedupdate",600);
+                }
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: configuration.feedAutoUpdate === 1800
+                    label: "30 MIN"
+                    onClicked: settingsChanged("feedupdate",1800);
+                }
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: configuration.feedAutoUpdate === 3600
+                    label: "1 HOUR"
+                    onClicked: settingsChanged("feedupdate", 3600);
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //Notifications
+            Text {
+                color: theme.colors.textColorOptions
+                text: "Notification popups"
+                font.pixelSize: theme.font.sizeSettigs
+            }
+            Row {
+                width: parent.width
+                spacing: 20
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: configuration.feedNotification === "0"
+                    label: "DISABLED"
+                    onClicked: settingsChanged("feed.notification","0");
+                }
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: configuration.feedNotification === "1"
+                    label: "ENABLED"
+                    onClicked: settingsChanged("feed.notification","1");
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //Event feed integration
+            Text {
+                color: theme.colors.textColorOptions
+                text: "Feed at Home screen"
+                font.pixelSize: theme.font.sizeSettigs
+            }
+            Row {
+                width: parent.width
+                spacing: 20
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: configuration.feedIntegration === "0"
+                    label: "DISABLED"
+                    onClicked: settingsChanged("feed.integration","0");
+                }
+
+                ToolbarTextButton {
+                    height: 35
+                    selected: configuration.feedIntegration === "1"
+                    label: "ENABLED"
+                    onClicked: settingsChanged("feed.integration","1");
                 }
             }
             Item{
@@ -521,8 +579,20 @@ Rectangle {
                 text: theme.textHelp3
                 color: theme.colors.textColorOptions
                 font.pixelSize: theme.font.sizeHelp
+                font.underline: true
 
                 horizontalAlignment: Text.AlignHCenter
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        Qt.openUrlExternally(theme.textHelp3);
+                    }
+                }
+            }
+
+            Item {
+                width: parent.width
+                height: 30
             }
 
         }

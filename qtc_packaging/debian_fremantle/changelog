@@ -1,3 +1,8 @@
+nelisquare (0.4.9) stable; urgency=low
+  * <Add change description here>
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 06 Dec 2012 01:09:38 +0400
+
 nelisquare (0.4.8) stable; urgency=low
   * api key changed
   * feed updates & all latest checkins

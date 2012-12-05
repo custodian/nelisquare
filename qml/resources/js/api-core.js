@@ -88,8 +88,8 @@ function processResponse(response) {
         showError("ErrorType: " + meta.errorType + "\n" + meta.errorDetail);
     }
     var notifications = data.notifications;
-    //console.log("NOTIFICATIONS: " + JSON.stringify(notifications));
     if (notifications!==undefined){
+        //console.log("NOTIFICATIONS: " + JSON.stringify(notifications));
         notifications.forEach(function(notification) {
                 if (parse(notification.type) == "notificationTray") {
                     //TODO: change it somehow to make library

@@ -6,6 +6,8 @@
 #include <QVariant>
 #include <QProcess>
 
+#include <QtDeclarative/QDeclarativeView>
+
 class Molome : public QObject
 {
     Q_OBJECT
