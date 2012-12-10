@@ -8,14 +8,14 @@ Rectangle {
     signal clicked()
 
     smooth: true
-    border.color: mouse.pressed ? theme.colors.greenButtonBorderColorPressed : theme.colors.greenButtonBorderColor
+    border.color: mouse.pressed ? mytheme.colors.greenButtonBorderColorPressed : mytheme.colors.greenButtonBorderColor
     border.width: 2
-    gradient: mouse.pressed ? theme.gradientGreenPressed : theme.gradientGreen //idleColor
+    gradient: mouse.pressed ? mytheme.gradientGreenPressed : mytheme.gradientGreen //idleColor
 
     Text {
         text: button.label
         font.pixelSize: 24
-        color: mouse.pressed ? theme.colors.textColorButtonPressed : theme.colors.textColorButton
+        color: mouse.pressed ? mytheme.colors.textColorButtonPressed : mytheme.colors.textColorButton
         anchors.centerIn: parent
     }
 

@@ -7,6 +7,7 @@ Qt.include("api.js")
 function loadNotifications(page) {
     var url = "updates/notifications?limit=100&" + getAccessTokenParameter();
     waiting.show();
+    page.notificationsModel.clear();
     doWebRequest("GET",url,page, parseNotifications);
 }
 

@@ -4,16 +4,16 @@ Rectangle   {
     id: greenLine
 
     property string text: ""
-    property int size: theme.font.sizeSigns
+    property int size: mytheme.font.sizeSigns
 
     width: parent.width
     height: 30
 
-    gradient: theme.gradientHeader
+    gradient: mytheme.gradientHeader
 
     Text {
         text: greenLine.text
-        color: theme.colors.textHeader
+        color: mytheme.colors.textHeader
         font.pixelSize: size
         anchors.centerIn: parent
     }

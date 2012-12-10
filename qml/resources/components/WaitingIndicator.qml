@@ -3,12 +3,12 @@ import Qt 4.7
 Rectangle {
     id: waitingIndicator
     property int waitCount: 0
-    property string currentMessage: theme.textDefaultWait
+    property string currentMessage: mytheme.textDefaultWait
 
     anchors.horizontalCenter: parent.horizontalCenter
     width: doneText.width+90
     height: doneText.height+35
-    color: theme.colors.waitingInicatorBackGround
+    color: mytheme.colors.waitingInicatorBackGround
     radius: 2
     opacity: 0.9
     smooth: true
@@ -36,7 +36,7 @@ Rectangle {
     function show(message) {
         waitCount++;
         /*if (message === undefined) {
-            message = theme.textDefaultWait
+            message = mytheme.textDefaultWait
         }
         messages.append(message);
         */
@@ -48,8 +48,8 @@ Rectangle {
     Text {
         id: doneText
         text: waitingIndicator.currentMessage
-        color: theme.colors.textColorOptions
-        font.pixelSize: theme.font.sizeSigns
+        color: mytheme.colors.textColorOptions
+        font.pixelSize: mytheme.font.sizeSigns
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: 5

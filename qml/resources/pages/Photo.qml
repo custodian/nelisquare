@@ -1,10 +1,11 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import QtQuick 1.1
 import "../components"
 
 import "../js/api-photo.js" as PhotoAPI
 
-Rectangle {
+PageWrapper {
     signal user(string user)
     signal prevPhoto()
     signal nextPhoto()
@@ -13,11 +14,38 @@ Rectangle {
     width: parent.width
     height: parent.height
 
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     property string photoID: ""
     property string photoUrl: ""
     property alias owner: photoOwner
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: pageStack.pop()
+        }
+        ToolIcon{
+            platformIconId: "toolbar-mediacontrol-backwards"
+            onClicked: photoDetails.prevPhoto()
+        }
+        ToolIcon{
+            platformIconId: "toolbar-mediacontrol-forward"
+            onClicked: photoDetails.nextPhoto()
+        }
+        ToolIcon {
+            platformIconId: "toolbar-directory-move-to"
+            onClicked: {
+                //TODO: save image to disk
+            }
+        }
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                //TODO: add menu
+            }
+        }
+    }
 
     function load() {
         var page = photoDetails;

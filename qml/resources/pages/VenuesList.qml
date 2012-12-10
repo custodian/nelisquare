@@ -1,9 +1,9 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
-
 import "../js/api-venue.js" as VenueAPI
 
-Rectangle {
+PageWrapper {
     id: venuesList
     signal checkin(string venueid, string venuename)
     signal clicked(string venueid)
@@ -14,7 +14,26 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: pageStack.pop()
+        }
+
+        ToolIcon{
+            platformIconId: "toolbar-refresh"
+            onClicked: searchButton.clicked();
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                //TODO: add menu
+            }
+        }
+    }
 
     function load() {
         var page = venuesList;
@@ -50,18 +69,18 @@ Rectangle {
     Rectangle {
         width: parent.width
         height: 80
-        color: theme.colors.backgroundBlueDark
+        color: mytheme.colors.backgroundBlueDark
 
         LineEdit {
             id: searchText
-            text: theme.textSearchVenue
+            text: mytheme.textSearchVenue
             width: parent.width - 150
             x: 10
             y: 20
 
             onAccepted: {
                 var query = text;
-                if(query===theme.textSearchVenue) {
+                if(query===mytheme.textSearchVenue) {
                     query = "";
                 }
                 venuesList.search(query);
@@ -69,6 +88,7 @@ Rectangle {
         }
 
         ButtonBlue {
+            id: searchButton
             x: parent.width - width - 10
             y: 20
             height: 40
@@ -78,7 +98,7 @@ Rectangle {
             onClicked: {
                 // Search
                 var query = searchText.text;
-                if(query===theme.textSearchVenue) {
+                if(query===mytheme.textSearchVenue) {
                     query = "";
                 }
                 searchText.hideKeyboard();

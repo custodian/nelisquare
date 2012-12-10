@@ -5,7 +5,7 @@ Rectangle {
     id: photoShare
     width: parent.width
     height: items.height + 20
-    color: theme.colors.backgroundBlueDark
+    color: mytheme.colors.backgroundBlueDark
     state: "hidden"
 
     signal cancel()
@@ -37,7 +37,7 @@ Rectangle {
             text: "Selected photo"
             width: parent.width
             font.pixelSize: 24
-            color: theme.colors.textColorSign
+            color: mytheme.colors.textColorSign
         }
 
         Row {
@@ -54,7 +54,7 @@ Rectangle {
 
             Rectangle {
                 width: parent.width - selectedPhoto.width - parent.spacing
-                color: theme.colors.toolbarDarkColor
+                color: mytheme.colors.toolbarDarkColor
                 border.color: "#2774aA"
                 border.width: 1
                 height: 10 + twitterRow.y + twitterRow.height
@@ -71,15 +71,15 @@ Rectangle {
 
                     Rectangle {
                         border.width: 1
-                        border.color: theme.colors.checktapBorderColor
-                        color: friendsMouseArea.pressed ? theme.colors.checktapBackgroundActive : theme.colors.checktapBackground
+                        border.color: mytheme.colors.checktapBorderColor
+                        color: friendsMouseArea.pressed ? mytheme.colors.checktapBackgroundActive : mytheme.colors.checktapBackground
                         radius: 5
                         width: 42
                         height: 42
 
                         Image {
                             anchors.centerIn: parent
-                            source: "../pics/"+theme.name+"/checktap.png"
+                            source: "../pics/"+mytheme.name+"/checktap.png"
                             visible: photoShare.makePublic
                         }
 
@@ -98,7 +98,7 @@ Rectangle {
                         wrapMode: Text.Wrap
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
-                        color: theme.colors.textColorSign
+                        color: mytheme.colors.textColorSign
                     }
                 }
 
@@ -112,15 +112,15 @@ Rectangle {
 
                     Rectangle {
                         border.width: 1
-                        border.color: theme.colors.checktapBorderColor
-                        color: facebookMouseArea.pressed ? theme.colors.checktapBackgroundActive : theme.colors.checktapBackground
+                        border.color: mytheme.colors.checktapBorderColor
+                        color: facebookMouseArea.pressed ? mytheme.colors.checktapBackgroundActive : mytheme.colors.checktapBackground
                         radius: 5
                         width: 42
                         height: 42
 
                         Image {
                             anchors.centerIn: parent
-                            source: "../pics/"+theme.name+"/checktap.png"
+                            source: "../pics/"+mytheme.name+"/checktap.png"
                             visible: photoShare.useFacebook
                         }
 
@@ -139,7 +139,7 @@ Rectangle {
                         wrapMode: Text.Wrap
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
-                        color: theme.colors.textColorSign
+                        color: mytheme.colors.textColorSign
                     }
                 }
 
@@ -153,15 +153,15 @@ Rectangle {
 
                     Rectangle {
                         border.width: 1
-                        border.color: theme.colors.checktapBorderColor
-                        color: twitterMouseArea.pressed ? theme.colors.checktapBackgroundActive : theme.colors.checktapBackground
+                        border.color: mytheme.colors.checktapBorderColor
+                        color: twitterMouseArea.pressed ? mytheme.colors.checktapBackgroundActive : mytheme.colors.checktapBackground
                         radius: 5
                         width: 42
                         height: 42
 
                         Image {
                             anchors.centerIn: parent
-                            source: "../pics/"+theme.name+"/checktap.png"
+                            source: "../pics/"+mytheme.name+"/checktap.png"
                             visible: photoShare.useTwitter
                         }
 
@@ -180,7 +180,7 @@ Rectangle {
                         wrapMode: Text.Wrap
                         font.pixelSize: 22
                         anchors.verticalCenter: parent.verticalCenter
-                        color: theme.colors.textColorSign
+                        color: mytheme.colors.textColorSign
                     }
                 }
             }

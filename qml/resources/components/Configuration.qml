@@ -81,7 +81,7 @@ Item   {
             configuration.feedAutoUpdate = value;
         } else if (key === "settings.theme") {
             if (value === "") value = "light";
-            theme.loadTheme(value);
+            mytheme.loadTheme(value);
         } else if (key === "settings.push.enabled") {
             if (value === "")
                 pushNotificationDialog.state = "shown";

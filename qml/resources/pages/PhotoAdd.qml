@@ -1,8 +1,9 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import "../components"
 
-Rectangle {
+PageWrapper {
     signal uploadPhoto(string photo)
 
     property variant options: {}
@@ -10,7 +11,30 @@ Rectangle {
     id: photoAdd
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: pageStack.pop()
+        }
+
+        ToolIcon{
+            iconSource: "../pics/molome.png"
+            onClicked: {
+                waiting.show();
+                molome.getphoto();
+            }
+            visible: window.molome_installed && window.molome_present
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-refresh"
+            onClicked: {
+                galleryModel.reload();
+            }
+        }
+    }
 
     function load() {
         var page = photoAdd;
@@ -25,9 +49,11 @@ Rectangle {
     DocumentGalleryModel {
         id: galleryModel
 
+        property bool ready: status === DocumentGalleryModel.Idle || status === DocumentGalleryModel.Finished
+
         autoUpdate: true
         scope: DocumentGallery.Image  //real
-        properties: [ "filePath" ]    //real
+        properties: [ "filePath", "url" ]    //real
         //rootType: DocumentGallery.Image //sim
         //properties: [ "fileName" ]      //sim
         filter: GalleryWildcardFilter {
@@ -44,15 +70,15 @@ Rectangle {
         cellWidth: Math.min((width-5)/3,height)
         cellHeight: cellWidth
         clip: true
-        model: galleryModel
+        model: galleryModel.ready ? galleryModel : undefined
         delegate: photoDelegate
         header: Column {
             width: parent.width
             LineGreen {
-                height: 30
+                height: 40
                 text: "Select photo for upload"
             }
-            Column {
+            /*Column {
                 width: parent.width
                 Item {
                     width: parent.width
@@ -72,14 +98,15 @@ Rectangle {
                     height: 20
                 }
                 visible: window.molome_installed && window.molome_present
-            }
+            }*/
         }
     }
 
     Component {
          id: photoDelegate
          ProfilePhoto {
-            photoUrl: model.filePath      //real
+            //photoUrl: model.filePath      //real
+            photoUrl: url
             //photoUrl: model.fileName        //sim
             photoSize: photoGrid.cellWidth
             photoSourceSize: photoGrid.cellWidth
@@ -90,11 +117,8 @@ Rectangle {
             onClicked: {
                 photoAdd.uploadPhoto(photoUrl);
             }
+
+            //TODO: make textname overlap photo
          }
      }
-
-    //TODO: reload on "reload" toolbar action
-    /*onReload: {
-            galleryModel.reload();
-    }*/
 }

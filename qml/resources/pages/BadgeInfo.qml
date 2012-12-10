@@ -1,13 +1,13 @@
 import Qt 4.7
 import "../components"
 
-Rectangle {
+PageWrapper {
     signal venue(string venueID)
 
     id: badgeInfo
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     property string name: ""
     property string image: ""
@@ -53,15 +53,15 @@ Rectangle {
 
                 Image {
                     anchors.centerIn: parent
-                    source: "../pics/"+theme.name+"/loader.png"
+                    source: "../pics/"+mytheme.name+"/loader.png"
                     visible: (parent.status != Image.Ready)
                 }
             }
 
             Text {
                 x: 10
-                font.pixelSize: theme.font.sizeSettigs
-                color: theme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeSettigs
+                color: mytheme.colors.textColorOptions
                 text: name
             }
 
@@ -69,8 +69,8 @@ Rectangle {
                 x: 10
                 width: parent.width - 20
                 text: badgeInfo.info
-                color: theme.colors.textColorOptions
-                font.pixelSize: theme.font.sizeDefault
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeDefault
                 wrapMode: Text.WordWrap
             }
 
@@ -79,8 +79,8 @@ Rectangle {
                 x: 10
                 text: '@ ' + venueName
                 width: parent.width - 20
-                font.pixelSize: theme.font.sizeDefault
-                color: theme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeDefault
+                color: mytheme.colors.textColorOptions
                 wrapMode: Text.WordWrap
                 visible: venueName.length>0
                 MouseArea {
@@ -94,8 +94,8 @@ Rectangle {
                 x: 10
                 width: parent.width - 20
                 text: time
-                color: theme.colors.textColorTimestamp
-                font.pixelSize: theme.font.sizeSigns
+                color: mytheme.colors.textColorTimestamp
+                font.pixelSize: mytheme.font.sizeSigns
             }
         }
     }

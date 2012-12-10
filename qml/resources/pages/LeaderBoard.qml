@@ -3,7 +3,7 @@ import "../components"
 
 import "../js/api-user.js" as UserAPI
 
-Rectangle {
+PageWrapper {
     id: leaderBoard
     signal user( string user )
     property string rank: ""
@@ -13,7 +13,7 @@ Rectangle {
     width: parent.width
     height: parent.height
 
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     function load() {
         var page = leaderBoard;

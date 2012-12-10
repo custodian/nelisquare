@@ -20,13 +20,14 @@ Rectangle {
     property bool molome_present: false
     property bool molome_installed: false
 
-    property alias positionSource: positionSource
-
     property string lastNotiCount: "0"
+
+    property alias positionSource: positionSource
+    property alias pageStack: pageStack
 
     anchors.fill:  parent
 
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     onWindowActiveChanged: {
         if (!windowActive) {
@@ -63,6 +64,8 @@ Rectangle {
         var type = params[0];
         var id = params[1];
         switch(type) {
+        case "start":
+            break;
         case "user":
             pageStack.push(Qt.resolvedUrl("pages/User.qml"),{"userID":id});
             break;
@@ -119,7 +122,7 @@ Rectangle {
     }
 
     function updateNotificationCount(value) {
-        toolbar.notificationsCount.text = value
+        upperbar.notificationsCount.text = value
         //console.log("last: " + lastNotiCount + " new: " + value);
         if (configuration.feedNotification!=="0") {
             if (value != lastNotiCount) {
@@ -149,7 +152,7 @@ Rectangle {
     }
 
     ThemeLoader {
-        id: theme
+        id: mytheme
     }
 
     Configuration {
@@ -174,9 +177,10 @@ Rectangle {
 
     PageStack {
         id: pageStack
-        y: toolbar.height
-        height: window.isPortrait ? parent.height - menubar.height - toolbar.height : parent.height - toolbar.height
-        width: window.isPortrait ? parent.width : parent.width - menubar.width
+        y: upperbar.height
+        //DBG menu tools
+        height: window.isPortrait ? parent.height - upperbar.height : parent.height - upperbar.height // - menubar.height
+        width: window.isPortrait ? parent.width : parent.width // - menubar.width
 
         WaitingIndicator {
             id: waiting
@@ -233,7 +237,7 @@ Rectangle {
             onCancel: { checkinDialog.state = "hidden"; }
             onCheckin: {
                 var realComment = comment;
-                if(realComment === theme.textDefaultComment) {
+                if(realComment === mytheme.textDefaultComment) {
                     realComment = "";
                 }
                 var callback = function(checkinID) {
@@ -277,19 +281,21 @@ Rectangle {
         }
     }
 
-    Toolbar {
-        id: toolbar
+    UpperBar {
+        id: upperbar
     }
 
-    Menubar {
+    //DBG
+    /*Menubar {
         id: menubar
-    }
+    }*/
 
-    Image {
+    //DBG
+    /*Image {
         id: bottomShadow
         width: parent.width
         anchors.bottom: menubar.top
         visible: menubar.visible
         source:  "pics/bottom-shadow.png"
-    }
+    }*/
 }

@@ -13,10 +13,10 @@ symbian {
     TARGET.CAPABILITY += NetworkServices Location LocalServices ReadUserData WriteUserData
 }
 
-!symbian {
-    DEFINES += HAVE_GLWIDGET
-    QT += opengl
-}
+#!symbian {
+#    DEFINES += HAVE_GLWIDGET
+#    QT += opengl
+#}
 
 QT += network
 
@@ -26,7 +26,6 @@ contains(MEEGO_EDITION,harmattan){
     CONFIG += qdeclarative-boostable meegotouch
     # shareuiinterface-maemo-meegotouch share-ui-plugin share-ui-common mdatauri
 }
-
 maemo5 {
     DEFINES += Q_OS_MAEMO
 }
@@ -36,9 +35,13 @@ maemo5 {
 # MOBILITY variable.
 maemo5 {
   CONFIG += mobility12 qdbus
-} else {
+}
+contains(MEEGO_EDITION,harmattan){
   CONFIG += mobility meegotouchevents
   MOBILITY += feedback
+}
+symbian {
+  CONFIG += qt-components
 }
 MOBILITY += location
 
@@ -81,6 +84,7 @@ maemo5|simulator|contains(MEEGO_EDITION,harmattan){
 contains(MEEGO_EDITION,harmattan){
     include(plugins/meego/notifications/notifications.pri)
     include(plugins/meego/uri-scheme/uri-scheme.pri)
+    #include(plugins/icons/icons.pri)
 }
 maemo5 {
     #CONFIG += link_pkgconfig

@@ -12,15 +12,15 @@ Rectangle {
     width: 100
     height: 50
     border.width: 2
-    border.color: pressed?theme.colors.blueButtonBorderColorPressed:theme.colors.blueButtonBorderColor
+    border.color: pressed?mytheme.colors.blueButtonBorderColorPressed:mytheme.colors.blueButtonBorderColor
 
     smooth: true
-    gradient: button.pressed ? theme.gradientBluePressed : (mouse.pressed ? theme.gradientBluePressed : theme.gradientBlue)
+    gradient: button.pressed ? mytheme.gradientBluePressed : (mouse.pressed ? mytheme.gradientBluePressed : mytheme.gradientBlue)
 
     Text {
         text: button.label
-        font.pixelSize: theme.font.sizeDefault + fontDeltaSize
-        color: button.pressed ? theme.colors.textColorButtonPressed : theme.colors.textColorButton
+        font.pixelSize: mytheme.font.sizeDefault + fontDeltaSize
+        color: button.pressed ? mytheme.colors.textColorButtonPressed : mytheme.colors.textColorButton
         anchors.centerIn: parent
     }
 

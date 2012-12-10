@@ -3,7 +3,7 @@ import "../components"
 
 import "../js/api-tip.js" as TipAPI
 
-Rectangle {
+PageWrapper {
     id: tipsList
     signal tip(string id)
     signal update()
@@ -12,7 +12,7 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     property string baseID: ""
     property string baseType: "venues" //"venues/ID/tips" , "lists/ID/todos"("users/ID/tips")

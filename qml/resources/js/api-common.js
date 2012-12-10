@@ -54,7 +54,7 @@ function parseIcon(icon, size) {
     if (size === undefined) {
         size = 32
     }
-    return icon.prefix+theme.colors.iconbg+size+icon.suffix;
+    return icon.prefix+mytheme.colors.iconbg+size+icon.suffix;
 }
 
 function processLikes(likebox, data) {

@@ -20,7 +20,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: theme.colors.backgroundSplash
+        color: mytheme.colors.backgroundSplash
     }
 
     Image {
@@ -29,11 +29,11 @@ Item {
     }
 
     Text {
-        text: theme.textSplash
+        text: mytheme.textSplash
         anchors.centerIn: parent
-        color: theme.colors.textColorSign
-        font.pixelSize: theme.font.sizeDefault
-        font.family: theme.font.name
+        color: mytheme.colors.textColorSign
+        font.pixelSize: mytheme.font.sizeDefault
+        font.family: mytheme.font.name
         visible: !newuser
     }
 
@@ -47,8 +47,8 @@ Item {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Please, login with Foursquare!"
-                color: theme.colors.textColorSign
-                font.pixelSize: theme.font.sizeDefault
+                color: mytheme.colors.textColorSign
+                font.pixelSize: mytheme.font.sizeDefault
             }
             ButtonGreen {
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -68,9 +68,9 @@ Item {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Foursquare privacy policy"
-                color: theme.colors.textColorSign
+                color: mytheme.colors.textColorSign
                 font.underline: true
-                font.pixelSize: theme.font.sizeDefault
+                font.pixelSize: mytheme.font.sizeDefault
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
@@ -82,9 +82,9 @@ Item {
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "Nelisquare privacy policy"
-                color: theme.colors.textColorSign
+                color: mytheme.colors.textColorSign
                 font.underline: true
-                font.pixelSize: theme.font.sizeDefault
+                font.pixelSize: mytheme.font.sizeDefault
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {

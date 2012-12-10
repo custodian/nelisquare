@@ -6,21 +6,26 @@ import "."
 PageStackWindow {
     id: mainWindowStack
     property bool windowActive: Qt.application.active
+    showToolBar: toolbar.tools !== null
 
     onWindowActiveChanged: {
         window.windowActive = windowActive;
+    }
+
+    ToolBar {
+        id: toolbar
     }
 
     initialPage: Page{
         id: mainWindowPage
         anchors.fill: parent
         orientationLock: PageOrientation.LockPortrait
+        tools: toolbar
 
         MainWindow {
             id: window
         }
     }
-    showToolBar: false
 
     /*Menu {
         id: myMenu

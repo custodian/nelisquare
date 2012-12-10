@@ -1,10 +1,11 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../build.info.js" as BuildInfo
 import "../components"
 
 //TODO: dont forget about PAGESTACK:
 
-Rectangle {
+PageWrapper {
     signal authDeleted()
 
     signal settingsChanged(string type, string value);
@@ -12,10 +13,24 @@ Rectangle {
     property string cacheSize: "updating..."
 
     id: settings
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     width: parent.width
-    height: parent.height    
+    height: parent.height
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: pageStack.pop()
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                //TODO: add menu
+            }
+        }
+    }
 
     function load() {
         var page = settings;
@@ -40,7 +55,7 @@ Rectangle {
     LineGreen {
         id: settingsLabel
         text: "SETTINGS"
-        size: theme.font.sizeSettigs
+        size: mytheme.font.sizeSettigs
         height: 50
     }
 
@@ -69,33 +84,33 @@ Rectangle {
 
             //Check updates
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Check for updates"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.checkupdates === "none"
                     label: "NONE"
                     onClicked: settingsChanged("checkupdates","none")
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.checkupdates === "stable"
                     label: "STABLE"
                     onClicked: settingsChanged("checkupdates","stable")
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.checkupdates === "developer"
                     label: "BETA"
                     onClicked: settingsChanged("checkupdates","developer")
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.checkupdates === "alpha"
                     label: "ALPHA"
@@ -109,28 +124,28 @@ Rectangle {
 
             //OrientationLock
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Screen orientation"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
                 visible: (configuration.platform === "maemo")
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.orientationType === "auto"
                     label: "AUTO"
                     onClicked: settingsChanged("orientation","auto")
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.orientationType === "landscape"
                     label: "LANDSCAPE"
                     onClicked: settingsChanged("orientation","landscape")
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.orientationType === "portrait"
                     label: "PORTRAIT"
@@ -146,27 +161,27 @@ Rectangle {
 
             //Map provider
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Map provider"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.mapprovider === "google"
                     label: "GOOGLE"
                     onClicked: settingsChanged("mapprovider","google")
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.mapprovider === "openstreetmap"
                     label: "OSM"
                     onClicked: settingsChanged("mapprovider","openstreetmap")
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.mapprovider === "nokia"
                     label: "NOKIA"
@@ -182,16 +197,16 @@ Rectangle {
 
             //Molome integration
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "MOLO.me integration"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
                 visible: configuration.platform === "meego"
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     label: "DOWNLOAD MOLO.ME FIRST!"
                     onClicked: {
@@ -200,14 +215,14 @@ Rectangle {
                     visible: !window.molome_present;
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: true
                     label: (window.molome_installed ? "ENABLED" : "DISABLED")
                     onClicked: molome.updateinfo();
                     visible: window.molome_present;
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: false
                     label: "INSTALL"
@@ -224,7 +239,7 @@ Rectangle {
                         }
                     }
                 }
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: false
                     label: "UNINSTALL"
@@ -251,22 +266,22 @@ Rectangle {
 
             //Image loading settings
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Load images"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.imageLoadType === "cached"
                     label: "CACHED"
                     onClicked: settingsChanged("imageload","cached");
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.imageLoadType === "all"
                     label: "ALL"
@@ -280,29 +295,29 @@ Rectangle {
 
             //GPS Unlock time
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "GPS Unlock timeout"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.gpsUplockTime === 0
                     label: "AT ONCE"
                     onClicked: settingsChanged("gpsunlock",0);
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.gpsUplockTime === 30
                     label: "30 SEC"
                     onClicked: settingsChanged("gpsunlock",30);
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.gpsUplockTime === 60
                     label: "60 SEC"
@@ -315,36 +330,36 @@ Rectangle {
             }
 
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Feed autoupdate"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.feedAutoUpdate === 0
                     label: "OFF"
                     onClicked: settingsChanged("feedupdate",0);
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.feedAutoUpdate === 600
                     label: "10 MIN"
                     onClicked: settingsChanged("feedupdate",600);
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.feedAutoUpdate === 1800
                     label: "30 MIN"
                     onClicked: settingsChanged("feedupdate",1800);
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.feedAutoUpdate === 3600
                     label: "1 HOUR"
@@ -358,22 +373,22 @@ Rectangle {
 
             //Notifications
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Notification popups"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.feedNotification === "0"
                     label: "DISABLED"
                     onClicked: settingsChanged("feed.notification","0");
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.feedNotification === "1"
                     label: "ENABLED"
@@ -387,22 +402,22 @@ Rectangle {
 
             //Event feed integration
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Feed at Home screen"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.feedIntegration === "0"
                     label: "DISABLED"
                     onClicked: settingsChanged("feed.integration","0");
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: configuration.feedIntegration === "1"
                     label: "ENABLED"
@@ -416,24 +431,24 @@ Rectangle {
 
             //THEME
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Nelisquare theme"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
-                    selected: theme.name === "light"
+                    selected: mytheme.name === "light"
                     label: "LIGHT"
                     onClicked: settingsChanged("theme","light");
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
-                    selected: theme.name === "dark"
+                    selected: mytheme.name === "dark"
                     label: "DARK"
                     onClicked: settingsChanged("theme","dark");
                 }
@@ -445,15 +460,15 @@ Rectangle {
 
             //Image loading settings
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Push notifications"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: false//configuration.imageLoadType === "cached"
                     label: "ENABLED"
@@ -462,7 +477,7 @@ Rectangle {
                     }
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: true//configuration.imageLoadType === "all"
                     label: "DISABLED"
@@ -476,15 +491,15 @@ Rectangle {
 
             //App cache
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "App Cache"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
                 spacing: 20
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: false
                     label: "RESET"
@@ -494,7 +509,7 @@ Rectangle {
                     }
                 }
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     selected: false
                     label: "Size: " + cacheSize;
@@ -508,14 +523,14 @@ Rectangle {
 
             //Revoke auth token
             Text {
-                color: theme.colors.textColorOptions
+                color: mytheme.colors.textColorOptions
                 text: "Reset authentication"
-                font.pixelSize: theme.font.sizeSettigs
+                font.pixelSize: mytheme.font.sizeSettigs
             }
             Row {
                 width: parent.width
 
-                ToolbarTextButton {
+                TextButton {
                     height: 35
                     label: "REVOKE"
                     onClicked: {
@@ -531,7 +546,7 @@ Rectangle {
 
             Image {
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: "../pics/"+theme.name+"/separator.png"
+                source: "../pics/"+mytheme.name+"/separator.png"
             }
 
             Item{
@@ -541,18 +556,18 @@ Rectangle {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: theme.textHelp1
-                color: theme.colors.textColorOptions
-                font.pixelSize: theme.font.sizeHelp
+                text: mytheme.textHelp1
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeHelp
 
                 horizontalAlignment: Text.AlignHCenter
             }
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: theme.textHelp2
-                color: theme.colors.textColorOptions
-                font.pixelSize: theme.font.sizeHelp
+                text: mytheme.textHelp2
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeHelp
                 font.bold: true
 
                 horizontalAlignment: Text.AlignHCenter
@@ -560,32 +575,32 @@ Rectangle {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: theme.textVersionInfo + BuildInfo.version
-                color: theme.colors.textColorOptions
-                font.pixelSize: theme.font.sizeHelp
+                text: mytheme.textVersionInfo + BuildInfo.version
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeHelp
                 horizontalAlignment: Text.AlignHCenter
             }
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: theme.textBuildInfo + BuildInfo.build
-                color: theme.colors.textColorOptions
-                font.pixelSize: theme.font.sizeHelp
+                text: mytheme.textBuildInfo + BuildInfo.build
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeHelp
                 horizontalAlignment: Text.AlignHCenter
             }
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: theme.textHelp3
-                color: theme.colors.textColorOptions
-                font.pixelSize: theme.font.sizeHelp
+                text: mytheme.textHelp3
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeHelp
                 font.underline: true
 
                 horizontalAlignment: Text.AlignHCenter
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        Qt.openUrlExternally(theme.textHelp3);
+                        Qt.openUrlExternally(mytheme.textHelp3);
                     }
                 }
             }

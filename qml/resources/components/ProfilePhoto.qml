@@ -18,8 +18,8 @@ Rectangle {
     y: photoBorder
     width: photoWidth
     height: photoHeight
-    color: theme.colors.photoBackground
-    border.color: theme.colors.photoBorderColor
+    color: mytheme.colors.photoBackground
+    border.color: mytheme.colors.photoBorderColor
     border.width: 1
 
     Image {
@@ -49,7 +49,7 @@ Rectangle {
     /*Animated*/Image {
         id: loader
         anchors.centerIn: image
-        source: "../pics/"+theme.name+"/loader.png"
+        source: "../pics/"+mytheme.name+"/loader.png"
     }
 
     MouseArea {

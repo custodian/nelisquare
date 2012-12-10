@@ -6,7 +6,7 @@ import "../js/api.js" as Api
 Rectangle {
     id: menubar
     height: 70
-    color: theme.colors.backgroundMenubar
+    color: mytheme.colors.backgroundMenubar
 
     MouseArea {
         anchors.fill: parent
@@ -19,32 +19,32 @@ Rectangle {
         height: menubar.height
         spacing: 15
 
-        ToolbarTextButton {
+        TextButton {
             id: backwardsButton
             label: "BACK"
-            colorActive: theme.colors.textButtonTextMenu
-            colorInactive: theme.colors.textButtonTextMenuInactive
+            colorActive: mytheme.colors.textButtonTextMenu
+            colorInactive: mytheme.colors.textButtonTextMenuInactive
             shown: pageStack.depth > 1
             onClicked: {
                 pageStack.pop();
             }
         }
 
-        ToolbarTextButton {
+        TextButton {
             label: "FEED"
             selected: (pageStack.currentPage!=null && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/FriendsFeed.qml"))
-            colorActive: theme.colors.textButtonTextMenu
-            colorInactive: theme.colors.textButtonTextMenuInactive
+            colorActive: mytheme.colors.textButtonTextMenu
+            colorInactive: mytheme.colors.textButtonTextMenuInactive
             onClicked: {
                 window.showFriendsFeed();
             }
         }
 
-        ToolbarTextButton {
+        TextButton {
             label: "PLACES"
             selected: (pageStack.currentPage!=null && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/VenuesList.qml"))
-            colorActive: theme.colors.textButtonTextMenu
-            colorInactive: theme.colors.textButtonTextMenuInactive
+            colorActive: mytheme.colors.textButtonTextMenu
+            colorInactive: mytheme.colors.textButtonTextMenuInactive
             onClicked: {
                 if (pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/VenuesList.qml")) {
                     pageStack.replace(Qt.resolvedUrl("../pages/VenuesList.qml"),{},true);
@@ -54,21 +54,21 @@ Rectangle {
             }
         }
 
-        ToolbarTextButton {
+        TextButton {
             label: "LISTS"
             selected: false//"VenuesList"
-            colorActive: theme.colors.textButtonTextMenu
-            colorInactive: theme.colors.textButtonTextMenuInactive
+            colorActive: mytheme.colors.textButtonTextMenu
+            colorInactive: mytheme.colors.textButtonTextMenuInactive
             onClicked: {
                 Api.showError("Lists not implemented yet!");
             }
         }
 
-        ToolbarTextButton {
+        TextButton {
             label: "ME"
             selected: (pageStack.currentPage!=null && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/User.qml"))
-            colorActive: theme.colors.textButtonTextMenu
-            colorInactive: theme.colors.textButtonTextMenuInactive
+            colorActive: mytheme.colors.textButtonTextMenu
+            colorInactive: mytheme.colors.textButtonTextMenuInactive
             onClicked: {
                 pageStack.push(Qt.resolvedUrl("../pages/User.qml"),{"userID":"self"});
             }
@@ -103,9 +103,9 @@ Rectangle {
             PropertyChanges {
                 target: menubar
                 width: 100
-                height: menubar.parent.height - toolbar.height
+                height: menubar.parent.height - upperbar.height
                 x: menubar.parent.width - width
-                y: toolbar.height
+                y: upperbar.height
             }
             PropertyChanges {
                 target: menubarToolbar

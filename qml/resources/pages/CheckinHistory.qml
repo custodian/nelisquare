@@ -3,7 +3,7 @@ import "../components"
 
 import "../js/api-user.js" as UserAPI
 
-Rectangle {
+PageWrapper {
     id: checkinHistory
     signal checkin(string id)
     signal update()
@@ -18,7 +18,7 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     function load() {
         var page = checkinHistory;

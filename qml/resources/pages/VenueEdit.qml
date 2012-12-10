@@ -3,7 +3,7 @@ import "../components"
 
 import "../js/api-venue.js" as VenueAPI
 
-Rectangle {
+PageWrapper {
     id: venueEdit
     signal update(variant venue)
     signal updateCompleted(string venue)
@@ -14,7 +14,7 @@ Rectangle {
     width: parent.width
     height: parent.height
 
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     function load() {
         var page = venueEdit;
@@ -74,20 +74,20 @@ Rectangle {
             Text {
                 id: textNameLabel
                 text: "NAME"
-                color: theme.colors.textColorOptions
-                font.pixelSize: theme.font.sizeToolbar
-                font.family: "Nokia Pure" //theme.font.name
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeToolbar
+                font.family: "Nokia Pure" //mytheme.font.name
                 font.bold: true
 
                 LineEdit {
-                    text: theme.textEnterVenueName
+                    text: mytheme.textEnterVenueName
                     anchors.left: textNameLabel.right
                     anchors.leftMargin: 20
                     anchors.verticalCenter: textNameLabel.verticalCenter
                     width: parent.parent.width - textNameLabel.width - 20
                     onAccepted: {
                         var query = text;
-                        if(query===theme.textEnterVenueName) {
+                        if(query===mytheme.textEnterVenueName) {
                             query = "";
                         }
                         hideKeyboard();

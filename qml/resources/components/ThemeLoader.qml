@@ -1,11 +1,14 @@
 import QtQuick 1.1
 
 Item {
-    id: theme
+    id: themeLoader
     property string name: "light"
 
     property variant colors
     property bool inverted: false
+    onInvertedChanged: {
+        theme.inverted = themeLoader.inverted;
+    }
     property string colorString: "red"
 
     property variant gradientTextBox
@@ -53,7 +56,7 @@ Item {
         //actually loading theme
         var factory = Qt.createComponent(Qt.resolvedUrl("../themes/"+type + ".qml"));
         if (factory.status === Component.Ready) {
-            var loadedTheme = factory.createObject(theme);
+            var loadedTheme = factory.createObject(themeLoader);
             applyTheme(loadedTheme);
         } else {
             console.log("Theme " + type + " not found!");
@@ -63,21 +66,21 @@ Item {
     function applyTheme(loadedTheme) {
         //console.log("Apply new theme " + loadedTheme.colors.name);
         //color options
-        theme.colors = loadedTheme.colors;
+        mytheme.colors = loadedTheme.colors;
         //gradients
-        theme.gradientTextBox = loadedTheme.getGradient("gradientTextBox");
-        theme.gradientToolbar = loadedTheme.getGradient("gradientToolbar");
-        theme.gradientHeader = loadedTheme.getGradient("gradientHeader");
-        theme.gradientGreen = loadedTheme.getGradient("gradientGreen");
-        theme.gradientGreenPressed = loadedTheme.getGradient("gradientGreenPressed");
-        theme.gradientLightGreen = loadedTheme.getGradient("gradientLightGreen");
-        theme.gradientDarkBlue = loadedTheme.getGradient("gradientDarkBlue");
-        theme.gradientBlue = loadedTheme.getGradient("gradientBlue");
-        theme.gradientBluePressed = loadedTheme.getGradient("gradientBluePressed");
-        theme.gradientGray = loadedTheme.getGradient("gradientGray");
-        theme.gradientGrayPressed = loadedTheme.getGradient("gradientGrayPressed");
+        mytheme.gradientTextBox = loadedTheme.getGradient("gradientTextBox");
+        mytheme.gradientToolbar = loadedTheme.getGradient("gradientToolbar");
+        mytheme.gradientHeader = loadedTheme.getGradient("gradientHeader");
+        mytheme.gradientGreen = loadedTheme.getGradient("gradientGreen");
+        mytheme.gradientGreenPressed = loadedTheme.getGradient("gradientGreenPressed");
+        mytheme.gradientLightGreen = loadedTheme.getGradient("gradientLightGreen");
+        mytheme.gradientDarkBlue = loadedTheme.getGradient("gradientDarkBlue");
+        mytheme.gradientBlue = loadedTheme.getGradient("gradientBlue");
+        mytheme.gradientBluePressed = loadedTheme.getGradient("gradientBluePressed");
+        mytheme.gradientGray = loadedTheme.getGradient("gradientGray");
+        mytheme.gradientGrayPressed = loadedTheme.getGradient("gradientGrayPressed");
 
-        theme.name = theme.colors.name;
-        theme.inverted = loadedTheme.inverted;
+        mytheme.name = mytheme.colors.name;
+        themeLoader.inverted = loadedTheme.inverted;
     }
 }

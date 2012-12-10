@@ -19,7 +19,7 @@ Item {
     property string createdAt: ""
     property string eventOwner: ""
 
-    property int fontSize: theme.font.sizeSigns
+    property int fontSize: mytheme.font.sizeSigns
 
     property int commentsCount: 0
     property int peoplesCount: 0
@@ -40,7 +40,7 @@ Item {
 
     Rectangle {
         id: titleContainer
-        color: mouseArea.pressed || highlight ? theme.colors.backgroundSand : theme.colors.backgroundMain
+        color: mouseArea.pressed || highlight ? mytheme.colors.backgroundSand : mytheme.colors.backgroundMain
         y: 1
         width: parent.width
         height: 10 + (showText ? Math.max(statusTextArea.height,profileImage.height) : profileImage.height)
@@ -74,11 +74,11 @@ Item {
 
                 Text {
                     id: messageText
-                    color: theme.colors.textColorOptions
+                    color: mytheme.colors.textColorOptions
                     font.pixelSize: fontSize
                     font.bold: true
                     width: (parent.width - (userMayor?mayorImage.width+5:0))
-                    text: (userName + (venueName !="" ? ( (userName != "" ? "<span style='color:"+theme.colors.textColorTimestamp+"'> @ </span>": "") + venueName):""))
+                    text: (userName + (venueName !="" ? ( (userName != "" ? "<span style='color:"+mytheme.colors.textColorTimestamp+"'> @ </span>": "") + venueName):""))
                     wrapMode: Text.Wrap
                     visible: messageText.text != ""
                 }
@@ -86,7 +86,7 @@ Item {
 
             Text {
                 id: commentText
-                color: theme.colors.textColorShout
+                color: mytheme.colors.textColorShout
                 font.pixelSize: fontSize
                 width: parent.width
                 text: userShout!="" ? userShout : (venueAddress + " " + venueCity)
@@ -110,7 +110,7 @@ Item {
                 spacing: 10
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
-                    color: theme.colors.textColorTimestamp
+                    color: mytheme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: createdAt
                     wrapMode: Text.Wrap
@@ -129,7 +129,7 @@ Item {
                 Text {
                     id: textPeoples
                     anchors.verticalCenter: parent.verticalCenter
-                    color: theme.colors.textColorTimestamp
+                    color: mytheme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: peoplesCount
                     visible: peoplesCount>0
@@ -147,7 +147,7 @@ Item {
                 Text {
                     id: textComment
                     anchors.verticalCenter: parent.verticalCenter
-                    color: theme.colors.textColorTimestamp
+                    color: mytheme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: commentsCount
                     visible: commentsCount>0
@@ -165,7 +165,7 @@ Item {
                 Text {
                     id: textPhotos
                     anchors.verticalCenter: parent.verticalCenter
-                    color: theme.colors.textColorTimestamp
+                    color: mytheme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: photosCount
                     visible: photosCount>0
@@ -183,7 +183,7 @@ Item {
                 Text {
                     id: textLikes
                     anchors.verticalCenter: parent.verticalCenter
-                    color: theme.colors.textColorTimestamp
+                    color: mytheme.colors.textColorTimestamp
                     font.pixelSize: fontSize - 2
                     text: likesCount
                     visible: likesCount>0
@@ -211,7 +211,7 @@ Item {
 
             Image {
                 asynchronous: true
-                source: "../pics/"+theme.name+"/delete.png"
+                source: "../pics/"+mytheme.name+"/delete.png"
                 width: parent.width
                 height: parent.height
                 smooth: true

@@ -1,10 +1,11 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import "../components"
 
 import "../js/api-notifications.js" as NotiAPI
 
-Rectangle {
+PageWrapper {
     signal user(string user)
     signal tip(string tip)
     signal checkin(string checkin)
@@ -18,7 +19,26 @@ Rectangle {
     width: parent.width
     height: parent.height
 
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: pageStack.pop()
+        }
+        ToolIcon {
+            platformIconId: "toolbar-refresh"
+            onClicked: {
+                NotiAPI.loadNotifications(notificationsList);
+            }
+        }
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                //TODO: add menu
+            }
+        }
+    }
 
     function load() {
         var page = notificationsList;

@@ -3,7 +3,7 @@ import "../components"
 
 import "../js/api-user.js" as UserAPI
 
-Rectangle {
+PageWrapper {
     signal badge(variant params)
 
     property string userID: ""
@@ -12,7 +12,7 @@ Rectangle {
     id: badgesPage
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     function load() {
         var page = badgesPage;
@@ -72,7 +72,7 @@ Rectangle {
                 }
                 Image {
                     anchors.centerIn: badgeImage
-                    source: "../pics/"+theme.name+"/loader.png"
+                    source: "../pics/"+mytheme.name+"/loader.png"
                     visible: (badgeImage.status != Image.Ready)
                 }
             }
@@ -80,8 +80,8 @@ Rectangle {
                 text: model.name;
                 y: badgeImage.y + badgeImage.height
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pixelSize: theme.font.sizeSigns
-                color: theme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeSigns
+                color: mytheme.colors.textColorOptions
             }
         }
     }

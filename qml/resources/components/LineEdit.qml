@@ -11,9 +11,9 @@ Rectangle {
     width: parent.width - 10
     x: 10
 
-    gradient: theme.gradientTextBox
+    gradient: mytheme.gradientTextBox
     border.width: 1
-    border.color: theme.colors.textboxBorderColor
+    border.color: mytheme.colors.textboxBorderColor
     smooth: true
 
     function hideKeyboard() {
@@ -28,7 +28,7 @@ Rectangle {
         height: parent.height - 10
         x: 5
         y: 5
-        color: theme.colors.textColor
+        color: mytheme.colors.textColor
         font.pixelSize: 24
 
         onAccepted: {

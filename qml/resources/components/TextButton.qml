@@ -7,8 +7,8 @@ Item {
     property bool shown: true
     property bool bar: false
 
-    property string colorActive: theme.colors.textButtonText
-    property string colorInactive: theme.colors.textButtonTextInactive
+    property string colorActive: mytheme.colors.textButtonText
+    property string colorInactive: mytheme.colors.textButtonTextInactive
     signal clicked()
     width: buttonText.width + 10
     height: 58
@@ -20,8 +20,8 @@ Item {
             text: button.label
             anchors.centerIn: parent
             color: selected ? colorActive : colorInactive
-            font.pixelSize: theme.font.sizeToolbar
-            font.family: "Nokia Pure" //theme.font.name
+            font.pixelSize: mytheme.font.sizeToolbar
+            font.family: "Nokia Pure" //mytheme.font.name
             font.bold: true
         }
 
@@ -29,7 +29,7 @@ Item {
             anchors.top: buttonText.bottom
             width: parent.width
             height: 6
-            color: theme.colors.toolbarLightColor
+            color: mytheme.colors.toolbarLightColor
             visible: selected && bar
         }
 

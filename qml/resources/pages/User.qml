@@ -1,9 +1,10 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-user.js" as UserAPI
 
-Rectangle {
+PageWrapper {
     signal openLeaderboard()
     signal user(string user)
     signal venue(string venue);
@@ -23,7 +24,7 @@ Rectangle {
     id: details
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     property string userID: ""
     property string userName: ""
@@ -54,6 +55,20 @@ Rectangle {
     property string lastTime: ""
 
     property alias boardModel: boardModel
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: pageStack.pop()
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                //TODO: add menu
+            }
+        }
+    }
 
     function load() {
         var page = details;
@@ -300,15 +315,15 @@ Rectangle {
                 Text {
                     id: lblScoresText
                     text: "<b>SCORES</b> (LAST 7 DAYS)"
-                    font.pixelSize: theme.font.sizeHelp
-                    color: theme.colors.textColorOptions
+                    font.pixelSize: mytheme.font.sizeHelp
+                    color: mytheme.colors.textColorOptions
                 }
                 Text {
                     text: "BEST SCORE"
                     anchors.right: parent.right
-                    font.pixelSize: theme.font.sizeHelp
+                    font.pixelSize: mytheme.font.sizeHelp
                     font.bold: true
-                    color: theme.colors.textColorOptions
+                    color: mytheme.colors.textColorOptions
                 }
             }
             //scores value
@@ -325,9 +340,9 @@ Rectangle {
                 Text {
                     text: scoreMax
                     anchors.right: parent.right
-                    color: theme.colors.textColorOptions
+                    color: mytheme.colors.textColorOptions
                     font.bold: true
-                    font.pixelSize: theme.font.sizeHelp
+                    font.pixelSize: mytheme.font.sizeHelp
                 }
             }
 
@@ -344,7 +359,7 @@ Rectangle {
 
                     width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.colors.backgroundSand
+                    color: mytheme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -359,7 +374,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.colors.textColorProfile
+                        color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userBadgesCount + " " + "Badges"
                     }
@@ -379,7 +394,7 @@ Rectangle {
                     anchors.horizontalCenter: parent.horizontalCenter
                     width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.colors.backgroundSand
+                    color: mytheme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -394,7 +409,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.colors.textColorProfile
+                        color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userCheckinsCount + " " + "Checkins"
                     }
@@ -414,7 +429,7 @@ Rectangle {
                     anchors.leftMargin: 10
                     width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.colors.backgroundSand
+                    color: mytheme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -429,7 +444,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.colors.textColorProfile
+                        color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userMayorshipsCount + " " + "Mayorships"
                     }
@@ -449,7 +464,7 @@ Rectangle {
                     anchors.rightMargin: 10
                     width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.colors.backgroundSand
+                    color: mytheme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -464,7 +479,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.colors.textColorProfile
+                        color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userFriendsCount + " " + "Friends"
                     }
@@ -484,7 +499,7 @@ Rectangle {
                     anchors.horizontalCenter: checkinsCount.horizontalCenter
                     width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.colors.backgroundSand
+                    color: mytheme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -499,7 +514,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.colors.textColorProfile
+                        color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userPhotosCount + " " + "Photos"
                     }
@@ -520,7 +535,7 @@ Rectangle {
                     anchors.leftMargin: 10
                     width: (parent.width - 40) / 3
                     height: 100
-                    color: theme.colors.backgroundSand
+                    color: mytheme.colors.backgroundSand
                     smooth: true
                     radius: 5
 
@@ -535,7 +550,7 @@ Rectangle {
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
                         y: parent.height - height - 2
-                        color: theme.colors.textColorProfile
+                        color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
                         text: details.userTipsCount + " " + "Tips"
                     }

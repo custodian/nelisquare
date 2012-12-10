@@ -76,6 +76,7 @@ QVariant Cache::remove(QVariant data)
         m_cachemap.remove(url);
         QFile::remove(makeCachedURL(url));
     }
+    return QVariant(true);
 }
 
 QVariant Cache::get(QVariant data)

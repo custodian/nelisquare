@@ -21,6 +21,10 @@
 #include "nelisquare_dbus.h"
 #endif
 
+#if defined(Q_OS_HARMATTAN)
+#include <MDeclarativeCache>
+#endif
+
 class EventDisabler : public QObject
 {
 protected:
@@ -55,13 +59,15 @@ private:
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-#ifdef Q_OS_SYMBIAN
+/*#ifdef Q_OS_SYMBIAN
     QApplication::setGraphicsSystem(QLatin1String("openvg"));
 #elif defined(Q_OS_MAEMO) || defined(Q_OS_HARMATTAN)
     QApplication::setGraphicsSystem(QLatin1String("opengl"));
 #endif
+*/
 
-    QApplication app(argc, argv);
+    QApplication *app = createApplication(argc, argv);
+    QmlApplicationViewer viewer;
 
 #if defined(VS_ENABLE_SPLASH) && defined(Q_OS_MAEMO)
     QPixmap pixmap("/opt/nelisquare/qml/resources/pics/splash-turned.png");
@@ -71,7 +77,13 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     splash.showFullScreen();
 #endif
 
-    QmlApplicationViewer viewer;
+/*#if defined(Q_OS_MAEMO) || defined(Q_OS_HARMATTAN)
+    QGLWidget glWidget;
+    glWidget.setAutoFillBackground(false);
+    viewer.setViewport(&glWidget);
+#endif
+*/
+
 #if defined(Q_OS_MAEMO)
     viewer.addImportPath(QString("/opt/qtm12/imports"));
     viewer.engine()->addImportPath(QString("/opt/qtm12/imports"));
@@ -104,7 +116,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("molome", molome);
 
 #if defined(Q_OS_HARMATTAN) || defined(Q_WS_SIMULATOR) || defined(Q_OS_MAEMO)
-    PlatformUtils platformUtils(&app,cache);
+    PlatformUtils platformUtils(app,cache);
     viewer.rootContext()->setContextProperty("platformUtils", &platformUtils);
 #endif
 
@@ -124,16 +136,16 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
     rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
-    rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));
 
 #if defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
-    new NelisquareDbus(&app, &viewer);
+    new NelisquareDbus(app, &viewer);
 #endif
 
 #if defined(Q_OS_MAEMO)
     rootObject->connect(windowHelper,SIGNAL(visibilityChanged(QVariant)), SLOT(onVisibililityChange(QVariant)));
     viewer.showFullScreen();
 #elif defined(Q_OS_HARMATTAN)
+    rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));
     rootObject->connect(molome,SIGNAL(infoUpdated(QVariant,QVariant)),SLOT(onMolomeInfoUpdate(QVariant,QVariant)));
     rootObject->connect(molome,SIGNAL(photoRecieved(QVariant,QVariant)),SLOT(onMolomePhoto(QVariant,QVariant)));
     viewer.showExpanded();
@@ -146,5 +158,5 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     splash.finish(&viewer);
 #endif
 
-    return app.exec();
+    return app->exec();
 }

@@ -4,7 +4,7 @@ Rectangle {
     id: notification
     width: parent.width
     height: items.height + 50
-    color: theme.colors.notificationBackground
+    color: mytheme.colors.notificationBackground
     property string message: ""
     property string objectType: ""
     property string objectID: ""
@@ -27,7 +27,7 @@ Rectangle {
             wrapMode: Text.Wrap
             width: parent.width
             font.pixelSize: 22
-            color: theme.colors.textHeader
+            color: mytheme.colors.textHeader
         }
 
         ButtonGreen {

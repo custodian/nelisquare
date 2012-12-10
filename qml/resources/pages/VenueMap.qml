@@ -4,11 +4,11 @@ import QtMobility.location 1.2
 import "../components"
 import "../js/utils.js" as Utils
 
-Rectangle {
+PageWrapper {
     id: venueMap
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     property string venueMapLat: "0"
     property string venueMapLng: "0"
@@ -178,7 +178,7 @@ Rectangle {
         anchors.topMargin: 10
 
         height: zoomInBtn.height
-        ToolbarButton {
+        IconButton {
             id: zoomInBtn
             anchors.right: parent.right
             anchors.rightMargin: 20
@@ -214,7 +214,7 @@ Rectangle {
                                      });
             }
         }
-        ToolbarButton {
+        IconButton {
             anchors.left: parent.left
             anchors.leftMargin: 20
             width: 48

@@ -3,7 +3,7 @@ import "../components"
 
 import "../js/api-tip.js" as TipAPI
 
-Rectangle {
+PageWrapper {
     signal like(bool state)
     signal user(string user)
     signal venue(string venueID)
@@ -14,7 +14,7 @@ Rectangle {
     id: tipPage
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     property string tipID: ""
 

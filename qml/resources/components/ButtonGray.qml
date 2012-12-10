@@ -10,9 +10,9 @@ Rectangle {
     signal clicked()
 
     smooth: true
-    border.color: mouse.pressed ? theme.colors.grayButtonBorderColorPressed : theme.colors.grayButtonBorderColor
+    border.color: mouse.pressed ? mytheme.colors.grayButtonBorderColorPressed : mytheme.colors.grayButtonBorderColor
     border.width: 1
-    gradient: mouse.pressed ? theme.gradientGrayPressed : theme.gradientGray
+    gradient: mouse.pressed ? mytheme.gradientGrayPressed : mytheme.gradientGray
 
     Image {
         id: icon
@@ -26,7 +26,7 @@ Rectangle {
     Text {
         text: button.label
         font.pixelSize: 24
-        color: button.pressed ? theme.colors.textColorButtonPressed : theme.colors.textColorButton
+        color: button.pressed ? mytheme.colors.textColorButtonPressed : mytheme.colors.textColorButton
         anchors.centerIn: parent
         visible: button.label.length>0
     }

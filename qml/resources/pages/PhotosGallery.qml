@@ -4,7 +4,7 @@ import "../components"
 
 import "../js/api-photo.js" as PhotoAPI
 
-Rectangle {
+PageWrapper {
     signal photo(string photo)
     signal change(string photo)
     signal update()
@@ -21,7 +21,7 @@ Rectangle {
     id: venuePhotos
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     function load() {
         var page = venuePhotos;

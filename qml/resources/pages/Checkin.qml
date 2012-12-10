@@ -1,9 +1,10 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-checkin.js" as CheckinAPI
 
-Rectangle {
+PageWrapper {
     signal like(string checkin, bool state)
     signal venue(string venue)
     signal user(string user)
@@ -15,7 +16,7 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     property string checkinID: ""
 
@@ -28,6 +29,35 @@ Rectangle {
     property alias badgesModel: badgesModel
     property alias commentsModel: commentsModel
     property alias photosBox: photosBox
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: pageStack.pop()
+        }
+
+        ToolIcon{
+            platformIconId: "toolbar-edit"
+            onClicked: {
+                checkin.showAddComment(checkin.checkinID);
+            }
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-image-edit"
+            visible: checkin.owner.eventOwner === "self"
+            onClicked: {
+                checkin.showAddPhoto(checkin.checkinID)
+            }
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                //TODO: add menu
+            }
+        }
+    }
 
     function load() {
         var page = checkin;
@@ -110,7 +140,7 @@ Rectangle {
             y: scoreHolder.y - columnView.spacing
             width: parent.width
             height: scoreHolder.height + 2 * columnView.spacing
-            gradient: theme.gradientDarkBlue
+            gradient: mytheme.gradientDarkBlue
         }
 
         Column {
@@ -149,13 +179,13 @@ Rectangle {
                     Text {
                         width: parent.width * 0.90
                         text: "TOTAL POINTS"
-                        color: theme.colors.textPoints
-                        font.pixelSize: theme.font.sizeDefault
+                        color: mytheme.colors.textPoints
+                        font.pixelSize: mytheme.font.sizeDefault
                     }
                     Text {
                         id: scoreTotal
-                        color: theme.colors.textPoints
-                        font.pixelSize: theme.font.sizeDefault
+                        color: mytheme.colors.textPoints
+                        font.pixelSize: mytheme.font.sizeDefault
                     }
                 }
 
@@ -181,7 +211,7 @@ Rectangle {
                 height: 30
                 width: checkin.width
                 anchors.horizontalCenter: parent.horizontalCenter
-                size: theme.font.sizeDefault
+                size: mytheme.font.sizeDefault
                 visible: badgesModel.count>0
             }
 
@@ -207,7 +237,7 @@ Rectangle {
                 width: checkin.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 30
-                size: theme.font.sizeDefault
+                size: mytheme.font.sizeDefault
                 visible: commentsModel.count>0
             }
 
@@ -219,7 +249,7 @@ Rectangle {
                 visible: commentsModel.count>0
             }
 
-            Row {
+            /*Row {
                 width:parent.width
                 spacing: 10
 
@@ -241,7 +271,7 @@ Rectangle {
                         checkin.showAddComment(checkin.checkinID);
                     }
                 }
-            }
+            }*/
 
             Item {
                 width: parent.width
@@ -291,14 +321,14 @@ Rectangle {
                 width: parent.width * 0.8
                 wrapMode: Text.Wrap
                 text: scoreMessage
-                color: theme.colors.textPoints
-                font.pixelSize: theme.font.sizeSigns
+                color: mytheme.colors.textPoints
+                font.pixelSize: mytheme.font.sizeSigns
             }
             Text {
                 wrapMode: Text.NoWrap
                 text: "+"+scorePoints
-                color: theme.colors.textPoints
-                font.pixelSize: theme.font.sizeSigns
+                color: mytheme.colors.textPoints
+                font.pixelSize: mytheme.font.sizeSigns
             }
         }
     }
@@ -314,13 +344,13 @@ Rectangle {
                     width: badgeRepeater.width * 0.95
                     text: badgeTitle
                     font.pixelSize: 24
-                    color: theme.colors.textColorOptions
+                    color: mytheme.colors.textColorOptions
                 }
                 Text {
                     width: parent.width * 0.8
                     wrapMode: Text.Wrap
                     text: badgeMessage
-                    color: theme.colors.textColorShout
+                    color: mytheme.colors.textColorShout
                     font.pixelSize: 18
                 }
             }

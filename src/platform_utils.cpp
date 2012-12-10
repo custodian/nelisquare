@@ -1,7 +1,10 @@
 #include "platform_utils.h"
 
+#include <QStringList>
 #include <QString>
+#include <QUrl>
 #include <QMap>
+#include <QDateTime>
 #include <QDebug>
 
 #include "cache.h"
@@ -75,7 +78,6 @@ void PlatformUtils::removeNotification(const QString &eventType)
 
 void PlatformUtils::addFeedItem(QVariant item)
 {
-#if defined(Q_OS_HARMATTAN)
     QMap<QString, QVariant> params = item.toMap();
     QStringList imagesList;
     if (params["venuePhoto"].toString().size()>0) {
@@ -111,7 +113,9 @@ void PlatformUtils::addFeedItem(QVariant item)
         if (statusText.size()) statusText += " | ";
         statusText += QString("photos: %1").arg(count);
     }
-    qlonglong feedid = MEventFeed::instance()->addItem(icon.toString(),
+    qlonglong feedid = -1;
+#if defined(Q_OS_HARMATTAN)
+    feedid = MEventFeed::instance()->addItem(icon.toString(),
         QString(params["user"].toString() + " @ " + params["venueName"].toString()), //title
         QString(params["shout"].toString()),
         imagesList,
@@ -121,10 +125,31 @@ void PlatformUtils::addFeedItem(QVariant item)
         callback,
         QString("nelisquare"),
         QString("Nelisquare"));
-    m_items[eventid] = feedid;
-#else
-    Q_UNUSED(item)
+#elif defined(Q_OS_MAEMO)
+    QDBusMessage m = QDBusMessage::createMethodCall("com.maemo.eventFeed",
+                                                  "/",
+                                                  "com.maemo.eventFeed",
+                                                  "addEvent");
+    QList<QVariant> args;
+    args.append("nelisquare");
+    args.append("Nelisquare");
+    args.append(icon);
+    args.append(QString(params["user"].toString() + " @ " + params["venueName"].toString()));
+    args.append(params["shout"]);
+    args.append(imagesList);
+    args.append(statusText);
+    QDateTime time = QDateTime::fromTime_t(params["timestamp"].toLongLong());
+    args.append(time.toMSecsSinceEpoch());
+    args.append("");
+    m.setArguments(args);
+    //m.ReplyMessage()
+
+    QDBusMessage reply = QDBusConnection::sessionBus().call(m);
+    qDebug() << "reply" << reply;
+    //feedid=reply.arguments().at(0).toLongLong();
+    feedid = 0;
 #endif
+    m_items[eventid] = feedid;
 }
 
 void PlatformUtils::updateFeedItem(QVariant item)
@@ -135,7 +160,6 @@ void PlatformUtils::updateFeedItem(QVariant item)
 
 void PlatformUtils::removeFeedItem(QVariant item)
 {
-#if defined(Q_OS_HARMATTAN)
     QMap<QString, QVariant> params = item.toMap();
     QString eventid;
     if (params["id"].toString().size()>0) {
@@ -148,6 +172,7 @@ void PlatformUtils::removeFeedItem(QVariant item)
         //BUG: not working
         //MEventFeed::instance()->removeItem(it.value());
         //using DBus instead
+#if defined(Q_OS_HARMATTAN)
         QDBusMessage m = QDBusMessage::createMethodCall("com.nokia.home.EventFeed",
                                                       "/eventfeed",
                                                       "com.nokia.home.EventFeed",
@@ -156,9 +181,12 @@ void PlatformUtils::removeFeedItem(QVariant item)
         args.append(it.value());
         m.setArguments(args);
         QDBusConnection::sessionBus().send(m);
+#elif defined(Q_OS_MAEMO)
+        ;
+#else
+        ;
+#endif
+
         m_items.erase(it);
     }
-#else
-    Q_UNUSED(item)
-#endif
 }

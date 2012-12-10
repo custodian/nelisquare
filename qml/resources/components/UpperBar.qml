@@ -8,7 +8,7 @@ Rectangle {
 
     height: 60
     width:parent.width
-    gradient: theme.gradientToolbar
+    gradient: mytheme.gradientToolbar
 
     MouseArea{
         anchors.fill: parent
@@ -33,11 +33,11 @@ Rectangle {
             id: notificationsCount
             anchors.horizontalCenter: parent.horizontalCenter
             x: 5
-            font.pixelSize: theme.font.sizeDefault - 2
-            font.family: theme.font.name
+            font.pixelSize: mytheme.font.sizeDefault - 2
+            font.family: mytheme.font.name
             text: "0"
             //visible: text > 0
-            color: theme.colors.textHeader
+            color: mytheme.colors.textHeader
         }
         MouseArea {
             anchors.fill: parent
@@ -89,7 +89,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         width: parent.width
         height: 2
-        color: theme.colors.toolbarLightColor
+        color: mytheme.colors.toolbarLightColor
     }
 
     Image {

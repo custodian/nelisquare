@@ -1,11 +1,12 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 
 import "../components"
 
 import "../js/api-feed.js" as FeedAPI
 import "../js/utils.js" as Utils
 
-Rectangle {
+PageWrapper {
     id: friendsFeed
     signal update()
     signal loadHistory()
@@ -35,7 +36,45 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
+
+    tools: ToolBarLayout {
+        id: commonTools
+        visible: true
+
+        ToolIcon {
+            platformIconId: "toolbar-refresh"
+            onClicked: {
+                window.showFriendsFeed();
+                friendsCheckinsView.positionViewAtIndex(0,ListView.Center);
+            }
+        }
+
+        ToolIcon {
+            iconSource: "../icons/icon-m-toolbar-venues"+(theme.inverted?"-white":"")+".png"
+            onClicked: {
+                if (window.pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/VenuesList.qml")) {
+                    window.pageStack.replace(Qt.resolvedUrl("../pages/VenuesList.qml"),{},true);
+                } else {
+                    window.pageStack.push(Qt.resolvedUrl("../pages/VenuesList.qml"));
+                }
+            }
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-list"
+            onClicked: {
+                FeedAPI.showError("Lists not implemented yet!");
+            }
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-contact"
+            onClicked: {
+                 window.pageStack.push(Qt.resolvedUrl("../pages/User.qml"),{"userID":"self"});
+            }
+        }
+    }
 
     function reset() {
         moreData = false;
@@ -141,7 +180,7 @@ Rectangle {
             Rectangle {
                 width: parent.width
                 height: 90
-                color: theme.colors.toolbarDarkColor
+                color: mytheme.colors.toolbarDarkColor
 
                 ButtonBlue {
                     label: "RECENT"

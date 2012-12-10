@@ -4,7 +4,7 @@ Rectangle {
     id: tipDialog
     width: parent.width
     height: items.height + 20
-    color: theme.colors.backgroundBlueDark
+    color: mytheme.colors.backgroundBlueDark
     state: "hidden"
     property string venueName: ""
     property int action: 0
@@ -12,7 +12,7 @@ Rectangle {
     signal addTip(string comment)
 
     function reset() {
-        shoutText.text = theme.textDefaultTip;
+        shoutText.text = mytheme.textDefaultTip;
     }
 
     function hideKeyboard() {
@@ -32,36 +32,36 @@ Rectangle {
             text: tipDialog.venueName
             width: parent.width
             font.pixelSize: 24
-            color: theme.colors.textColorSign
+            color: mytheme.colors.textColorSign
         }
 
         Rectangle {
             id: checkinShoutBox
             height: 100
             width: parent.width
-            gradient: theme.gradientTextBox
+            gradient: mytheme.gradientTextBox
             radius: 5
             border.width: 1
-            border.color: theme.colors.textboxBorderColor
+            border.color: mytheme.colors.textboxBorderColor
             smooth: true
 
             TextEdit {
                 id: shoutText
                 wrapMode: TextEdit.Wrap
-                text: theme.textDefaultTip
+                text: mytheme.textDefaultTip
                 textFormat: TextEdit.PlainText
                 width: parent.width - 10
                 height: parent.height - 10
                 x: 5
                 y: 5
-                color: theme.colors.textColor
+                color: mytheme.colors.textColor
                 font.pixelSize: 24
 
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
                         shoutText.focus = true;
-                        if(shoutText.text==theme.textDefaultTip) {
+                        if(shoutText.text==mytheme.textDefaultTip) {
                             shoutText.text = "";
                         }
                         if (shoutText.text != "") {
@@ -81,7 +81,7 @@ Rectangle {
                 label: "ADD"
                 width: parent.width - 130
                 onClicked: {
-                    if(shoutText.text==theme.textDefaultTip) {
+                    if(shoutText.text==mytheme.textDefaultTip) {
                         shoutText.text = "";
                     } else {
                         hideKeyboard();

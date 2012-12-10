@@ -11,7 +11,7 @@ Rectangle {
     signal finished(string url)
     signal loadFailed()
     anchors.fill: parent
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     function load() {
         loginDialog.finished.connect(function(url) {

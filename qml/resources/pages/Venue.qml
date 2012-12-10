@@ -1,10 +1,11 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-venue.js" as VenueAPI
 import "../js/utils.js" as Utils;
 
-Rectangle {
+PageWrapper {
     id: place
     signal checkin(string venueid, string venuename)
     signal markToDo(string venueid, string venuename)
@@ -19,7 +20,7 @@ Rectangle {
 
     width: parent.width
     height: parent.height
-    color: theme.colors.backgroundMain
+    color: mytheme.colors.backgroundMain
 
     property string venueID: ""
     property string venueName: ""
@@ -42,6 +43,42 @@ Rectangle {
     property alias photosBox: photosBox
     property alias usersBox: usersBox
     property alias likeBox: likeBox
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: pageStack.pop()
+        }
+
+        ToolIcon{
+            platformIconId: "toolbar-edit"
+            onClicked: {
+                place.showAddTip(place.venueID,place.venueName);
+            }
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-image-edit"
+            onClicked: {
+                place.showAddPhoto(place.venueID)
+            }
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-home"
+            visible: venueMapLat != "" && venueMapLng != ""
+            onClicked: {
+                place.showMap()
+            }
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                //TODO: add menu
+            }
+        }
+    }
 
     function load() {
         var page = place;
@@ -192,49 +229,6 @@ Rectangle {
                                 place.checkin(place.venueID,place.venueName);
                             }
                         }
-
-                        Row {
-                            width: parent.width - 20
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            spacing: 10
-
-                            ButtonBlue {
-                                label: "ADD TIP"
-                                width: parent.width / 3 - parent.spacing
-                                fontDeltaSize: -2
-                                onClicked: {
-                                    place.showAddTip(place.venueID,place.venueName);
-                                }
-                            }
-                            ButtonBlue {
-                                label: "ADD PHOTO"
-                                width: parent.width / 3 - parent.spacing
-                                fontDeltaSize: -2
-                                onClicked: {
-                                    place.showAddPhoto(place.venueID)
-                                }
-                            }
-
-                            /*ButtonBlue {
-                                label: "Mark to-do"
-                                width: parent.width / 3 - parent.spacing
-                                anchors.right: parent.right
-                                onClicked: {
-                                    place.markToDo(place.venueID,place.venueName);
-                                }
-                            }*/
-
-                            ButtonBlue {
-                                id: venueMapButton
-                                width: parent.width / 3 //- parent.spacing
-                                label: "SHOW MAP"
-                                fontDeltaSize: -2
-                                onClicked: {
-                                    place.showMap()
-                                }
-                                visible: venueMapLat != "" && venueMapLng != ""
-                            }
-                        }
                     }
                 }
 
@@ -248,7 +242,7 @@ Rectangle {
                         width: parent.width - 20
                         EventBox {
                             id: venueMayorDetails
-                            width: parent.width - venueMapButton.width
+                            width: parent.width
                             userName: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
                             userShout: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
                             createdAt: place.venueMajorCount > 0 ? place.venueMajorCount + " checkins" : ""

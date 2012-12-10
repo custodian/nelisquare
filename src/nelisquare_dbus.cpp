@@ -20,8 +20,8 @@ NelisquareDbus::NelisquareDbus(QApplication *parent, QDeclarativeView *view) :
 
 void NelisquareDbus::loadURI(const QStringList &url)
 {
+    m_view->activateWindow();
     if (url.size()) {
-        m_view->activateWindow();
         QString param = url.at(0);
         emit processURI(QVariant(param.replace("nelisquare://","")));
     }

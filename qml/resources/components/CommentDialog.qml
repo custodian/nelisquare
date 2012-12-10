@@ -4,13 +4,13 @@ Rectangle {
     id: comment
     width: parent.width
     height: items.height + 20
-    color: theme.colors.backgroundBlueDark
+    color: mytheme.colors.backgroundBlueDark
     state: "hidden"
     signal cancel()
     signal shout(string comment)
 
     function reset() {
-        commentText.text = theme.textDefaultComment;
+        commentText.text = mytheme.textDefaultComment;
     }
 
     function hideKeyboard() {
@@ -31,16 +31,16 @@ Rectangle {
             text: "What is on your mind?"
             width: parent.width
             font.pixelSize: 24
-            color: theme.colors.textColorSign
+            color: mytheme.colors.textColorSign
         }
 
         Rectangle {
             id: commentBox
             height: 135
             width: parent.width
-            gradient: theme.gradientTextBox
+            gradient: mytheme.gradientTextBox
             border.width: 1
-            border.color: theme.colors.textboxBorderColor
+            border.color: mytheme.colors.textboxBorderColor
             smooth: true
 
             Flickable {
@@ -67,13 +67,13 @@ Rectangle {
                 TextEdit {
                     id: commentText
                     wrapMode: TextEdit.Wrap
-                    text: theme.textDefaultComment
+                    text: mytheme.textDefaultComment
                     textFormat: TextEdit.PlainText
                     width: parent.width - 10
                     height: parent.height - 10
                     x: 5
                     y: 5
-                    color: theme.colors.textColor
+                    color: mytheme.colors.textColor
                     font.pixelSize: 24
                     onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
 
@@ -82,7 +82,7 @@ Rectangle {
                         anchors.fill: parent
                         onClicked: {
                             commentText.focus = true;
-                            if(commentText.text == theme.textDefaultComment) {
+                            if(commentText.text == mytheme.textDefaultComment) {
                                 commentText.text = "";
                             }
                             if (commentText.text != "") {

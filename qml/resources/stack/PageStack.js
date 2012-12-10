@@ -91,11 +91,11 @@ function push(page, properties, replace, immediate) {
         oldContainer.pushExit(replace, immediate, orientationChange);
     }
 
-     // sync tool bar
-    //var tools = container.page.tools || null;
-    //if (toolBar) {
-    //    toolBar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
-    //}
+    // sync tool bar
+    var tools = container.page.tools || null;
+    if (toolbar) {
+        toolbar.setTools(tools, immediate ? "set" : replace ? "replace" : "push");
+    }
 
     container.pushEnter(immediate, orientationChange);
     return container.page;
@@ -176,10 +176,10 @@ function pop(page, immediate) {
         container.popEnter(immediate, orientationChange);
 
         // sync tool bar
-        //var tools = container.page.tools || null;
-        //if (toolBar) {
-        //    toolBar.setTools(tools, immediate ? "set" : "pop");
-        //}
+        var tools = container.page.tools || null;
+        if (toolbar) {
+            toolbar.setTools(tools, immediate ? "set" : "pop");
+        }
         return oldContainer.page;
     } else {
         return null;
