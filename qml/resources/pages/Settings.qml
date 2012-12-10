@@ -28,6 +28,7 @@ PageWrapper {
             platformIconId: "toolbar-view-menu"
             onClicked: {
                 //TODO: add menu
+                dummyMenu.open();
             }
         }
     }

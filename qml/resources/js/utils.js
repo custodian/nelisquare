@@ -37,7 +37,7 @@ function getRoutePoints(pointA,pointB,callback) {
 }
 
 function getCurrentTime() {
-    return (new Date()).getTime()/1000;
+    return Math.ceil((new Date()).getTime()/1000);
 }
 
 function makeTime(date) {

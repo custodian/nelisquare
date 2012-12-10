@@ -35,7 +35,19 @@ PageWrapper {
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
-                //TODO: add menu
+                menu.open();
+            }
+        }
+    }
+
+    Menu {
+        id: menu
+        visualParent: mainWindowStack
+        MenuLayout {
+            MenuItem { text: qsTr("Mark all readed")
+                onClicked: {
+                    NotiAPI.markNotificationsRead(notificationsList,NotiAPI.getCurrentTime());
+                }
             }
         }
     }

@@ -37,12 +37,14 @@ PageWrapper {
             platformIconId: "toolbar-directory-move-to"
             onClicked: {
                 //TODO: save image to disk
+                dummyMenu.open();
             }
         }
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
                 //TODO: add menu
+                dummyMenu.open();
             }
         }
     }

@@ -16,6 +16,20 @@ Rectangle   {
             onClicked: pageStack.pop()
         }
     }
+
+    property alias dummyMenu: dummyMenu
+
+    Menu {
+        id: dummyMenu
+        visualParent: mainWindowStack
+        MenuLayout {
+            MenuItem { text: qsTr("Menu is not ready yet.")
+                onClicked: {
+                }
+            }
+        }
+    }
+
 }
 
 /*
