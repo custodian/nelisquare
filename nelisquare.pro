@@ -84,9 +84,10 @@ maemo5|simulator|contains(MEEGO_EDITION,harmattan){
 contains(MEEGO_EDITION,harmattan){
     include(plugins/meego/notifications/notifications.pri)
     include(plugins/meego/uri-scheme/uri-scheme.pri)
-    #include(plugins/icons/icons.pri)
+    #include(plugins/icons/icons-meego.pri)
 }
 maemo5 {
+    #include(plugins/icons/icons-maemo.pri)
     #CONFIG += link_pkgconfig
     #PKGCONFIG += libnotifymm-1.0 gtkmm-2.4
     #CONFIG += link_pkgconfig
@@ -104,15 +105,14 @@ DEPLOYMENTFOLDERS = folder_01
 
 #Geoservices providers
 unix {
-    #maemo5 {
-    #    folder_02.source = $$PWD/plugins/maemo/geoservices
-    #}
+    maemo5 {
+        folder_02.source = $$PWD/plugins/maemo/geoservices
+    }
     contains(MEEGO_EDITION,harmattan) {
         folder_02.source = $$PWD/plugins/meego/geoservices
-        folder_02.target = plugins
-        DEPLOYMENTFOLDERS += folder_02
     }
-
+    folder_02.target = plugins
+    DEPLOYMENTFOLDERS += folder_02
 }
 
 # Please do not modify the following two lines. Required for deployment.

@@ -5,7 +5,8 @@ Type=Application
 Terminal=false
 Name=Nelisquare
 Exec=sh -c "LD_LIBRARY_PATH=/opt/qtm12/lib /opt/nelisquare/bin/nelisquare"
-Icon=/opt/usr/share/icons/hicolor/64x64/apps/nelisquare64.png
+Icon=nelisquare64
+#/opt/usr/share/icons/hicolor/64x64/apps/nelisquare64.png
 #X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
 X-Osso-Type=application/x-executable

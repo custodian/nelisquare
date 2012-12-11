@@ -6,9 +6,12 @@ import "."
 PageStackWindow {
     id: mainWindowStack
     property bool windowActive: Qt.application.active
+
     showToolBar: toolbar.tools !== null
+    showStatusBar: false //(windowHelper.isMaemo())?
 
     onWindowActiveChanged: {
+        console.log("active: " + windowActive);
         window.windowActive = windowActive;
     }
 
@@ -19,7 +22,7 @@ PageStackWindow {
     initialPage: Page{
         id: mainWindowPage
         anchors.fill: parent
-        orientationLock: PageOrientation.LockPortrait
+        //orientationLock: PageOrientation.LockPortrait
         tools: toolbar
 
         MainWindow {

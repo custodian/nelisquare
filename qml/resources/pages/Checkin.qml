@@ -37,14 +37,14 @@ PageWrapper {
         }
 
         ToolIcon{
-            platformIconId: "toolbar-edit"
+            iconSource: "../icons/icon-m-toolbar-edit"+(theme.inverted?"-white":"")+".png"
             onClicked: {
                 checkin.showAddComment(checkin.checkinID);
             }
         }
 
         ToolIcon {
-            platformIconId: "toolbar-image-edit"
+            iconSource: "../icons/icon-m-toolbar-image-edit"+(theme.inverted?"-white":"")+".png"
             visible: checkin.owner.eventOwner === "self"
             onClicked: {
                 checkin.showAddPhoto(checkin.checkinID)

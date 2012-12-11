@@ -71,6 +71,8 @@ bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
 
 Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
 #if defined(Q_OS_MAEMO)
+    //TODO: Maemo Orientation bug
+    /*
     QString orientation = value.toString();
     QmlApplicationViewer::ScreenOrientation type = QmlApplicationViewer::ScreenOrientationAuto;
     if (orientation == "landscape") {
@@ -79,6 +81,7 @@ Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
         type = QmlApplicationViewer::ScreenOrientationLockPortrait;
     }
     m_viewer->setOrientation(type);
+    */
 #elif defined(Q_OS_HARMATTAN)
     emit lockOrientation(value);
 #endif

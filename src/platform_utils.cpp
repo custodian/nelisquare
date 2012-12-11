@@ -126,6 +126,8 @@ void PlatformUtils::addFeedItem(QVariant item)
         QString("nelisquare"),
         QString("Nelisquare"));
 #elif defined(Q_OS_MAEMO)
+    /*
+    //TODO: maemo bug at add toEvent
     QDBusMessage m = QDBusMessage::createMethodCall("com.maemo.eventFeed",
                                                   "/",
                                                   "com.maemo.eventFeed",
@@ -147,6 +149,7 @@ void PlatformUtils::addFeedItem(QVariant item)
     QDBusMessage reply = QDBusConnection::sessionBus().call(m);
     qDebug() << "reply" << reply;
     //feedid=reply.arguments().at(0).toLongLong();
+    */
     feedid = 0;
 #endif
     m_items[eventid] = feedid;

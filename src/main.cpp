@@ -110,7 +110,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.rootContext()->setContextProperty("cache", cache);
+#if defined(Q_OS_HARMATTAN)
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+#elif defined(Q_OS_MAEMO)
+    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockLandscape);
+#endif
 
     Molome *molome = new Molome();
     viewer.rootContext()->setContextProperty("molome", molome);
@@ -126,13 +130,13 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.installEventFilter(new EventFilter);
 #endif
 
-#if defined(Q_OS_MAEMO)
-    viewer.setMainQmlFile(QLatin1String("qml/resources/Maemo.qml"));
-#elif defined(Q_OS_HARMATTAN)
+//#if defined(Q_OS_MAEMO)
+//    viewer.setMainQmlFile(QLatin1String("qml/resources/Maemo.qml"));
+//#elif defined(Q_OS_HARMATTAN)
+//    viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
+//#else
     viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
-#else
-    viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
-#endif
+//#endif
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
     rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
@@ -142,7 +146,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #endif
 
 #if defined(Q_OS_MAEMO)
-    rootObject->connect(windowHelper,SIGNAL(visibilityChanged(QVariant)), SLOT(onVisibililityChange(QVariant)));
     viewer.showFullScreen();
 #elif defined(Q_OS_HARMATTAN)
     rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));

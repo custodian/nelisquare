@@ -51,14 +51,14 @@ PageWrapper {
         }
 
         ToolIcon{
-            platformIconId: "toolbar-edit"
+            iconSource: "../icons/icon-m-toolbar-edit"+(theme.inverted?"-white":"")+".png"
             onClicked: {
                 place.showAddTip(place.venueID,place.venueName);
             }
         }
 
         ToolIcon {
-            platformIconId: "toolbar-image-edit"
+            iconSource: "../icons/icon-m-toolbar-image-edit"+(theme.inverted?"-white":"")+".png"
             onClicked: {
                 place.showAddPhoto(place.venueID)
             }

@@ -62,14 +62,14 @@ PageWrapper {
         }
 
         ToolIcon {
-            platformIconId: "toolbar-list"
+            iconSource: "../icons/icon-m-toolbar-list"+(theme.inverted?"-white":"")+".png"
             onClicked: {
                 FeedAPI.showError("Lists not implemented yet!");
             }
         }
 
         ToolIcon {
-            platformIconId: "toolbar-contact"
+            iconSource: "../icons/icon-m-toolbar-contact"+(theme.inverted?"-white":"")+".png"
             onClicked: {
                  window.pageStack.push(Qt.resolvedUrl("../pages/User.qml"),{"userID":"self"});
             }
