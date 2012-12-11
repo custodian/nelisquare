@@ -61,7 +61,7 @@ void Molome::molome_install() {
     QFile::remove(m_molome_target+"/qml/ui/mainM.qml");
     //qDebug() << "mainM.qml"
     //         <<
-    QFile::copy("/opt/nelisquare/qml/resources/assets/mainM.qml",
+    QFile::copy("/opt/nelisquare/qml/assets/mainM.qml",
                 m_molome_target+"/qml/ui/mainM.qml");
 
     //qDebug() << "Remove"
@@ -69,7 +69,7 @@ void Molome::molome_install() {
     QFile::remove(m_molome_target+"/qml/ui/Screen/FilterSelectionScreen.qml");
     //qDebug() << "FilterSelectionScreen"
     //         <<
-    QFile::copy("/opt/nelisquare/qml/resources/assets/FilterSelectionScreen.qml",
+    QFile::copy("/opt/nelisquare/qml/assets/FilterSelectionScreen.qml",
                 m_molome_target+"/qml/ui/Screen/FilterSelectionScreen.qml");
 
     //qDebug() << "Remove"
@@ -77,7 +77,7 @@ void Molome::molome_install() {
     QFile::remove(m_molome_target+"/qml/ui/Screen/ZoomCropScreen.qml");
     //qDebug() << "ZoomCropScreen.qml"
     //         <<
-    QFile::copy("/opt/nelisquare/qml/resources/assets/ZoomCropScreen.qml",
+    QFile::copy("/opt/nelisquare/qml/assets/ZoomCropScreen.qml",
                 m_molome_target+"/qml/ui/Screen/ZoomCropScreen.qml");
 
     //qDebug() << "Remove"
@@ -85,7 +85,7 @@ void Molome::molome_install() {
     QFile::remove(m_molome_target+"/qml/ui/Screen/CaptureScreen.qml");
     //qDebug() << "CaptureScreen.qml"
     //         <<
-    QFile::copy("/opt/nelisquare/qml/resources/assets/CaptureScreen.qml",
+    QFile::copy("/opt/nelisquare/qml/assets/CaptureScreen.qml",
                 m_molome_target+"/qml/ui/Screen/CaptureScreen.qml");
 
     //qDebug() << "Remove"
@@ -93,7 +93,7 @@ void Molome::molome_install() {
     QFile::remove(m_molome_target+"/qml/ui/UIComponents/CameraControlNative.qml");
     //qDebug() << "mainM.qml"
     //         <<
-    QFile::copy("/opt/nelisquare/qml/resources/assets/CameraControlNative.qml",
+    QFile::copy("/opt/nelisquare/qml/assets/CameraControlNative.qml",
                 m_molome_target+"/qml/ui/UIComponents/CameraControlNative.qml");
 
     updateinfo();

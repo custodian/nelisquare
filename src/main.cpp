@@ -69,8 +69,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QApplication *app = createApplication(argc, argv);
     QmlApplicationViewer viewer;
 
-#if defined(VS_ENABLE_SPLASH) && defined(Q_OS_MAEMO)
-    QPixmap pixmap("/opt/nelisquare/qml/resources/pics/splash-turned.png");
+#if defined(Q_OS_MAEMO)
+    QPixmap pixmap("/opt/nelisquare/qml/pics/splash-turned.png");
     QSplashScreen splash(pixmap);
     EventDisabler eventDisabler;
     splash.installEventFilter(&eventDisabler);
@@ -111,7 +111,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.rootContext()->setContextProperty("cache", cache);
 #if defined(Q_OS_HARMATTAN)
-    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+    //viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
 #elif defined(Q_OS_MAEMO)
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockLandscape);
 #endif
@@ -130,13 +130,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.installEventFilter(new EventFilter);
 #endif
 
-//#if defined(Q_OS_MAEMO)
-//    viewer.setMainQmlFile(QLatin1String("qml/resources/Maemo.qml"));
-//#elif defined(Q_OS_HARMATTAN)
-//    viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
-//#else
-    viewer.setMainQmlFile(QLatin1String("qml/resources/Meego.qml"));
-//#endif
+    viewer.setMainQmlFile(QLatin1String("qml/main.qml"));
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
     rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
@@ -157,7 +151,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.showExpanded();
 #endif
 
-#if defined(VS_ENABLE_SPLASH) && defined(Q_OS_MAEMO)
+#if defined(Q_OS_MAEMO)
     splash.finish(&viewer);
 #endif
 

@@ -65,7 +65,7 @@ PageWrapper {
         }
 
         ToolIcon {
-            platformIconId: "toolbar-home"
+            iconSource: "../icons/icon-m-toolbar-showonmap"+(theme.inverted?"-white":"")+".png"
             visible: venueMapLat != "" && venueMapLng != ""
             onClicked: {
                 place.showMap()

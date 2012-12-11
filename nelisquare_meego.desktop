@@ -5,9 +5,6 @@ Type=Application
 Terminal=false
 Name=Nelisquare
 Exec=xdg-open nelisquare://start
-#Exec=invoker --splash=/opt/nelisquare/qml/resources/pics/splash-turned.png --single-instance --type=e /opt/nelisquare/bin/nelisquare
-#--splash=/opt/nelisquare/qml/resources/pics/splash.png
-#--splash-landscape=/opt/nelisquare/qml/resources/pics/splash.png
 Icon=/usr/share/icons/hicolor/80x80/apps/nelisquare80.png
 X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
