@@ -26,15 +26,15 @@ PageWrapper {
             onClicked: pageStack.pop()
         }
         ToolIcon{
-            platformIconId: "toolbar-mediacontrol-backwards"
+            iconSource: "../icons/icon-m-toolbar-mediacontrol-backwards"+(theme.inverted?"-white":"")+".png"
             onClicked: photoDetails.prevPhoto()
         }
         ToolIcon{
-            platformIconId: "toolbar-mediacontrol-forward"
+            iconSource: "../icons/icon-m-toolbar-mediacontrol-forward"+(theme.inverted?"-white":"")+".png"
             onClicked: photoDetails.nextPhoto()
         }
         ToolIcon {
-            platformIconId: "toolbar-directory-move-to"
+            iconSource: "../icons/icon-m-toolbar-directory-move-to"+(theme.inverted?"-white":"")+".png"
             onClicked: {
                 //TODO: save image to disk
                 dummyMenu.open();

@@ -78,27 +78,6 @@ PageWrapper {
                 height: 40
                 text: "Select photo for upload"
             }
-            /*Column {
-                width: parent.width
-                Item {
-                    width: parent.width
-                    height: 20
-                }
-                ButtonBlue {
-                    label: "Create Molo.me!"
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: 280
-                    onClicked: {
-                        waiting.show();
-                        molome.getphoto();
-                    }
-                }
-                Item {
-                    width: parent.width
-                    height: 20
-                }
-                visible: window.molome_installed && window.molome_present
-            }*/
         }
     }
 
@@ -115,7 +94,7 @@ PageWrapper {
             photoAspect: Image.PreserveAspectFit
             photoCache: false
             onClicked: {
-                photoAdd.uploadPhoto(photoUrl);
+                photoAdd.uploadPhoto(model.filePath);
             }
 
             //TODO: make textname overlap photo

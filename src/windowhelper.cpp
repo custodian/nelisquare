@@ -83,7 +83,7 @@ Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
     m_viewer->setOrientation(type);
     */
 #elif defined(Q_OS_HARMATTAN)
-    emit lockOrientation(value);
+    //emit lockOrientation(value);
 #endif
 }
 

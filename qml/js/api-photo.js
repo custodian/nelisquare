@@ -43,7 +43,6 @@ function addPhoto(params) {
         url += "&broadcast="+broadcast;
     }
     url += "&" + getAccessTokenParameter();
-    //console.log("PHOTOUPLOAD: "+url);
     if (!pictureHelper.upload(url, params.path, params.owner)) {
         showError("Error uploading photo!");
     }

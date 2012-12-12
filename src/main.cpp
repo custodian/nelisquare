@@ -59,13 +59,6 @@ private:
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-/*#ifdef Q_OS_SYMBIAN
-    QApplication::setGraphicsSystem(QLatin1String("openvg"));
-#elif defined(Q_OS_MAEMO) || defined(Q_OS_HARMATTAN)
-    QApplication::setGraphicsSystem(QLatin1String("opengl"));
-#endif
-*/
-
     QApplication *app = createApplication(argc, argv);
     QmlApplicationViewer viewer;
 
@@ -76,13 +69,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     splash.installEventFilter(&eventDisabler);
     splash.showFullScreen();
 #endif
-
-/*#if defined(Q_OS_MAEMO) || defined(Q_OS_HARMATTAN)
-    QGLWidget glWidget;
-    glWidget.setAutoFillBackground(false);
-    viewer.setViewport(&glWidget);
-#endif
-*/
 
 #if defined(Q_OS_MAEMO)
     viewer.addImportPath(QString("/opt/qtm12/imports"));
@@ -97,24 +83,12 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.viewport()->setAttribute(Qt::WA_OpaquePaintEvent);
     viewer.viewport()->setAttribute(Qt::WA_NoSystemBackground);
 
-    /*
-    qmlRegisterType<QGraphicsBlurEffect>("Effects",1,0,"Blur");
-    qmlRegisterType<QGraphicsColorizeEffect>("Effects",1,0,"Colorize");
-    qmlRegisterType<QGraphicsDropShadowEffect>("Effects",1,0,"DropShadow");
-    qmlRegisterType<QGraphicsOpacityEffect>("Effects",1,0,"OpacityEffect");
-    */
-
     WindowHelper *windowHelper = new WindowHelper(&viewer);
     PictureHelper *pictureHelper = new PictureHelper();
     Cache *cache = new Cache();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.rootContext()->setContextProperty("cache", cache);
-#if defined(Q_OS_HARMATTAN)
-    //viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-#elif defined(Q_OS_MAEMO)
-    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationLockLandscape);
-#endif
 
     Molome *molome = new Molome();
     viewer.rootContext()->setContextProperty("molome", molome);
@@ -133,8 +107,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.setMainQmlFile(QLatin1String("qml/main.qml"));
 
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
-    rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
-
 #if defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
     new NelisquareDbus(app, &viewer);
 #endif
@@ -142,7 +114,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #if defined(Q_OS_MAEMO)
     viewer.showFullScreen();
 #elif defined(Q_OS_HARMATTAN)
-    rootObject->connect(windowHelper,SIGNAL(lockOrientation(QVariant)),SLOT(onLockOrientation(QVariant)));
     rootObject->connect(molome,SIGNAL(infoUpdated(QVariant,QVariant)),SLOT(onMolomeInfoUpdate(QVariant,QVariant)));
     rootObject->connect(molome,SIGNAL(photoRecieved(QVariant,QVariant)),SLOT(onMolomePhoto(QVariant,QVariant)));
     viewer.showExpanded();
@@ -150,6 +121,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #else
     viewer.showExpanded();
 #endif
+    rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
 
 #if defined(Q_OS_MAEMO)
     splash.finish(&viewer);

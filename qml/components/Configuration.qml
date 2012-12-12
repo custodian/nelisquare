@@ -57,7 +57,7 @@ Item   {
         } else if (key === "settings.orientation") {
             if (value === "") value = "auto";
             configuration.orientationType = value;
-            windowHelper.setOrientation(value);
+            mainWindowStack.onLockOrientation(value);
         } else if (key === "settings.mapprovider") {
             if (value === "") value = "google";
             configuration.mapprovider = value;
@@ -86,7 +86,7 @@ Item   {
             if (value === "")
                 pushNotificationDialog.state = "shown";
         } else if (key === "settings.feed.integration") {
-            if (value === "") value = "1";
+            if (value === "") value = "0";
             configuration.feedIntegration = value;
         } else if (key === "settings.feed.notification") {
             if (value === "") value = "1";

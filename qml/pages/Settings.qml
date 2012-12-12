@@ -89,340 +89,48 @@ PageWrapper {
                 text: "Check for updates"
                 font.pixelSize: mytheme.font.sizeSettigs
             }
-            Row {
+            ButtonRow {
+                anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: configuration.checkupdates === "none"
-                    label: "NONE"
+                onVisibleChanged: {
+                    if (visible) {
+                        switch(configuration.checkupdates) {
+                        case "none":
+                            checkedButton = btnUpdateNone;
+                            break;
+                        case "stable":
+                            checkedButton = btnUpdateStable;
+                            break;
+                        case "developer":
+                            checkedButton = btnUpdateBeta;
+                            break;
+                        case "alpha":
+                            checkedButton = btnUpdateAlpha;
+                            break;
+                        }
+                    }
+                }
+                Button{
+                    id: btnUpdateNone
+                    text: qsTr("None")
                     onClicked: settingsChanged("checkupdates","none")
                 }
-                TextButton {
-                    height: 35
-                    selected: configuration.checkupdates === "stable"
-                    label: "STABLE"
+
+                Button{
+                    id: btnUpdateStable
+                    text: qsTr("Stable")
                     onClicked: settingsChanged("checkupdates","stable")
                 }
-                TextButton {
-                    height: 35
-                    selected: configuration.checkupdates === "developer"
-                    label: "BETA"
+                Button{
+                    id: btnUpdateBeta
+                    text: qsTr("Beta")
                     onClicked: settingsChanged("checkupdates","developer")
                 }
-                TextButton {
-                    height: 35
-                    selected: configuration.checkupdates === "alpha"
-                    label: "ALPHA"
+
+                Button{
+                    id: btnUpdateAlpha
+                    text: qsTr("Alpha")
                     onClicked: settingsChanged("checkupdates","alpha")
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //OrientationLock
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Screen orientation"
-                font.pixelSize: mytheme.font.sizeSettigs
-                visible: (configuration.platform === "maemo")
-            }
-            Row {
-                width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: configuration.orientationType === "auto"
-                    label: "AUTO"
-                    onClicked: settingsChanged("orientation","auto")
-                }
-                TextButton {
-                    height: 35
-                    selected: configuration.orientationType === "landscape"
-                    label: "LANDSCAPE"
-                    onClicked: settingsChanged("orientation","landscape")
-                }
-                TextButton {
-                    height: 35
-                    selected: configuration.orientationType === "portrait"
-                    label: "PORTRAIT"
-                    onClicked: settingsChanged("orientation","portrait")
-                }
-                visible: (configuration.platform === "maemo")
-            }
-
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Map provider
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Map provider"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            Row {
-                width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: configuration.mapprovider === "google"
-                    label: "GOOGLE"
-                    onClicked: settingsChanged("mapprovider","google")
-                }
-                TextButton {
-                    height: 35
-                    selected: configuration.mapprovider === "openstreetmap"
-                    label: "OSM"
-                    onClicked: settingsChanged("mapprovider","openstreetmap")
-                }
-                TextButton {
-                    height: 35
-                    selected: configuration.mapprovider === "nokia"
-                    label: "NOKIA"
-                    onClicked: settingsChanged("mapprovider","nokia")
-                }
-
-            }
-
-            Item {
-                height: 20
-                width: parent.width
-            }
-
-            //Molome integration
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "MOLO.me integration"
-                font.pixelSize: mytheme.font.sizeSettigs
-                visible: configuration.platform === "meego"
-            }
-            Row {
-                width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    label: "DOWNLOAD MOLO.ME FIRST!"
-                    onClicked: {
-                        Qt.openUrlExternally("http://molo.me/meego");
-                    }
-                    visible: !window.molome_present;
-                }
-
-                TextButton {
-                    height: 35
-                    selected: true
-                    label: (window.molome_installed ? "ENABLED" : "DISABLED")
-                    onClicked: molome.updateinfo();
-                    visible: window.molome_present;
-                }
-                TextButton {
-                    height: 35
-                    selected: false
-                    label: "INSTALL"
-                    onClicked: {
-                        waiting.show();
-                        selected = true;
-                        molome.install();
-                    }
-                    visible: !window.molome_installed && window.molome_present;
-                    onVisibleChanged: {
-                        if (selected) {
-                            waiting.hide();
-                            selected = false;
-                        }
-                    }
-                }
-                TextButton {
-                    height: 35
-                    selected: false
-                    label: "UNINSTALL"
-                    onClicked: {
-                        waiting.show();
-                        selected = true;
-                        molome.uninstall();
-                    }
-                    visible: window.molome_installed && window.molome_present;
-                    onVisibleChanged: {
-                        if (selected) {
-                            waiting.hide();
-                            selected = false;
-                        }
-                    }
-                }
-                visible: configuration.platform === "meego";
-            }
-            Item{
-                height: 20
-                width: parent.width
-                visible: configuration.platform === "meego";
-            }
-
-            //Image loading settings
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Load images"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            Row {
-                width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: configuration.imageLoadType === "cached"
-                    label: "CACHED"
-                    onClicked: settingsChanged("imageload","cached");
-                }
-
-                TextButton {
-                    height: 35
-                    selected: configuration.imageLoadType === "all"
-                    label: "ALL"
-                    onClicked: settingsChanged("imageload","all");
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //GPS Unlock time
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "GPS Unlock timeout"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            Row {
-                width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: configuration.gpsUplockTime === 0
-                    label: "AT ONCE"
-                    onClicked: settingsChanged("gpsunlock",0);
-                }
-
-                TextButton {
-                    height: 35
-                    selected: configuration.gpsUplockTime === 30
-                    label: "30 SEC"
-                    onClicked: settingsChanged("gpsunlock",30);
-                }
-
-                TextButton {
-                    height: 35
-                    selected: configuration.gpsUplockTime === 60
-                    label: "60 SEC"
-                    onClicked: settingsChanged("gpsunlock",60);
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Feed autoupdate"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            Row {
-                width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: configuration.feedAutoUpdate === 0
-                    label: "OFF"
-                    onClicked: settingsChanged("feedupdate",0);
-                }
-
-                TextButton {
-                    height: 35
-                    selected: configuration.feedAutoUpdate === 600
-                    label: "10 MIN"
-                    onClicked: settingsChanged("feedupdate",600);
-                }
-
-                TextButton {
-                    height: 35
-                    selected: configuration.feedAutoUpdate === 1800
-                    label: "30 MIN"
-                    onClicked: settingsChanged("feedupdate",1800);
-                }
-
-                TextButton {
-                    height: 35
-                    selected: configuration.feedAutoUpdate === 3600
-                    label: "1 HOUR"
-                    onClicked: settingsChanged("feedupdate", 3600);
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Notifications
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Notification popups"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            Row {
-                width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: configuration.feedNotification === "0"
-                    label: "DISABLED"
-                    onClicked: settingsChanged("feed.notification","0");
-                }
-
-                TextButton {
-                    height: 35
-                    selected: configuration.feedNotification === "1"
-                    label: "ENABLED"
-                    onClicked: settingsChanged("feed.notification","1");
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Event feed integration
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Feed at Home screen"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            Row {
-                width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: configuration.feedIntegration === "0"
-                    label: "DISABLED"
-                    onClicked: settingsChanged("feed.integration","0");
-                }
-
-                TextButton {
-                    height: 35
-                    selected: configuration.feedIntegration === "1"
-                    label: "ENABLED"
-                    onClicked: settingsChanged("feed.integration","1");
                 }
             }
             Item{
@@ -436,22 +144,123 @@ PageWrapper {
                 text: "Nelisquare theme"
                 font.pixelSize: mytheme.font.sizeSettigs
             }
-            Row {
+            ButtonRow {
+                anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: mytheme.name === "light"
-                    label: "LIGHT"
-                    onClicked: settingsChanged("theme","light");
+                onVisibleChanged: {
+                    if (visible) {
+                        switch(mytheme.name) {
+                        case "light":
+                            checkedButton = btnThemeLight;
+                            break;
+                        case "dark":
+                            checkedButton = btnThemeDark;
+                            break;
+                        }
+                    }
+                }
+                Button{
+                    id: btnThemeLight
+                    text: qsTr("Light")
+                    onClicked: settingsChanged("theme","light")
                 }
 
-                TextButton {
-                    height: 35
-                    selected: mytheme.name === "dark"
-                    label: "DARK"
-                    onClicked: settingsChanged("theme","dark");
+                Button{
+                    id: btnThemeDark
+                    text: qsTr("Dark")
+                    onClicked: settingsChanged("theme","dark")
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //OrientationLock
+            Text {
+                color: mytheme.colors.textColorOptions
+                text: "Screen orientation"
+                font.pixelSize: mytheme.font.sizeSettigs
+            }
+            ButtonRow {
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
+                onVisibleChanged: {
+                    if (visible) {
+                        switch(configuration.mapprovider) {
+                        case "auto":
+                            checkedButton = btnOrientationAuto;
+                            break;
+                        case "landscape":
+                            checkedButton = btnOrientationLandscape;
+                            break;
+                        case "portrait":
+                            checkedButton = btnOrientationPortrait;
+                            break;
+                        }
+                    }
+                }
+                Button{
+                    id: btnOrientationAuto
+                    text: qsTr("Auto")
+                    onClicked: settingsChanged("orientation","auto")
+                }
+
+                Button{
+                    id: btnOrientationLandscape
+                    text: qsTr("Landscape")
+                    onClicked: settingsChanged("orientation","landscape")
+                }
+                Button{
+                    id: btnOrientationPortrait
+                    text: qsTr("Portrait")
+                    onClicked: settingsChanged("orientation","portrait")
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //Map provider
+            Text {
+                color: mytheme.colors.textColorOptions
+                text: "Map provider"
+                font.pixelSize: mytheme.font.sizeSettigs
+            }
+            ButtonRow {
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width
+                onVisibleChanged: {
+                    if (visible) {
+                        switch(configuration.mapprovider) {
+                        case "nokia":
+                            checkedButton = btnMapsNokia;
+                            break;
+                        case "google":
+                            checkedButton = btnMapsGoogle;
+                            break;
+                        case "openstreetmap":
+                            checkedButton = btnMapsOsm;
+                            break;
+                        }
+                    }
+                }
+                Button{
+                    id: btnMapsNokia
+                    text: qsTr("Nokia")
+                    onClicked: settingsChanged("mapprovider","nokia")
+                }
+
+                Button{
+                    id: btnMapsGoogle
+                    text: qsTr("Google")
+                    onClicked: settingsChanged("mapprovider","google")
+                }
+                Button{
+                    id: btnMapsOsm
+                    text: qsTr("OSM")
+                    onClicked: settingsChanged("mapprovider","openstreetmap")
                 }
             }
             Item{
@@ -462,27 +271,110 @@ PageWrapper {
             //Image loading settings
             Text {
                 color: mytheme.colors.textColorOptions
-                text: "Push notifications"
+                text: "Load images"
                 font.pixelSize: mytheme.font.sizeSettigs
             }
-            Row {
+            ButtonRow {
+                anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width
-                spacing: 20
-
-                TextButton {
-                    height: 35
-                    selected: false//configuration.imageLoadType === "cached"
-                    label: "ENABLED"
-                    onClicked: {
-                        pushNotificationDialog.state = "shown";
+                onVisibleChanged: {
+                    if (visible) {
+                        switch(configuration.imageLoadType) {
+                        case "cached":
+                            checkedButton = btnImageCache;
+                            break;
+                        case "all":
+                            checkedButton = btnImageAll;
+                            break;
+                        }
                     }
                 }
+                Button{
+                    id: btnImageCache
+                    text: qsTr("Cached")
+                    onClicked: settingsChanged("imageload","cached")
+                }
 
-                TextButton {
-                    height: 35
-                    selected: true//configuration.imageLoadType === "all"
-                    label: "DISABLED"
-                    onClicked: settingsChanged("push.enabled","0");
+                Button{
+                    id: btnImageAll
+                    text: qsTr("All")
+                    onClicked: settingsChanged("imageload","all")
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //GPS Unlock time
+            SettingSlider{
+                enabled: true//!streamingSwitch.checked
+                text: qsTr("GPS Unlock timeout") + ": " +
+                      (enabled ? (value === 0 ? qsTr("Instant") : qsTr("%n secs(s)", "", value)) : qsTr("Disabled"))
+                maximumValue: 120
+                stepSize: 10
+                value: configuration.gpsUplockTime
+                onReleased: settingsChanged("gpsunlock",value)
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //Feed autoupdate time
+            SettingSlider{
+                enabled: true//!streamingSwitch.checked
+                text: qsTr("Feed autoupdate time") + ": " +
+                      (enabled ? (value === 0 ? qsTr("Off") : qsTr("%n min(s)", "", value)) : qsTr("Disabled"))
+                maximumValue: 60
+                stepSize: 1
+                value: configuration.feedAutoUpdate/60
+                onReleased: settingsChanged("feedupdate",value * 60)
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //Notifications
+            SettingSwitch{
+                text: qsTr("Notification popups")
+                checked: configuration.feedNotification === "1"
+                onCheckedChanged: {
+                    var value = (checked)?"1":"0";
+                    settingsChanged("feed.notification",value);
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //Event feed integration
+            SettingSwitch{
+                text: qsTr("Feed at Home screen")
+                checked: configuration.feedIntegration === "1"
+                onCheckedChanged: {
+                    var value = (checked)?"1":"0";
+                    settingsChanged("feed.integration",value);
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
+            //Push notifications support
+            SettingSwitch{
+                text: qsTr("Push notifications")
+                //checked: configuration. === "1" //TODO: make some variable for it
+                onCheckedChanged: {
+                    if (checked) {
+                        pushNotificationDialog.state = "shown";
+                    }
+                    checked = false;
+                    var value = "0";
+                    settingsChanged("push.enabled",value);
                 }
             }
             Item{
@@ -500,10 +392,9 @@ PageWrapper {
                 width: parent.width
                 spacing: 20
 
-                TextButton {
-                    height: 35
-                    selected: false
-                    label: "RESET"
+                Button {
+                    text: "Reset"
+                    width: 150
                     onClicked: {
                         cache.reset();
                         cacheSize = cache.info();
@@ -522,6 +413,63 @@ PageWrapper {
                 width: parent.width
             }
 
+            //Molome integration
+            Text {
+                color: mytheme.colors.textColorOptions
+                text: "MOLO.me integration"
+                font.pixelSize: mytheme.font.sizeSettigs
+                visible: configuration.platform === "meego"
+            }
+            Button {
+                text: "Download MOLO.me"
+                onClicked: {
+                    Qt.openUrlExternally("http://molo.me/meego");
+                }
+                visible: !window.molome_present && configuration.platform === "meego"
+            }
+            Column {
+                width: parent.width
+                Button {
+                    property bool active: false
+                    text: "Enable"
+                    onClicked: {
+                        waiting.show();
+                        active = true;
+                        molome.install();
+                    }
+                    visible: !window.molome_installed;
+                    onVisibleChanged: {
+                        if (active) {
+                            waiting.hide();
+                            active = false;
+                        }
+                    }
+                }
+                Button {
+                    property bool active: false
+                    text: "Disable"
+                    onClicked: {
+                        waiting.show();
+                        active = true;
+                        molome.uninstall();
+                    }
+                    visible: window.molome_installed;
+                    onVisibleChanged: {
+                        if (active) {
+                            waiting.hide();
+                            active = false;
+                        }
+                    }
+                }
+                visible: configuration.platform === "meego"
+            }
+            Item{
+                height: 20
+                width: parent.width
+                visible: configuration.platform === "meego";
+            }
+
+
             //Revoke auth token
             Text {
                 color: mytheme.colors.textColorOptions
@@ -531,9 +479,9 @@ PageWrapper {
             Row {
                 width: parent.width
 
-                TextButton {
-                    height: 35
-                    label: "REVOKE"
+                Button {
+                    text: "Revoke"
+                    width: 150
                     onClicked: {
                         authDeleted()
                     }

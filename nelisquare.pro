@@ -94,11 +94,11 @@ maemo5 {
 # Add more folders to ship with the application, here
 unix {
     qmlresources.source = $$PWD/qml
-} else: win32 {
+} else {
     qmlresources.source = qml
 }
-qmlresources.target = qml
-DEPLOYMENTFOLDERS += qmlresources
+qmlresources.target = .
+DEPLOYMENTFOLDERS = qmlresources
 
 #Geoservices providers
 unix {

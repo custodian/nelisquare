@@ -22,7 +22,7 @@ public:
 
 signals:
     void visibilityChanged(QVariant foregroud);
-    void lockOrientation(QVariant result);
+    //void lockOrientation(QVariant result);
 
 public slots:
     void showNelisquare(const QUrl &url);

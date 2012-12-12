@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import QtWebKit 1.0
 
 import "../components"
@@ -11,7 +12,7 @@ Rectangle {
     signal finished(string url)
     signal loadFailed()
     anchors.fill: parent
-    color: mytheme.colors.backgroundMain
+    //color: mytheme.colors.backgroundMain
 
     function load() {
         loginDialog.finished.connect(function(url) {
@@ -30,17 +31,17 @@ Rectangle {
         webView.reload.trigger();
     }
 
-    WaitingIndicator {
-        id: waitingLogin
-        z: 1
-    }
-
     WebView {
         id: webView
-        anchors.fill: parent
+        anchors.fill:parent
         preferredHeight: parent.height
         preferredWidth: parent.width
         url: ""
+
+        WaitingIndicator {
+            id: waitingLogin
+            z: 1
+        }
 
         onLoadStarted: {
             //console.log("URL is now " + webView.url);

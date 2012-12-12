@@ -1,7 +1,8 @@
 nelisquare (0.4.9) stable; urgency=low
   * notifications at home screen
   * homescreen feed integration
-  * custom toolbars & menus for pages
+  * [in dev] awesome toolbars & menus
+  * [in dev] settings page update
 
  -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 06 Dec 2012 01:09:38 +0400
 

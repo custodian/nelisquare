@@ -19,16 +19,15 @@ PictureHelper::PictureHelper(QObject *parent) :
 
 QVariant PictureHelper::upload(QVariant url, QVariant path, QVariant window)
 {
+    m_window = window;
     //TODO: check for 5MB limit
     FormPost *formPost = new FormPost("nelisquare");
     formPost->setFile("photo", path.toString(), "image/jpeg");
 
     formPost->setNetworkAccessManager(manager);
+
     QNetworkReply *reply = formPost->postData(url.toString());
     formPost->setParent(reply);
-
-    m_window = window;
-
     return QVariant(true);
 }
 

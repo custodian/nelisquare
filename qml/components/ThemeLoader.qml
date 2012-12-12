@@ -11,6 +11,21 @@ Item {
     }
     property string colorString: "red"
 
+    // padding size
+    property int paddingSmall: 4
+    property int paddingMedium: 6
+    property int paddingLarge: 8
+    property int paddingXLarge: 12
+    property int paddingXXLarge: 16
+
+    // font size
+    property int fontSizeXSmall: 20
+    property int fontSizeSmall: 22
+    property int fontSizeMedium: 24
+    property int fontSizeLarge: 26
+    property int fontSizeXLarge: 28
+    property int fontSizeXXLarge: 32
+
     property variant gradientTextBox
     property variant gradientToolbar
     property variant gradientHeader
