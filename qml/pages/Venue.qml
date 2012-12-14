@@ -178,125 +178,122 @@ PageWrapper {
         }
     }
 
-    Column {
-        anchors.fill: parent
+    Flickable {
+        id: flickableArea
+        width: parent.width
+        contentWidth: parent.width
+        height: place.height - y
 
-        Flickable {
-            id: flickableArea
+        clip: true
+        flickableDirection: Flickable.VerticalFlick
+        boundsBehavior: Flickable.StopAtBounds
+        pressDelay: 100
+
+        Column {
             width: parent.width
-            contentWidth: parent.width
-            height: place.height - y
 
-            clip: true
-            flickableDirection: Flickable.VerticalFlick
-            boundsBehavior: Flickable.StopAtBounds
-            pressDelay: 100
+            onHeightChanged: {
+                flickableArea.contentHeight = height + 10;
+            }
 
-            Column {
+            Rectangle {
+                z: 100
                 width: parent.width
-
-                onHeightChanged: {
-                    flickableArea.contentHeight = height + 10;
-                }
-
-                Rectangle {
-                    z: 100
-                    width: parent.width
-                    height: columnCheckin.height + 30
-                    color: place.color
-
-                    Column {
-                        id: columnCheckin
-                        y: 10
-                        width: parent.width
-                        spacing: 10
-
-                        EventBox {
-                            id: venueNameDetails
-                            activeWhole: true
-                            width: parent.width - 20
-                            anchors.horizontalCenter: parent.horizontalCenter
-
-                            userName: place.venueName
-                            userShout: place.venueAddress
-                        }
-
-                        ButtonGreen {
-                            label: "CHECK-IN HERE!"
-                            width: parent.width - 20
-                            anchors.horizontalCenter: parent.horizontalCenter
-
-                            onClicked: {
-                                place.checkin(place.venueID,place.venueName);
-                            }
-                        }
-                    }
-                }
+                height: columnCheckin.height + 30
+                color: place.color
 
                 Column {
-                    width: parent.width// - 20
-                    //x: 10
+                    id: columnCheckin
+                    y: 10
+                    width: parent.width
                     spacing: 10
 
-                    Row {
-                        x: 10
+                    EventBox {
+                        id: venueNameDetails
+                        activeWhole: true
                         width: parent.width - 20
-                        EventBox {
-                            id: venueMayorDetails
-                            width: parent.width
-                            userName: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
-                            userShout: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
-                            createdAt: place.venueMajorCount > 0 ? place.venueMajorCount + " checkins" : ""
+                        anchors.horizontalCenter: parent.horizontalCenter
 
-                            onUserClicked: {
-                                place.user(venueMajorID);
-                            }
-                        }
+                        userName: place.venueName
+                        userShout: place.venueAddress
                     }
 
-                    LikeBox {
-                        id: likeBox
-                        x: 10
+                    ButtonGreen {
+                        label: "CHECK-IN HERE!"
                         width: parent.width - 20
+                        anchors.horizontalCenter: parent.horizontalCenter
 
-                        onLike: {
-                            place.like(place.venueID, state);
+                        onClicked: {
+                            place.checkin(place.venueID,place.venueName);
                         }
                     }
+                }
+            }
 
-                    PhotosBox {
-                        id: usersBox
-                        photoSize: 64
-                        onItemSelected: {
-                            place.user(object)
+            Column {
+                width: parent.width// - 20
+                //x: 10
+                spacing: 10
+
+                Row {
+                    x: 10
+                    width: parent.width - 20
+                    EventBox {
+                        id: venueMayorDetails
+                        width: parent.width
+                        userName: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
+                        userShout: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
+                        createdAt: place.venueMajorCount > 0 ? place.venueMajorCount + " checkins" : ""
+
+                        onUserClicked: {
+                            place.user(venueMajorID);
                         }
                     }
+                }
 
-                    PhotosBox {
-                        id: photosBox
-                        onItemSelected: {
-                            place.photo(object);
-                        }
-                    }
+                LikeBox {
+                    id: likeBox
+                    x: 10
+                    width: parent.width - 20
 
-                    LineGreen {
-                        height: 30
-                        text: "BEST USERS TIPS"
-                        visible: tipsModel.count>0
+                    onLike: {
+                        place.like(place.venueID, state);
                     }
+                }
 
-                    Repeater {
-                        id: tipRepeater
-                        x: 10
-                        width: parent.width - 20
-                        model: tipsModel
-                        delegate: tipDelegate
-                        visible: tipsModel.count>0
+                PhotosBox {
+                    id: usersBox
+                    photoSize: 64
+                    onItemSelected: {
+                        place.user(object)
                     }
+                }
+
+                PhotosBox {
+                    id: photosBox
+                    onItemSelected: {
+                        place.photo(object);
+                    }
+                }
+
+                LineGreen {
+                    height: 30
+                    text: "BEST USERS TIPS"
+                    visible: tipsModel.count>0
+                }
+
+                Repeater {
+                    id: tipRepeater
+                    x: 10
+                    width: parent.width - 20
+                    model: tipsModel
+                    delegate: tipDelegate
+                    visible: tipsModel.count>0
                 }
             }
         }
     }
+    ScrollDecorator{ flickableItem: flickableArea }
 
     Component {
         id: tipDelegate

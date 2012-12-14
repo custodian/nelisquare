@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 PageWrapper {
@@ -99,4 +100,6 @@ PageWrapper {
             }
         }
     }
+
+    ScrollDecorator{ flickableItem: flickableArea }
 }

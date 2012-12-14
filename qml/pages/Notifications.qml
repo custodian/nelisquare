@@ -96,6 +96,8 @@ PageWrapper {
         clip: true
     }
 
+    ScrollDecorator{ flickableItem: notificationRepeater }
+
     Component {
         id: notificationDelegate
 

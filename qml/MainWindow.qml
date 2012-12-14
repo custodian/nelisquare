@@ -127,7 +127,7 @@ Rectangle {
             if (value != lastNotiCount) {
                 platformUtils.removeNotification("nelisquare.notification");
                 if (value!="0") {
-                    platformUtils.addNotification("nelisquare.notification",value + " new notification" +((value=="1")?"":"s"),"Nelisquare", 1);
+                    platformUtils.addNotification("nelisquare.notification", "Nelisquare", value + " new notification" +((value=="1")?"":"s"), 1);
                 }
                 lastNotiCount = value;
             }

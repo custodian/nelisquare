@@ -584,6 +584,7 @@ PageWrapper {
 
         }
     }
+    ScrollDecorator{ flickableItem: flickableArea }
 
     Component {
         id: leaderBoardDelegate

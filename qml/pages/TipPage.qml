@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-tip.js" as TipAPI
@@ -127,4 +128,5 @@ PageWrapper {
 
         }
     }
+    ScrollDecorator{ flickableItem: flickableArea }
 }

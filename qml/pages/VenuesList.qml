@@ -147,6 +147,8 @@ PageWrapper {
         }*/
     }
 
+    ScrollDecorator{ flickableItem: placesView }
+
     Component {
         id: venuesListDelegate
 

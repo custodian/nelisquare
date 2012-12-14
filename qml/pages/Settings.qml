@@ -599,4 +599,6 @@ PageWrapper {
 
         }
     }
+
+    ScrollDecorator{ flickableItem: flickableArea }
 }

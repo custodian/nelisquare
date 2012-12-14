@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-user.js" as UserAPI
@@ -38,6 +39,7 @@ PageWrapper {
     }
 
     ListView {
+        id: listViewMayorships
         model: mayorshipsModel
         y: 30
         width: parent.width
@@ -46,6 +48,8 @@ PageWrapper {
         //highlightFollowsCurrentItem: true
         clip: true
     }
+
+    ScrollDecorator{ flickableItem: listViewMayorships }
 
     Component {
         id: mayorshipsDelegate

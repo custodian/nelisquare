@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-user.js" as UserAPI
@@ -41,6 +42,8 @@ PageWrapper {
                 height: 20
             }
     }
+
+    ScrollDecorator{ flickableItem: badgeGrid }
 
     Component {
         id: badgeDelegate

@@ -221,6 +221,8 @@ PageWrapper {
         }
     }
 
+    ScrollDecorator{ flickableItem: friendsCheckinsView }
+
     Component {
         id: friendsFeedDelegate
 

@@ -1,7 +1,12 @@
 import Qt 4.7
+import com.nokia.meego 1.0
+import com.nokia.extras 1.1
 
 Rectangle {
+    id: profileImage
+
     signal clicked()
+
     property string photoUrl: ""
     property int photoSize: 64
     property int photoWidth: photoSize
@@ -13,7 +18,6 @@ Rectangle {
     property alias photoSmooth: image.smooth
     property variant photoAspect: Image.PreserveAspectCrop
 
-    id: profileImage
     x: photoBorder
     y: photoBorder
     width: photoWidth
@@ -22,35 +26,43 @@ Rectangle {
     border.color: mytheme.colors.photoBorderColor
     border.width: 1
 
-    Image {
-        id: image
-        x: photoBorder
-        y: photoBorder
-        asynchronous: true
-        source: photoCache ? cache.get(photoUrl) : photoUrl
-        //cache: photoCache
-        smooth: true
-        fillMode: photoAspect
-        width: parent.width - 2*photoBorder + 1
-        height: parent.height - 2*photoBorder + 1
-        sourceSize.width: width // photoSourceSize
-        //sourceSize.height: height //photoSourceSize
-        clip: true
-        onStatusChanged: {
-            image.visible = (image.status == Image.Ready)
-            loader.visible = (image.status != Image.Ready)
-            if (image.status == Image.Error) {
-                console.log("Remove bad cached element");
-                cache.remove(photoUrl);
+    /*MaskedItem {
+        width: photoWidth
+        height: photoHeight
+        anchors.fill: parent
+
+        mask: Image{ source: "../pics/image_mask.png"}
+    */
+
+        Image {
+            id: image
+            x: photoBorder
+            y: photoBorder
+            asynchronous: true
+            source: photoCache ? cache.get(photoUrl) : photoUrl
+            //cache: photoCache
+            smooth: true
+            fillMode: photoAspect
+            width: parent.width - 2*photoBorder + 1
+            height: parent.height - 2*photoBorder + 1
+            sourceSize.width: width // photoSourceSize
+            //sourceSize.height: height //photoSourceSize
+            clip: true
+            onStatusChanged: {
+                image.visible = (image.status == Image.Ready)
+                loader.visible = (image.status != Image.Ready)
+                if (image.status == Image.Error) {
+                    console.log("Remove bad cached element");
+                    cache.remove(photoUrl);
+                }
+            }
+            Image {
+                id: loader
+                anchors.centerIn: image
+                source: "../pics/"+mytheme.name+"/loader.png"
             }
         }
-    }
-
-    /*Animated*/Image {
-        id: loader
-        anchors.centerIn: image
-        source: "../pics/"+mytheme.name+"/loader.png"
-    }
+    //}
 
     MouseArea {
         anchors.fill: profileImage

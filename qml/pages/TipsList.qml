@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-tip.js" as TipAPI
@@ -42,6 +43,7 @@ PageWrapper {
     }
 
     ListView {
+        id: listViewTips
         model: tipsModel
         width: parent.width
         height: parent.height - y
@@ -55,6 +57,8 @@ PageWrapper {
             text: "TIPS LIST"
         }
     }
+
+    ScrollDecorator{ flickableItem: listViewTips }
 
     Component {
         id: tipDelegate

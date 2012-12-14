@@ -281,6 +281,8 @@ PageWrapper {
         }
     }
 
+    ScrollDecorator{ flickableItem: flickableArea }
+
     Component {
         id: commentDelegate
 

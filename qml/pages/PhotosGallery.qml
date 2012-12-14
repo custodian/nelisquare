@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import "../components"
 
@@ -89,6 +90,8 @@ PageWrapper {
             text: caption
         }
     }
+
+    ScrollDecorator{ flickableItem: photoGrid }
 
     Component {
          id: photoDelegate

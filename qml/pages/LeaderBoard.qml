@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-user.js" as UserAPI
@@ -33,6 +34,7 @@ PageWrapper {
     }
 
     ListView {
+        id: listViewLeader
         y: 40
         model: boardModel
         width: parent.width
@@ -43,6 +45,8 @@ PageWrapper {
 
         spacing: 5
     }
+
+    ScrollDecorator{ flickableItem: listViewLeader }
 
     LineGreen {
         height: 40

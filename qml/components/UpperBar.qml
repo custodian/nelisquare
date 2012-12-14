@@ -1,5 +1,6 @@
 import Qt 4.7
 import "."
+import "../js/utils.js" as Utils
 
 Rectangle {
     id: toolbar
@@ -16,7 +17,7 @@ Rectangle {
 
     Image {
         id: logoImage
-        source: "../pics/logo.png"
+        source: Utils.isXmas() ? "../pics/logo_xmas.png" : "../pics/logo.png"
         anchors.centerIn: parent
     }
 

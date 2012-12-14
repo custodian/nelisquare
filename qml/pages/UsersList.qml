@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-user.js" as UserAPI
@@ -38,6 +39,7 @@ PageWrapper {
     }
 
     ListView {
+        id: listViewUsers
         model: usersModel
         y: 30
         width: parent.width
@@ -45,6 +47,8 @@ PageWrapper {
         delegate: usersDelegate
         clip: true
     }
+
+    ScrollDecorator{ flickableItem: listViewUsers }
 
     Component {
         id: usersDelegate

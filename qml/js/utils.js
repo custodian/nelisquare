@@ -40,6 +40,15 @@ function getCurrentTime() {
     return Math.ceil((new Date()).getTime()/1000);
 }
 
+function isXmas() {
+    var date = new Date();
+    if (date.getTime() > new Date(2012, 11, 23).getTime()
+            && date.getTime() < new Date(2013, 0 ,15).getTime()) {
+        return true;
+    }
+    return false
+}
+
 function makeTime(date) {
     var pretty = prettyDate(new Date(parseInt(date,10)*1000));
     return pretty;
