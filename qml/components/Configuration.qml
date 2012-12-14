@@ -16,6 +16,7 @@ Item   {
 
     property string imageLoadType: "all"
     property int gpsUplockTime: 0 //in seconds
+    property string gpsAllow: ""
     property int feedAutoUpdate: 0 //in seconds
 
     property string feedIntegration: "0" //1 == integrate
@@ -32,22 +33,7 @@ Item   {
     }
 
     Component.onCompleted: {
-        Storage.getKeyValue("accesstoken", settingLoaded);
-
-        Storage.getKeyValue("settings.orientation", settingLoaded);
-        Storage.getKeyValue("settings.mapprovider", settingLoaded);
-        Storage.getKeyValue("settings.checkupdates", settingLoaded);
-
-        Storage.getKeyValue("settings.imageload", settingLoaded);
-        Storage.getKeyValue("settings.gpsunlock", settingLoaded);
-        Storage.getKeyValue("settings.feedupdate", settingLoaded);
-        Storage.getKeyValue("settings.feed.integration", settingLoaded);
-        Storage.getKeyValue("settings.feed.notification", settingLoaded);
-        Storage.getKeyValue("settings.theme", settingLoaded);
-
-        Storage.getKeyValue("settings.push.enabled",settingLoaded);
-
-        Storage.getKeyValue("settings.molome", settingLoaded);
+        loadSettings();
     }
 
     function settingLoaded(key, value) {
@@ -75,6 +61,14 @@ Item   {
         } else if (key === "settings.gpsunlock") {
             if (value === "") value = 0;
             configuration.gpsUplockTime = value;
+        } else if (key === "settings.gpsallow") {
+            if (value === "") {
+                //locationAllowDialog.state = "shown";
+                locationAllowDialog.open();
+            } else {
+                configuration.gpsAllow = value;
+                window.windowActiveChanged();
+            }
         } else if (key === "settings.feedupdate") {
             if (value === "") value = 0;
             if (value === 60) value = 120;
@@ -83,8 +77,9 @@ Item   {
             if (value === "") value = "light";
             mytheme.loadTheme(value);
         } else if (key === "settings.push.enabled") {
-            if (value === "")
-                pushNotificationDialog.state = "shown";
+            if (value === "") {
+                pushNotificationDialog.open();
+            }
         } else if (key === "settings.feed.integration") {
             if (value === "") value = "0";
             configuration.feedIntegration = value;
@@ -99,6 +94,32 @@ Item   {
     function settingChanged(key, value) {
         Storage.setKeyValue(key, value);
         configuration.settingLoaded(key, value);
+    }
+
+    function loadSettings() {
+        Storage.getKeyValue("accesstoken", settingLoaded);
+
+        Storage.getKeyValue("settings.orientation", settingLoaded);
+        Storage.getKeyValue("settings.mapprovider", settingLoaded);
+        Storage.getKeyValue("settings.checkupdates", settingLoaded);
+
+        Storage.getKeyValue("settings.imageload", settingLoaded);
+        Storage.getKeyValue("settings.gpsunlock", settingLoaded);
+        Storage.getKeyValue("settings.gpsallow", settingLoaded);
+        Storage.getKeyValue("settings.feedupdate", settingLoaded);
+        Storage.getKeyValue("settings.feed.integration", settingLoaded);
+        Storage.getKeyValue("settings.feed.notification", settingLoaded);
+        Storage.getKeyValue("settings.theme", settingLoaded);
+
+        Storage.getKeyValue("settings.push.enabled",settingLoaded);
+
+        Storage.getKeyValue("settings.molome", settingLoaded);
+    }
+
+    function resetSettings() {
+        cache.reset();
+        Storage.clear();
+        loadSettings();
     }
 
     function onUpdateAvailable(build, version, changelog, url) {

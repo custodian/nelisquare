@@ -42,11 +42,18 @@ PageWrapper {
 
     Menu {
         id: menu
-        visualParent: mainWindowStack
+        visualParent: mainWindowPage
         MenuLayout {
-            MenuItem { text: qsTr("Mark all readed")
+            MenuItem {
+                text: qsTr("Mark all as readed")
                 onClicked: {
                     NotiAPI.markNotificationsRead(notificationsList,NotiAPI.getCurrentTime());
+                }
+            }
+            MenuItem {
+                text: qsTr("Settings")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("../pages/Settings.qml"));
                 }
             }
         }

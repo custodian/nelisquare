@@ -28,22 +28,6 @@ Item {
     property alias gradientHeader: gradientHeader
 
     Gradient {
-        id: gradientGreen
-        GradientStop{position: 0; color: "#57a800"; }
-        GradientStop{position: 1.0; color: "#a0d800"; }
-    }
-    property alias gradientGreen: gradientGreen
-
-    Gradient {
-        id: gradientGreenPressed
-        GradientStop{position: 0; color: "#666"; }
-        GradientStop{position: 0.1; color: "#aaa"; }
-        GradientStop{position: 0.6; color: "#888"; }
-        GradientStop{position: 0.9; color: "#777"; }
-    }
-    property alias gradientGreenPressed: gradientGreenPressed
-
-    Gradient {
         id: gradientLightGreen
         GradientStop{position: 0; color: "#c8eB37"; }
         GradientStop{position: 0.6; color: "#A8CB17"; }
@@ -57,40 +41,6 @@ Item {
         GradientStop{position: 1.0; color: "#18659c"; }
     }
     property alias gradientDarkBlue: gradientDarkBlue
-
-    Gradient {
-        id: gradientBlue
-        GradientStop{position: 0.3; color: "#3784cA"; }
-        GradientStop{position: 1; color: "#19548A"; }
-    }
-    property alias gradientBlue: gradientBlue
-
-    Gradient {
-        id: gradientBluePressed
-        GradientStop{position: 0; color: "#10446A"; }
-        GradientStop{position: 0.1; color: "#17548A"; }
-        GradientStop{position: 0.6; color: "#17447A"; }
-        GradientStop{position: 0.9; color: "#2060a0"; }
-    }
-    property alias gradientBluePressed: gradientBluePressed
-
-    Gradient {
-        id: gradientGray
-        GradientStop{position: 0; color: "#bbb"; }
-        GradientStop{position: 0.1; color: "#ccc"; }
-        GradientStop{position: 0.6; color: "#aaa"; }
-        GradientStop{position: 0.9; color: "#999"; }
-    }
-    property alias gradientGray: gradientGray
-
-    Gradient {
-        id: gradientGrayPressed
-        GradientStop{position: 0; color: "#666"; }
-        GradientStop{position: 0.1; color: "#aaa"; }
-        GradientStop{position: 0.6; color: "#888"; }
-        GradientStop{position: 0.9; color: "#777"; }
-    }
-    property alias gradientGrayPressed: gradientGrayPressed
 
     Component.onCompleted: {
         colors = {

@@ -194,7 +194,7 @@ PageWrapper {
                             friendsFeed.recentPressed = true;
                             friendsFeed.nearbyPressed = false;
                             friendsFeed.recent();
-                        }
+                        }                        
                     }
                 }
                 ButtonBlue {

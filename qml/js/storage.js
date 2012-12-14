@@ -35,3 +35,11 @@ function getKeyValue(key, callback) {
        }
     });
 }
+
+/** Truncate all data at storage */
+function clear() {
+    var db = openDatabaseSync("Nelisquare", "1.0", "Nelisquare settings database", 10);
+    db.transaction(function(tx) {
+        tx.executeSql('DELETE FROM SETTINGS');
+    });
+}

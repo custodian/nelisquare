@@ -1,5 +1,6 @@
 import Qt 4.7
-import QtMobility.location 1.1
+import QtMobility.location 1.2
+import com.nokia.meego 1.0
 import QtWebKit 1.0
 
 import "components"
@@ -14,7 +15,6 @@ import "js/api-photo.js" as PhotoAPI
 Rectangle {
     id: window
 
-    property bool isPortrait: true
     property bool windowActive: false
 
     property bool molome_present: false
@@ -30,6 +30,10 @@ Rectangle {
     color: mytheme.colors.backgroundMain
 
     onWindowActiveChanged: {
+        if (configuration.gpsAllow !== "1") {
+            positionSource.active = false;
+            return;
+        }
         if (!windowActive) {
             if (positionSource.position.latitudeValid) {
                 timerGPSUnlock.start();
@@ -79,11 +83,6 @@ Rectangle {
         if (configuration.platform === "maemo") {
             signalTimer.start();
         }
-        window.isPortrait = window.height > (window.width*2/3);//window.width<(window.height/2);
-    }
-
-    onHeightChanged: {
-        window.isPortrait = window.height > (window.width*2/3);//window.width<(window.height/2);
     }
 
     Timer {
@@ -128,7 +127,7 @@ Rectangle {
             if (value != lastNotiCount) {
                 platformUtils.removeNotification("nelisquare.notification");
                 if (value!="0") {
-                    platformUtils.addNotification("nelisquare.notification","New notification!","You have " + value + " unreaded notification" +((value=="1")?"":"s"), 1);
+                    platformUtils.addNotification("nelisquare.notification",value + " new notification" +((value=="1")?"":"s"),"Nelisquare", 1);
                 }
                 lastNotiCount = value;
             }
@@ -179,28 +178,43 @@ Rectangle {
         id: pageStack
         y: upperbar.height
         //DBG menu tools
-        height: window.isPortrait ? parent.height - upperbar.height : parent.height - upperbar.height // - menubar.height
-        width: window.isPortrait ? parent.width : parent.width // - menubar.width
+        height: parent.height - upperbar.height
+        width: parent.width
 
         WaitingIndicator {
             id: waiting
             z: 10
         }
 
-        NotificationDialog {
+        QueryDialog  {
+            id: locationAllowDialog
+            icon: "image://theme/icon-m-common-location-selected"
+            titleText: "Location data"
+            message: "Nelisquare requires use of user location data. Data is needed to make geo-location services work properly."
+            acceptButtonText: "Allow"
+            rejectButtonText: "Deny"
+            onAccepted: {
+                configuration.settingChanged("settings.gpsallow","1");
+            }
+            onRejected: {
+                configuration.settingChanged("settings.gpsallow","0");
+            }
+        }
+
+        QueryDialog  {
             id: pushNotificationDialog
-            z: 30
-            width: parent.width
-            state: "hidden"
-            message: ""
-            onStateChanged: {
-                if (state === "shown")
-                    message = "<span><font='+1'>Push notifications</font><br/><br/>Incoming notifications are not supported at this version and are disabled by default.<br/>You will be promted again when they will be available at future versions.</span>"
-            }
-            onClose: {
+            icon: "image://theme/icon-m-settings-notification"
+            titleText: "Push notifications"
+            message: "Incoming push notifications are not supported at this version and are disabled by default.<br/><br/>You will be promted again when they will be available at future versions."
+            onAccepted: {
                 configuration.settingChanged("settings.push.enabled","0");
-                pushNotificationDialog.state = "hidden";
             }
+            acceptButtonText: "OK"
+            /*buttons: ButtonRow {
+                style: ButtonStyle { }
+                anchors.horizontalCenter: parent.horizontalCenter
+                Button { text: "OK"; onClicked: pushNotificationDialog.accept(); }
+            }*/
         }
 
         NotificationDialog {
@@ -284,18 +298,4 @@ Rectangle {
     UpperBar {
         id: upperbar
     }
-
-    //DBG
-    /*Menubar {
-        id: menubar
-    }*/
-
-    //DBG
-    /*Image {
-        id: bottomShadow
-        width: parent.width
-        anchors.bottom: menubar.top
-        visible: menubar.visible
-        source:  "pics/bottom-shadow.png"
-    }*/
 }

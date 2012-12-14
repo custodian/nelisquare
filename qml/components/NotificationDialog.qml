@@ -30,7 +30,7 @@ Rectangle {
             color: mytheme.colors.textHeader
         }
 
-        ButtonGreen {
+        ButtonBlue {
             id: checkinButton
             label: "OK"
             width: parent.width

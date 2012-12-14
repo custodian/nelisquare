@@ -26,16 +26,27 @@ Rectangle {
         loginDialog.loadFailed.connect(function() {
             //TODO: error loading page - show some details
         });
+        reset();
+    }
+
+    function reset() {
         webView.url = Api.AUTHENTICATE_URL;
-        //console.log("Redirecting to " + Api.AUTHENTICATE_URL);
         webView.reload.trigger();
+    }
+
+    PageHeader{
+        id: header
+        headerText: qsTr("Sign In to Foursquare")
+        onClicked: {
+            reset();
+        }
     }
 
     WebView {
         id: webView
-        anchors.fill:parent
-        preferredHeight: parent.height
-        preferredWidth: parent.width
+        anchors {top:header.bottom; bottom:parent.bottom; left:parent.left; right:parent.right}
+        preferredHeight: height
+        preferredWidth: width
         url: ""
 
         WaitingIndicator {

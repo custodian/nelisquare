@@ -21,10 +21,16 @@ Rectangle   {
 
     Menu {
         id: dummyMenu
-        visualParent: mainWindowStack
+        visualParent: mainWindowPage
         MenuLayout {
-            MenuItem { text: qsTr("Menu is not ready yet.")
+            /*MenuItem { text: qsTr("Menu is not ready yet.")
                 onClicked: {
+                }
+            }*/
+            MenuItem {
+                text: qsTr("Settings")
+                onClicked: {
+                    pageStack.push(Qt.resolvedUrl("../pages/Settings.qml"));
                 }
             }
         }

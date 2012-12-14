@@ -1,10 +1,11 @@
 nelisquare (0.4.9) stable; urgency=low
   * notifications at home screen
   * homescreen feed integration
-  * [in dev] awesome toolbars & menus
-  * [in dev] settings page update
+  * awesome toolbars & menus
+  * settings page update
+  * bug fixes
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 06 Dec 2012 01:09:38 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 14 Dec 2012 14:09:38 +0400
 
 nelisquare (0.4.8) stable; urgency=low
   * api key changed

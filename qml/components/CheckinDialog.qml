@@ -209,7 +209,7 @@ Rectangle {
                 }
             }
 
-            ButtonGreen {
+            ButtonGray {
                 label: "Cancel"
                 x: parent.width - 120
                 width: 120

@@ -45,7 +45,7 @@ PageWrapper {
             routeLine.removeCoordinate(routeLine.path[0]);
         route.Directions.Routes[0].Steps
         .forEach(function(step) {
-            var coord = Qt.createQmlObject("import QtQuick 1.1; import QtMobility.location 1.1; Coordinate {}",venueMap);
+            var coord = Qt.createQmlObject("import QtQuick 1.1; import QtMobility.location 1.2; Coordinate {}",venueMap);
             coord.longitude = step.Point.coordinates[0];
             coord.latitude = step.Point.coordinates[1];
             routeLine.addCoordinate(coord);

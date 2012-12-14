@@ -27,48 +27,6 @@ Item {
     property alias gradientDarkBlue: gradientDarkBlue
 
     Gradient {
-        id: gradientGreen
-        GradientStop{position: 0; color: "#302f30"; }
-        GradientStop{position: 1.0; color: "#302f30"; }
-    }
-    property alias gradientGreen: gradientGreen
-
-    Gradient {
-        id: gradientGreenPressed
-        GradientStop{position: 0; color: "#232323"; }
-        GradientStop{position: 1; color: "#232323"; }
-    }
-    property alias gradientGreenPressed: gradientGreenPressed
-
-    Gradient {
-        id: gradientBlue
-        GradientStop{position: 0; color: "#302f30"; }
-        GradientStop{position: 1.0; color: "#302f30"; }
-    }
-    property alias gradientBlue: gradientBlue
-
-    Gradient {
-        id: gradientBluePressed
-        GradientStop{position: 0; color: "#232323"; }
-        GradientStop{position: 1; color: "#232323"; }
-    }
-    property alias gradientBluePressed: gradientBluePressed
-
-    Gradient {
-        id: gradientGray
-        GradientStop{position: 0; color: "#302f30"; }
-        GradientStop{position: 1.0; color: "#302f30"; }
-    }
-    property alias gradientGray: gradientGray
-
-    Gradient {
-        id: gradientGrayPressed
-        GradientStop{position: 0; color: "#232323"; }
-        GradientStop{position: 1; color: "#232323"; }
-    }
-    property alias gradientGrayPressed: gradientGrayPressed
-
-    Gradient {
         id: gradientSingle
         GradientStop{position: 0; color: "#302f30"; }
         GradientStop{position: 1; color: "#302f30"; }

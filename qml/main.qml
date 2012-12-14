@@ -10,8 +10,9 @@ PageStackWindow {
     showToolBar: toolbar.tools !== null
     //DBG
     //showStatusBar: false //(windowHelper.isMaemo())?
-    showStatusBar: mainWindowPage.orientationLock === PageOrientation.LockPortrait
-                   || mainWindowPage.orientationLock === PageOrientation.Automatic
+    showStatusBar: inPortrait
+                    /*mainWindowPage.orientationLock === PageOrientation.LockPortrait
+                   || mainWindowPage.orientationLock === PageOrientation.Automatic*/
 
     onWindowActiveChanged: {
         console.log("active: " + windowActive);
@@ -32,19 +33,6 @@ PageStackWindow {
             id: window
         }
     }
-
-    /*Menu {
-        id: myMenu
-        visualParent: pageStack
-        MenuLayout {
-            MenuItem { text: qsTr("Refresh")
-                onClicked: {
-                    mainWindowStack.pageStack.currentPage.updateContent();
-                }
-                visible: mainWindowStack.pageStack.currentPage.updateContent !== undefined
-            }
-        }
-    }*/
 
     function processUINotification(id) {
         window.processUINotification(id);

@@ -27,8 +27,32 @@ PageWrapper {
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
-                //TODO: add menu
-                dummyMenu.open();
+                menu.open();
+            }
+        }
+    }
+
+    QueryDialog  {
+        id: eraseSettingsDialog
+        icon: "image://theme/icon-l-accounts"
+        titleText: "Reset settings"
+        message: "This action will erase all data including auth token, application settings and cache."
+        acceptButtonText: "Yes, clear the data"
+        rejectButtonText: "No, thanks"
+        onAccepted: {
+            configuration.resetSettings();
+        }
+    }
+
+    Menu {
+        id: menu
+        visualParent: mainWindowPage
+        MenuLayout {
+            MenuItem {
+                text: qsTr("Reset settings")
+                onClicked: {
+                    eraseSettingsDialog.open();
+                }
             }
         }
     }
@@ -306,6 +330,20 @@ PageWrapper {
                 width: parent.width
             }
 
+            //Location data support
+            SettingSwitch{
+                text: qsTr("Allow use of Location Data")
+                checked: configuration.gpsAllow === "1" //TODO: make some variable for it
+                onCheckedChanged: {
+                    var value = (checked)?"1":"0";
+                    settingsChanged("gpsallow",value);
+                }
+            }
+            Item{
+                height: 20
+                width: parent.width
+            }
+
             //GPS Unlock time
             SettingSlider{
                 enabled: true//!streamingSwitch.checked
@@ -370,7 +408,7 @@ PageWrapper {
                 //checked: configuration. === "1" //TODO: make some variable for it
                 onCheckedChanged: {
                     if (checked) {
-                        pushNotificationDialog.state = "shown";
+                        pushNotificationDialog.open();
                     }
                     checked = false;
                     var value = "0";
@@ -437,7 +475,7 @@ PageWrapper {
                         active = true;
                         molome.install();
                     }
-                    visible: !window.molome_installed;
+                    visible: window.molome_present && !window.molome_installed;
                     onVisibleChanged: {
                         if (active) {
                             waiting.hide();

@@ -11,6 +11,9 @@ Item {
     }
     property string colorString: "red"
 
+    property int borderSizeMedium: 20
+    property int headerHeight: inPortrait ? 65 : 55
+
     // padding size
     property int paddingSmall: 4
     property int paddingMedium: 6
@@ -29,14 +32,8 @@ Item {
     property variant gradientTextBox
     property variant gradientToolbar
     property variant gradientHeader
-    property variant gradientGreen
-    property variant gradientGreenPressed
     property variant gradientLightGreen
     property variant gradientDarkBlue
-    property variant gradientBlue
-    property variant gradientBluePressed
-    property variant gradientGray
-    property variant gradientGrayPressed
 
     property string textVersionInfo: "Version: "
     property string textBuildInfo: "Build: "
@@ -86,14 +83,8 @@ Item {
         mytheme.gradientTextBox = loadedTheme.getGradient("gradientTextBox");
         mytheme.gradientToolbar = loadedTheme.getGradient("gradientToolbar");
         mytheme.gradientHeader = loadedTheme.getGradient("gradientHeader");
-        mytheme.gradientGreen = loadedTheme.getGradient("gradientGreen");
-        mytheme.gradientGreenPressed = loadedTheme.getGradient("gradientGreenPressed");
         mytheme.gradientLightGreen = loadedTheme.getGradient("gradientLightGreen");
         mytheme.gradientDarkBlue = loadedTheme.getGradient("gradientDarkBlue");
-        mytheme.gradientBlue = loadedTheme.getGradient("gradientBlue");
-        mytheme.gradientBluePressed = loadedTheme.getGradient("gradientBluePressed");
-        mytheme.gradientGray = loadedTheme.getGradient("gradientGray");
-        mytheme.gradientGrayPressed = loadedTheme.getGradient("gradientGrayPressed");
 
         mytheme.name = mytheme.colors.name;
         themeLoader.inverted = loadedTheme.inverted;
