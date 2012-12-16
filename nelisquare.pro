@@ -24,7 +24,6 @@ contains(MEEGO_EDITION,harmattan){
     QT += dbus
     DEFINES += Q_OS_HARMATTAN
     CONFIG += qdeclarative-boostable meegotouch
-    # shareuiinterface-maemo-meegotouch share-ui-plugin share-ui-common mdatauri
 }
 maemo5 {
     DEFINES += Q_OS_MAEMO
