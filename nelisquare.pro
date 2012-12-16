@@ -91,11 +91,7 @@ maemo5 {
 }
 
 # Add more folders to ship with the application, here
-unix {
-    qmlresources.source = $$PWD/qml
-} else {
-    qmlresources.source = qml
-}
+qmlresources.source = qml
 qmlresources.target = .
 DEPLOYMENTFOLDERS = qmlresources
 

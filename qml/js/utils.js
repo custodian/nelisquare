@@ -42,8 +42,8 @@ function getCurrentTime() {
 
 function isXmas() {
     var date = new Date();
-    if (date.getTime() > new Date(2012, 11, 23).getTime()
-            && date.getTime() < new Date(2013, 0 ,15).getTime()) {
+    if (date.getTime() > new Date(2012, 11, 22).getTime()
+            && date.getTime() < new Date(2013, 0 ,5).getTime()) {
         return true;
     }
     return false

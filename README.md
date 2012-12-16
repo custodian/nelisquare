@@ -1,18 +1,13 @@
 nelisquare
 ==========
 
-Nelisquare - a FourSquare client for maemo/meego written in qml
-
-
-Original Nelisquare was developed by Tommi Laukkanen refer to http://nelisquare.com for more info.
+Nelisquare is a feature rich FourSquare client for maemo/meego N9 / N900 / N950
 
 Wiki
 ----
 
-Check out https://github.com/custodian/nelisquare/wiki for packages and instructions
+Website: http://custodian.github.com/nelisquare
+Wiki: https://github.com/custodian/nelisquare/wiki for packages and instructions
 
-## Branches
-
-    master - latest easy to use "release"
-    nelisquare - original nelisquare client as of 0.2.6
+Community talks: http://talk.maemo.org/showthread.php?t=87666
 

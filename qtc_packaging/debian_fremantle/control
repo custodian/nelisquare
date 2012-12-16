@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Basil Semuonov <basil.semuonov@gmail.com>
 Build-Depends: debhelper (>= 5), libqt4-dev
 Standards-Version: 3.7.3
-Homepage: https://custodian.github.com/nelisquare
+Homepage: http://custodian.github.com/nelisquare
 
 Package: nelisquare
 Architecture: any
