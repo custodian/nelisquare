@@ -38,7 +38,6 @@ Item   {
 
     function settingLoaded(key, value) {
         if(key==="accesstoken") {
-            console.log("token loaded: " + value);
             Api.setAccessToken(value);
         } else if (key === "settings.orientation") {
             if (value === "") value = "auto";
@@ -140,14 +139,11 @@ Item   {
 
         if (update){
             console.log("UPDATE IS AVAILABLE: " + build);
-            /*
-            //TODO: Create update "Sheet" component
-            */
             updateDialog.build = build;
             updateDialog.version = version;
             updateDialog.url = url;
             updateDialog.changelog = changelog;
-            updateDialog.state = "shown";
+            updateDialog.open();
         }
     }
 }

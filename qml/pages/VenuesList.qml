@@ -43,8 +43,7 @@ PageWrapper {
             checkinDialog.reset();
             checkinDialog.venueID = venueID;
             checkinDialog.venueName = venueName;
-            checkinDialog.state = "shown";
-
+            checkinDialog.open();
         });
         page.clicked.connect(function(venueid) {
             pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
@@ -161,6 +160,7 @@ PageWrapper {
             venuePhoto: model.photo !== undefined ? model.photo : ""
             createdAt: model.distance + " meters"
             peoplesCount: model.peoplesCount
+            specialsCount: model.specialsCount
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.icon

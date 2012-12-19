@@ -20,7 +20,7 @@ function parseVenues(response, page) {
     page.placesModel.clear();
     waiting.hide();
     data.venues.forEach(function(place) {
-        //console.log("PLACE: " + JSON.stringify(place));
+        console.log("PLACE: " + JSON.stringify(place));
         var icon = "";
         if(place.categories!=null && place.categories[0]!==undefined) {
             icon = parseIcon(place.categories[0].icon);
@@ -37,7 +37,8 @@ function parseVenues(response, page) {
                            "lat": place.location.lat,
                            "lng": place.location.lng,
                            "icon": icon,
-                           "peoplesCount": parse(place.hereNow.count)
+                           "peoplesCount": parse(place.hereNow.count),
+                           "specialsCount": parse(place.specials.count)
         });
         count++;
     });

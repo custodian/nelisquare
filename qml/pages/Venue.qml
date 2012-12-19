@@ -87,7 +87,7 @@ PageWrapper {
             checkinDialog.reset();
             checkinDialog.venueID = venueID;
             checkinDialog.venueName = venueName;
-            checkinDialog.state = "shown";
+            checkinDialog.open();
         });
         page.showAddTip.connect(function(venueID, venueName) {
             tipDialog.reset();

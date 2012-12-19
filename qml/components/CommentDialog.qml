@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 
 Rectangle {
     id: comment
@@ -10,14 +11,8 @@ Rectangle {
     signal shout(string comment)
 
     function reset() {
-        commentText.text = mytheme.textDefaultComment;
+        commentText.text = ""
     }
-
-    function hideKeyboard() {
-        commentText.closeSoftwareInputPanel();
-        window.focus = true;
-    }
-
 
     Column {
         id: items
@@ -34,63 +29,29 @@ Rectangle {
             color: mytheme.colors.textColorSign
         }
 
-        Rectangle {
-            id: commentBox
-            height: 135
-            width: parent.width
-            gradient: mytheme.gradientTextBox
-            border.width: 1
-            border.color: mytheme.colors.textboxBorderColor
-            smooth: true
+        TextArea {
+            id: commentText
+            x: 5
+            width: parent.width - 10
+            height: 130
 
-            Flickable {
-                 id: flick
+            placeholderText: mytheme.textDefaultComment
+            textFormat: TextEdit.PlainText
 
-                 width: parent.width;
-                 height: parent.height;
-                 //contentWidth: commentText.paintedWidth
-                 //contentHeight: commentText.paintedHeight
-                 clip: true
+            font.pixelSize: mytheme.fontSizeMedium
 
-                 function ensureVisible(r)
-                  {
-                      if (contentX >= r.x)
-                          contentX = r.x;
-                      else if (contentX+width <= r.x+r.width)
-                          contentX = r.x+r.width-width;
-                      if (contentY >= r.y)
-                          contentY = r.y;
-                      else if (contentY+height <= r.y+r.height)
-                          contentY = r.y+r.height-height;
-                  }
-
-                TextEdit {
-                    id: commentText
-                    wrapMode: TextEdit.Wrap
-                    text: mytheme.textDefaultComment
-                    textFormat: TextEdit.PlainText
-                    width: parent.width - 10
-                    height: parent.height - 10
-                    x: 5
-                    y: 5
-                    color: mytheme.colors.textColor
-                    font.pixelSize: 24
-                    onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
-
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: {
-                            commentText.focus = true;
-                            if(commentText.text == mytheme.textDefaultComment) {
-                                commentText.text = "";
-                            }
-                            if (commentText.text != "") {
-                                commentText.cursorPosition = commentText.positionAt(mouseX,mouseY);
-                            }
-                        }
-                    }
+            onTextChanged: {
+                if (text.length>200) {
+                    errorHighlight = true;
+                } else {
+                    errorHighlight = false;
                 }
+            }
+            Text {
+                anchors { right: parent.right; bottom: parent.bottom; margins: mytheme.paddingMedium }
+                font.pixelSize: mytheme.fontSizeMedium
+                color: mytheme.colors.textColorTimestamp
+                text: 200 - commentText.text.length
             }
         }
 
@@ -103,7 +64,6 @@ Rectangle {
                 label: "Comment!"
                 width: parent.width - 130
                 onClicked: {
-                    hideKeyboard();
                     comment.shout( commentText.text )
                 }
             }
@@ -113,7 +73,6 @@ Rectangle {
                 x: parent.width - 120
                 width: 120
                 onClicked: {
-                    hideKeyboard();
                     comment.state = "hidden";
                 }
             }

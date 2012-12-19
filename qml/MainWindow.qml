@@ -244,21 +244,12 @@ Rectangle {
         //TODO: remove to single "Sheet"
         CheckinDialog {
             id: checkinDialog
-            z: 20
-            width: parent.width
-            state: "hidden"
 
-            onCancel: { checkinDialog.state = "hidden"; }
             onCheckin: {
-                var realComment = comment;
-                if(realComment === mytheme.textDefaultComment) {
-                    realComment = "";
-                }
                 var callback = function(checkinID) {
                     pageStack.push(Qt.resolvedUrl("pages/Checkin.qml"),{"checkinID":checkinID});
                 }
-                CheckinAPI.addCheckin(venueID, callback, realComment, friends, facebook, twitter);
-                checkinDialog.state = "hidden";
+                CheckinAPI.addCheckin(venueID, callback, comment, friends, facebook, twitter);
             }
         }
 

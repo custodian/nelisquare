@@ -84,8 +84,7 @@ PageWrapper {
     Component {
          id: photoDelegate
          ProfilePhoto {
-            //photoUrl: model.filePath      //real
-            photoUrl: url
+            photoUrl: url               //real
             //photoUrl: model.fileName        //sim
             photoSize: photoGrid.cellWidth
             photoSourceSize: photoGrid.cellWidth

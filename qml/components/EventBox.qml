@@ -25,6 +25,7 @@ Item {
     property int peoplesCount: 0
     property int likesCount: 0
     property int photosCount: 0
+    property int specialsCount: 0
 
     property alias userPhoto: profileImage
 
@@ -188,7 +189,25 @@ Item {
                     text: likesCount
                     visible: likesCount>0
                 }
-                visible: createdAt.length>0 || commentsCount>0 || likesCount>0 || peoplesCount>0 || photosCount>0
+                Image {
+                    id: specialsImage
+                    anchors.verticalCenter: parent.verticalCenter
+                    source: "../pics/specialcount.png"
+                    asynchronous: true
+                    smooth: true
+                    height: 32
+                    fillMode: Image.PreserveAspectFit
+                    visible: specialsCount>0
+                }
+                Text {
+                    id: textSpecials
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: mytheme.colors.textColorTimestamp
+                    font.pixelSize: fontSize - 2
+                    text: specialsCount
+                    visible: specialsCount>0
+                }
+                visible: createdAt.length>0 || commentsCount>0 || likesCount>0 || peoplesCount>0 || photosCount>0 || specialsCount>0
             }
             visible: showText
         }

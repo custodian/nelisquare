@@ -44,7 +44,8 @@ Item {
 
     property string textSplash: "Welcome!"
 
-    property string textDefaultComment: "Add comment"
+    property string textDefaultComment: "New awesome comment"
+    property string textDefaultCheckin: "Whats on your mind?"
     property string textSearchVenue: "Type place to search"
     property string textDefaultTip: "Write some cool tip here"
 

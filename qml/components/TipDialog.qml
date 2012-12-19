@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 
 Rectangle {
     id: tipDialog
@@ -12,12 +13,7 @@ Rectangle {
     signal addTip(string comment)
 
     function reset() {
-        shoutText.text = mytheme.textDefaultTip;
-    }
-
-    function hideKeyboard() {
-        shoutText.closeSoftwareInputPanel();
-        window.focus = true;
+        tipText.text = "";
     }
 
     Column {
@@ -35,40 +31,29 @@ Rectangle {
             color: mytheme.colors.textColorSign
         }
 
-        Rectangle {
-            id: checkinShoutBox
-            height: 100
-            width: parent.width
-            gradient: mytheme.gradientTextBox
-            radius: 5
-            border.width: 1
-            border.color: mytheme.colors.textboxBorderColor
-            smooth: true
+        TextArea {
+            id: tipText
+            x: 5
+            width: parent.width - 10
+            height: 130
 
-            TextEdit {
-                id: shoutText
-                wrapMode: TextEdit.Wrap
-                text: mytheme.textDefaultTip
-                textFormat: TextEdit.PlainText
-                width: parent.width - 10
-                height: parent.height - 10
-                x: 5
-                y: 5
-                color: mytheme.colors.textColor
-                font.pixelSize: 24
+            placeholderText: mytheme.textDefaultTip;
+            textFormat: TextEdit.PlainText
 
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        shoutText.focus = true;
-                        if(shoutText.text==mytheme.textDefaultTip) {
-                            shoutText.text = "";
-                        }
-                        if (shoutText.text != "") {
-                            shoutText.cursorPosition = shoutText.positionAt(mouseX,mouseY);
-                        }
-                    }
+            font.pixelSize: mytheme.fontSizeMedium
+
+            onTextChanged: {
+                if (text.length>200) {
+                    errorHighlight = true;
+                } else {
+                    errorHighlight = false;
                 }
+            }
+            Text {
+                anchors { right: parent.right; bottom: parent.bottom; margins: mytheme.paddingMedium }
+                font.pixelSize: mytheme.fontSizeMedium
+                color: mytheme.colors.textColorTimestamp
+                text: 200 - tipText.text.length
             }
         }
 
@@ -81,12 +66,7 @@ Rectangle {
                 label: "ADD"
                 width: parent.width - 130
                 onClicked: {
-                    if(shoutText.text==mytheme.textDefaultTip) {
-                        shoutText.text = "";
-                    } else {
-                        hideKeyboard();
-                        tipDialog.addTip( shoutText.text );
-                    }
+                    tipDialog.addTip( tipText.text );
                 }
             }
 
@@ -95,7 +75,6 @@ Rectangle {
                 x: parent.width - 120
                 width: 120
                 onClicked: {
-                    hideKeyboard();
                     tipDialog.state = "hidden";
                 }
             }

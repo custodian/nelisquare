@@ -23,7 +23,7 @@ function getUpdateInfo(updatetype, callback) {
             var changelog = "";
             if (data[2] !== undefined) {
                 changelog = data[2].split(" = ")[1].replace(/(\r\n|\n|\r|\"|\')/gm,"");
-                changelog = changelog.replace(/  - /g,'\n - ');
+                changelog = changelog.replace(/  - /g,'<br> - ');
             }
             var url = UPDATE_BASE + platform + "/nelisquare";
             if (updatetype == "developer") {

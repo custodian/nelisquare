@@ -59,6 +59,12 @@ private:
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
+#if defined(Q_WS_SIMULATOR)
+    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
+    config.setProtocol(QSsl::SslV3);
+    QSslConfiguration::setDefaultConfiguration(config);
+#endif
+
     QApplication *app = createApplication(argc, argv);
     QmlApplicationViewer viewer;
 

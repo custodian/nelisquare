@@ -182,34 +182,37 @@ PageWrapper {
                 height: 90
                 color: mytheme.colors.toolbarDarkColor
 
-                ButtonBlue {
-                    label: "RECENT"
-                    y: 20
-                    x: 10
-                    width:  parent.width/2-15
-                    height: 50
-                    pressed: friendsFeed.recentPressed
-                    onClicked: {
-                        if(friendsFeed.recentPressed==false) {
-                            friendsFeed.recentPressed = true;
-                            friendsFeed.nearbyPressed = false;
-                            friendsFeed.recent();
-                        }                        
-                    }
-                }
-                ButtonBlue {
-                    label: "NEARBY"
-                    y: 20
-                    x: parent.width/2+5
-                    width: parent.width/2-15
-                    height: 50
-                    pressed: friendsFeed.nearbyPressed
-                    onClicked: {
-                        if(friendsFeed.nearbyPressed==false) {
-                            friendsFeed.recentPressed = false;
-                            friendsFeed.nearbyPressed = true;
-                            friendsFeed.nearby();
+                ButtonRow {
+                    width:  parent.width - 2*mytheme.paddingXXLarge
+                    anchors.centerIn: parent
+
+                    Button {
+                        text: "RECENT"
+                        height: 50
+                        checkable: true
+                        checked: friendsFeed.recentPressed
+                        onClicked: {
+                            if(friendsFeed.recentPressed==false) {
+                                friendsFeed.recentPressed = true;
+                                friendsFeed.nearbyPressed = false;
+                                friendsFeed.recent();
+                            }
                         }
+                        //platformStyle: ButtonStyle {}
+                    }
+                    Button {
+                        text: "NEARBY"
+                        height: 50
+                        checkable: true
+                        checked: friendsFeed.nearbyPressed
+                        onClicked: {
+                            if(friendsFeed.nearbyPressed==false) {
+                                friendsFeed.recentPressed = false;
+                                friendsFeed.nearbyPressed = true;
+                                friendsFeed.nearby();
+                            }
+                        }
+                        //platformStyle: ButtonStyle {}
                     }
                 }
             }

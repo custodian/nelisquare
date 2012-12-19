@@ -70,7 +70,7 @@ PageWrapper {
 
     Timer {
         id: cacheUpdater
-        interval: 50
+        interval: 2000
         repeat: false
         onTriggered: {
             cacheSize = cache.info();
