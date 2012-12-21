@@ -6,7 +6,7 @@ Qt.include("api.js")
 function loadFriendsFeed(page, history) {
     //activities/recent activities/recent?afterMarker=50ade891e4b0892bb7343597
     var url = "activities/recent?"
-    waiting.show();
+    page.waiting_show();
 
     if (history!==undefined) {
         url += "beforeMarker=" + page.trailingMarker + "&";
@@ -62,7 +62,7 @@ function parseFriendsFeedUpdate(response, page) {
 }
 
 function parseFriendsFeed(response, page, history) {
-    waiting.hide();
+    page.waiting_hide();
     var data = processResponse(response);
     var activities = data.activities;
 

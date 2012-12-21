@@ -1,3 +1,3 @@
-var build = '201212201333';
+var build = '201212221219';
 var version = "0.4.10";
-var changelog = " - [in-dev] dialogs updates ";
+var changelog = " - [in-dev] dialogs updates  - bug fixes ";

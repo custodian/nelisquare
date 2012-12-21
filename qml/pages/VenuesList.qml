@@ -30,8 +30,20 @@ PageWrapper {
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
-                //TODO: add menu
-                dummyMenu.open();
+                menu.open();
+            }
+        }
+    }
+
+    Menu {
+        id: menu
+        visualParent: mainWindowPage
+        MenuLayout {
+            MenuItem {
+                text: qsTr("Add new venue")
+                onClicked: {
+                    venuesList.addVenue();
+                }
             }
         }
     }
@@ -39,7 +51,6 @@ PageWrapper {
     function load() {
         var page = venuesList;
         page.checkin.connect(function(venueID, venueName) {
-            //TODO: create "Sheet" checkin dialog
             checkinDialog.reset();
             checkinDialog.venueID = venueID;
             checkinDialog.venueName = venueName;
@@ -71,38 +82,24 @@ PageWrapper {
         height: 80
         color: mytheme.colors.backgroundBlueDark
 
-        LineEdit {
+        TextField {
             id: searchText
-            text: mytheme.textSearchVenue
-            width: parent.width - 150
+            placeholderText: mytheme.textSearchVenue
+            width: parent.width - 180
             x: 10
             y: 20
-
-            onAccepted: {
-                var query = text;
-                if(query===mytheme.textSearchVenue) {
-                    query = "";
-                }
-                venuesList.search(query);
-            }
         }
 
         ButtonBlue {
             id: searchButton
             x: parent.width - width - 10
             y: 20
-            height: 40
+            height: searchText.height
             label: "SEARCH"
-            width: 120
+            width: 150
 
             onClicked: {
-                // Search
-                var query = searchText.text;
-                if(query===mytheme.textSearchVenue) {
-                    query = "";
-                }
-                searchText.hideKeyboard();
-                venuesList.search(query);
+                venuesList.search(searchText.text);
             }
         }
     }
@@ -147,6 +144,14 @@ PageWrapper {
     }
 
     ScrollDecorator{ flickableItem: placesView }
+
+    CheckinDialog {
+        id: checkinDialog
+
+        function show_error(msg) {
+            venuesList.show_error(msg);
+        }
+    }
 
     Component {
         id: venuesListDelegate

@@ -8,11 +8,7 @@ PageStackWindow {
     property bool windowActive: Qt.application.active
 
     showToolBar: toolbar.tools !== null
-    //DBG
-    //showStatusBar: false //(windowHelper.isMaemo())?
     showStatusBar: inPortrait
-                    /*mainWindowPage.orientationLock === PageOrientation.LockPortrait
-                   || mainWindowPage.orientationLock === PageOrientation.Automatic*/
 
     onWindowActiveChanged: {
         console.log("active: " + windowActive);
@@ -26,7 +22,6 @@ PageStackWindow {
     initialPage: Page{
         id: mainWindowPage
         anchors.fill: parent
-        //orientationLock: PageOrientation.LockPortrait
         tools: toolbar
 
         MainWindow {

@@ -1,6 +1,6 @@
 import Qt 4.7
 import com.nokia.meego 1.0
-import com.nokia.extras 1.1
+//import com.nokia.extras 1.1 //MaskedItem
 
 Rectangle {
     id: profileImage

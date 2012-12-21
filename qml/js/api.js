@@ -19,13 +19,3 @@ function getAccessTokenParameter() {
     //console.log("GET TOKEN: " + token);
     return "oauth_token=" + token + "&v=" + API_VERSION;
 }
-
-function showError(msg) {
-    waiting.hide();
-    console.log("Error: "+ msg);
-    //error.state = "shown";
-    //error.reason = msg;
-    notificationDialog.message += msg + "<br/>"
-    notificationDialog.state = "shown";
-    notificationDialog.hider.restart();
-}

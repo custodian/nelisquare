@@ -26,6 +26,8 @@ var AUTHENTICATE_URL = "https://foursquare.com/oauth2/authenticate" +
     "&v=" + API_VERSION +
     "&redirect_uri=" + CALLBACK_URL;
 
+var API_URL = "https://api.foursquare.com/v2/";
+
 var defaultVenueIcon = {"prefix":"https://foursquare.com/img/categories_v2/none_","suffix":".png"}
 
 /** Parse parameter from given URL */
@@ -33,8 +35,6 @@ function parseAuth(data, parameterName) {
     var parameterIndex = data.indexOf(parameterName + "=");
     if(parameterIndex<0) {
         // We didn't find parameter
-        //console.log("Didn't find Auth");
-        //showError("Didn't find Auth");
         return undefined;
     }
     var equalIndex = data.indexOf("=", parameterIndex);
@@ -50,28 +50,28 @@ function parseAuth(data, parameterName) {
 }
 
 
-function doWebRequest(method, url, params, callback) {
+function doWebRequest(method, url, page, callback) {
     console.log(method + " " + url.replace(/oauth\_token\=([A-Z0-9]+).*\&v\=.*/gm,""));
-    url = "https://api.foursquare.com/v2/" + url;
+    url = API_URL + url;
 
     var doc = new XMLHttpRequest();
     doc.onreadystatechange = function() {
         if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
             var status = doc.status;
             if(status!=200) {
-                showError("API returned " + status + " " + doc.statusText);
+                page.show_error("API returned " + status + " " + doc.statusText);
             }
         } else if (doc.readyState == XMLHttpRequest.DONE) {
             if (doc.status == 200) {
                 var data;
                 var contentType = doc.getResponseHeader("Content-Type");
                 data = doc.responseText;
-                callback(data,params);
+                callback(data,page);
             } else {
                 if (doc.status == 0) {
-                    showError("Network connection error");
+                    page.show_error("Network connection error");
                 } else {
-                    showError("General error: " + doc.status);
+                    page.show_error("General error: " + doc.status);
                 }
             }
         }
@@ -85,7 +85,8 @@ function processResponse(response) {
     var data = eval("[" + response + "]")[0];
     var meta = data.meta;
     if (meta.code != 200) {
-        showError("ErrorType: " + meta.errorType + "\n" + meta.errorDetail);
+        //TODO: make page variable here
+        //page.show_error("ErrorType: " + meta.errorType + "\n" + meta.errorDetail);
     }
     var notifications = data.notifications;
     if (notifications!==undefined){

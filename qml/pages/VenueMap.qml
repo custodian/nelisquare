@@ -205,9 +205,11 @@ PageWrapper {
                     "lng":venueMapLng,
                     "lat":venueMapLat
                 };
+                waiting_show();
                 Utils.getRoutePoints(venueMap.userLocation,
                                      venueLocation,
                                      function(data){
+                                         waiting_hide();
                                          //console.log("ROUTE: " + JSON.stringify(data))
                                          venueMap.route = data;
                                          updateMap();

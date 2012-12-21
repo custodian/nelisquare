@@ -5,7 +5,7 @@ Qt.include("api.js")
 
 function loadUser(page, user) {
     var url = "users/" + user + "?" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     page.boardModel.clear();
     doWebRequest("GET", url, page, parseUser);
     if (user === "self") {
@@ -17,7 +17,7 @@ function loadUser(page, user) {
 function parseUser(response, page) {
     var data = processResponse(response);
     //console.log("USER: " + JSON.stringify(data))
-    waiting.hide();
+    page.waiting_hide();
     var user = data.user;
     page.userName = makeUserName(user);
     page.userPhoto = thumbnailPhoto(user.photo, 300, 300);
@@ -89,12 +89,12 @@ function parseFriendUpdate(response,page) {
 
 function loadLeaderBoard(page) {
     var url = "users/leaderboard?" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     doWebRequest("GET", url, page, parseLeaderBoard);
 }
 
 function parseLeaderBoard(response, page) {
-    waiting.hide();
+    page.waiting_hide();
     var data = processResponse(response);
     page.boardModel.clear();
     data.leaderboard.items.forEach(function(ranking) {
@@ -114,7 +114,7 @@ function parseLeaderBoard(response, page) {
 }
 
 function loadUserPhotos(page, user) {
-    waiting.show();
+    page.waiting_show();
 
     var url = "/users/" + user + "/photos?offset="+page.options.get(0).offset+"&limit="+page.batchsize
     var urlfull = "multi?requests="
@@ -126,7 +126,7 @@ function loadUserPhotos(page, user) {
 
 function parseUserPhotosGallery(multiresponse, page) {
     var multidata = processResponse(multiresponse);
-    waiting.hide();
+    page.waiting_hide();
     for (var key in multidata.responses) {
         var data = multidata.responses[key].response;
         if (data.photos.items.length < page.batchsize) {
@@ -144,14 +144,14 @@ function parseUserPhotosGallery(multiresponse, page) {
 
 function loadBadges(page,user) {
     var url = "users/" + user + "/badges?" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     page.badgeModel.clear();
     doWebRequest("GET", url, page, parseBadges);
 }
 
 function parseBadges(response, page) {
     var data = processResponse(response);
-    waiting.hide();
+    page.waiting_hide();
     data.sets.groups.forEach(function(group){
          if (group.type == "all") {
              group.items.forEach(function(item){
@@ -164,7 +164,7 @@ function parseBadges(response, page) {
 
 function loadActivityHistory(page, user) {
     var url = "activities/recent?limit=800"
-    waiting.show();
+    page.waiting_show();
     url += "&" +getAccessTokenParameter();
     doWebRequest("GET", url, page, function(response,page){
                      parseActivityHistory(response,page,user)
@@ -174,7 +174,7 @@ function loadActivityHistory(page, user) {
 function parseActivityHistory(response,page,user) {
     var data = processResponse(response);
     var activities = data.activities;
-    waiting.hide();
+    page.waiting_hide();
 
     var objParser = function(checkin) {
         if (checkin.user.id !== user) return;
@@ -240,13 +240,13 @@ function loadCheckinHistory(page, user) {
     var url = "users/" + user + "/checkins?set=newestfirst&"
         +"offset="+page.loaded+"&limit="+page.batchsize
         +"&" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     doWebRequest("GET", url, page, parseCheckinHistory);
 }
 
 function parseCheckinHistory(response, page) {
     var data = processResponse(response);
-    waiting.hide();
+    page.waiting_hide();
     if (data.checkins.items.length < page.batchsize) {
         page.completed = true;
     }
@@ -297,13 +297,13 @@ function parseCheckinHistory(response, page) {
 
 function loadUserFriends(page, user) {
     page.usersModel.clear();
-    waiting.show();
+    page.waiting_show();
     var url = "users/" + user + "/friends?" + getAccessTokenParameter();
     doWebRequest("GET",url,page,parseUsersList)
 }
 
 function parseUsersList(response, page) {
-    waiting.hide();
+    page.waiting_hide();
     var data = processResponse(response);
     //console.log("USERS LISTS: " + JSON.stringify(data));
     data.friends.items.forEach(function(user) {
@@ -318,14 +318,14 @@ function parseUsersList(response, page) {
 
 function loadMayorships(page, user) {
     var url = "users/"+user + "/mayorships?" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     page.mayorshipsModel.clear();
     doWebRequest("GET", url, page, parseMayorhips);
 }
 
 function parseMayorhips(response, page) {
     var data = processResponse(response);
-    waiting.hide();
+    page.waiting_hide();
     page.mayorshipsModel.clear();
     data.mayorships.items.forEach(function(mayorship){
         var place = mayorship.venue;

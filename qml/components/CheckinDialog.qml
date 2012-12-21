@@ -1,6 +1,8 @@
 import Qt 4.7
 import com.nokia.meego 1.0
 
+import "../js/api-checkin.js" as CheckinAPI
+
 Sheet {
     id: checkin
     //width: parent.width
@@ -20,6 +22,16 @@ Sheet {
 
     function reset() {
         shoutText.text = "";
+    }
+
+    function checkinCompleted(checkinID) {
+        waiting_hide();
+        pageStack.push(Qt.resolvedUrl("../pages/Checkin.qml"),{"checkinID":checkinID});
+    }
+
+    onCheckin: {
+        waiting_show();
+        CheckinAPI.addCheckin(venueID, checkin, comment, friends, facebook, twitter);
     }
 
     onAccepted: {
@@ -42,7 +54,7 @@ Sheet {
             text: checkin.venueName
             width: parent.width
             font.pixelSize: 24
-            color: mytheme.colors.textColorSign
+            color: mytheme.colors.textColorOptions
         }
 
         TextArea {

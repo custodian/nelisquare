@@ -69,8 +69,9 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: windowHelper.minimize();
+            enabled: pageStack.depth === 1
         }
-        visible: configuration.platform === "maemo"
+        visible: configuration.platform === "maemo" && pageStack.depth === 1
     }
 
     Image {
@@ -82,8 +83,9 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: Qt.quit();
+            enabled: pageStack.depth === 1
         }
-        visible: configuration.platform === "maemo"
+        visible: configuration.platform === "maemo" && pageStack.depth === 1
     }
 
     Rectangle {

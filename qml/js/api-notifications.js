@@ -6,7 +6,7 @@ Qt.include("api.js")
 
 function loadNotifications(page) {
     var url = "updates/notifications?limit=100&" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     page.notificationsModel.clear();
     doWebRequest("GET",url,page, parseNotifications);
 }
@@ -21,7 +21,7 @@ function markNotificationsRead(page, time) {
 function parseNotifications(response, page) {
     var notis = processResponse(response).notifications;
     //console.log("NOTIFICATIONS: " + JSON.stringify(notis));
-    waiting.hide();
+    page.waiting_hide();
     notis.items.forEach(function(noti) {
         //console.log("NOTIFICATIONS: " + JSON.stringify(noti));
         var objectID = noti.target.object.id;

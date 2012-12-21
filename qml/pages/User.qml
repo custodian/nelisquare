@@ -211,9 +211,7 @@ PageWrapper {
                         MouseArea {
                             anchors. fill: parent
                             onClicked: {
-                                waiting.show();
                                 Qt.openUrlExternally("tel:" + userContactPhone);
-                                waiting.hide();
                             }
                         }
                         visible: userContactPhone !== ""
@@ -227,9 +225,7 @@ PageWrapper {
                         MouseArea {
                             anchors. fill: parent
                             onClicked: {
-                                waiting.show();
                                 Qt.openUrlExternally("mailto:" + userContactEmail + "?subject=Ping from Foursquare");
-                                waiting.hide();
                             }
                         }
                         visible: userContactEmail !== ""
@@ -243,9 +239,7 @@ PageWrapper {
                         MouseArea {
                             anchors. fill: parent
                             onClicked: {
-                                waiting.show();
                                 Qt.openUrlExternally("https://twitter.com/" + userContactTwitter);
-                                waiting.hide();
                             }
                         }
                         visible: userContactTwitter !== ""
@@ -259,9 +253,7 @@ PageWrapper {
                         MouseArea {
                             anchors. fill: parent
                             onClicked: {
-                                waiting.show();
                                 Qt.openUrlExternally("https://facebook.com/" + userContactFacebook);
-                                waiting.hide();
                             }
                         }
                         visible: userContactFacebook !== ""

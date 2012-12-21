@@ -11,16 +11,16 @@ function loadVenues(page, query) {
     }
     url += "&" + getAccessTokenParameter();
     doWebRequest("GET", url, page, parseVenues);
-    waiting.show();
+    page.waiting_show();
 }
 
 function parseVenues(response, page) {
     var data = processResponse(response);
     var count = 0;
     page.placesModel.clear();
-    waiting.hide();
+    page.waiting_hide();
     data.venues.forEach(function(place) {
-        console.log("PLACE: " + JSON.stringify(place));
+        //console.log("PLACE: " + JSON.stringify(place));
         var icon = "";
         if(place.categories!=null && place.categories[0]!==undefined) {
             icon = parseIcon(place.categories[0].icon);
@@ -65,7 +65,7 @@ function parseLikeVenue(response, page) {
 
 function loadVenue(page, venueID) {
     var url = "venues/" + venueID + "?" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     page.venueID = venueID;
     page.venueName = "";
     page.venueAddress = "";
@@ -81,7 +81,7 @@ function loadVenue(page, venueID) {
 function parseVenue(response, page) {
     var data = processResponse(response);
     //console.log("VENUE: "+ JSON.stringify(data));
-    waiting.hide();
+    page.waiting_hide();
     var venue = data.venue;
     var icon = "";
     if(venue.categories!=null && venue.categories[0]!==undefined) {
@@ -149,7 +149,7 @@ function parseVenue(response, page) {
 }
 
 function loadVenuePhotos(page, venue) {
-    waiting.show();
+    page.waiting_show();
 
     var url = "/venues/" + venue + "/photos?group=checkin&offset="+page.options.get(0).offset+"&limit="+page.batchsize
     var url2 = "/venues/" + venue + "/photos?group=venue&offset="+page.options.get(1).offset+"&limit="+page.batchsize
@@ -164,7 +164,7 @@ function loadVenuePhotos(page, venue) {
 
 function parseVenuePhotosGallery(multiresponse, page) {
     var multidata = processResponse(multiresponse);
-    waiting.hide();
+    page.waiting_hide();
     for (var key in multidata.responses) {
         var data = multidata.responses[key].response;
         if (data.photos.items.length < page.batchsize) {
@@ -181,7 +181,7 @@ function parseVenuePhotosGallery(multiresponse, page) {
 }
 
 function addTip(page,venueID, text) {
-    waiting.show();
+    page.waiting_show();
     var url = "tips/add?";
     url += "venueId=" + venueID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
@@ -191,7 +191,7 @@ function addTip(page,venueID, text) {
 
 function parseAddTip(response, page){
     var data = processResponse(response);
-    waiting.hide();
+    page.waiting_hide();
     addTipToModel(page,data.tip);
 }
 
@@ -208,12 +208,12 @@ function loadToDo(page) {
     var url = "users/self/todos?" +
         getLocationParameter() + "&" +
         getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     doWebRequest("GET", url, page, parseToDo);
 }
 
 function parseToDo(response, page) {
-    waiting.hide();
+    page.waiting_hide();
     var data = processResponse(response);
     page.placesModel.clear();
     data.todos.items.forEach(function(todo) {
@@ -239,6 +239,43 @@ function parseToDo(response, page) {
     });
 }
 
+function loadVenueCategories(callback) {
+    var url = cache.get(API_URL + "venues/categories&" + getAccessTokenParameter());
+    console.log("url " + url);
+    var doc = new XMLHttpRequest();
+    doc.onreadystatechange = function() {
+        if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
+            var status = doc.status;
+            if(status!=200) {
+                console.log("Routes returned " + status + " " + doc.statusText);
+            }
+        } else if (doc.readyState == XMLHttpRequest.DONE && doc.status == 200) {
+            var contentType = doc.getResponseHeader("Content-Type");
+            var data = JSON.parse(doc.responseText);
+
+            callback(data);
+        }
+    }
+
+    doc.open("GET", url);
+    doc.send();
+}
+
 function prepareVenueEdit(page, venue) {
 
+    loadVenueCategories(function(response){
+        page.venueCategories.clear();
+        var data = processResponse(response);
+            data.categories.forEach(function(cat) {
+                    console.log("CAT: " + cat.name)
+                    cat.categories.forEach(function(sub) {
+                        console.log(" -SUB: " + sub.name)
+                });
+            });
+    });
+
+
+    if (venue!=="") {
+
+    }
 }

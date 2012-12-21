@@ -9,7 +9,6 @@ import "stack"
 import "pages"
 
 import "js/utils.js" as Utils
-import "js/api-checkin.js" as CheckinAPI
 import "js/api-photo.js" as PhotoAPI
 
 Rectangle {
@@ -48,7 +47,6 @@ Rectangle {
 
     function onMolomePhoto(state, photoUrl) {
         //console.log("MOLO PHOTO: state:" + state + " path:" + photoUrl);
-        waiting.hide();
         if (state && pageStack.currentPage.parent.url == Qt.resolvedUrl("pages/PhotoAdd.qml")) {
             photoShareDialog.photoUrl = photoUrl;
             photoShareDialog.state = "shown";
@@ -181,11 +179,6 @@ Rectangle {
         height: parent.height - upperbar.height
         width: parent.width
 
-        WaitingIndicator {
-            id: waiting
-            z: 10
-        }
-
         QueryDialog  {
             id: locationAllowDialog
             icon: "image://theme/icon-m-common-location-selected"
@@ -239,18 +232,6 @@ Rectangle {
         UpdateDialog {
             id: updateDialog
             z: 30
-        }
-
-        //TODO: remove to single "Sheet"
-        CheckinDialog {
-            id: checkinDialog
-
-            onCheckin: {
-                var callback = function(checkinID) {
-                    pageStack.push(Qt.resolvedUrl("pages/Checkin.qml"),{"checkinID":checkinID});
-                }
-                CheckinAPI.addCheckin(venueID, callback, comment, friends, facebook, twitter);
-            }
         }
 
         //TODO: remove to single "Sheet"

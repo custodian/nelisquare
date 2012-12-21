@@ -178,6 +178,14 @@ PageWrapper {
         }
     }
 
+    CheckinDialog {
+        id: checkinDialog
+
+        function show_error(msg) {
+            place.show_error(msg);
+        }
+    }
+
     Flickable {
         id: flickableArea
         width: parent.width

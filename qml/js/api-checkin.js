@@ -5,7 +5,7 @@
 Qt.include("api.js")
 
 function loadCheckin(page,id) {
-    waiting.show();
+    page.waiting_show();
     var url = "checkins/" + id + "?" + getAccessTokenParameter();
 
     page.scoreTotal = "--";
@@ -63,7 +63,7 @@ function parseCheckin(response, page) {
 
     processLikes(page.likeBox, checkin);
 
-    waiting.hide();
+    page.waiting_hide();
 }
 
 function likeCheckin(page, id, state) {
@@ -85,7 +85,7 @@ function parseLikeCheckin(response, page) {
     processLikes(page.likeBox, data);
 }
 
-function addCheckin(venueID, callback, comment, friends, facebook, twitter) {
+function addCheckin(venueID, page, comment, friends, facebook, twitter) {
     var url = "checkins/add?";
     if(venueID!=null) {
         url += "venueId=" + venueID;
@@ -108,12 +108,10 @@ function addCheckin(venueID, callback, comment, friends, facebook, twitter) {
     url += "&" + getAccessTokenParameter();
 
     //console.log("Checkin URL: " + url);
-    waiting.show();
-    doWebRequest("POST", url, callback, parseAddCheckin);
+    doWebRequest("POST", url, page, parseAddCheckin);
 }
 
-function parseAddCheckin(response, callback) {
-    waiting.hide();
+function parseAddCheckin(response, page) {
     var data = processResponse(response);
     notificationDialog.message = "<span>";
     data.notifications.forEach(function(noti) {
@@ -131,12 +129,12 @@ function parseAddCheckin(response, callback) {
     });
     notificationDialog.message += "</span>";
     notificationDialog.state = "shown";
-    //TODO: replace showCheckinPage to: page.checkinCompleted(checkin.id);
-    callback(data.checkin.id);
+
+    page.checkinCompleted(data.checkin.id);
 }
 
 function addComment(page, checkinID, text) {
-    waiting.show();
+    page.waiting_show();
     var url = "checkins/" + checkinID + "/addcomment?"
     url += "CHECKIN_ID=" + checkinID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
@@ -146,13 +144,13 @@ function addComment(page, checkinID, text) {
 
 function parseAddComment(response, page) {
     var data = processResponse(response);
-    waiting.hide();
+    page.waiting_hide();
     addCommentToModel(page, data.comment);
 }
 
 
 function deleteComment(page, checkinID, commentID) {
-    waiting.show();
+    page.waiting_show();
     var url = "checkins/" + checkinID + "/deletecomment?"
     url += "CHECKIN_ID=" + checkinID + "&";
     url += "commentId=" + commentID + "&";
@@ -162,7 +160,7 @@ function deleteComment(page, checkinID, commentID) {
 
 function parseDeleteComment(response, page) {
     var data = processResponse(response);
-    waiting.hide();
+    page.waiting_hide();
     page.commentsModel.clear();
     data.checkin.comments.items.forEach(function(comment) {
         addCommentToModel(page,comment);

@@ -22,7 +22,8 @@ PageWrapper {
         ToolIcon{
             iconSource: "../pics/molome.png"
             onClicked: {
-                waiting.show();
+                //TODO: make Connections {} to molome object
+                //waiting_show();
                 molome.getphoto();
             }
             visible: window.molome_installed && window.molome_present

@@ -1,4 +1,6 @@
 import Qt 4.7
+import QtMobility.location 1.2
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-venue.js" as VenueAPI
@@ -11,10 +13,22 @@ PageWrapper {
     property string venueID: ""
     property alias venueCategories: venueCategories
 
+    property string mapprovider: configuration.mapprovider
+
     width: parent.width
     height: parent.height
 
     color: mytheme.colors.backgroundMain
+
+    onMapproviderChanged: {
+        mapplugin.name = mapprovider
+        map.plugin = mapplugin;
+    }
+
+    Plugin {
+        id: mapplugin
+        name: configuration.mapprovider
+    }
 
     function load() {
         var page = venueEdit;
@@ -31,26 +45,16 @@ PageWrapper {
         id: venueCategories
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            hideKeyboard();
-        }
-    }
-
-    LineGreen {
-        id: editVenueLabel
-        height: 40
-        text: "ENTER DETAILS FOR VENUE"
+    SelectionDialog {
+        id: selectionvenue
+        model: venueCategories
     }
 
     Flickable{
 
         id: flickableArea
-        anchors.top: editVenueLabel.bottom
-        width: parent.width
+        anchors.fill: parent
         contentWidth: parent.width
-        height: venueEdit.height - y
 
         clip: true
         flickableDirection: Flickable.VerticalFlick
@@ -64,11 +68,14 @@ PageWrapper {
 
             x: 10
             width: parent.width - 20
-            spacing: 10
+            spacing: 20
 
-            Item {
-                width: parent.width
-                height: 10
+            LineGreen {
+                id: editVenueLabel
+                height: 40
+                width: venueEdit.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "ENTER DETAILS FOR VENUE"
             }
 
             Text {
@@ -79,19 +86,13 @@ PageWrapper {
                 font.family: "Nokia Pure" //mytheme.font.name
                 font.bold: true
 
-                LineEdit {
-                    text: mytheme.textEnterVenueName
+                TextField {
+                    id: textVenueName
+                    placeholderText: qsTr("Venue name")
                     anchors.left: textNameLabel.right
                     anchors.leftMargin: 20
                     anchors.verticalCenter: textNameLabel.verticalCenter
                     width: parent.parent.width - textNameLabel.width - 20
-                    onAccepted: {
-                        var query = text;
-                        if(query===mytheme.textEnterVenueName) {
-                            query = "";
-                        }
-                        hideKeyboard();
-                    }
                 }
             }
 
@@ -102,24 +103,45 @@ PageWrapper {
                 text: "VENUE LOCATION"
             }
 
+            Map {
+                id: map
+                center: positionSource.position.coordinate
+                size.width: parent.width
+                zoomLevel: 15
+                size.height: 150
+
+                MapImage{
+                    id: markerVenue
+                    offset.x: -24
+                    offset.y: -24
+                    coordinate: positionSource.position.coordinate
+                    source: "../pics/pin_venue.png"
+                }
+            }
+
             LineGreen{
                 height: 30
                 width: venueEdit.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "VENUE CATEGORY"
             }
-            //Category icon and type
+
             EventBox {
-                userName: "Main category"
+                userName: "Select category"
+                userShout: "Venue category"
             }
             EventBox {
-                userName: "Secondary category"
+                userShout: "Venue subcategory"
             }
 
             LineGreen{
                 height: 30
                 text: "VENUE DESCRIPTION"
             }
+
+            /*TextArea {
+
+            }*/
 
             ButtonBlue {
                 width: parent.width * 0.7

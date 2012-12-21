@@ -17,13 +17,13 @@ function loadTipsList(page, objectid) {
         + "&offset="+page.loaded+"&limit="+page.batchsize
         + "&" + getAccessTokenParameter();
 
-    waiting.show();
+    page.waiting_show();
     doWebRequest("GET", url, page, parseTipsList);
 }
 
 function parseTipsList(response,page){
     var data = processResponse(response);
-    waiting.hide();
+    page.waiting_hide();
     //console.log("TIPS LIST: " + JSON.stringify(data));
     var tips;
     if (data.tips === undefined) {
@@ -47,13 +47,13 @@ function parseTipsList(response,page){
 
 function loadTipInfo(page, tip) {
     var url = "tips/" + tip + "?" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     doWebRequest("GET", url, page, parseTipInfo);
 }
 
 function parseTipInfo(response, page) {
     var data = processResponse(response);
-    waiting.hide();
+    page.waiting_hide();
     //console.log("FULL TIP: " + JSON.stringify(data));
     var tip = data.tip;
 
@@ -85,7 +85,7 @@ function parseTipInfo(response, page) {
 
 function likeTip(page, id, state) {
     var url = "tips/"+id+"/like?set="
-    waiting.show();
+    page.waiting_show();
     if (state) {
         url += "1";
     } else {
@@ -96,7 +96,7 @@ function likeTip(page, id, state) {
 }
 
 function parseLikeTip(response, page) {
-    waiting.hide();
+    page.waiting_hide();
     var data = processResponse(response);
     processLikes(page.likeBox, data);
 }

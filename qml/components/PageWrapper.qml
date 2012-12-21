@@ -19,6 +19,29 @@ Rectangle   {
 
     property alias dummyMenu: dummyMenu
 
+    WaitingIndicator {
+        id: waiting
+        z: 10
+    }
+
+    function waiting_show() {
+        waiting.show();
+    }
+
+    function waiting_hide() {
+        waiting.hide();
+    }
+
+    function show_error(msg) {
+        waiting_hide();
+        console.log("Error: "+ msg);
+        //error.state = "shown";
+        //error.reason = msg;
+        notificationDialog.message += msg + "<br/>"
+        notificationDialog.state = "shown";
+        notificationDialog.hider.restart();
+    }
+
     Menu {
         id: dummyMenu
         visualParent: mainWindowPage

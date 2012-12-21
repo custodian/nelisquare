@@ -6,14 +6,14 @@ Qt.include("api.js")
 
 function loadPhoto(page, photoid) {
     var url = "photos/" + photoid + "?" + getAccessTokenParameter();
-    waiting.show();
+    page.waiting_show();
     doWebRequest("GET", url, page, parsePhoto);
 }
 
 function parsePhoto(response, page) {
     var photo = processResponse(response).photo;
     //console.log("FULL PHOTO: " + JSON.stringify(photo))
-    waiting.hide();
+    page.waiting_hide();
 
     page.photoUrl = thumbnailPhoto(photo);
     page.owner.userID = photo.user.id;
@@ -24,8 +24,8 @@ function parsePhoto(response, page) {
 }
 
 function addPhoto(params) {
-    waiting.show();
-    var url = "https://api.foursquare.com/v2/photos/add?";
+    params.owner.waiting_show();
+    var url = API_URL + "photos/add?";
     url += params.type;
     url += "Id=" + params.id;
     if (params.makepublic == "1") {
@@ -44,12 +44,12 @@ function addPhoto(params) {
     }
     url += "&" + getAccessTokenParameter();
     if (!pictureHelper.upload(url, params.path, params.owner)) {
-        showError("Error uploading photo!");
+        show_error("Error uploading photo!");
     }
 }
 
 function parseAddPhoto(response, page) {
-    waiting.hide();
+    page.waiting_hide();
     var photo = processResponse(response).photo;
     //console.log("ADDED PHOTO: " + JSON.stringify(photo));
     page.photosBox.photosModel.insert(0,

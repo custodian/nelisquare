@@ -2,13 +2,12 @@
  * General utility functions
  */
 
-//.pragma library
+.pragma library
 
 function getRoutePoints(pointA,pointB,callback) {
     //dirflg =
     //d - driver
     //w - walk
-    waiting.show();
     var url = "http://maps.google.com/maps/nav?output=js&dirflg=w&hl=en&mapclient=jsapi&q=from%3A%20"
         + pointA.lat + "%2C" + pointA.lng
         + "%20to%3A%20"
@@ -27,7 +26,6 @@ function getRoutePoints(pointA,pointB,callback) {
             var contentType = doc.getResponseHeader("Content-Type");
             var data = JSON.parse(doc.responseText);
 
-            waiting.hide();
             callback(data);
         }
     }

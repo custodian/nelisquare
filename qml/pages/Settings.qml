@@ -211,7 +211,7 @@ PageWrapper {
                 width: parent.width
                 onVisibleChanged: {
                     if (visible) {
-                        switch(configuration.mapprovider) {
+                        switch(configuration.orientationType) {
                         case "auto":
                             checkedButton = btnOrientationAuto;
                             break;
@@ -471,14 +471,14 @@ PageWrapper {
                     property bool active: false
                     text: "Enable"
                     onClicked: {
-                        waiting.show();
+                        waiting_show();
                         active = true;
                         molome.install();
                     }
                     visible: window.molome_present && !window.molome_installed;
                     onVisibleChanged: {
                         if (active) {
-                            waiting.hide();
+                            waiting_hide();
                             active = false;
                         }
                     }
@@ -487,14 +487,14 @@ PageWrapper {
                     property bool active: false
                     text: "Disable"
                     onClicked: {
-                        waiting.show();
+                        waiting_show();
                         active = true;
                         molome.uninstall();
                     }
                     visible: window.molome_installed;
                     onVisibleChanged: {
                         if (active) {
-                            waiting.hide();
+                            waiting_hide();
                             active = false;
                         }
                     }

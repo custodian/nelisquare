@@ -13,11 +13,6 @@ symbian {
     TARGET.CAPABILITY += NetworkServices Location LocalServices ReadUserData WriteUserData
 }
 
-#!symbian {
-#    DEFINES += HAVE_GLWIDGET
-#    QT += opengl
-#}
-
 QT += network
 
 contains(MEEGO_EDITION,harmattan){
@@ -91,9 +86,13 @@ maemo5 {
 }
 
 # Add more folders to ship with the application, here
-qmlresources.source = qml
+maemo5 {
+    qmlresources.source = $$PWD/qml
+} else {
+    qmlresources.source = qml
+}
 qmlresources.target = .
-DEPLOYMENTFOLDERS = qmlresources
+DEPLOYMENTFOLDERS += qmlresources
 
 #Geoservices providers
 unix {
