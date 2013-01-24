@@ -80,7 +80,7 @@ function likeCheckin(page, id, state) {
 
 function parseLikeCheckin(response, page) {
     //console.log("LIKE RESPONSE: " + JSON.stringify(response));
-    var data = processResponse(response);
+    var data = processResponse(response, page);
 
     processLikes(page.likeBox, data);
 }
@@ -112,7 +112,7 @@ function addCheckin(venueID, page, comment, friends, facebook, twitter) {
 }
 
 function parseAddCheckin(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     notificationDialog.message = "<span>";
     data.notifications.forEach(function(noti) {
         //console.log("NOTIFICATION: "+ JSON.stringify(noti));
@@ -143,7 +143,7 @@ function addComment(page, checkinID, text) {
 }
 
 function parseAddComment(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.waiting_hide();
     addCommentToModel(page, data.comment);
 }
@@ -159,7 +159,7 @@ function deleteComment(page, checkinID, commentID) {
 }
 
 function parseDeleteComment(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.waiting_hide();
     page.commentsModel.clear();
     data.checkin.comments.items.forEach(function(comment) {

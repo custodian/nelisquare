@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 
 Rectangle {
     id: waitingIndicator
@@ -55,11 +56,11 @@ Rectangle {
         anchors.topMargin: 5
     }
 
-    /*Animated*/Image {
-        id: loader
-        source: "../pics/waiting.gif"
+    ProgressBar2  {
+        indeterminate: true
         anchors.top: doneText.bottom
-        anchors.topMargin: 5
+        //anchors.topMargin: 5
+        width: doneText.width
         anchors.horizontalCenter: parent.horizontalCenter
     }
 

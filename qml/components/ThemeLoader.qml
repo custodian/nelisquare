@@ -29,6 +29,11 @@ Item {
     property int fontSizeXLarge: 28
     property int fontSizeXXLarge: 32
 
+    property int graphicSizeTiny: 24
+    property int graphicSizeSmall: 32
+    property int graphicSizeMedium: 48
+    property int graphicSizeLarge: 72
+
     property variant gradientTextBox
     property variant gradientToolbar
     property variant gradientHeader

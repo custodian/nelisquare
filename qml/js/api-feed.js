@@ -6,6 +6,9 @@ Qt.include("api.js")
 function loadFriendsFeed(page, history) {
     //activities/recent activities/recent?afterMarker=50ade891e4b0892bb7343597
     var url = "activities/recent?"
+    if (page.isUpdating)
+        return;
+    page.isUpdating = true;
     page.waiting_show();
 
     if (history!==undefined) {
@@ -36,7 +39,7 @@ function loadFriendsFeed(page, history) {
 }
 
 function parseFriendsFeedUpdate(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     //console.log("UPDATES: " + JSON.stringify(data));
     data.updates.items.forEach(
         function(update){
@@ -63,7 +66,8 @@ function parseFriendsFeedUpdate(response, page) {
 
 function parseFriendsFeed(response, page, history) {
     page.waiting_hide();
-    var data = processResponse(response);
+    page.isUpdating = false;
+    var data = processResponse(response, page);
     var activities = data.activities;
 
     var count = 0;

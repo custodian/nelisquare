@@ -22,7 +22,7 @@ function loadTipsList(page, objectid) {
 }
 
 function parseTipsList(response,page){
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.waiting_hide();
     //console.log("TIPS LIST: " + JSON.stringify(data));
     var tips;
@@ -52,7 +52,7 @@ function loadTipInfo(page, tip) {
 }
 
 function parseTipInfo(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.waiting_hide();
     //console.log("FULL TIP: " + JSON.stringify(data));
     var tip = data.tip;
@@ -97,6 +97,6 @@ function likeTip(page, id, state) {
 
 function parseLikeTip(response, page) {
     page.waiting_hide();
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     processLikes(page.likeBox, data);
 }

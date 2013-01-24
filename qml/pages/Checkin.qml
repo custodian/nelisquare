@@ -14,10 +14,6 @@ PageWrapper {
     signal showAddPhoto(string checkin)
     id: checkin
 
-    width: parent.width
-    height: parent.height
-    color: mytheme.colors.backgroundMain
-
     property string checkinID: ""
 
     property alias scoreTotal: scoreTotal.text

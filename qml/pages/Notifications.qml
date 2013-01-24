@@ -53,7 +53,7 @@ PageWrapper {
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("../pages/Settings.qml"));
+                    pageStack.replace(Qt.resolvedUrl("../pages/Settings.qml"));
                 }
             }
         }

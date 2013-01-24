@@ -51,10 +51,11 @@ PageWrapper {
     function load() {
         var page = venuesList;
         page.checkin.connect(function(venueID, venueName) {
-            checkinDialog.reset();
+            pageStack.push(Qt.resolvedUrl("CheckinDialog.qml"),{ "venueID": venueID, "venueName": venueName});
+            /*checkinDialog.reset();
             checkinDialog.venueID = venueID;
             checkinDialog.venueName = venueName;
-            checkinDialog.open();
+            checkinDialog.open();*/
         });
         page.clicked.connect(function(venueid) {
             pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
@@ -145,13 +146,13 @@ PageWrapper {
 
     ScrollDecorator{ flickableItem: placesView }
 
-    CheckinDialog {
+    /*CheckinDialog {
         id: checkinDialog
 
         function show_error(msg) {
             venuesList.show_error(msg);
         }
-    }
+    }*/
 
     Component {
         id: venuesListDelegate

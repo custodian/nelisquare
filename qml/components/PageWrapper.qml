@@ -53,7 +53,14 @@ Rectangle   {
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: {
-                    pageStack.push(Qt.resolvedUrl("../pages/Settings.qml"));
+                    pageStack.replace(Qt.resolvedUrl("../pages/Settings.qml"));
+                }
+            }
+            MenuItem {
+                text: qsTr("Exit")
+                onClicked: {
+                    windowHelper.disableSwype(false);
+                    Qt.quit();
                 }
             }
         }

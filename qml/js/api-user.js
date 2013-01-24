@@ -15,7 +15,7 @@ function loadUser(page, user) {
 }
 
 function parseUser(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     //console.log("USER: " + JSON.stringify(data))
     page.waiting_hide();
     var user = data.user;
@@ -45,7 +45,7 @@ function parseUser(response, page) {
 }
 
 function parseUserBoard(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     //console.log("USER: " + JSON.stringify(data))
     data.leaderboard.items.forEach(function(ranking) {
         if (ranking.user.relationship == "self")
@@ -83,7 +83,7 @@ function denyFriend(page, user) {
 }
 
 function parseFriendUpdate(response,page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.userRelationship = parse(data.user.relationship);
 }
 
@@ -95,7 +95,7 @@ function loadLeaderBoard(page) {
 
 function parseLeaderBoard(response, page) {
     page.waiting_hide();
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.boardModel.clear();
     data.leaderboard.items.forEach(function(ranking) {
         page.boardModel.append({
@@ -150,7 +150,7 @@ function loadBadges(page,user) {
 }
 
 function parseBadges(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.waiting_hide();
     data.sets.groups.forEach(function(group){
          if (group.type == "all") {
@@ -172,7 +172,7 @@ function loadActivityHistory(page, user) {
 }
 
 function parseActivityHistory(response,page,user) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     var activities = data.activities;
     page.waiting_hide();
 
@@ -245,7 +245,7 @@ function loadCheckinHistory(page, user) {
 }
 
 function parseCheckinHistory(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.waiting_hide();
     if (data.checkins.items.length < page.batchsize) {
         page.completed = true;
@@ -304,7 +304,7 @@ function loadUserFriends(page, user) {
 
 function parseUsersList(response, page) {
     page.waiting_hide();
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     //console.log("USERS LISTS: " + JSON.stringify(data));
     data.friends.items.forEach(function(user) {
          page.usersModel.append({
@@ -324,7 +324,7 @@ function loadMayorships(page, user) {
 }
 
 function parseMayorhips(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.waiting_hide();
     page.mayorshipsModel.clear();
     data.mayorships.items.forEach(function(mayorship){

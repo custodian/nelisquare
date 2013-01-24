@@ -324,10 +324,11 @@ PageWrapper {
                 width: parent.width
                 height: children[0].height
 
-                ProgressBar {
+                ProgressBar2 {
                     width: parent.width * 0.85
-                    percent: scoreRecent
-                    percentMax: scoreMax
+                    value: scoreRecent
+                    minimumValue: 0
+                    maximumValue: scoreMax
                     showPercent: true
                 }
                 Text {

@@ -73,16 +73,17 @@ PageWrapper {
             fillMode: Image.PreserveAspectFit
             source: photoDetails.photoUrl
             onProgressChanged: {
-                loadProgress.percent = progress*100;
+                loadProgress.value = progress*100;
             }
 
-            ProgressBar {
+            ProgressBar2 {
                 id: loadProgress
                 anchors.centerIn: fullImage
-                radiusValue: 5
-                height: 16
+                minimumValue: 0
+                maximumValue: 100
                 width: parent.width*0.8
                 visible: (fullImage.status != Image.Ready)
+                indeterminate: fullImage.status == Image.Null || value === 0
             }
         }
 

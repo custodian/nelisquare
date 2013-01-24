@@ -237,6 +237,7 @@ bool HttpPostSendbuffer::atEnd() const
 
 bool HttpPostSendbuffer::waitForReadyRead(int msecs)
 {
+    Q_UNUSED(msecs);
     return true;
 }
 
@@ -247,6 +248,7 @@ QByteArray HttpPostSendbuffer::readAll()
 
 QByteArray HttpPostSendbuffer::read(qint64 maxSize)
 {
+    Q_UNUSED(maxSize);
     return QByteArray();
 }
 

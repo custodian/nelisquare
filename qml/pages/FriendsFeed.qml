@@ -24,6 +24,7 @@ PageWrapper {
     property string leadingMarker: ""
     property string trailingMarker: ""
     property bool moreData: false
+    property bool isUpdating: false
 
     property int loaded: 0
 
@@ -183,7 +184,6 @@ PageWrapper {
                 color: mytheme.colors.toolbarDarkColor
 
                 ButtonRow {
-                    width:  parent.width - 2*mytheme.paddingXXLarge
                     anchors.centerIn: parent
 
                     Button {

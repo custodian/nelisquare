@@ -35,6 +35,7 @@ WindowHelper::WindowHelper(QmlApplicationViewer *viewer, QObject *parent) :
     QObject(parent)
 {
     m_viewer = viewer;
+    m_swypedisabled = false;
 }
 
 Q_INVOKABLE void WindowHelper::minimize()
@@ -57,21 +58,40 @@ Q_INVOKABLE bool WindowHelper::isMaemo()
 }
 
 bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
+    Q_UNUSED(obj);
     switch(event->type()) {
+#if defined(Q_OS_MAEMO)
         case QEvent::WindowActivate:
             emit visibilityChanged(QVariant(true));
             return true;
         case QEvent::WindowDeactivate:
             emit visibilityChanged(QVariant(false));
             return true;
+#endif
+//DBG temporarily disabled for maemo because no dbus on maemo yet
+#if defined(Q_OS_HARMATTAN)
+        case QEvent::Close:
+            if (m_swypedisabled) {
+                m_viewer->hide();
+                event->ignore();
+                return true;
+            } else {
+                return false;
+            }
+#endif
         default:
         return false;
     }
 }
 
+Q_INVOKABLE void WindowHelper::disableSwype(QVariant disabled){
+    m_swypedisabled = disabled.toBool();
+}
+
 Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
 #if defined(Q_OS_MAEMO)
-    //TODO: Maemo Orientation bug
+    Q_UNUSED(value);
+    //TODO: Maemo Orientation bug (fixed by core chages)
     /*
     QString orientation = value.toString();
     QmlApplicationViewer::ScreenOrientation type = QmlApplicationViewer::ScreenOrientationAuto;
@@ -83,10 +103,6 @@ Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
     m_viewer->setOrientation(type);
     */
 #elif defined(Q_OS_HARMATTAN)
-    //emit lockOrientation(value);
+    Q_UNUSED(value);
 #endif
-}
-
-void WindowHelper::showNelisquare(const QUrl &url) {
-    qDebug() << "URL CALL:" << url.toString();
 }

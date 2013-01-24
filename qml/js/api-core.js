@@ -81,13 +81,17 @@ function doWebRequest(method, url, page, callback) {
     doc.send();
 }
 
-function processResponse(response) {
+function processResponse(response, page) {
     var data = eval("[" + response + "]")[0];
     var meta = data.meta;
     if (meta.code != 200) {
-        //TODO: make page variable here
-        //page.show_error("ErrorType: " + meta.errorType + "\n" + meta.errorDetail);
+        if (page!==undefined) {
+            page.show_error("<span>API Error: " + meta.code
+                            + "<br/>Error type: " + meta.errorType
+                            + "<br/>" + meta.errorDetail + "<br/></span>");
+        }
     }
+    //console.log("DATA: " + JSON.stringify(data));
     var notifications = data.notifications;
     if (notifications!==undefined){
         //console.log("NOTIFICATIONS: " + JSON.stringify(notifications));

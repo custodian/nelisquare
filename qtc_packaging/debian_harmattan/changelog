@@ -1,5 +1,6 @@
 nelisquare (0.4.10) stable; urgency=low
   * [in-dev] dialogs updates
+  * background mode added
   * bug fixes
 
  -- Basil Semuonov <basil.semuonov@gmail.com>  Sat, 15 Dec 2012 02:01:13 +0400

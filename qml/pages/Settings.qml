@@ -115,7 +115,7 @@ PageWrapper {
             }
             ButtonRow {
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width
+                //width: parent.width
                 onVisibleChanged: {
                     if (visible) {
                         switch(configuration.checkupdates) {
@@ -170,7 +170,7 @@ PageWrapper {
             }
             ButtonRow {
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width
+                //width: parent.width
                 onVisibleChanged: {
                     if (visible) {
                         switch(mytheme.name) {
@@ -208,7 +208,7 @@ PageWrapper {
             }
             ButtonRow {
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width
+                //width: parent.width
                 onVisibleChanged: {
                     if (visible) {
                         switch(configuration.orientationType) {
@@ -254,7 +254,7 @@ PageWrapper {
             }
             ButtonRow {
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width
+                //width: parent.width
                 onVisibleChanged: {
                     if (visible) {
                         switch(configuration.mapprovider) {
@@ -300,7 +300,7 @@ PageWrapper {
             }
             ButtonRow {
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: parent.width
+                //width: parent.width
                 onVisibleChanged: {
                     if (visible) {
                         switch(configuration.imageLoadType) {
@@ -372,6 +372,16 @@ PageWrapper {
             Item{
                 height: 20
                 width: parent.width
+            }
+
+            //Swypedown actions
+            SettingSwitch {
+                text: qsTr("Always run in background")
+                checked: configuration.disableSwypedown === "1"
+                onCheckedChanged: {
+                    var value = (checked)?"1":"0";
+                    settingsChanged("disableswypedown",value);
+                }
             }
 
             //Notifications

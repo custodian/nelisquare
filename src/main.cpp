@@ -104,11 +104,13 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("platformUtils", &platformUtils);
 #endif
 
-#if defined(Q_OS_MAEMO)
+#if defined(Q_OS_MAEMO) || defined(Q_OS_HARMATTAN)
     viewer.installEventFilter(windowHelper);
-#elif defined(Q_OS_HARMATTAN)
-    viewer.installEventFilter(new EventFilter);
 #endif
+//DBG
+//#if defined(Q_OS_HARMATTAN)
+//    viewer.installEventFilter(new EventFilter);
+//#endif
 
     viewer.setMainQmlFile(QLatin1String("qml/main.qml"));
 

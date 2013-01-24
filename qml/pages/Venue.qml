@@ -84,10 +84,11 @@ PageWrapper {
     function load() {
         var page = place;
         page.checkin.connect(function(venueID, venueName) {
-            checkinDialog.reset();
+            pageStack.push(Qt.resolvedUrl("CheckinDialog.qml"),{ "venueID": venueID, "venueName": venueName});
+            /*checkinDialog.reset();
             checkinDialog.venueID = venueID;
             checkinDialog.venueName = venueName;
-            checkinDialog.open();
+            checkinDialog.open();*/
         });
         page.showAddTip.connect(function(venueID, venueName) {
             tipDialog.reset();
@@ -178,13 +179,13 @@ PageWrapper {
         }
     }
 
-    CheckinDialog {
+    /*CheckinDialog {
         id: checkinDialog
 
         function show_error(msg) {
             place.show_error(msg);
         }
-    }
+    }*/
 
     Flickable {
         id: flickableArea

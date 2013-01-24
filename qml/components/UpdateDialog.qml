@@ -19,6 +19,7 @@ QueryDialog  {
     rejectButtonText: "No, thanks"
     onAccepted: {
         Qt.openUrlExternally(url);
+        windowHelper.disableSwype(false);
         Qt.quit();
     }
     onRejected: {

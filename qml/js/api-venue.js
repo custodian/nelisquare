@@ -15,7 +15,7 @@ function loadVenues(page, query) {
 }
 
 function parseVenues(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     var count = 0;
     page.placesModel.clear();
     page.waiting_hide();
@@ -58,7 +58,7 @@ function likeVenue(page, id, state) {
 
 function parseLikeVenue(response, page) {
     //console.log("LIKE RESPONSE: " + JSON.stringify(response));
-    var data = processResponse(response);
+    var data = processResponse(response, page);
 
     processLikes(page.likeBox, data);
 }
@@ -79,7 +79,7 @@ function loadVenue(page, venueID) {
 }
 
 function parseVenue(response, page) {
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     //console.log("VENUE: "+ JSON.stringify(data));
     page.waiting_hide();
     var venue = data.venue;
@@ -190,7 +190,7 @@ function addTip(page,venueID, text) {
 }
 
 function parseAddTip(response, page){
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.waiting_hide();
     addTipToModel(page,data.tip);
 }
@@ -214,7 +214,7 @@ function loadToDo(page) {
 
 function parseToDo(response, page) {
     page.waiting_hide();
-    var data = processResponse(response);
+    var data = processResponse(response, page);
     page.placesModel.clear();
     data.todos.items.forEach(function(todo) {
         var place = todo.tip.venue;
@@ -265,7 +265,7 @@ function prepareVenueEdit(page, venue) {
 
     loadVenueCategories(function(response){
         page.venueCategories.clear();
-        var data = processResponse(response);
+        var data = processResponse(response, page);
             data.categories.forEach(function(cat) {
                     console.log("CAT: " + cat.name)
                     cat.categories.forEach(function(sub) {

@@ -79,6 +79,9 @@ contains(MEEGO_EDITION,harmattan){
     include(plugins/meego/uri-scheme/uri-scheme.pri)
 }
 maemo5 {
+    #//DBG have to complete dbus
+    #include(plugins/meego/uri-scheme/uri-scheme.pri)
+
     #CONFIG += link_pkgconfig
     #PKGCONFIG += libnotifymm-1.0 gtkmm-2.4
     #CONFIG += link_pkgconfig

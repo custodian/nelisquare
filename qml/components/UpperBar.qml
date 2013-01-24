@@ -46,7 +46,7 @@ Rectangle {
         }
     }
 
-    Image {
+    /*Image {
         id: settingsButton
         source: ("../pics/cogwheel_"+((pageStack.currentPage && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/Settings.qml"))?"active.png":"passive.png"))
 
@@ -56,7 +56,7 @@ Rectangle {
             anchors.fill: parent
             onClicked: pageStack.push(Qt.resolvedUrl("../pages/Settings.qml"));
         }
-    }
+    }*/
 
     Image {
         id: minimizeButton

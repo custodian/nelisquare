@@ -19,6 +19,8 @@ Item   {
     property string gpsAllow: ""
     property int feedAutoUpdate: 0 //in seconds
 
+    property string disableSwypedown: "1" //1 == hide on swype down instead of exit
+
     property string feedIntegration: "0" //1 == integrate
     property string feedNotification: "0" //1 == notify
 
@@ -85,6 +87,10 @@ Item   {
         } else if (key === "settings.feed.notification") {
             if (value === "") value = "1";
             configuration.feedNotification = value;
+        } else if (key === "settings.disableswypedown") {
+            if (value === "") value = "1";
+            configuration.disableSwypedown = value;
+            windowHelper.disableSwype(value === "1");
         } else {
             console.log("Unknown setting: " + key + "=" + value);
         }
@@ -106,6 +112,8 @@ Item   {
         Storage.getKeyValue("settings.gpsunlock", settingLoaded);
         Storage.getKeyValue("settings.gpsallow", settingLoaded);
         Storage.getKeyValue("settings.feedupdate", settingLoaded);
+
+        Storage.getKeyValue("settings.disableswypedown", settingLoaded);
         Storage.getKeyValue("settings.feed.integration", settingLoaded);
         Storage.getKeyValue("settings.feed.notification", settingLoaded);
         Storage.getKeyValue("settings.theme", settingLoaded);
