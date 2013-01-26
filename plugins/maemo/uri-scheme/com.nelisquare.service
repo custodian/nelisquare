@@ -1,0 +1,4 @@
+#maemo5
+[D-BUS Service]
+Name=com.nelisquare
+Exec=/bin/sh -c "LD_LIBRARY_PATH=/opt/qtm12/lib /opt/nelisquare/bin/nelisquare"

@@ -107,10 +107,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #if defined(Q_OS_MAEMO) || defined(Q_OS_HARMATTAN)
     viewer.installEventFilter(windowHelper);
 #endif
-//DBG
-//#if defined(Q_OS_HARMATTAN)
-//    viewer.installEventFilter(new EventFilter);
-//#endif
 
     viewer.setMainQmlFile(QLatin1String("qml/main.qml"));
 

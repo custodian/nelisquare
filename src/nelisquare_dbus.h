@@ -16,6 +16,7 @@ public:
 public slots:
     void notification(QString identificator);
     void loadURI(const QStringList &url);
+    Q_SCRIPTABLE void top_application();
 
 signals:
     void processUINotification(QVariant id);

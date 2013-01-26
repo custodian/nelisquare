@@ -4,9 +4,10 @@ Version=1.0
 Type=Application
 Terminal=false
 Name=Nelisquare
-Exec=sh -c "LD_LIBRARY_PATH=/opt/qtm12/lib /opt/nelisquare/bin/nelisquare"
+Exec=/usr/bin/dbus-send --type=method_call --dest=com.nelisquare /com/nelisquare com.nelisquare.top_application
 Icon=nelisquare64
 #/opt/usr/share/icons/hicolor/64x64/apps/nelisquare64.png
 #X-Window-Icon=
 X-HildonDesk-ShowInToolbar=true
 X-Osso-Type=application/x-executable
+X-Osso-Service=com.nelisquare

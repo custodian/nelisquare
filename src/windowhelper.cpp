@@ -69,7 +69,7 @@ bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
             return true;
 #endif
 //DBG temporarily disabled for maemo because no dbus on maemo yet
-#if defined(Q_OS_HARMATTAN)
+//#if defined(Q_OS_HARMATTAN)
         case QEvent::Close:
             if (m_swypedisabled) {
                 m_viewer->hide();
@@ -78,7 +78,7 @@ bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
             } else {
                 return false;
             }
-#endif
+//#endif
         default:
         return false;
     }

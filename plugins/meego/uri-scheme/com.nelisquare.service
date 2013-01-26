@@ -1,3 +1,4 @@
+#meego
 [D-BUS Service]
 Name=com.nelisquare
 Exec=/usr/bin/invoker --splash=/opt/nelisquare/qml/pics/splash-turned.png --single-instance --type=d /opt/nelisquare/bin/nelisquare

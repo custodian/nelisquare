@@ -1,4 +1,4 @@
-#meego
+#maemo5
 
 #nelisquare contentaction
 contentaction.files = $$PWD/nelisquare.xml
