@@ -77,6 +77,15 @@ PageWrapper {
         }
     }
 
+    function show_error(msg) {
+        waiting_hide();
+        updating = false;
+        console.log("Error: "+ msg);
+        notificationDialog.message += msg + "<br/>"
+        notificationDialog.state = "shown";
+        notificationDialog.hider.restart();
+    }
+
     function reset() {
         moreData = false;
         loaded = 0;

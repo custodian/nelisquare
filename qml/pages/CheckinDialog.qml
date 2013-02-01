@@ -41,6 +41,7 @@ PageWrapper {
             spacing: mytheme.graphicSizeTiny
             ToolButton {
                 text: "CHECKIN"
+                platformStyle: SheetButtonAccentStyle { }
                 onClicked: {
                     enabled = false;
                     checkin.checkin( checkin.venueID, shoutText.text, checkin.useFriends, checkin.useFacebook, checkin.useTwitter )

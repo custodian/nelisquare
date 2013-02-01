@@ -1,4 +1,5 @@
 import QtQuick 1.1
+import QtMobility.systeminfo 1.2
 
 import "../build.info.js" as BuildInfo
 import "../js/update.js" as Updater
@@ -30,12 +31,23 @@ Item   {
 
     onCheckupdatesChanged: {
         if (checkupdates!="none") {
+            updateTimer.start();
             Updater.getUpdateInfo(checkupdates,onUpdateAvailable);
         }
     }
 
     Component.onCompleted: {
         loadSettings();
+    }
+
+    AlignedTimer {
+        id: updateTimer
+        singleShot:true
+        maximumInterval: 4*3600
+        minimumInterval: 1*3600
+        onTimeout: {
+            onCheckupdatesChanged();
+        }
     }
 
     function settingLoaded(key, value) {

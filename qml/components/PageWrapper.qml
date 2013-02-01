@@ -35,8 +35,6 @@ Rectangle   {
     function show_error(msg) {
         waiting_hide();
         console.log("Error: "+ msg);
-        //error.state = "shown";
-        //error.reason = msg;
         notificationDialog.message += msg + "<br/>"
         notificationDialog.state = "shown";
         notificationDialog.hider.restart();

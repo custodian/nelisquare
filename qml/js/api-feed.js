@@ -239,7 +239,7 @@ function feedObjParserFriend(page, friend, append, count) {
         "id": "",
         "shout": "",
         "user": friend.summary.text,
-        "userID": friend.thumbnails[0].id,
+        "userID": friend.content.object.id,
         "mayor": false,
         "photo": friend.thumbnails[0].photo,
         "venueID": "",
