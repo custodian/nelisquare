@@ -45,7 +45,7 @@ PageWrapper {
         visualParent: mainWindowPage
         MenuLayout {
             MenuItem {
-                text: qsTr("Mark all as readed")
+                text: qsTr("Mark all as read")
                 onClicked: {
                     NotiAPI.markNotificationsRead(notificationsList,NotiAPI.getCurrentTime());
                 }

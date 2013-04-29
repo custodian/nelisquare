@@ -30,8 +30,6 @@ PageWrapper {
 
     property int batchSize: 20
 
-    property bool updating: false
-
     property alias friendsCheckinsModel: friendsCheckinsModel
     property alias timerFeedUpdate: timerFeedUpdate
 
@@ -65,7 +63,7 @@ PageWrapper {
         ToolIcon {
             iconSource: "../icons/icon-m-toolbar-list"+(theme.inverted?"-white":"")+".png"
             onClicked: {
-                FeedAPI.showError("Lists not implemented yet!");
+                show_error("Lists not implemented yet!");
             }
         }
 
@@ -79,7 +77,7 @@ PageWrapper {
 
     function show_error(msg) {
         waiting_hide();
-        updating = false;
+        isUpdating = false;
         console.log("Error: "+ msg);
         notificationDialog.message += msg + "<br/>"
         notificationDialog.state = "shown";
@@ -88,6 +86,7 @@ PageWrapper {
 
     function reset() {
         moreData = false;
+        isUpdating = false;
         loaded = 0;
         friendsCheckinsModel.clear();
 

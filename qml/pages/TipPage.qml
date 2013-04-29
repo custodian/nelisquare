@@ -40,10 +40,10 @@ PageWrapper {
             pageStack.push(Qt.resolvedUrl("Photo.qml"),{"photoID":photo});
         });
         page.save.connect(function(){
-            TipAPI.showError("Lists not implemented yet!");
+            TipAPI.show_error("Lists not implemented yet!");
         });
         page.markDone.connect(function(){
-            TipAPI.showError("Lists not implemented yet!");
+            TipAPI.show_error("Lists not implemented yet!");
         });
         TipAPI.loadTipInfo(page,tipID);
     }
