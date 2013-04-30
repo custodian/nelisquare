@@ -36,8 +36,6 @@ PageWrapper {
         map.plugin = mapProvider;
     }
 
-    property alias venue: venue
-
     Plugin {
         id: mapProvider
         name : configuration.mapprovider
@@ -67,27 +65,11 @@ PageWrapper {
         }
     }
 
-    onVenueTypeUrlChanged: {
-        venue.userPhoto.photoUrl = venueMap.venueTypeUrl
-    }
-
-    //TODO: remove EventBox and leave only icon + venue name in header
-    /*EventBox {
-        id: venue
-        activeWhole: true
-        width: parent.width - 20
-        anchors.horizontalCenter: parent.horizontalCenter
-
-        userName: venueMap.venueName
-        userShout: venueMap.venueAddress
-    }*/
-
     Item {
         id: fullMap
         anchors.top: pagetop
         width: parent.width
-        height: parent.height - y - 100
-        anchors.topMargin: 10
+        height: parent.height - y - 70
 
         Map {
             id: map

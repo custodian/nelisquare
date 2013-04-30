@@ -53,12 +53,13 @@ Item{
         anchors.fill: parent
         //was color 7
         //source: "image://theme/color9-meegotouch-view-header-fixed" + (mouseArea.pressed ? "-pressed" : "")
-        source: "image://theme/color9-meegotouch-view-header-fixed-pressed"
+        //source: "image://theme/color9-meegotouch-view-header-fixed-pressed"
+        source: "image://theme/color9-meegotouch-view-header-fixed"
     }
 
     Image{
         id: icon
-        source: headerIcon
+        source: headerIcon.length ? cache.get(headerIcon) : headerIcon
         anchors { verticalCenter: parent.verticalCenter; left: parent.left; margins: mytheme.paddingLarge }
         height: sourceSize.height; width: sourceSize.width
         sourceSize { height: mytheme.graphicSizeSmall; width: mytheme.graphicSizeSmall }

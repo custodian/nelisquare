@@ -198,6 +198,10 @@ PageWrapper {
                 }
             }
 
+            SectionHeader {
+                text: "LIKES"
+            }
+
             LikeBox {
                 id: likeBox
 
@@ -206,12 +210,12 @@ PageWrapper {
                 }
             }
 
-            LineGreen {
-                text: "Earned badges"
-                height: 30
+            SectionHeader {
+                text: "EARNED BADGES"
+            /*    height: 30
                 width: checkin.width
                 anchors.horizontalCenter: parent.horizontalCenter
-                size: mytheme.font.sizeDefault
+                size: mytheme.font.sizeDefault*/
                 visible: badgesModel.count>0
             }
 
@@ -232,12 +236,12 @@ PageWrapper {
                 }
             }
 
-            LineGreen {
-                text: "Comments"
-                width: checkin.width
+            SectionHeader {
+                text: "COMMENTS"
+                /*width: checkin.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: 30
-                size: mytheme.font.sizeDefault
+                size: mytheme.font.sizeDefault*/
                 visible: commentsModel.count>0
             }
 

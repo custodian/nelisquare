@@ -23,6 +23,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: venueName
+    headerIcon: venueTypeUrl
 
     property string venueID: ""
     property string venueName: ""
@@ -288,9 +289,8 @@ PageWrapper {
                     }
                 }
 
-                LineGreen {
-                    height: 30
-                    text: "BEST USERS TIPS"
+                SectionHeader {
+                    text: "BEST TIPS"
                     visible: tipsModel.count>0
                 }
 

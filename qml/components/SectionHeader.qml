@@ -38,7 +38,7 @@ Item {
 
     Text {
         id: text
-        anchors { right: parent.right; rightMargin: mytheme.paddingXLarge }
+        anchors { right: parent.right; /*rightMargin: mytheme.paddingXLarge*/ }
         color: mytheme.colors.textColorTimestamp
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignRight

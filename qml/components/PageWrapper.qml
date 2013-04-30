@@ -20,6 +20,7 @@ Page {
     property alias headerText: pageHeader.headerText
     property alias headerIcon: pageHeader.headerIcon
     property alias headerBubble: pageHeader.countBubbleVisible
+    orientationLock: mainPage.orientationLock
 
 /*    property alias headerSelectionTitle: pageHeader.headerSelectionTitle
     property alias headerSelectionItems: pageHeader.headerSelectionItems
