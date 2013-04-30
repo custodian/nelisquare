@@ -51,6 +51,12 @@ PageWrapper {
         id: menu
         MenuLayout {
             MenuItem {
+                text: qsTr("Notifications")
+                onClicked: {
+                    processUINotification(0);
+                }
+            }
+            MenuItem {
                 text: qsTr("Reset settings")
                 onClicked: {
                     eraseSettingsDialog.open();

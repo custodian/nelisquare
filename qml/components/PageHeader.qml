@@ -19,7 +19,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.1
-//import "."
 
 Item{
     id: root
@@ -27,15 +26,28 @@ Item{
     property url headerIcon: ""
     property string headerText: ""
 
+//    property string headerSelectionTitle: ""
+//    property alias headerSelectionItems: headerSeletionDialog.model
+
     property bool busy: false
     property bool countBubbleVisible: true
     property int countBubbleValue: appWindow.notificationsCount
 
-    signal clicked
+    signal selectedItem(int index)
 
     implicitHeight: mytheme.headerHeight
     anchors { top: parent.top; left: parent.left; right: parent.right }
 
+/*    SelectionDialog {
+        id: headerSeletionDialog
+        titleText: headerSelectionTitle
+        onSelectedIndexChanged: {
+            root.selectedItem(selectedIndex);
+        }
+
+        model: ListModel {}
+    }
+*/
     Image {
         id: background
         anchors.fill: parent
@@ -92,8 +104,11 @@ Item{
 
 /*    MouseArea{
         id: mouseArea
-        anchors.fill: parent
-        onClicked: root.clicked()
+        anchors.fill: mainText
+        enabled: headerSelectionItems.count
+        onClicked: {
+            headerSeletionDialog.open();
+        }
     }
 */
 

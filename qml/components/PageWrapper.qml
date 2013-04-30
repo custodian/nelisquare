@@ -21,23 +21,25 @@ Page {
     property alias headerIcon: pageHeader.headerIcon
     property alias headerBubble: pageHeader.countBubbleVisible
 
+/*    property alias headerSelectionTitle: pageHeader.headerSelectionTitle
+    property alias headerSelectionItems: pageHeader.headerSelectionItems
+*/
+
+    signal headerSelectedItem(int index)
+
     Component.onCompleted: {
         if (pageWrapper.load)
             pageWrapper.load()
     }
 
-/*
-    Rectangle {
-        id: background
-        anchors.fill: parent
-        color: mytheme.colors.backgroundMain
-    }
-*/
-
     PageHeader {
         id: pageHeader
         z: 1
         headerText: "Awesome header";
+
+/*        onSelectedItem: {
+            pageWrapper.headerSelectedItem(index);
+        }*/
     }
 
     function waiting_show() {

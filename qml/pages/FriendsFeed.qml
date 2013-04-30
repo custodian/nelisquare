@@ -17,7 +17,6 @@ PageWrapper {
     signal nearby()
     signal recent()
 
-    property bool recentPressed: true
     property bool nearbyPressed: false
 
     property string lastUpdateTime: "0"
@@ -33,11 +32,22 @@ PageWrapper {
     property alias friendsCheckinsModel: friendsCheckinsModel
     property alias timerFeedUpdate: timerFeedUpdate
 
-    headerText: nearbyPressed ? "NEARBY FRIENDS FEED" : "RECENT FRIENDS FEED"
+    /*headerText: nearbyPressed ? "NEARBY FRIENDS FEED" : "RECENT FRIENDS FEED"
+    headerSelectionTitle: "Feed type"
+    headerSelectionItems: ListModel {
+        ListElement {name:"Recent activity"}
+        ListElement {name:"Nearby activity"}
+    }*/
+    headerText: "FRIENDS FEED"
 
     width: parent.width
     height: parent.height
     color: mytheme.colors.backgroundMain
+
+    onHeaderSelectedItem: {
+        nearbyPressed = index;
+        update();
+    }
 
     function show_error(msg) {
         isUpdating = false;
@@ -159,10 +169,9 @@ PageWrapper {
                         text: "RECENT"
                         height: 50
                         checkable: true
-                        checked: friendsFeed.recentPressed
+                        checked: !friendsFeed.nearbyPressed
                         onClicked: {
-                            if(friendsFeed.recentPressed==false) {
-                                friendsFeed.recentPressed = true;
+                            if(nearbyPressed) {
                                 friendsFeed.nearbyPressed = false;
                                 friendsFeed.recent();
                             }
@@ -175,8 +184,7 @@ PageWrapper {
                         checkable: true
                         checked: friendsFeed.nearbyPressed
                         onClicked: {
-                            if(friendsFeed.nearbyPressed==false) {
-                                friendsFeed.recentPressed = false;
+                            if(!nearbyPressed) {
                                 friendsFeed.nearbyPressed = true;
                                 friendsFeed.nearby();
                             }
