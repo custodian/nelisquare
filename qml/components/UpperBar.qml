@@ -42,19 +42,19 @@ Rectangle {
         }
         MouseArea {
             anchors.fill: parent
-            onClicked: pageStack.push(Qt.resolvedUrl("../pages/Notifications.qml"));
+            onClicked: stack.push(Qt.resolvedUrl("../pages/Notifications.qml"));
         }
     }
 
     /*Image {
         id: settingsButton
-        source: ("../pics/cogwheel_"+((pageStack.currentPage && pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/Settings.qml"))?"active.png":"passive.png"))
+        source: ("../pics/cogwheel_"+((stack.currentPage && stack.currentPage.parent.url == Qt.resolvedUrl("../pages/Settings.qml"))?"active.png":"passive.png"))
 
         x: logoImage.x - width - 50
         anchors.verticalCenter: parent.verticalCenter
         MouseArea {
             anchors.fill: parent
-            onClicked: pageStack.push(Qt.resolvedUrl("../pages/Settings.qml"));
+            onClicked: stack.push(Qt.resolvedUrl("../pages/Settings.qml"));
         }
     }*/
 
@@ -69,9 +69,9 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: windowHelper.minimize();
-            enabled: pageStack.depth === 1
+            enabled: stack.depth === 1
         }
-        visible: configuration.platform === "maemo" && pageStack.depth === 1
+        visible: configuration.platform === "maemo" && stack.depth === 1
     }
 
     Image {
@@ -83,9 +83,9 @@ Rectangle {
         MouseArea {
             anchors.fill: parent
             onClicked: Qt.quit();
-            enabled: pageStack.depth === 1
+            enabled: stack.depth === 1
         }
-        visible: configuration.platform === "maemo" && pageStack.depth === 1
+        visible: configuration.platform === "maemo" && stack.depth === 1
     }
 
     Rectangle {

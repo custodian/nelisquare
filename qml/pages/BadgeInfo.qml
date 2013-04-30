@@ -21,12 +21,13 @@ PageWrapper {
     function load() {
         var page = badgeInfo;
         page.venue.connect(function(venueID) {
-            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueID});
+            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueID});
         });
     }
 
     Flickable{
         id: flickableArea
+        anchors.top: pagetop
         width: parent.width
         height: parent.height
         contentWidth: parent.width

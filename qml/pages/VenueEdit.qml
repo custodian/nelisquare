@@ -36,7 +36,7 @@ PageWrapper {
             VenueAPI.updateVenueInfo(page,params);
         });
         page.updateCompleted.connect(function(venue){
-            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
         });
         VenueAPI.prepareVenueEdit(page,venueID);
     }

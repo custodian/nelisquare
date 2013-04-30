@@ -29,10 +29,15 @@ Item   {
 
     property string accessToken: "empty"
 
+    property bool molome_present: false
+    property bool molome_installed: false
+
     onCheckupdatesChanged: {
         if (checkupdates!="none") {
-            updateTimer.start();
-            Updater.getUpdateInfo(checkupdates,onUpdateAvailable);
+            updateTimer.restart();
+            getupdates();
+        } else {
+            updateTimer.stop();
         }
     }
 
@@ -40,13 +45,25 @@ Item   {
         loadSettings();
     }
 
-    AlignedTimer {
+    function getupdates() {
+        Updater.getUpdateInfo(checkupdates,onUpdateAvailable);
+    }
+
+    /*AlignedTimer {
         id: updateTimer
-        singleShot:true
-        maximumInterval: 4*3600
-        minimumInterval: 1*3600
+        singleShot:false
+        maximumInterval: 15//180//4*3600
+        minimumInterval: 10//60//1*3600
         onTimeout: {
-            onCheckupdatesChanged();
+            getupdates();
+        }
+    }*/
+    Timer {
+        id: updateTimer
+        repeat: true
+        interval: 600 * 1000
+        onTriggered: {
+            getupdates();
         }
     }
 
@@ -56,7 +73,7 @@ Item   {
         } else if (key === "settings.orientation") {
             if (value === "") value = "auto";
             configuration.orientationType = value;
-            mainWindowStack.onLockOrientation(value);
+            appWindow.onLockOrientation(value);
         } else if (key === "settings.mapprovider") {
             if (value === "") value = "google";
             configuration.mapprovider = value;
@@ -80,7 +97,7 @@ Item   {
                 locationAllowDialog.open();
             } else {
                 configuration.gpsAllow = value;
-                window.windowActiveChanged();
+                appWindow.windowActiveChanged();
             }
         } else if (key === "settings.feedupdate") {
             if (value === "") value = 0;

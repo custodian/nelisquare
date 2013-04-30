@@ -15,6 +15,8 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
+    headerText: "TIPS LIST"
+
     property string baseID: ""
     property string baseType: "venues" //"venues/ID/tips" , "lists/ID/todos"("users/ID/tips")
     property string sortType: "popular" //"friends|nearby", "popular", "recent"
@@ -25,7 +27,7 @@ PageWrapper {
     function load() {
         var page = tipsList;
         page.tip.connect(function(tip) {
-            pageStack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
+            stack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
         });
         page.update.connect(function(){
             TipAPI.loadTipsList(page, baseID);
@@ -44,18 +46,12 @@ PageWrapper {
 
     ListView {
         id: listViewTips
+        anchors.top: pagetop
         model: tipsModel
         width: parent.width
         height: parent.height - y
         delegate: tipDelegate
         cacheBuffer: 400
-
-        header: LineGreen{
-            width: tipsList.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            height: 30
-            text: "TIPS LIST"
-        }
     }
 
     ScrollDecorator{ flickableItem: listViewTips }

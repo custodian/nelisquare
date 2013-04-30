@@ -23,9 +23,10 @@ PageWrapper {
         shoutText.text = "";
     }
 
-    function checkinCompleted(checkinID) {
+    function checkinCompleted(checkinID, message) {
         waiting_hide();
-        pageStack.replace(Qt.resolvedUrl("../pages/Checkin.qml"),{"checkinID":checkinID});
+        show_info(message);
+        stack.replace(Qt.resolvedUrl("../pages/Checkin.qml"),{"checkinID":checkinID});
     }
 
     onCheckin: {
@@ -50,13 +51,12 @@ PageWrapper {
             }
             ToolButton {
                 text: "Cancel"
-                onClicked: pageStack.pop();
+                onClicked: stack.pop();
             }
         }
     }
 
     Flickable{
-
         id: flickableArea
         width: parent.width
         height: parent.height

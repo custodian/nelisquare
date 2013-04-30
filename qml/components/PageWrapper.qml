@@ -1,38 +1,58 @@
 import Qt 4.7
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import "."
 
-Rectangle   {
+//Rectangle   {
+Page {
     id: pageWrapper
 
     width: parent.width
     height: parent.height
-    color: mytheme.colors.backgroundMain
 
-    property Item tools: ToolBarLayout{
-        ToolIcon{
-            id: backButton
-            platformIconId: "toolbar-back" + (enabled ? "" : "-dimmed")
-            onClicked: pageStack.pop()
-        }
+    //color: mytheme.colors.backgroundMain
+    //property alias color: background.color
+    property string color
+    property alias pagetop: pageHeader.bottom
+    //property Item tools: commonTools
+    tools : commonTools
+    property alias dummyMenu: dummyMenu
+    property alias headerText: pageHeader.headerText
+    property alias headerIcon: pageHeader.headerIcon
+
+    Component.onCompleted: {
+        if (pageWrapper.load)
+            pageWrapper.load()
     }
 
-    property alias dummyMenu: dummyMenu
+/*
+    Rectangle {
+        id: background
+        anchors.fill: parent
+        color: mytheme.colors.backgroundMain
+    }
+*/
 
-    WaitingIndicator {
-        id: waiting
-        z: 10
+    PageHeader {
+        id: pageHeader
+        z: 1
+        headerText: "Awesome header";
     }
 
     function waiting_show() {
-        waiting.show();
+        pageHeader.busy = true;
     }
 
     function waiting_hide() {
-        waiting.hide();
+        pageHeader.busy = false;
     }
 
+
     function show_error(msg) {
+        show_error_base(msg);
+    }
+
+    function show_error_base(msg){
         waiting_hide();
         console.log("Error: "+ msg);
         notificationDialog.message += msg + "<br/>"
@@ -40,18 +60,18 @@ Rectangle   {
         notificationDialog.hider.restart();
     }
 
+    function show_info(msg) {
+        notificationDialog.message = msg
+        notificationDialog.state = "shown";
+    }
+
     Menu {
         id: dummyMenu
-        visualParent: mainWindowPage
         MenuLayout {
-            /*MenuItem { text: qsTr("Menu is not ready yet.")
-                onClicked: {
-                }
-            }*/
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: {
-                    pageStack.replace(Qt.resolvedUrl("../pages/Settings.qml"));
+                    stack.replace(Qt.resolvedUrl("../pages/Settings.qml"));
                 }
             }
             MenuItem {
@@ -65,14 +85,3 @@ Rectangle   {
     }
 
 }
-
-/*
-    tools: ToolBarLayout{
-        ToolIcon {
-            platformIconId: "toolbar-home"
-            onClicked: {
-                window.showFriendsFeed();
-            }
-        }
-    }
-*/

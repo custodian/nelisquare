@@ -10,6 +10,9 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
+    headerText: venueName
+    headerIcon: venueTypeUrl
+
     property string venueMapLat: "0"
     property string venueMapLng: "0"
     property string venueMapUrl: ""
@@ -68,7 +71,8 @@ PageWrapper {
         venue.userPhoto.photoUrl = venueMap.venueTypeUrl
     }
 
-    EventBox {
+    //TODO: remove EventBox and leave only icon + venue name in header
+    /*EventBox {
         id: venue
         activeWhole: true
         width: parent.width - 20
@@ -76,13 +80,13 @@ PageWrapper {
 
         userName: venueMap.venueName
         userShout: venueMap.venueAddress
-    }
+    }*/
 
     Item {
         id: fullMap
+        anchors.top: pagetop
         width: parent.width
-        height: parent.height - venue.height - 100
-        anchors.top: venue.bottom
+        height: parent.height - y - 100
         anchors.topMargin: 10
 
         Map {

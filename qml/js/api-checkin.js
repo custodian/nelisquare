@@ -113,24 +113,25 @@ function addCheckin(venueID, page, comment, friends, facebook, twitter) {
 
 function parseAddCheckin(response, page) {
     var data = processResponse(response, page);
-    notificationDialog.message = "<span>";
+    var message = "<span>";
     data.notifications.forEach(function(noti) {
         //console.log("NOTIFICATION: "+ JSON.stringify(noti));
         if(noti.item.message!==undefined) {
-            if(notificationDialog.message.length>6) {
-                notificationDialog.message += "<br/><br/>";
+            if(message.length>6) {
+                message += "<br/><br/>";
             }
-            notificationDialog.message += noti.item.message;
+            message += noti.item.message;
             if (noti.type == "tip") {
-                notificationDialog.message += "<br/>" + noti.item.tip.text;
+                message += "<br/>" + noti.item.tip.text;
+            } else {
+                console.log("TODO: checkin noti info: " + JSON.stringify(noti));
             }
             //TODO: add specials support info
         }
     });
-    notificationDialog.message += "</span>";
-    notificationDialog.state = "shown";
+    message += "</span>";
 
-    page.checkinCompleted(data.checkin.id);
+    page.checkinCompleted(data.checkin.id, message);
 }
 
 function addComment(page, checkinID, text) {

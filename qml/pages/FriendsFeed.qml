@@ -33,55 +33,15 @@ PageWrapper {
     property alias friendsCheckinsModel: friendsCheckinsModel
     property alias timerFeedUpdate: timerFeedUpdate
 
+    headerText: "FRIENDS FEED"
+
     width: parent.width
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    tools: ToolBarLayout {
-        id: commonTools
-        visible: true
-
-        ToolIcon {
-            platformIconId: "toolbar-refresh"
-            onClicked: {
-                window.showFriendsFeed();
-                friendsCheckinsView.positionViewAtIndex(0,ListView.Center);
-            }
-        }
-
-        ToolIcon {
-            iconSource: "../icons/icon-m-toolbar-venues"+(theme.inverted?"-white":"")+".png"
-            onClicked: {
-                if (window.pageStack.currentPage.parent.url == Qt.resolvedUrl("../pages/VenuesList.qml")) {
-                    window.pageStack.replace(Qt.resolvedUrl("../pages/VenuesList.qml"),{},true);
-                } else {
-                    window.pageStack.push(Qt.resolvedUrl("../pages/VenuesList.qml"));
-                }
-            }
-        }
-
-        ToolIcon {
-            iconSource: "../icons/icon-m-toolbar-list"+(theme.inverted?"-white":"")+".png"
-            onClicked: {
-                show_error("Lists not implemented yet!");
-            }
-        }
-
-        ToolIcon {
-            iconSource: "../icons/icon-m-toolbar-contact"+(theme.inverted?"-white":"")+".png"
-            onClicked: {
-                 window.pageStack.push(Qt.resolvedUrl("../pages/User.qml"),{"userID":"self"});
-            }
-        }
-    }
-
     function show_error(msg) {
-        waiting_hide();
         isUpdating = false;
-        console.log("Error: "+ msg);
-        notificationDialog.message += msg + "<br/>"
-        notificationDialog.state = "shown";
-        notificationDialog.hider.restart();
+        show_error_base(msg);
     }
 
     function reset() {
@@ -145,10 +105,10 @@ PageWrapper {
             FeedAPI.loadFriendsFeed(page);
         });
         page.checkin.connect(function(id) {
-            pageStack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});
+            stack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});
         });
         page.user.connect(function(id){
-            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":id});
+            stack.push(Qt.resolvedUrl("User.qml"),{"userID":id});
         });
         timerFeedUpdate.restart(); //Start autoupdate
         update();
@@ -176,6 +136,7 @@ PageWrapper {
     ListView {
         id: friendsCheckinsView
         model: friendsCheckinsModel
+        anchors.top: pagetop
         width: parent.width
         height: parent.height - y
         delegate: friendsFeedDelegate
@@ -224,10 +185,22 @@ PageWrapper {
                     }
                 }
             }
+        }
 
-            LineGreen {
-                height: 30
-                text: "FRIENDS ACTIVITY"
+        footer: Column{
+            width: parent.width
+            ToolButton {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Load More"
+                visible: moreData
+                onClicked: {
+                    moreData = false;
+                    loadHistory();
+                }
+            }
+            Item {
+                width: parent.width
+                height: 20
             }
         }
     }
@@ -255,11 +228,11 @@ PageWrapper {
                 userPhoto.photoUrl = model.photo
 
                 //console.log("LOADED: " + loaded + " index:"+ (index+1));
-                if (loaded === (index + 1)){
+                /*if (loaded === (index + 1)){
                     if (moreData) {
                         loadHistory();
                     }
-                }
+                }*/
             }
 
             onAreaClicked: {

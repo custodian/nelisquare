@@ -16,10 +16,12 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
+    headerText: "YOU ARE #" + leaderBoard.rank
+
     function load() {
         var page = leaderBoard;
         page.user.connect(function(user) {
-            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
         UserAPI.loadLeaderBoard(page);
     }
@@ -35,8 +37,8 @@ PageWrapper {
 
     ListView {
         id: listViewLeader
-        y: 40
         model: boardModel
+        anchors.top: pagetop
         width: parent.width
         height: parent.height - y
         delegate: leaderBoardDelegate
@@ -47,18 +49,6 @@ PageWrapper {
     }
 
     ScrollDecorator{ flickableItem: listViewLeader }
-
-    LineGreen {
-        height: 40
-        text: "YOU ARE #" + leaderBoard.rank
-    }
-
-    Image {
-        id: shadow
-        source: "../pics/top-shadow.png"
-        width: parent.width
-        y: 40
-    }
 
     Component {
         id: leaderBoardDelegate
@@ -76,7 +66,7 @@ PageWrapper {
             }
 
             onAreaClicked: {
-                pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":model.user});
+                stack.push(Qt.resolvedUrl("User.qml"),{"userID":model.user});
             }
         }
     }

@@ -56,10 +56,12 @@ PageWrapper {
 
     property alias boardModel: boardModel
 
-    tools: ToolBarLayout{
+    headerText: "USER DETAILS"
+
+    /*tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: pageStack.pop()
+            onClicked: stack.pop()
         }
 
         ToolIcon {
@@ -69,7 +71,7 @@ PageWrapper {
                 dummyMenu.open();
             }
         }
-    }
+    }*/
 
     function load() {
         var page = details;
@@ -90,28 +92,28 @@ PageWrapper {
             page.userRelationship = "updated";
         });
         page.user.connect(function(user){
-            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
         page.venue.connect(function(venue){
-            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
         });
         page.openLeaderboard.connect(function(){
-            pageStack.push(Qt.resolvedUrl("LeaderBoard.qml"));
+            stack.push(Qt.resolvedUrl("LeaderBoard.qml"));
         });
         page.badges.connect(function(user){
-            pageStack.push(Qt.resolvedUrl("Badges.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("Badges.qml"),{"userID":user});
         });
         page.mayorships.connect(function(user){
-            pageStack.push(Qt.resolvedUrl("Mayorships.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("Mayorships.qml"),{"userID":user});
         });
         page.checkins.connect(function(user){
-            pageStack.push(Qt.resolvedUrl("CheckinHistory.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("CheckinHistory.qml"),{"userID":user});
         });
         page.friends.connect(function(user) {
-            pageStack.push(Qt.resolvedUrl("UsersList.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("UsersList.qml"),{"userID":user});
         });
         page.photos.connect(function(user) {
-            var photogallery = pageStack.push(Qt.resolvedUrl("PhotosGallery.qml"));
+            var photogallery = stack.push(Qt.resolvedUrl("PhotosGallery.qml"));
             photogallery.update.connect(function(){
                UserAPI.loadUserPhotos(photogallery,user);
             });
@@ -120,7 +122,7 @@ PageWrapper {
             photogallery.update();
         });
         page.tips.connect(function(user) {
-            pageStack.push(Qt.resolvedUrl("TipsList.qml"),{"baseType":"user","baseID":user});
+            stack.push(Qt.resolvedUrl("TipsList.qml"),{"baseType":"user","baseID":user});
         });
         UserAPI.loadUser(page,userID);
     }
@@ -158,8 +160,8 @@ PageWrapper {
     }
 
     Flickable{
-
         id: flickableArea
+        anchors.top: pagetop
         width: parent.width
         contentWidth: parent.width
         height: details.height - y

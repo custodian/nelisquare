@@ -16,9 +16,6 @@ Rectangle {
 
     property bool windowActive: false
 
-    property bool molome_present: false
-    property bool molome_installed: false
-
     property string lastNotiCount: "0"
 
     property alias positionSource: positionSource
@@ -27,55 +24,6 @@ Rectangle {
     anchors.fill:  parent
 
     color: mytheme.colors.backgroundMain
-
-    onWindowActiveChanged: {
-        if (configuration.gpsAllow !== "1") {
-            positionSource.active = false;
-            return;
-        }
-        if (!windowActive) {
-            if (positionSource.position.latitudeValid) {
-                timerGPSUnlock.start();
-            } else {
-                positionSource.active = windowActive;
-            }
-        } else {
-            timerGPSUnlock.stop();
-            positionSource.active = windowActive;
-        }
-    }
-
-    function onMolomePhoto(state, photoUrl) {
-        //console.log("MOLO PHOTO: state:" + state + " path:" + photoUrl);
-        if (state && pageStack.currentPage.parent.url == Qt.resolvedUrl("pages/PhotoAdd.qml")) {
-            photoShareDialog.photoUrl = photoUrl;
-            photoShareDialog.state = "shown";
-        }
-    }
-
-    function onPictureUploaded(response, page) {
-        PhotoAPI.parseAddPhoto(response, page);
-    }
-
-    function processUINotification(id) {
-        pageStack.push(Qt.resolvedUrl("pages/Notifications.qml"));
-    }
-
-    function processURI(url) {
-        var params = url.split("/");
-        var type = params[0];
-        var id = params[1];
-        switch(type) {
-        case "start":
-            break;
-        case "user":
-            pageStack.push(Qt.resolvedUrl("pages/User.qml"),{"userID":id});
-            break;
-        case "checkin":
-            pageStack.push(Qt.resolvedUrl("pages/Checkin.qml"),{"checkinID":id});
-            break;
-        }
-    }
 
     Component.onCompleted: {
         if (configuration.platform === "maemo") {
@@ -90,30 +38,6 @@ Rectangle {
         onTriggered: {
             if(!positionSource.position.latitudeValid) {
                 signalIcon.visible = !signalIcon.visible;
-            }
-        }
-    }
-
-    Timer {
-        id: timerGPSUnlock
-        interval: configuration.gpsUplockTime * 1000;
-        repeat: false
-        onTriggered: {
-            positionSource.active = window.windowActive;
-        }
-    }
-
-    PositionSource {
-        id: positionSource
-        updateInterval: 5000
-        active: false
-        onPositionChanged: {
-            if (configuration.platform === "maemo") {
-                if(positionSource.position.latitudeValid) {
-                    signalIcon.visible = false;
-                } else {
-                    signalIcon.visible = true;
-                }
             }
         }
     }
@@ -150,20 +74,6 @@ Rectangle {
 
     ThemeLoader {
         id: mytheme
-    }
-
-    Configuration {
-        id: configuration
-
-        onAccessTokenChanged: {
-            if(accessToken.length>0) {
-                window.showFriendsFeed();
-                loginStack.clear();
-            } else {
-                pageStack.clear();
-                loginStack.push(Qt.resolvedUrl("pages/Welcome.qml"),{"newuser":true},true);
-            }
-        }
     }
 
     PageStack {
@@ -226,12 +136,6 @@ Rectangle {
                 notificationDialog.state = "hidden";
 
             }
-        }
-
-        //TODO: remove to single "Sheet"
-        UpdateDialog {
-            id: updateDialog
-            z: 30
         }
 
         //TODO: remove to single "Sheet"

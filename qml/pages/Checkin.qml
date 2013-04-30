@@ -29,7 +29,7 @@ PageWrapper {
     tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: pageStack.pop()
+            onClicked: stack.pop()
         }
 
         ToolIcon{
@@ -59,16 +59,16 @@ PageWrapper {
     function load() {
         var page = checkin;
         page.venue.connect(function(venue){
-            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
         });
         page.like.connect(function(checkin, state) {
             CheckinAPI.likeCheckin(page,checkin,state);
         });
         page.user.connect(function(user){
-            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
         page.photo.connect(function(photo){
-            pageStack.push(Qt.resolvedUrl("Photo.qml"),{"photoID":photo});
+            stack.push(Qt.resolvedUrl("Photo.qml"),{"photoID":photo});
         });
         page.showAddComment.connect(function(checkin){
             //TODO: add comment dialog "Sheet"
@@ -79,7 +79,7 @@ PageWrapper {
             CheckinAPI.deleteComment(page,checkin,comment);
         });
         page.showAddPhoto.connect(function(checkin){
-            pageStack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
+            stack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
                 "type": "checkin",
                 "id": checkin,
                 "owner": page
@@ -123,6 +123,7 @@ PageWrapper {
 
     Flickable {
         id: flickableArea
+        anchors.top: pagetop
         width: parent.width
         contentWidth: parent.width
         height: checkin.height - y

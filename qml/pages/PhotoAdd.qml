@@ -13,10 +13,12 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
+    headerText: "Select photo for upload"
+
     tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: pageStack.pop()
+            onClicked: stack.pop()
         }
 
         ToolIcon{
@@ -26,7 +28,7 @@ PageWrapper {
                 //waiting_show();
                 molome.getphoto();
             }
-            visible: window.molome_installed && window.molome_present
+            visible: configuration.molome_installed && configuration.molome_present
         }
 
         ToolIcon {
@@ -66,20 +68,14 @@ PageWrapper {
 
     GridView {
         id: photoGrid
+        anchors.top: pagetop
         width: parent.width
-        height: parent.height
+        height: parent.height - y
         cellWidth: Math.min((width-5)/3,height)
         cellHeight: cellWidth
         clip: true
         model: galleryModel.ready ? galleryModel : undefined
         delegate: photoDelegate
-        header: Column {
-            width: parent.width
-            LineGreen {
-                height: 40
-                text: "Select photo for upload"
-            }
-        }
     }
 
     Component {

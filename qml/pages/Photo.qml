@@ -23,7 +23,7 @@ PageWrapper {
     tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: pageStack.pop()
+            onClicked: stack.pop()
         }
         ToolIcon{
             iconSource: "../icons/icon-m-toolbar-mediacontrol-backwards"+(theme.inverted?"-white":"")+".png"
@@ -52,7 +52,7 @@ PageWrapper {
     function load() {
         var page = photoDetails;
         page.user.connect(function(user) {
-            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
         PhotoAPI.loadPhoto(page,photoID);
     }

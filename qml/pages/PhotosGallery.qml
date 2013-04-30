@@ -19,6 +19,8 @@ PageWrapper {
     property int batchsize: 20
     property alias options: options
 
+    headerText: caption
+
     id: venuePhotos
     width: parent.width
     height: parent.height
@@ -27,7 +29,7 @@ PageWrapper {
     function load() {
         var page = venuePhotos;
         page.photo.connect(function(photo){
-            var photopage = pageStack.push(Qt.resolvedUrl("Photo.qml"),{"photoID":photo});
+            var photopage = stack.push(Qt.resolvedUrl("Photo.qml"),{"photoID":photo});
             photopage.nextPhoto.connect(function() {
                 page.loadNextPhoto();
             });
@@ -36,7 +38,7 @@ PageWrapper {
             });
         });
         page.change.connect(function(photo) {
-            PhotoAPI.loadPhoto(pageStack.currentPage,photo);
+            PhotoAPI.loadPhoto(stack.currentPage,photo);
         });
     }
 
@@ -77,18 +79,15 @@ PageWrapper {
 
     GridView {
         id: photoGrid
+        anchors.top: pagetop
         width: parent.width
-        height: parent.height
+        height: parent.height - y
         cellWidth: Math.min((width-5)/3,height)
         cellHeight: cellWidth
         clip: true
         cacheBuffer: 400
         model: photosModel
         delegate: photoDelegate
-        header: LineGreen {
-            height: 30
-            text: caption
-        }
     }
 
     ScrollDecorator{ flickableItem: photoGrid }

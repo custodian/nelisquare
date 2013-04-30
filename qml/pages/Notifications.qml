@@ -21,10 +21,12 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
+    headerText: "NOTIFICATIONS"
+
     tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: pageStack.pop()
+            onClicked: stack.pop()
         }
         ToolIcon {
             platformIconId: "toolbar-refresh"
@@ -53,7 +55,7 @@ PageWrapper {
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: {
-                    pageStack.replace(Qt.resolvedUrl("../pages/Settings.qml"));
+                    stack.replace(Qt.resolvedUrl("../pages/Settings.qml"));
                 }
             }
         }
@@ -62,19 +64,19 @@ PageWrapper {
     function load() {
         var page = notificationsList;
         page.user.connect(function(user) {
-            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
         page.checkin.connect(function(checkin) {
-            pageStack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":checkin});
+            stack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":checkin});
         });
         page.venue.connect(function(venue) {
-            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
         });
         page.badge.connect(function(badge) {
-            pageStack.push(Qt.resolvedUrl("BadgeInfo.qml"),NotiAPI.makeBadgeObject(badge));
+            stack.push(Qt.resolvedUrl("BadgeInfo.qml"),NotiAPI.makeBadgeObject(badge));
         });
         page.tip.connect(function(tip){
-            pageStack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
+            stack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
         });
         page.markRead.connect(function(time) {
             NotiAPI.markNotificationsRead(page,time);
@@ -88,7 +90,12 @@ PageWrapper {
 
     ListView {
         id: notificationRepeater
-        anchors.fill: parent
+        anchors {
+            top: pagetop
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
         model: notificationsModel
         delegate: notificationDelegate
         spacing: 10

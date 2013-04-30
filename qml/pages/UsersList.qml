@@ -16,10 +16,12 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
+    headerText: "USER FRIENDS"
+
     function load() {
         var page = usersList;
         page.user.connect(function(params){
-            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":params});
+            stack.push(Qt.resolvedUrl("User.qml"),{"userID":params});
         });
         UserAPI.loadUserFriends(page,userID);
     }
@@ -33,15 +35,10 @@ PageWrapper {
         onClicked: { }
     }
 
-    LineGreen {
-        height: 30
-        text: "USER FRIENDS"
-    }
-
     ListView {
         id: listViewUsers
         model: usersModel
-        y: 30
+        anchors.top: pagetop
         width: parent.width
         height: parent.height - y
         delegate: usersDelegate

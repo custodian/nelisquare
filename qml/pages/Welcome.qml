@@ -1,12 +1,13 @@
 import Qt 4.7
 import "../components"
 
-Item {
+//Item {
+PageWrapper {
     id: welcomePage
     signal login()
 
-    width: window.width
-    height: window.height
+    //width: window.width
+    //height: window.height
 
     property bool newuser: false
 
@@ -14,7 +15,7 @@ Item {
         welcomePage.login.connect(function(){
             //loginArea.visible = true;
             //create login Component
-            loginStack.push(Qt.resolvedUrl("Login24sq.qml"));
+            stack.push(Qt.resolvedUrl("Login24sq.qml"));
         });
     }
 

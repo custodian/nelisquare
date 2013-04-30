@@ -98,7 +98,7 @@ function processResponse(response, page) {
         notifications.forEach(function(notification) {
                 if (parse(notification.type) == "notificationTray") {
                     //TODO: change it somehow to make library
-                    window.updateNotificationCount(notification.item.unreadCount);
+                    //TODO: migrate ?? window.updateNotificationCount(notification.item.unreadCount);
                 }
             });
     }

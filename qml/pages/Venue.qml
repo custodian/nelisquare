@@ -22,6 +22,8 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
+    headerText: venueName
+
     property string venueID: ""
     property string venueName: ""
     property string venueAddress: ""
@@ -47,7 +49,7 @@ PageWrapper {
     tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: pageStack.pop()
+            onClicked: stack.pop()
         }
 
         ToolIcon{
@@ -84,7 +86,7 @@ PageWrapper {
     function load() {
         var page = place;
         page.checkin.connect(function(venueID, venueName) {
-            pageStack.push(Qt.resolvedUrl("CheckinDialog.qml"),{ "venueID": venueID, "venueName": venueName});
+            stack.push(Qt.resolvedUrl("CheckinDialog.qml"),{ "venueID": venueID, "venueName": venueName});
             /*checkinDialog.reset();
             checkinDialog.venueID = venueID;
             checkinDialog.venueName = venueName;
@@ -103,16 +105,16 @@ PageWrapper {
             tipDialog.state = "shown";
         });
         page.user.connect(function(user) {
-            pageStack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
         page.tip.connect(function(tip){
-            pageStack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
+            stack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
         });
         page.tips.connect(function(){
-            pageStack.push(Qt.resolvedUrl("TipsList.qml"),{"baseType":"venues","baseID":venueID});
+            stack.push(Qt.resolvedUrl("TipsList.qml"),{"baseType":"venues","baseID":venueID});
         });
         page.photo.connect(function() {
-            var photogallery = pageStack.push(Qt.resolvedUrl("PhotosGallery.qml"));
+            var photogallery = stack.push(Qt.resolvedUrl("PhotosGallery.qml"));
             photogallery.update.connect(function(){
                VenueAPI.loadVenuePhotos(photogallery,venueID);
             });
@@ -122,7 +124,7 @@ PageWrapper {
             photogallery.update();
         });
         page.showMap.connect(function() {
-            pageStack.push(Qt.resolvedUrl("VenueMap.qml"),{
+            stack.push(Qt.resolvedUrl("VenueMap.qml"),{
                                "venueMapLat": page.venueMapLat,
                                "venueMapLng": page.venueMapLng,
                                "venueName": page.venueName,
@@ -131,7 +133,7 @@ PageWrapper {
                            });
         });
         page.showAddPhoto.connect(function(venueID) {
-            pageStack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
+            stack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
                 "type": "venue",
                 "id": venueID,
                 "owner": page
@@ -189,6 +191,7 @@ PageWrapper {
 
     Flickable {
         id: flickableArea
+        anchors.top: pagetop
         width: parent.width
         contentWidth: parent.width
         height: place.height - y

@@ -16,10 +16,13 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    tools: ToolBarLayout{
+    //TODO: no header. show minimap + venues instead
+    headerText: "NEARBY VENUES"
+
+    /*tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: pageStack.pop()
+            onClicked: stack.pop()
         }
 
         ToolIcon{
@@ -33,11 +36,11 @@ PageWrapper {
                 menu.open();
             }
         }
-    }
+    }*/
 
     Menu {
         id: menu
-        visualParent: mainWindowPage
+        //TODO: migrate ?? visualParent: mainWindowPage
         MenuLayout {
             MenuItem {
                 text: qsTr("Add new venue")
@@ -51,21 +54,29 @@ PageWrapper {
     function load() {
         var page = venuesList;
         page.checkin.connect(function(venueID, venueName) {
-            pageStack.push(Qt.resolvedUrl("CheckinDialog.qml"),{ "venueID": venueID, "venueName": venueName});
+            stack.push(Qt.resolvedUrl("CheckinDialog.qml"),{ "venueID": venueID, "venueName": venueName});
             /*checkinDialog.reset();
             checkinDialog.venueID = venueID;
             checkinDialog.venueName = venueName;
             checkinDialog.open();*/
         });
         page.clicked.connect(function(venueid) {
-            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
+            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
         });
         page.search.connect(function(query) {
-            VenueAPI.loadVenues(page, query);
+            if (positionSource.position.latitudeValid) {
+                VenueAPI.loadVenues(page, query);
+            } else {
+                //TODO: make an window about fuzzy signal
+                console.log("position is invalid");
+            }
         });
         page.addVenue.connect(function(){
-            pageStack.push(Qt.resolvedUrl("VenueEdit.qml"),{"venueID":""});
+            stack.push(Qt.resolvedUrl("VenueEdit.qml"),{"venueID":""});
         });
+        update();
+    }
+    function update() {
         search("");
     }
 
@@ -79,6 +90,8 @@ PageWrapper {
     }
 
     Rectangle {
+        id: searchBox
+        anchors.top: pagetop
         width: parent.width
         height: 80
         color: mytheme.colors.backgroundBlueDark
@@ -107,7 +120,7 @@ PageWrapper {
 
     ListView {
         id: placesView
-        y: 80
+        anchors.top: searchBox.bottom
         width: parent.width
         height: parent.height - y
         model: placesModel
@@ -116,11 +129,6 @@ PageWrapper {
         clip: true
         cacheBuffer: 400
         spacing: 5
-        header:
-            LineGreen {
-                height: 30
-                text: "PLACES NEAR YOU"
-            }
 
         /* //DBG
         footer: Column {

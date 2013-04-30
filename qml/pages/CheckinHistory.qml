@@ -23,7 +23,7 @@ PageWrapper {
     function load() {
         var page = checkinHistory;
         page.checkin.connect(function(id) {
-            pageStack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});
+            stack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});
         });
         page.update.connect(function(){
             if (userID === "self")
@@ -45,6 +45,7 @@ PageWrapper {
 
     ListView {
         model: checkinHistoryModel
+        anchors.top: pagetop
         width: parent.width
         height: parent.height - y
         delegate: checkinHistoryDelegate

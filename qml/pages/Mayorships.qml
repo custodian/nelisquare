@@ -16,10 +16,12 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
+    headerText: "MAYORSHIPS"
+
     function load() {
         var page = mayorships;
         page.venue.connect(function(id) {
-            pageStack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":id});
+            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":id});
         });
         UserAPI.loadMayorships(page,userID);
     }
@@ -33,15 +35,10 @@ PageWrapper {
         onClicked: { }
     }
 
-    LineGreen {
-        height: 30
-        text: "MAYORSHIPS"
-    }
-
     ListView {
         id: listViewMayorships
         model: mayorshipsModel
-        y: 30
+        anchors.top: pagetop
         width: parent.width
         height: parent.height - y
         delegate: mayorshipsDelegate

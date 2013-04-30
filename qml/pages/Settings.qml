@@ -18,10 +18,12 @@ PageWrapper {
     width: parent.width
     height: parent.height
 
+    headerText: "SETTINGS"
+
     tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: pageStack.pop()
+            onClicked: stack.pop()
         }
 
         ToolIcon {
@@ -46,7 +48,6 @@ PageWrapper {
 
     Menu {
         id: menu
-        visualParent: mainWindowPage
         MenuLayout {
             MenuItem {
                 text: qsTr("Reset settings")
@@ -77,17 +78,9 @@ PageWrapper {
         }
     }
 
-    LineGreen {
-        id: settingsLabel
-        text: "SETTINGS"
-        size: mytheme.font.sizeSettigs
-        height: 50
-    }
-
     Flickable{
-
         id: flickableArea
-        anchors.top: settingsLabel.bottom
+        anchors.top: pagetop
         width: parent.width
         contentWidth: parent.width
         height: settings.height - y
@@ -473,7 +466,7 @@ PageWrapper {
                 onClicked: {
                     Qt.openUrlExternally("http://molo.me/meego");
                 }
-                visible: !window.molome_present && configuration.platform === "meego"
+                visible: !configuration.molome_present && configuration.platform === "meego"
             }
             Column {
                 width: parent.width
@@ -485,7 +478,7 @@ PageWrapper {
                         active = true;
                         molome.install();
                     }
-                    visible: window.molome_present && !window.molome_installed;
+                    visible: configuration.molome_present && !configuration.molome_installed;
                     onVisibleChanged: {
                         if (active) {
                             waiting_hide();
@@ -501,7 +494,7 @@ PageWrapper {
                         active = true;
                         molome.uninstall();
                     }
-                    visible: window.molome_installed;
+                    visible: configuration.molome_installed;
                     onVisibleChanged: {
                         if (active) {
                             waiting_hide();

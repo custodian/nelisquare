@@ -18,7 +18,7 @@ PageWrapper {
     function load() {
         var page = badgesPage;
         page.badge.connect(function(params) {
-            pageStack.push(Qt.resolvedUrl("BadgeInfo.qml"),params);
+            stack.push(Qt.resolvedUrl("BadgeInfo.qml"),params);
         });
         UserAPI.loadBadges(page,userID);
     }
@@ -29,7 +29,12 @@ PageWrapper {
 
     GridView {
         id: badgeGrid
-        anchors.fill: parent
+        anchors {
+            top: pagetop
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
         clip: true
 
         cellWidth: parent.width/3

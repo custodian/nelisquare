@@ -19,6 +19,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.1
+//import "."
 
 Item{
     id: root
@@ -27,7 +28,7 @@ Item{
     property string headerText: ""
 
     property bool busy: false
-    property bool countBubbleVisible: false
+    property bool countBubbleVisible: true
     property int countBubbleValue: 0
 
     signal clicked
@@ -38,7 +39,9 @@ Item{
     Image {
         id: background
         anchors.fill: parent
-        source: "image://theme/color7-meegotouch-view-header-fixed" + (mouseArea.pressed ? "-pressed" : "")
+        //was color 7
+        //source: "image://theme/color9-meegotouch-view-header-fixed" + (mouseArea.pressed ? "-pressed" : "")
+        source: "image://theme/color9-meegotouch-view-header-fixed-pressed"
     }
 
     Image{
@@ -81,7 +84,7 @@ Item{
         id: countBubbleComponent
 
         CountBubble{
-            value: root.countBubbleValue
+            //value: root.countBubbleValue
             largeSized: true
         }
     }

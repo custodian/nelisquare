@@ -7,7 +7,8 @@ import "../components"
 import "../js/api.js" as Api
 import "../js/storage.js" as Storage
 
-Rectangle {
+//Rectangle {
+PageWrapper {
     id: loginDialog
     signal finished(string url)
     signal loadFailed()
@@ -20,7 +21,6 @@ Rectangle {
             if (token!==undefined) {
                 Storage.setKeyValue("accesstoken", token);
                 Api.setAccessToken(token);
-                loginStack.clear();
             }
         });
         loginDialog.loadFailed.connect(function() {
