@@ -19,6 +19,9 @@ PageWrapper {
 
     signal checkin(string venueID, string comment, bool friends, bool facebook, bool twitter)
 
+    headerText: "NEW CHECKIN"
+    headerBubble: false
+
     function reset() {
         shoutText.text = "";
     }
@@ -58,8 +61,9 @@ PageWrapper {
 
     Flickable{
         id: flickableArea
+        anchors.top: pagetop
         width: parent.width
-        height: parent.height
+        height: parent.height - y
         contentWidth: parent.width
 
         clip: true

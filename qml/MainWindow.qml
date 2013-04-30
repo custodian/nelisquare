@@ -16,8 +16,6 @@ Rectangle {
 
     property bool windowActive: false
 
-    property string lastNotiCount: "0"
-
     property alias positionSource: positionSource
     property alias pageStack: pageStack
 
@@ -38,20 +36,6 @@ Rectangle {
         onTriggered: {
             if(!positionSource.position.latitudeValid) {
                 signalIcon.visible = !signalIcon.visible;
-            }
-        }
-    }
-
-    function updateNotificationCount(value) {
-        upperbar.notificationsCount.text = value
-        //console.log("last: " + lastNotiCount + " new: " + value);
-        if (configuration.feedNotification!=="0") {
-            if (value != lastNotiCount) {
-                platformUtils.removeNotification("nelisquare.notification");
-                if (value!="0") {
-                    platformUtils.addNotification("nelisquare.notification", "Nelisquare", value + " new notification" +((value=="1")?"":"s"), 1);
-                }
-                lastNotiCount = value;
             }
         }
     }

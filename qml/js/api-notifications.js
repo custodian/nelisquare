@@ -8,7 +8,7 @@ function loadNotifications(page) {
     var url = "updates/notifications?limit=100&" + getAccessTokenParameter();
     page.waiting_show();
     page.notificationsModel.clear();
-    doWebRequest("GET",url,page, parseNotifications);
+    doWebRequest("GET", url, page, parseNotifications);
 }
 
 function markNotificationsRead(page, time) {

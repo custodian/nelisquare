@@ -15,6 +15,8 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
+    headerText: "BADGES"
+
     function load() {
         var page = badgesPage;
         page.badge.connect(function(params) {

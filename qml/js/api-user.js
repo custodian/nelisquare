@@ -249,6 +249,8 @@ function parseCheckinHistory(response, page) {
     page.waiting_hide();
     if (data.checkins.items.length < page.batchsize) {
         page.completed = true;
+    } else {
+        page.completed = false;
     }
     page.loaded += data.checkins.items.length;
     data.checkins.items.forEach(function(checkin) {

@@ -22,6 +22,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "NOTIFICATIONS"
+    headerBubble: false
 
     tools: ToolBarLayout{
         ToolIcon{
@@ -44,7 +45,6 @@ PageWrapper {
 
     Menu {
         id: menu
-        visualParent: mainWindowPage
         MenuLayout {
             MenuItem {
                 text: qsTr("Mark all as read")

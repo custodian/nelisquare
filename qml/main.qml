@@ -9,6 +9,9 @@ import "js/api-photo.js" as PhotoAPI
 PageStackWindow {
     id: appWindow
     property bool windowActive: Qt.application.active
+    property string lastNotiCount: "0"
+    property int notificationsCount: 0
+
     property alias stack: tabgroup.currentTab;
 
     showToolBar: tabgroup.currentTab !== tabLogin
@@ -44,12 +47,6 @@ PageStackWindow {
                 pageStack.toolBar.tools = tools;
             }
         }
-
-        /*PageHeader {
-            id: pageHeader
-            headerText: "Nelisquare"
-            visible: tabgroup.currentTab !== tabLogin
-        }*/
 
         TabGroup {
             id: tabgroup
@@ -161,6 +158,12 @@ PageStackWindow {
     Menu {
         id: dummyMenu
         MenuLayout {
+            MenuItem {
+                text: qsTr("Check updates")
+                onClicked: {
+                    configuration.getupdates();
+                }
+            }
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: {

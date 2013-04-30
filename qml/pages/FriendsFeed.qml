@@ -33,7 +33,7 @@ PageWrapper {
     property alias friendsCheckinsModel: friendsCheckinsModel
     property alias timerFeedUpdate: timerFeedUpdate
 
-    headerText: "FRIENDS FEED"
+    headerText: nearbyPressed ? "NEARBY FRIENDS FEED" : "RECENT FRIENDS FEED"
 
     width: parent.width
     height: parent.height

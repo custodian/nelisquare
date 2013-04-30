@@ -29,7 +29,7 @@ Item{
 
     property bool busy: false
     property bool countBubbleVisible: true
-    property int countBubbleValue: 0
+    property int countBubbleValue: appWindow.notificationsCount
 
     signal clicked
 
@@ -84,14 +84,25 @@ Item{
         id: countBubbleComponent
 
         CountBubble{
-            //value: root.countBubbleValue
+            value: root.countBubbleValue
             largeSized: true
+            visible: value!==0
         }
     }
 
-    MouseArea{
+/*    MouseArea{
         id: mouseArea
         anchors.fill: parent
         onClicked: root.clicked()
+    }
+*/
+
+    MouseArea {
+        id: mouseAreaBubble
+        anchors.fill: busyIndicatorLoader
+        enabled: countBubbleVisible
+        onClicked: {
+            processUINotification(0);
+        }
     }
 }

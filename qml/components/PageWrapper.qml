@@ -19,6 +19,7 @@ Page {
     property alias dummyMenu: dummyMenu
     property alias headerText: pageHeader.headerText
     property alias headerIcon: pageHeader.headerIcon
+    property alias headerBubble: pageHeader.countBubbleVisible
 
     Component.onCompleted: {
         if (pageWrapper.load)
@@ -65,9 +66,29 @@ Page {
         notificationDialog.state = "shown";
     }
 
+    function updateNotificationCount(value) {
+        appWindow.notificationsCount = value
+        //console.log("last: " + lastNotiCount + " new: " + value);
+        if (configuration.feedNotification!=="0") {
+            if (value != appWindow.lastNotiCount) {
+                platformUtils.removeNotification("nelisquare.notification");
+                if (value != "0") {
+                    platformUtils.addNotification("nelisquare.notification", "Nelisquare", value + " new notification" +((value=="1")?"":"s"), 1);
+                }
+                appWindow.lastNotiCount = value;
+            }
+        }
+    }
+
     Menu {
         id: dummyMenu
         MenuLayout {
+            MenuItem {
+                text: qsTr("Check updates")
+                onClicked: {
+                    configuration.getupdates();
+                }
+            }
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: {

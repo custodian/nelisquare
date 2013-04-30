@@ -1,3 +1,3 @@
-var build = '201304301611';
+var build = '201304301954';
 var version = "0.5.0";
-var changelog = " - Back to action!  - It's really an early alpha.  - DO NOT update to it yet. ";
+var changelog = " - Back to action!  - Something may be broken  - Photo uploads not working yet ";

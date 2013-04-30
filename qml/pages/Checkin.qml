@@ -14,6 +14,8 @@ PageWrapper {
     signal showAddPhoto(string checkin)
     id: checkin
 
+    headerText: "CHECKIN DETAILS"
+
     property string checkinID: ""
 
     property alias scoreTotal: scoreTotal.text

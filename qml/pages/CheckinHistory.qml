@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api-user.js" as UserAPI
@@ -19,6 +20,8 @@ PageWrapper {
     width: parent.width
     height: parent.height
     color: mytheme.colors.backgroundMain
+
+    headerText: "CHECKIN HISTORY"
 
     function load() {
         var page = checkinHistory;
@@ -53,11 +56,21 @@ PageWrapper {
         //clip: true
         cacheBuffer: 400
 
-        header: LineGreen{
-            width: checkinHistory.width
-            anchors.horizontalCenter: parent.horizontalCenter
-            height: 30
-            text: "CHECKIN HISTORY"
+        footer: Column{
+            width: parent.width
+            ToolButton {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: "Load More"
+                visible: !completed
+                onClicked: {
+                    completed = true;
+                    update();
+                }
+            }
+            Item {
+                width: parent.width
+                height: 20
+            }
         }
     }
 
@@ -78,12 +91,6 @@ PageWrapper {
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo
-
-                if (loaded === (index + 1)){
-                    if (!completed) {
-                        update();
-                    }
-                }
             }
 
             onAreaClicked: {
