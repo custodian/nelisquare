@@ -22,10 +22,8 @@ Item {
             photosBoxComponent.height = height;
         }
 
-        LineGreen {
+        SectionHeader{
             text: caption
-            height: 30
-            size: fontSize
         }
 
         ListView {

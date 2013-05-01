@@ -105,7 +105,15 @@ function parseFriendsFeed(response, page, history) {
             count++;
         } else if (object.type === "tip") {
             //TODO: make show tip
+            /*
             page.loaded -= 1;
+            */
+            //DBG: testing loader
+            var itemtest = {
+                "type": object.type
+            }
+            page.addItem(itemtest);
+
             console.log("TIP EVENT: " + JSON.stringify(object.type));
         } else {
             page.loaded -= 1;
@@ -133,7 +141,16 @@ function parseFriendsFeed(response, page, history) {
         } else if (activity.type === "friend") {
             feedObjParser(activity);
         } else {
+            /*
             page.loaded -= 1;
+            */
+            //DBG: testing loader
+            var itemtest = {
+                "id": "",
+                "type": activity.type
+            }
+            page.addItem(itemtest);
+
             console.log("ACTIVITY TYPE: " + activity.type);
             //console.log("ACTIVITY CONTENT: " + JSON.stringify(activity.content));
             return;
@@ -181,6 +198,7 @@ function feedObjParserCheckin(page, checkin, append, count) {
     if (venueDistance === undefined || venueDistance < MAX_NEARBY_DISTANCE) {
         var item = {
             "id": checkin.id,
+            "type": "checkin",
             "shout": parse(checkin.shout),
             "user": userName,
             "userID": checkin.user.id,
@@ -195,6 +213,8 @@ function feedObjParserCheckin(page, checkin, append, count) {
             "likesCount": checkin.likes.count,
             "photosCount": checkin.photos.count
         };
+        if (checkin.comments.count>0)
+            console.log("CHECKIN: " + JSON.stringify(checkin));
         if (append) {
             //console.log("adding checkin at end");
             page.addItem(item);
@@ -237,6 +257,7 @@ function feedObjParserFriend(page, friend, append, count) {
     }
     var item = {
         "id": "",
+        "type": friend.type,
         "shout": "",
         "user": friend.summary.text,
         "userID": friend.content.object.id,

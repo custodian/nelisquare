@@ -215,25 +215,52 @@ PageWrapper {
 
     ScrollDecorator{ flickableItem: friendsCheckinsView }
 
+
     Component {
         id: friendsFeedDelegate
+
+        Loader {
+            width: friendsCheckinsView.width
+            function getComponentByType(type) {
+                if (type === "checkin")
+                    return friendsFeedDelegateEvent
+                else
+                    return testComponent
+            }
+            property variant content: model
+            sourceComponent: getComponentByType(content.type)
+        }
+    }
+
+    Component {
+        id: testComponent
+
+        Text {
+            color: mytheme.colors.textColorOptions
+            font.pixelSize: mytheme.font.sizeSigns
+            text: content.type + " event"
+        }
+    }
+
+    Component {
+        id: friendsFeedDelegateEvent
 
         EventBox {
             id: eventbox
             activeWhole: true
 
-            userName: model.user
-            userShout: model.shout
-            userMayor: model.mayor
-            venueName: model.venueName
-            venuePhoto: model.venuePhoto
-            createdAt: model.createdAt
-            commentsCount: model.commentsCount
-            photosCount: model.photosCount
-            likesCount: model.likesCount
+            userName: content.user
+            userShout: content.shout
+            userMayor: content.mayor
+            venueName: content.venueName
+            venuePhoto: content.venuePhoto
+            createdAt: content.createdAt
+            commentsCount: content.commentsCount
+            photosCount: content.photosCount
+            likesCount: content.likesCount
 
             Component.onCompleted: {
-                userPhoto.photoUrl = model.photo
+                userPhoto.photoUrl = content.photo
 
                 //console.log("LOADED: " + loaded + " index:"+ (index+1));
                 /*if (loaded === (index + 1)){
@@ -244,10 +271,10 @@ PageWrapper {
             }
 
             onAreaClicked: {
-                if (model.id) {
-                    friendsFeed.checkin( model.id );
+                if (content.id) {
+                    friendsFeed.checkin( content.id );
                 } else {
-                    friendsFeed.user( model.userID );
+                    friendsFeed.user( content.userID );
                 }
             }
         }
