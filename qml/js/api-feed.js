@@ -213,8 +213,6 @@ function feedObjParserCheckin(page, checkin, append, count) {
             "likesCount": checkin.likes.count,
             "photosCount": checkin.photos.count
         };
-        if (checkin.comments.count>0)
-            console.log("CHECKIN: " + JSON.stringify(checkin));
         if (append) {
             //console.log("adding checkin at end");
             page.addItem(item);

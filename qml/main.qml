@@ -41,7 +41,7 @@ PageStackWindow {
     Page {
         id: mainPage
         //tools: commonTools
-        tools: stack.currentPage.tools
+        tools: stack.currentPage !== undefined ? stack.currentPage.tools : null
         onToolsChanged: {
             if (pageStack) {
                 pageStack.toolBar.tools = tools;

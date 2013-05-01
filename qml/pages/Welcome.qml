@@ -10,6 +10,7 @@ PageWrapper {
     //height: window.height
 
     property bool newuser: false
+    headerText: ""
 
     function load() {
         welcomePage.login.connect(function(){

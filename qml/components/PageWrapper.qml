@@ -38,9 +38,10 @@ Page {
         z: 1
         headerText: "Awesome header";
 
-/*        onSelectedItem: {
+        /*onSelectedItem: {
             pageWrapper.headerSelectedItem(index);
         }*/
+        visible: headerText.length > 0
     }
 
     function waiting_show() {

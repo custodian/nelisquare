@@ -15,6 +15,8 @@ PageWrapper {
     anchors.fill: parent
     //color: mytheme.colors.backgroundMain
 
+    headerText: ""
+
     function load() {
         loginDialog.finished.connect(function(url) {
             var token = Api.parseAuth(url, "access_token");
@@ -34,11 +36,16 @@ PageWrapper {
         webView.reload.trigger();
     }
 
+    //DBG: remove header. use PageWrapper header
     PageHeader{
         id: header
         headerText: qsTr("Sign In to Foursquare")
-        onClicked: {
-            reset();
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                reset();
+            }
         }
     }
 
@@ -49,25 +56,23 @@ PageWrapper {
         preferredWidth: width
         url: ""
 
-        WaitingIndicator {
-            id: waitingLogin
-            z: 1
-        }
-
         onLoadStarted: {
             //console.log("URL is now " + webView.url);
-            waitingLogin.show();
+            //waiting_show();
+            header.busy = true;
         }
 
         onLoadFinished: {
             //console.log("URL is now " + webView.url);
-            waitingLogin.hide();
+            //waiting_hide();
+            header.busy = false;
             loginDialog.finished( webView.url );
         }
 
         onLoadFailed: {
             //console.log("FAILED URL is now " + webView.url);
-            waitingLogin.hide();
+            //waiting_hide();
+            header.busy = false;
             loginDialog.loadFailed();
         }
     }
