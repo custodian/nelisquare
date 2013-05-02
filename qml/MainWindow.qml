@@ -122,22 +122,6 @@ Rectangle {
             }
         }
 
-        //TODO: remove to single "Sheet"
-        PhotoShareDialog {
-            id: photoShareDialog
-            z: 20
-            width: parent.width
-            state: "hidden"
-            onCancel:{
-                photoShareDialog.state="hidden";
-            }
-            onUploadPhoto: {
-                photoShareDialog.state="hidden";
-                PhotoAPI.addPhoto(params);
-                pageStack.pop();
-            }
-        }
-
         Item {
             id: signalIcon
             z: 1

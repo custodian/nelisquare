@@ -2,6 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import "../components"
+import "../js/api-photo.js" as PhotoAPI
 
 PageWrapper {
     signal uploadPhoto(string photo)
@@ -24,8 +25,7 @@ PageWrapper {
         ToolIcon{
             iconSource: "../pics/molome.png"
             onClicked: {
-                //TODO: make Connections {} to molome object
-                //waiting_show();
+                waiting_show();
                 molome.getphoto();
             }
             visible: configuration.molome_installed && configuration.molome_present
@@ -47,6 +47,14 @@ PageWrapper {
         });
         photoShareDialog.options = options;
         photoShareDialog.owner = page;
+    }
+
+    function molomePhoto(state, photoUrl) {
+        if (state) {
+            uploadPhoto(photoUrl);
+        }
+        waiting_hide();
+        galleryModel.reload();
     }
 
     DocumentGalleryModel {
@@ -79,8 +87,8 @@ PageWrapper {
     }
 
     Component {
-         id: photoDelegate
-         ProfilePhoto {
+        id: photoDelegate
+        ProfilePhoto {
             photoUrl: url               //real
             //photoUrl: model.fileName        //sim
             photoSize: photoGrid.cellWidth
@@ -94,6 +102,21 @@ PageWrapper {
             }
 
             //TODO: make textname overlap photo
-         }
-     }
+        }
+    }
+
+    PhotoShareDialog {
+        id: photoShareDialog
+        z: 20
+        width: parent.width
+        state: "hidden"
+        onCancel:{
+            photoShareDialog.state="hidden";
+        }
+        onUploadPhoto: {
+            photoShareDialog.state="hidden";
+            PhotoAPI.addPhoto(params);
+            stack.pop();
+        }
+    }
 }

@@ -1,3 +1,3 @@
-var build = '201305020052';
+var build = '201305021311';
 var version = "0.5.0";
-var changelog = " - Back to action!  - Something may be broken  - Photo uploads not working yet ";
+var changelog = " - Back into action!  - Photo uploads working  - Feed updates ";

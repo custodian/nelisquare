@@ -67,7 +67,6 @@ PageStackWindow {
 
             PageStack {
                 id: tabFeed
-                //toolBar: pageStack.toolBar
                 function load() {
                     tabFeed.push(Qt.resolvedUrl("pages/FriendsFeed.qml"))
                 }
@@ -75,7 +74,6 @@ PageStackWindow {
 
             PageStack {
                 id: tabVenues
-                //toolBar: pageStack.toolBar
                 function load() {
                     tabVenues.push(Qt.resolvedUrl("pages/VenuesList.qml"))
                 }
@@ -83,7 +81,6 @@ PageStackWindow {
 
             PageStack {
                 id: tabMe
-                //toolBar: pageStack.toolBar
                 function load() {
                     tabMe.push(Qt.resolvedUrl("pages/User.qml"),{"userID":"self"})
                 }
@@ -91,7 +88,6 @@ PageStackWindow {
 
             PageStack {
                 id: tabLogin
-                //toolBar: pageStack.toolBar
                 function load() {
                     tabLogin.clear();
                     tabLogin.push(Qt.resolvedUrl("pages/Welcome.qml"),{"newuser":true},true);
@@ -308,10 +304,8 @@ PageStackWindow {
     }
 
     function onMolomePhoto(state, photoUrl) {
-        //console.log("MOLO PHOTO: state:" + state + " path:" + photoUrl);
-        if (state && pageStack.currentPage.parent.url == Qt.resolvedUrl("pages/PhotoAdd.qml")) {
-            photoShareDialog.photoUrl = photoUrl;
-            photoShareDialog.state = "shown";
+        if (stack.currentPage.molomePhoto !== undefined) {
+            stack.currentPage.molomePhoto(state, photoUrl);
         }
     }
 
