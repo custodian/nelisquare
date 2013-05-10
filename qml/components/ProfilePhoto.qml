@@ -39,7 +39,7 @@ Rectangle {
             x: photoBorder
             y: photoBorder
             asynchronous: true
-            source: photoCache ? cache.get(photoUrl) : photoUrl
+            source: photoCache ? cache.get(photoUrl, dataLoaded) : photoUrl
             //cache: photoCache
             smooth: true
             fillMode: photoAspect
@@ -48,6 +48,7 @@ Rectangle {
             sourceSize.width: width // photoSourceSize
             //sourceSize.height: height //photoSourceSize
             clip: true
+
             onStatusChanged: {
                 image.visible = (image.status == Image.Ready)
                 loader.visible = (image.status != Image.Ready)
@@ -60,6 +61,12 @@ Rectangle {
                 id: loader
                 anchors.centerIn: image
                 source: "../pics/"+mytheme.name+"/loader.png"
+            }
+
+            function dataLoaded(status, url) {
+                if (status) {
+                    source = url;
+                }
             }
         }
     //}

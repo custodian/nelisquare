@@ -67,7 +67,7 @@ function loadVenue(page, venueID) {
     var url = "venues/" + venueID + "?" + getAccessTokenParameter();
     page.waiting_show();
     page.venueID = venueID;
-    page.venueName = "";
+    page.venueName = "Loading";
     page.venueAddress = "";
     page.venueCity = "";
     page.venueMajor = "";

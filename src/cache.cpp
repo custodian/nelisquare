@@ -104,6 +104,8 @@ QVariant Cache::get(QVariant data)
             }
         }
     }
+    //DBG disabled to check callback
+    //data = QVariant("");
     return data;
 }
 
