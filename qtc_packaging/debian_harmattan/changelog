@@ -1,7 +1,7 @@
 nelisquare (0.5.0) unstable; urgency=low
-  * Back into action!
   * Photo uploads working
   * Feed updates
+  * Cache update, smooth loading
 
  -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 29 Apr 2013 11:05:26 +0400
 

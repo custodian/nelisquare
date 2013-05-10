@@ -57,9 +57,9 @@ Item{
         source: "image://theme/color9-meegotouch-view-header-fixed"
     }
 
-    Image{
+    CacheImage{
         id: icon
-        source: headerIcon.length ? cache.get(headerIcon) : headerIcon
+        source: headerIcon.length ? cache.get(headerIcon, icon) : headerIcon
         anchors { verticalCenter: parent.verticalCenter; left: parent.left; margins: mytheme.paddingLarge }
         height: sourceSize.height; width: sourceSize.width
         sourceSize { height: mytheme.graphicSizeSmall; width: mytheme.graphicSizeSmall }

@@ -81,7 +81,7 @@ void PlatformUtils::addFeedItem(QVariant item)
     QMap<QString, QVariant> params = item.toMap();
     QStringList imagesList;
     if (params["venuePhoto"].toString().size()>0) {
-        QVariant photo = m_cache->get(params["venuePhoto"]);
+        QVariant photo = m_cache->get(params["venuePhoto"],QVariant());
         if (photo.toString().indexOf("http")==-1)
             imagesList.append(photo.toString());
     }
@@ -94,7 +94,7 @@ void PlatformUtils::addFeedItem(QVariant item)
         eventid = params["userID"].toString();
         callback = QUrl(QString("nelisquare://user/%1").arg(eventid));
     }
-    QVariant icon = m_cache->get(params["photo"]);//QString("icon-m-service-nelisquare-notification"),
+    QVariant icon = m_cache->get(params["photo"],QVariant());//QString("icon-m-service-nelisquare-notification"),
     if (icon.toString().indexOf("http")!=-1)
         icon = "icon-m-service-nelisquare-notification";
     int count;

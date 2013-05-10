@@ -108,6 +108,7 @@ function addCommentToModel(page, comment) {
 
 function makeBadgeObject(badge){
     var venue = parse(badge.unlocks[0].checkins[0].venue);
+    //console.log("badge date: " + badge.unlocks[0].checkins[0].createdAt);
     return {
         "name":badge.name,
         "image":makeImageUrl(badge.image,114),
@@ -115,6 +116,6 @@ function makeBadgeObject(badge){
         "info":badge.badgeText,
         "venueName":parse(venue.name),
         "venueID":parse(venue.id),
-        "time":prettyDate(badge.unlocks[0].checkins[0].createdAt),
-         };
+        "time":makeTime(badge.unlocks[0].checkins[0].createdAt),
+        };
 }

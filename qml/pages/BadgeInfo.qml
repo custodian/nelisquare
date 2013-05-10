@@ -17,6 +17,9 @@ PageWrapper {
     property string venueName: ""
     property string venueID: ""
     property string time: ""
+    property string index: ""
+
+    headerText: name//"Badge details"
 
     function load() {
         var page = badgeInfo;
@@ -60,12 +63,12 @@ PageWrapper {
                 }
             }
 
-            Text {
+            /*Text {
                 x: 10
                 font.pixelSize: mytheme.font.sizeSettigs
                 color: mytheme.colors.textColorOptions
                 text: name
-            }
+            }*/
 
             Text {
                 x: 10

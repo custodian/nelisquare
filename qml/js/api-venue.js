@@ -240,6 +240,7 @@ function parseToDo(response, page) {
 }
 
 function loadVenueCategories(callback) {
+    //TODO: change to new callback system
     var url = cache.get(API_URL + "venues/categories&" + getAccessTokenParameter());
     console.log("url " + url);
     var doc = new XMLHttpRequest();

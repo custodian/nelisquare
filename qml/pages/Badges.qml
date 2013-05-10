@@ -58,11 +58,11 @@ PageWrapper {
         Item {
             width: badgeGrid.cellWidth
 
-            Image {
+            CacheImage {
                 id: badgeImage
                 width: 114
                 height: 114
-                source: cache.get(model.image)
+                source: cache.get(model.image,badgeImage)
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 MouseArea {
@@ -77,7 +77,8 @@ PageWrapper {
                             "venueID":model.venueID,
                             "time":model.time
                         }*/
-                        badgesPage.badge(model);
+                        //console.log("badgeItem: " + );
+                        badgesPage.badge(JSON.parse(JSON.stringify(model)));
                     }
                 }
                 Image {

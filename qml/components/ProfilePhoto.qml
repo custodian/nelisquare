@@ -34,12 +34,12 @@ Rectangle {
         mask: Image{ source: "../pics/image_mask.png"}
     */
 
-        Image {
+        CacheImage {
             id: image
             x: photoBorder
             y: photoBorder
             asynchronous: true
-            source: photoCache ? cache.get(photoUrl, dataLoaded) : photoUrl
+            source: photoCache ? cache.get(photoUrl, image) : photoUrl
             //cache: photoCache
             smooth: true
             fillMode: photoAspect
@@ -54,19 +54,13 @@ Rectangle {
                 loader.visible = (image.status != Image.Ready)
                 if (image.status == Image.Error) {
                     console.log("Remove bad cached element");
-                    cache.remove(photoUrl);
+                    //cache.remove(photoUrl); //DBG
                 }
             }
             Image {
                 id: loader
                 anchors.centerIn: image
                 source: "../pics/"+mytheme.name+"/loader.png"
-            }
-
-            function dataLoaded(status, url) {
-                if (status) {
-                    source = url;
-                }
             }
         }
     //}

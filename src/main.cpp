@@ -109,8 +109,10 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #endif
 
     viewer.setMainQmlFile(QLatin1String("qml/main.qml"));
-
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
+    rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
+    rootObject->connect(cache,SIGNAL(cacheUpdated(QVariant,QVariant,QVariant)),SLOT(onCacheUpdated(QVariant,QVariant,QVariant)));
+
 #if defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
     new NelisquareDbus(app, &viewer);
 #endif
@@ -125,7 +127,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #else
     viewer.showExpanded();
 #endif
-    rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
 
 #if defined(Q_OS_MAEMO)
     splash.finish(&viewer);

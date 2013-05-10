@@ -65,11 +65,11 @@ Item {
                 width: parent.width
                 spacing: userMayor?5:0
 
-                Image {
+                CacheImage {
                     id: mayorImage
                     anchors.verticalCenter: messageText.verticalCenter
                     asynchronous: true
-                    source: cache.get("https://foursquare.com/img/points/mayor.png")
+                    source: cache.get("https://foursquare.com/img/points/mayor.png",mayorImage) //DBG
                     visible: userMayor
                 }
 

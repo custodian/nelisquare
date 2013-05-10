@@ -58,6 +58,7 @@ PageStackWindow {
                 right: parent.right;
                 bottom: parent.bottom;
             }*/
+            property variant lastTab
 
             onCurrentTabChanged: {
                 if (currentTab.depth === 0) {
@@ -266,11 +267,12 @@ PageStackWindow {
     }
 
     function popToTop(tab) {
-        if (tabgroup.currentTab === tab) {
+        if (tabgroup.lastTab === tab) {
             while (tab.depth > 1) {
                 tab.pop(tab.depth > 2);
             }
         }
+        tabgroup.lastTab = tab;
     }
 
     function processUINotification(id) {
@@ -292,6 +294,15 @@ PageStackWindow {
             break;
         }
 
+    }
+
+    function onCacheUpdated(callbackObject, status, url) {
+        //console.log("Cache updated: " + status + " url: " + url );
+        if (callbackObject !== undefined) {
+            if (callbackObject.cacheCallback !== undefined) {
+                callbackObject.cacheCallback(status,url);
+            }
+        }
     }
 
     function onPictureUploaded(response, page) {

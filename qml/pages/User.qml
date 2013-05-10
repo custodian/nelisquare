@@ -359,11 +359,12 @@ PageWrapper {
                     smooth: true
                     radius: 5
 
-                    Image {
-                        y: 10
+                    CacheImage {
+                        id: imageBadge
+                        y: 10                        
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/newbie.png")
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/newbie.png", imageBadge)
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -394,11 +395,12 @@ PageWrapper {
                     smooth: true
                     radius: 5
 
-                    Image {
+                    CacheImage {
+                        id: imageCheckin
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/bender.png")
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/bender.png",imageCheckin)
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -429,11 +431,12 @@ PageWrapper {
                     smooth: true
                     radius: 5
 
-                    Image {
+                    CacheImage {
+                        id: imageMayor
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/supermayor.png")
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/supermayor.png",imageMayor)
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -464,11 +467,12 @@ PageWrapper {
                     smooth: true
                     radius: 5
 
-                    Image {
+                    CacheImage {
+                        id: imageFriend
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/entourage.png")
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/entourage.png", imageFriend)
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -499,11 +503,12 @@ PageWrapper {
                     smooth: true
                     radius: 5
 
-                    Image {
+                    CacheImage {
+                        id: imagePhoto
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/photogenic.png")
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/photogenic.png", imagePhoto)
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -535,11 +540,12 @@ PageWrapper {
                     smooth: true
                     radius: 5
 
-                    Image {
+                    CacheImage {
+                        id: imageTips
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/bookworm.png")
+                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/bookworm.png", imageTips)
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 

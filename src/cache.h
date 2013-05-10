@@ -18,12 +18,17 @@ protected:
 
     QString m_path;
     QMap<QString,QString> m_cachemap;
+    QMap<QString, QVariantList> m_cachequeue;
     bool m_cacheonly;
+
+    bool queueCacheUpdate(QVariant url, QVariant callback);
+    void makeCallbackAll(bool status, QVariant url);
+    void makeCallback(QVariant callback, bool status, QVariant url);
 
 public:
     explicit Cache(QObject *parent = 0);
     
-    Q_INVOKABLE QVariant get(QVariant url);
+    Q_INVOKABLE QVariant get(QVariant url, QVariant callback);
 
     Q_INVOKABLE QVariant remove(QVariant url);
 
@@ -34,6 +39,7 @@ public:
     Q_INVOKABLE QVariant loadtype(QVariant type);
 
 signals:
+    void cacheUpdated(QVariant callback, QVariant status, QVariant url);
 
 public slots:
     
