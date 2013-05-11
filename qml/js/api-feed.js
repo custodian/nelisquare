@@ -55,6 +55,7 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                     page.updateItem(i,
                         {
                         "commentsCount": update.comments.count,
+                        "comments": update.comments.items,
                         "likesCount": update.likes.count
                         }
                     );
@@ -213,6 +214,7 @@ feed.feedObjParserCheckin = function(page, checkin, append, count) {
             "timestamp": checkin.createdAt,
             "venuePhoto": venuePhoto,
             "commentsCount": checkin.comments.count,
+            "comments": checkin.comments.items,
             "likesCount": checkin.likes.count,
             "photosCount": checkin.photos.count
         };
@@ -270,6 +272,7 @@ feed.feedObjParserFriend = function(page, friend, append, count) {
         "timestamp": friend.createdAt,
         "venuePhoto": "",
         "commentsCount": "0",
+        "comments": [],
         "likesCount": "0",
         "photosCount": "0"
     };

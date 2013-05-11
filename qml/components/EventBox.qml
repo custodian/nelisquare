@@ -35,6 +35,8 @@ Item {
     property bool showText: true
     property bool highlight: false
 
+    property variant comments: []
+
     id: eventItem
     width: parent.width
     height: titleContainer.height + 2
@@ -209,8 +211,17 @@ Item {
                 }
                 visible: createdAt.length>0 || commentsCount>0 || likesCount>0 || peoplesCount>0 || photosCount>0 || specialsCount>0
             }
+
+            Repeater {
+                width: parent.width
+                delegate: commentsDelegate
+                model: comments
+                visible: comments.count>0
+            }
+
             visible: showText
         }
+
         MouseArea {
             anchors.fill: statusTextArea
             onClicked: {
@@ -241,6 +252,29 @@ Item {
                 onClicked: {
                     eventItem.deleteEvent()
                 }
+            }
+        }
+    }
+
+    Component {
+        id: commentsDelegate
+
+        Text {
+            width: statusTextArea.width
+            color: mytheme.colors.textColorTimestamp
+            font.pixelSize: fontSize - 2
+            text: "<b>" + model.user.firstName + "</b>: " + model.text
+            wrapMode: Text.Wrap
+
+            Image {
+                id: commentImage
+                anchors.right: parent.left
+                anchors.rightMargin: 10
+                source: "../pics/commentcount.png"
+                asynchronous: true
+                smooth: true
+                height: 32
+                fillMode: Image.PreserveAspectFit
             }
         }
     }

@@ -1,3 +1,9 @@
+nelisquare (0.5.0-3) unstable; urgency=low
+  * Api structure update
+  * Feed events updates
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Sun, 12 May 2013 03:21:34 +0400
+
 nelisquare (0.5.0-2) unstable; urgency=low
   * fix: dbus services
 

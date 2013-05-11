@@ -274,6 +274,7 @@ PageWrapper {
             commentsCount: content.commentsCount
             photosCount: content.photosCount
             likesCount: content.likesCount
+            comments: content.comments
 
             Component.onCompleted: {
                 userPhoto.photoUrl = content.photo
