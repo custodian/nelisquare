@@ -181,7 +181,7 @@ PageStackWindow {
         id: commonTools
         //visible: true
         /* TODO: Should be upper left corner? */
-        ToolIcon {
+        /*ToolIcon {
             iconId: stack.depth > 1 ? "toolbar-back" : "toolbar-refresh"
             onClicked: {
                 if (stack.depth > 1)
@@ -190,7 +190,7 @@ PageStackWindow {
                     tabgroup.currentTab.currentPage.update()
                 }
             }
-        }
+        }*/
         ButtonRow {
             style: TabButtonStyle {}
 

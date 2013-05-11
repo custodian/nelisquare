@@ -118,7 +118,7 @@ PageWrapper {
         }
     }
 
-    ListView {
+    ListViewEx {
         id: placesView
         anchors.top: searchBox.bottom
         width: parent.width
@@ -129,6 +129,10 @@ PageWrapper {
         clip: true
         cacheBuffer: 400
         spacing: 5
+
+        onRefreshEvent: {
+            update();
+        }
 
         /* //DBG
         footer: Column {

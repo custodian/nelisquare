@@ -155,7 +155,7 @@ PageWrapper {
         onClicked: { }
     }
 
-    ListView {
+    ListViewEx {
         id: friendsCheckinsView
         model: friendsCheckinsModel
         anchors.top: pagetop
@@ -166,6 +166,10 @@ PageWrapper {
         //clip: true
         cacheBuffer: 400
         spacing: 10
+
+        onRefreshEvent: {
+            update();
+        }
 
         header: Column{
             width: parent.width
