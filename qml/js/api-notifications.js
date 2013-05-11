@@ -2,32 +2,37 @@
  *
  */
 
-Qt.include("api.js")
+.pragma library
 
-function loadNotifications(page) {
+api.log("loading api-notifications...");
+
+var notifications = new ApiObject();
+//notifications.debuglevel = 1;
+
+notifications.loadNotifications = function(page) {
     var url = "updates/notifications?limit=100&" + getAccessTokenParameter();
     page.waiting_show();
     page.notificationsModel.clear();
-    doWebRequest("GET", url, page, parseNotifications);
+    api.request("GET", url, page, parseNotifications);
 }
 
-function markNotificationsRead(page, time) {
+notifications.markNotificationsRead = function(page, time) {
     var url = "updates/marknotificationsread?";
     url += "highWatermark=" + time;
     url += "&" + getAccessTokenParameter();
-    doWebRequest("POST", url, page, doNothing);
+    api.request("POST", url, page, doNothing);
 }
 
-function parseNotifications(response, page) {
-    var notis = processResponse(response).notifications;
+notifications.parseNotifications = function(response, page) {
+    var notis = api.process(response, page).notifications;
     //console.log("NOTIFICATIONS: " + JSON.stringify(notis));
     page.waiting_hide();
     notis.items.forEach(function(noti) {
         //console.log("NOTIFICATIONS: " + JSON.stringify(noti));
         var objectID = noti.target.object.id;
-        var photo = noti.image.fullPath;
+        var image = noti.image.fullPath;
         if (noti.target.type == "badge") {
-            photo = makeImageUrl(noti.image,114);
+            image = makeImageUrl(noti.image,114);
         }
         page.notificationsModel
             .append({
@@ -39,7 +44,7 @@ function parseNotifications(response, page) {
                         "time": makeTime(noti.createdAt),
                         "text": noti.text,
                         "unreaded": noti.unread,
-                        "photo": photo
+                        "photo": image
                 })
         });
 }

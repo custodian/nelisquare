@@ -2,8 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-venue.js" as VenueAPI
-import "../js/utils.js" as Utils;
+import "../js/api.js" as Api
 
 PageWrapper {
     id: place
@@ -117,7 +116,7 @@ PageWrapper {
         page.photo.connect(function() {
             var photogallery = stack.push(Qt.resolvedUrl("PhotosGallery.qml"));
             photogallery.update.connect(function(){
-               VenueAPI.loadVenuePhotos(photogallery,venueID);
+               Api.venues.loadVenuePhotos(photogallery,venueID);
             });
             photogallery.caption = "VENUE PHOTOS";
             photogallery.options.append({"offset":0,"completed":false});
@@ -141,9 +140,9 @@ PageWrapper {
             }});
         });
         page.like.connect(function(venueID,state) {
-            VenueAPI.likeVenue(page,venueID,state);
+            Api.venues.likeVenue(page,venueID,state);
         });
-        VenueAPI.loadVenue(page, venueID);
+        Api.venues.loadVenue(page, venueID);
     }
 
     onVenueMajorPhotoChanged: {
@@ -173,22 +172,14 @@ PageWrapper {
         onAddTip: {
             if(tipDialog.action==0) {
                 //console.log("Tip: " + comment + " on " + tipDialog.venueID);
-                VenueAPI.addTip(place, venueID, comment);
+                Api.venues.addTip(place, venueID, comment);
             } else {
                 //console.log("mark: " + comment + " on " + tipDialog.venueID);
-                VenueAPI.markVenueToDo(venueID, comment);
+                Api.venues.markVenueToDo(venueID, comment);
             }
             tipDialog.state = "hidden";
         }
     }
-
-    /*CheckinDialog {
-        id: checkinDialog
-
-        function show_error(msg) {
-            place.show_error(msg);
-        }
-    }*/
 
     Flickable {
         id: flickableArea

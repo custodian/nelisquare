@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-user.js" as UserAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     id: mayorships
@@ -23,7 +23,7 @@ PageWrapper {
         page.venue.connect(function(id) {
             stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":id});
         });
-        UserAPI.loadMayorships(page,userID);
+        Api.users.loadMayorships(page,userID);
     }
 
     ListModel{

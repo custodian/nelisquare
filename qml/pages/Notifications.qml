@@ -3,7 +3,7 @@ import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import "../components"
 
-import "../js/api-notifications.js" as NotiAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     signal user(string user)
@@ -32,7 +32,7 @@ PageWrapper {
         ToolIcon {
             platformIconId: "toolbar-refresh"
             onClicked: {
-                NotiAPI.loadNotifications(notificationsList);
+                Api.notifications.loadNotifications(notificationsList);
             }
         }
         ToolIcon {
@@ -49,7 +49,7 @@ PageWrapper {
             MenuItem {
                 text: qsTr("Mark all as read")
                 onClicked: {
-                    NotiAPI.markNotificationsRead(notificationsList,NotiAPI.getCurrentTime());
+                    Api.notifications.markNotificationsRead(notificationsList,Api.getCurrentTime());
                 }
             }
             MenuItem {
@@ -73,15 +73,15 @@ PageWrapper {
             stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
         });
         page.badge.connect(function(badge) {
-            stack.push(Qt.resolvedUrl("BadgeInfo.qml"),NotiAPI.makeBadgeObject(badge));
+            stack.push(Qt.resolvedUrl("BadgeInfo.qml"),Api.makeBadgeObject(badge));
         });
         page.tip.connect(function(tip){
             stack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
         });
         page.markRead.connect(function(time) {
-            NotiAPI.markNotificationsRead(page,time);
+            Api.notifications.markNotificationsRead(page,time);
         });
-        NotiAPI.loadNotifications(page);
+        Api.notifications.loadNotifications(page);
     }
 
     ListModel {

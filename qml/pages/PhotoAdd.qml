@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import "../components"
-import "../js/api-photo.js" as PhotoAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     signal uploadPhoto(string photo)
@@ -115,7 +115,7 @@ PageWrapper {
         }
         onUploadPhoto: {
             photoShareDialog.state="hidden";
-            PhotoAPI.addPhoto(params);
+            Api.photos.addPhoto(params, options.owner);
             stack.pop();
         }
     }

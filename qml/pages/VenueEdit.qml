@@ -3,7 +3,7 @@ import QtMobility.location 1.2
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-venue.js" as VenueAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     id: venueEdit
@@ -33,12 +33,12 @@ PageWrapper {
     function load() {
         var page = venueEdit;
         page.update.connect(function(params){
-            VenueAPI.updateVenueInfo(page,params);
+            Api.venues.updateVenueInfo(page,params);
         });
         page.updateCompleted.connect(function(venue){
             stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
         });
-        VenueAPI.prepareVenueEdit(page,venueID);
+        Api.venues.prepareVenueEdit(page,venueID);
     }
 
     ListModel{

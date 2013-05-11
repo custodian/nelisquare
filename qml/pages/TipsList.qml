@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-tip.js" as TipAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     id: tipsList
@@ -30,7 +30,7 @@ PageWrapper {
             stack.push(Qt.resolvedUrl("TipPage.qml"),{"tipID":tip});
         });
         page.update.connect(function(){
-            TipAPI.loadTipsList(page, baseID);
+            Api.tips.loadTipsList(page, baseID);
         });
         page.update();
     }

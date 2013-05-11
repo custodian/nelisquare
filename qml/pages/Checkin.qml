@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-checkin.js" as CheckinAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     signal like(string checkin, bool state)
@@ -64,7 +64,7 @@ PageWrapper {
             stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
         });
         page.like.connect(function(checkin, state) {
-            CheckinAPI.likeCheckin(page,checkin,state);
+            Api.checkin.likeCheckin(page,checkin,state);
         });
         page.user.connect(function(user){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
@@ -78,7 +78,7 @@ PageWrapper {
             commentDialog.state = "shown";
         });
         page.deleteComment.connect(function(checkin, comment){
-            CheckinAPI.deleteComment(page,checkin,comment);
+            Api.checkin.deleteComment(page,checkin,comment);
         });
         page.showAddPhoto.connect(function(checkin){
             stack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
@@ -87,7 +87,7 @@ PageWrapper {
                 "owner": page
             }});
         });
-        CheckinAPI.loadCheckin(page, checkinID);
+        Api.checkin.loadCheckin(page, checkinID);
     }
 
     ListModel {
@@ -118,7 +118,7 @@ PageWrapper {
         onCancel: { commentDialog.state = "hidden"; }
         onShout: {
             //console.log("COMMENT FOR: " + checkinID + " VALUE: " + comment);
-            CheckinAPI.addComment(checkin, checkinID, comment);
+            Api.checkin.addComment(checkin, checkinID, comment);
             commentDialog.state = "hidden";
         }
     }

@@ -2,9 +2,15 @@
  *
  */
 
-Qt.include("api.js")
+.pragma library
 
-function loadCheckin(page,id) {
+api.log("loading api-checkin...");
+
+var checkin = new ApiObject();
+//checkin.debuglevel = 1;
+
+
+checkin.loadCheckin = function(page,id) {
     page.waiting_show();
     var url = "checkins/" + id + "?" + getAccessTokenParameter();
 
@@ -13,27 +19,27 @@ function loadCheckin(page,id) {
     page.badgesModel.clear();
     page.commentsModel.clear();
     page.photosBox.photosModel.clear();
-    doWebRequest("GET",url,page,parseCheckin);
+    api.request("GET",url,page,checkin.parseCheckin);
 }
 
-function parseCheckin(response, page) {
-    var checkin = processResponse(response).checkin;
+checkin.parseCheckin = function(response, page) {
+    var checkinobj = api.process(response, page).checkin;
     //console.log("CHECKIN INFO: " + JSON.stringify(checkin) + "\n");
 
-    page.checkinID = checkin.id;
-    page.scoreTotal = checkin.score.total;
-    page.owner.userID = checkin.user.id;
-    page.owner.userName = makeUserName(checkin.user);
-    page.owner.createdAt = makeTime(checkin.createdAt);
-    page.owner.userPhoto.photoUrl = thumbnailPhoto(checkin.user.photo,100);
-    page.owner.venueID = checkin.venue.id;
-    page.owner.venueName = checkin.venue.name;
-    page.owner.venueAddress = parse(checkin.venue.location.address);
-    page.owner.venueCity = parse(checkin.venue.location.city);
-    page.owner.eventOwner = parse(checkin.user.relationship);
-    page.owner.userShout = parse(checkin.shout);
+    page.checkinID = checkinobj.id;
+    page.scoreTotal = checkinobj.score.total;
+    page.owner.userID = checkinobj.user.id;
+    page.owner.userName = makeUserName(checkinobj.user);
+    page.owner.createdAt = makeTime(checkinobj.createdAt);
+    page.owner.userPhoto.photoUrl = thumbnailPhoto(checkinobj.user.photo,100);
+    page.owner.venueID = checkinobj.venue.id;
+    page.owner.venueName = checkinobj.venue.name;
+    page.owner.venueAddress = parse(checkinobj.venue.location.address);
+    page.owner.venueCity = parse(checkinobj.venue.location.city);
+    page.owner.eventOwner = parse(checkinobj.user.relationship);
+    page.owner.userShout = parse(checkinobj.shout);
 
-    checkin.score.scores.forEach(function(score) {
+    checkinobj.score.scores.forEach(function(score) {
         //console.log("CHECKIN SCORE: " + JSON.stringify(score));
         page.scoresModel.append({
                                "scorePoints": score.points,
@@ -41,8 +47,8 @@ function parseCheckin(response, page) {
                                "scoreMessage": score.message,
                     });
     });
-    if(checkin.badges!==undefined) {
-        checkin.badges.items.forEach(function(badge) {
+    if(checkinobj.badges!==undefined) {
+        checkinobj.badges.items.forEach(function(badge) {
             //console.log("CHECKIN BADGE: " + JSON.stringify(badge));
             page.badgesModel.append({
                                    "badgeTitle":badge.name,
@@ -50,23 +56,23 @@ function parseCheckin(response, page) {
                                    "badgeImage":badge.image.prefix + badge.image.sizes[1] + badge.image.name})
         });
     }
-    checkin.comments.items.forEach(function(comment) {
+    checkinobj.comments.items.forEach(function(comment) {
         addCommentToModel(page,comment);
     });
 
-    if (checkin.photos.count>0) {
-        checkin.photos.items.forEach(function (photo) {
+    if (checkinobj.photos.count>0) {
+        checkinobj.photos.items.forEach(function (photo) {
             page.photosBox.photosModel.append(
                 makePhoto(photo,300));
         });
     }
 
-    processLikes(page.likeBox, checkin);
+    processLikes(page.likeBox, checkinobj);
 
     page.waiting_hide();
 }
 
-function likeCheckin(page, id, state) {
+checkin.likeCheckin = function(page, id, state) {
     //console.log("ID: " + id + " State: " + state);
     var url = "checkins/"+id+"/like?set="
     if (state) {
@@ -75,17 +81,17 @@ function likeCheckin(page, id, state) {
         url += "0";
     }
     url += "&" + getAccessTokenParameter();
-    doWebRequest("POST", url, page, parseLikeCheckin);
+    api.request("POST", url, page, checkin.parseLikeCheckin);
 }
 
-function parseLikeCheckin(response, page) {
+checkin.parseLikeCheckin = function(response, page) {
     //console.log("LIKE RESPONSE: " + JSON.stringify(response));
-    var data = processResponse(response, page);
+    var data = api.process(response, page);
 
     processLikes(page.likeBox, data);
 }
 
-function addCheckin(venueID, page, comment, friends, facebook, twitter) {
+checkin.addCheckin = function(venueID, page, comment, friends, facebook, twitter) {
     var url = "checkins/add?";
     if(venueID!=null) {
         url += "venueId=" + venueID;
@@ -108,11 +114,11 @@ function addCheckin(venueID, page, comment, friends, facebook, twitter) {
     url += "&" + getAccessTokenParameter();
 
     //console.log("Checkin URL: " + url);
-    doWebRequest("POST", url, page, parseAddCheckin);
+    api.request("POST", url, page, checkin.parseAddCheckin);
 }
 
-function parseAddCheckin(response, page) {
-    var data = processResponse(response, page);
+checkin.parseAddCheckin = function(response, page) {
+    var data = api.process(response, page);
     var message = "<span>";
     data.notifications.forEach(function(noti) {
         //console.log("NOTIFICATION: "+ JSON.stringify(noti));
@@ -134,33 +140,33 @@ function parseAddCheckin(response, page) {
     page.checkinCompleted(data.checkin.id, message);
 }
 
-function addComment(page, checkinID, text) {
+checkin.addComment = function(page, checkinID, text) {
     page.waiting_show();
     var url = "checkins/" + checkinID + "/addcomment?"
     url += "CHECKIN_ID=" + checkinID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, page, parseAddComment);
+    api.request("POST", url, page, checkin.parseAddComment);
 }
 
-function parseAddComment(response, page) {
-    var data = processResponse(response, page);
+checkin.parseAddComment = function(response, page) {
+    var data = api.process(response, page);
     page.waiting_hide();
     addCommentToModel(page, data.comment);
 }
 
 
-function deleteComment(page, checkinID, commentID) {
+checkin.deleteComment = function(page, checkinID, commentID) {
     page.waiting_show();
     var url = "checkins/" + checkinID + "/deletecomment?"
     url += "CHECKIN_ID=" + checkinID + "&";
     url += "commentId=" + commentID + "&";
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, page, parseDeleteComment);
+    api.request("POST", url, page, checkin.parseDeleteComment);
 }
 
-function parseDeleteComment(response, page) {
-    var data = processResponse(response, page);
+checkin.parseDeleteComment = function(response, page) {
+    var data = api.process(response, page);
     page.waiting_hide();
     page.commentsModel.clear();
     data.checkin.comments.items.forEach(function(comment) {

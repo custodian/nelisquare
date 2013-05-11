@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-user.js" as UserAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     id: checkinHistory
@@ -30,9 +30,9 @@ PageWrapper {
         });
         page.update.connect(function(){
             if (userID === "self")
-                UserAPI.loadCheckinHistory(page,userID);
+                Api.users.loadCheckinHistory(page,userID);
             else
-                UserAPI.loadActivityHistory(page,userID);
+                Api.users.loadActivityHistory(page,userID);
         })
         page.update();
     }

@@ -2,10 +2,11 @@
  * Foursquare API bindings
  */
 
+.pragma library
+
 var UPDATE_BASE = "http://thecust.net/nelisquare/";
 
-function getUpdateInfo(updatetype, callback) {
-    var platform = configuration.platform;
+function getUpdateInfo(platform, updatetype, callback) {
     var url = UPDATE_BASE + platform + "/build." + updatetype
 
     var doc = new XMLHttpRequest();

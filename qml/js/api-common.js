@@ -4,6 +4,8 @@
 
 .pragma library
 
+api.log("loading api-common...");
+
 function parse(item) {
     if(item!==undefined) {
         return item;
@@ -54,7 +56,7 @@ function parseIcon(icon, size) {
     if (size === undefined) {
         size = 32
     }
-    return icon.prefix+mytheme.colors.iconbg+size+icon.suffix;
+    return icon.prefix+((api.inverted)?"bg_":"")+size+icon.suffix;
 }
 
 function processLikes(likebox, data) {

@@ -3,7 +3,7 @@ import com.nokia.meego 1.0
 import QtQuick 1.1
 import "../components"
 
-import "../js/api-photo.js" as PhotoAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     signal user(string user)
@@ -55,7 +55,7 @@ PageWrapper {
         page.user.connect(function(user) {
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
-        PhotoAPI.loadPhoto(page,photoID);
+        Api.photos.loadPhoto(page,photoID);
     }
 
     Item {

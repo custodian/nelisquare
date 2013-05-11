@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-checkin.js" as CheckinAPI
+import "../js/api.js" as Api
 
 //Sheet {
 PageWrapper {
@@ -34,7 +34,7 @@ PageWrapper {
 
     onCheckin: {
         waiting_show();
-        CheckinAPI.addCheckin(venueID, checkin, comment, friends, facebook, twitter);
+        Api.checkin.addCheckin(venueID, checkin, comment, friends, facebook, twitter);
     }
     tools: ToolBarLayout{
         parent: checkin

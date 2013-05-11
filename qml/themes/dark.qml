@@ -35,7 +35,6 @@ Item {
     Component.onCompleted: {
         colors = {
             "name": "dark",
-            "iconbg": "",
 
             "textColor": "#d5d5d5",
             "textColorAlarm": "#d66",

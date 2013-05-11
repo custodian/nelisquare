@@ -4,7 +4,7 @@ import com.nokia.meego 1.0
 import QtMobility.location 1.2
 
 import "components"
-import "js/api-photo.js" as PhotoAPI
+import "js/api.js" as Api //DBG: possibly have to rebuild that stuff
 
 PageStackWindow {
     id: appWindow
@@ -240,6 +240,9 @@ PageStackWindow {
 
     ThemeLoader {
         id: mytheme
+        onNameChanged: {
+            Api.api.inverted = theme.inverted;
+        }
     }
 
     Timer {
@@ -300,13 +303,19 @@ PageStackWindow {
         //console.log("Cache updated: " + status + " url: " + url );
         if (callbackObject !== undefined) {
             if (callbackObject.cacheCallback !== undefined) {
-                callbackObject.cacheCallback(status,url);
+                try {
+                    callbackObject.cacheCallback(status,url);
+                }
+                catch(err) {
+                    console.log("Cache error: " + err);
+                    console.log("Callback Object:" + JSON.stringify(callbackObject));
+                }
             }
         }
     }
 
     function onPictureUploaded(response, page) {
-        PhotoAPI.parseAddPhoto(response, page);
+        Api.photos.parseAddPhoto(response, page);
     }
 
     function onMolomeInfoUpdate(present,installed) {

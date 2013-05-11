@@ -1,7 +1,8 @@
 import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
-import "../js/api-venue.js" as VenueAPI
+
+import "../js/api.js" as Api
 
 PageWrapper {
     id: venuesList
@@ -40,7 +41,6 @@ PageWrapper {
 
     Menu {
         id: menu
-        //TODO: migrate ?? visualParent: mainWindowPage
         MenuLayout {
             MenuItem {
                 text: qsTr("Add new venue")
@@ -65,7 +65,7 @@ PageWrapper {
         });
         page.search.connect(function(query) {
             if (positionSource.position.latitudeValid) {
-                VenueAPI.loadVenues(page, query);
+                Api.venues.loadVenues(page, query);
             } else {
                 //TODO: make an window about fuzzy signal
                 console.log("position is invalid");
@@ -153,14 +153,6 @@ PageWrapper {
     }
 
     ScrollDecorator{ flickableItem: placesView }
-
-    /*CheckinDialog {
-        id: checkinDialog
-
-        function show_error(msg) {
-            venuesList.show_error(msg);
-        }
-    }*/
 
     Component {
         id: venuesListDelegate

@@ -5,7 +5,6 @@ import QtWebKit 1.0
 import "../components"
 
 import "../js/api.js" as Api
-import "../js/storage.js" as Storage
 
 //Rectangle {
 PageWrapper {
@@ -21,8 +20,7 @@ PageWrapper {
         loginDialog.finished.connect(function(url) {
             var token = Api.parseAuth(url, "access_token");
             if (token!==undefined) {
-                Storage.setKeyValue("accesstoken", token);
-                Api.setAccessToken(token);
+                configuration.setAccessToken(token);
             }
         });
         loginDialog.loadFailed.connect(function() {

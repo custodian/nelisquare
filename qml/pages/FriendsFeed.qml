@@ -3,8 +3,7 @@ import com.nokia.meego 1.0
 
 import "../components"
 
-import "../js/api-feed.js" as FeedAPI
-import "../js/utils.js" as Utils
+import "../js/api.js" as Api
 
 PageWrapper {
     id: friendsFeed
@@ -74,7 +73,20 @@ PageWrapper {
 
         if (configuration.feedAutoUpdate!== "0"
                 && configuration.feedIntegration !=="0") {
-            platformUtils.addFeedItem(item);
+
+            //TODO: //DBG: need to make an callback to addFeedItem with filled photoCache item
+            /*function ObjCallbacker() {
+                this.text = "testObject";
+                this.cacheCallback = function cacheCallback(status,url) {
+                         console.log("in callback by cache");
+                         if (!status) return;
+                         item.photoCached = url;
+                         console.log("adding object");
+                         platformUtils.addFeedItem(item);
+                     };
+            }
+            var callbacker = new ObjCallbacker();
+            cache.get(item.photo, callbacker);*/
         }
     }
 
@@ -100,19 +112,19 @@ PageWrapper {
             if (configuration.feedAutoUpdate === 0) {
                 page.reset();
             }
-            FeedAPI.loadFriendsFeed(page)
+            Api.feed.loadFriendsFeed(page)
         });
         page.loadHistory.connect(function(){
             console.log("FEED: loading history");
-            FeedAPI.loadFriendsFeed(page,true);
+            Api.feed.loadFriendsFeed(page,true);
         });
         page.recent.connect(function() {
             page.reset();
-            FeedAPI.loadFriendsFeed(page);
+            Api.feed.loadFriendsFeed(page);
         });
         page.nearby.connect(function() {
             page.reset();
-            FeedAPI.loadFriendsFeed(page);
+            Api.feed.loadFriendsFeed(page);
         });
         page.checkin.connect(function(id) {
             stack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});

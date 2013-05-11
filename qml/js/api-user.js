@@ -1,21 +1,26 @@
 /*
  *
  */
-Qt.include("api.js")
+.pragma library
 
-function loadUser(page, user) {
+api.log("loading api-user...");
+
+var users = new ApiObject();
+//users.debuglevel = 1;
+
+users.loadUser = function (page, user) {
     var url = "users/" + user + "?" + getAccessTokenParameter();
     page.waiting_show();
     page.boardModel.clear();
-    doWebRequest("GET", url, page, parseUser);
+    api.request("GET", url, page, users.parseUser);
     if (user === "self") {
         url = "users/leaderboard?neighbors=2&" + getAccessTokenParameter();
-        doWebRequest("GET",url, page, parseUserBoard);
+        api.request("GET",url, page, users.parseUserBoard);
     }
 }
 
-function parseUser(response, page) {
-    var data = processResponse(response, page);
+users.parseUser = function(response, page) {
+    var data = api.process(response, page);
     //console.log("USER: " + JSON.stringify(data))
     page.waiting_hide();
     var user = data.user;
@@ -44,8 +49,8 @@ function parseUser(response, page) {
     page.userRelationship = parse(user.relationship);
 }
 
-function parseUserBoard(response, page) {
-    var data = processResponse(response, page);
+users.parseUserBoard = function(response, page) {
+    var data = api.process(response, page);
     //console.log("USER: " + JSON.stringify(data))
     data.leaderboard.items.forEach(function(ranking) {
         if (ranking.user.relationship == "self")
@@ -58,44 +63,44 @@ function parseUserBoard(response, page) {
     });
 }
 
-function addFriend(page, user) {
+users.addFriend = function(page, user) {
     var url = "users/"+user+"/request?";
     url += getAccessTokenParameter();
-    doWebRequest("POST",url,page, parseFriendUpdate);
+    api.request("POST",url,page, users.parseFriendUpdate);
 }
 
-function removeFriend(page, user) {
+users.removeFriend = function(page, user) {
     var url = "users/"+user+"/unfriend?";
     url += getAccessTokenParameter();
-    doWebRequest("POST",url,page, parseFriendUpdate);
+    api.request("POST",url,page, users.parseFriendUpdate);
 }
 
-function approveFriend(page, user) {
+users.approveFriend = function(page, user) {
     var url = "users/"+user+"/approve?";
     url += getAccessTokenParameter();
-    doWebRequest("POST",url,page, parseFriendUpdate);
+    api.request("POST",url,page, users.parseFriendUpdate);
 }
 
-function denyFriend(page, user) {
+users.denyFriend = function(page, user) {
     var url = "users/"+user+"/deny?";
     url += getAccessTokenParameter();
-    doWebRequest("POST",url,page, parseFriendUpdate);
+    api.request("POST",url,page, users.parseFriendUpdate);
 }
 
-function parseFriendUpdate(response,page) {
-    var data = processResponse(response, page);
+users.parseFriendUpdate = function(response,page) {
+    var data = api.process(response, page);
     page.userRelationship = parse(data.user.relationship);
 }
 
-function loadLeaderBoard(page) {
+users.loadLeaderBoard = function(page) {
     var url = "users/leaderboard?" + getAccessTokenParameter();
     page.waiting_show();
-    doWebRequest("GET", url, page, parseLeaderBoard);
+    api.request("GET", url, page, users.parseLeaderBoard);
 }
 
-function parseLeaderBoard(response, page) {
+users.parseLeaderBoard = function(response, page) {
     page.waiting_hide();
-    var data = processResponse(response, page);
+    var data = api.process(response, page);
     page.boardModel.clear();
     data.leaderboard.items.forEach(function(ranking) {
         page.boardModel.append({
@@ -113,7 +118,7 @@ function parseLeaderBoard(response, page) {
     });
 }
 
-function loadUserPhotos(page, user) {
+users.loadUserPhotos = function(page, user) {
     page.waiting_show();
 
     var url = "/users/" + user + "/photos?offset="+page.options.get(0).offset+"&limit="+page.batchsize
@@ -121,11 +126,11 @@ function loadUserPhotos(page, user) {
             + encodeURIComponent(url)
             + "&" + getAccessTokenParameter();
 
-    doWebRequest("GET", urlfull, page, parseUserPhotosGallery);
+    api.request("GET", urlfull, page, users.parseUserPhotosGallery);
 }
 
-function parseUserPhotosGallery(multiresponse, page) {
-    var multidata = processResponse(multiresponse);
+users.parseUserPhotosGallery = function(multiresponse, page) {
+    var multidata = api.process(multiresponse);
     page.waiting_hide();
     for (var key in multidata.responses) {
         var data = multidata.responses[key].response;
@@ -142,15 +147,15 @@ function parseUserPhotosGallery(multiresponse, page) {
     };
 }
 
-function loadBadges(page,user) {
+users.loadBadges = function(page,user) {
     var url = "users/" + user + "/badges?" + getAccessTokenParameter();
     page.waiting_show();
     page.badgeModel.clear();
-    doWebRequest("GET", url, page, parseBadges);
+    api.request("GET", url, page, users.parseBadges);
 }
 
-function parseBadges(response, page) {
-    var data = processResponse(response, page);
+users.parseBadges = function(response, page) {
+    var data = api.process(response, page);
     page.waiting_hide();
     data.sets.groups.forEach(function(group){
          if (group.type == "all") {
@@ -162,17 +167,18 @@ function parseBadges(response, page) {
     });
 }
 
-function loadActivityHistory(page, user) {
+users.loadActivityHistory = function(page, user) {
     var url = "activities/recent?limit=800"
     page.waiting_show();
     url += "&" +getAccessTokenParameter();
-    doWebRequest("GET", url, page, function(response,page){
-                     parseActivityHistory(response,page,user)
+    api.request("GET", url, page, function(response,page){
+                     users.parseActivityHistory(response,page,user)
                  });
 }
 
-function parseActivityHistory(response,page,user) {
-    var data = processResponse(response, page);
+//TODO: make usage of new feed elements
+users.parseActivityHistory = function(response,page,user) {
+    var data = api.process(response, page);
     var activities = data.activities;
     page.waiting_hide();
 
@@ -236,16 +242,16 @@ function parseActivityHistory(response,page,user) {
     });
 }
 
-function loadCheckinHistory(page, user) {
+users.loadCheckinHistory = function(page, user) {
     var url = "users/" + user + "/checkins?set=newestfirst&"
         +"offset="+page.loaded+"&limit="+page.batchsize
         +"&" + getAccessTokenParameter();
     page.waiting_show();
-    doWebRequest("GET", url, page, parseCheckinHistory);
+    api.request("GET", url, page, users.parseCheckinHistory);
 }
 
-function parseCheckinHistory(response, page) {
-    var data = processResponse(response, page);
+users.parseCheckinHistory = function(response, page) {
+    var data = api.process(response, page);
     page.waiting_hide();
     if (data.checkins.items.length < page.batchsize) {
         page.completed = true;
@@ -297,16 +303,16 @@ function parseCheckinHistory(response, page) {
     });
 }
 
-function loadUserFriends(page, user) {
+users.loadUserFriends = function(page, user) {
     page.usersModel.clear();
     page.waiting_show();
     var url = "users/" + user + "/friends?" + getAccessTokenParameter();
-    doWebRequest("GET",url,page,parseUsersList)
+    api.request("GET",url,page,users.parseUsersList)
 }
 
-function parseUsersList(response, page) {
+users.parseUsersList = function(response, page) {
     page.waiting_hide();
-    var data = processResponse(response, page);
+    var data = api.process(response, page);
     //console.log("USERS LISTS: " + JSON.stringify(data));
     data.friends.items.forEach(function(user) {
          page.usersModel.append({
@@ -318,15 +324,15 @@ function parseUsersList(response, page) {
      });
 }
 
-function loadMayorships(page, user) {
+users.loadMayorships = function(page, user) {
     var url = "users/"+user + "/mayorships?" + getAccessTokenParameter();
     page.waiting_show();
     page.mayorshipsModel.clear();
-    doWebRequest("GET", url, page, parseMayorhips);
+    api.request("GET", url, page, users.parseMayorhips);
 }
 
-function parseMayorhips(response, page) {
-    var data = processResponse(response, page);
+users.parseMayorhips = function(response, page) {
+    var data = api.process(response, page);
     page.waiting_hide();
     page.mayorshipsModel.clear();
     data.mayorships.items.forEach(function(mayorship){

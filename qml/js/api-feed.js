@@ -1,9 +1,14 @@
 /*
  *
  */
-Qt.include("api.js")
+.pragma library
 
-function loadFriendsFeed(page, history) {
+api.log("loading api-feed...");
+
+var feed = new ApiObject();
+//feed.debuglevel = 1;
+
+feed.loadFriendsFeed = function(page, history) {
     //activities/recent activities/recent?afterMarker=50ade891e4b0892bb7343597
     var url = "activities/recent?"
     if (page.isUpdating)
@@ -24,30 +29,29 @@ function loadFriendsFeed(page, history) {
     }
 
     url += "limit=" + page.batchSize + "&" +getAccessTokenParameter();
-    doWebRequest("GET", url, page, function(response,page) {
-                     parseFriendsFeed(response,page,history);
+    api.request("GET", url, page, function(response,page) {
+                     feed.parseFriendsFeed(response,page,history);
                  });
 
     if (history===undefined && page.lastUpdateTime!=="0") {
         //activities/updates ?afterTimestamp=0 & updatesAfterMarker=50ade891e4b0892bb7343597
-        //doWebRequest();
         var url2 = "activities/updates?afterTimestamp=" + page.lastUpdateTime
         url2 += "&updatesAfterMarker=" + page.trailingMarker; //page.leadingMarker;
         url2 += "&" +getAccessTokenParameter()
-        doWebRequest("GET", url2, page, parseFriendsFeedUpdate);
+        api.request("GET", url2, page, feed.parseFriendsFeedUpdate);
     }
 }
 
-function parseFriendsFeedUpdate(response, page) {
-    var data = processResponse(response, page);
-    //console.log("UPDATES: " + JSON.stringify(data));
+feed.parseFriendsFeedUpdate = function(response, page) {
+    var data = api.process(response, page);
+    feed.log("UPDATES: " + JSON.stringify(data));
     data.updates.items.forEach(
         function(update){
             if (update.type === "checkin") {
                 for (var i=0;i<page.friendsCheckinsModel.count;i++) {
                     if (page.friendsCheckinsModel.get(i).id !== update.id)
                         continue;
-                    console.log("FOUND CHECKIN in MODEL: " + update.id);
+                    feed.log("FOUND CHECKIN in MODEL: " + update.id);
                     page.updateItem(i,
                         {
                         "commentsCount": update.comments.count,
@@ -58,16 +62,16 @@ function parseFriendsFeedUpdate(response, page) {
                     break;
                 }
             } else {
-                console.log("UPDATE TYPE: " + update.type);
-                console.log("UPDATE CONTENT: " + JSON.stringify(update));
+                feed.log("UPDATE TYPE: " + update.type);
+                feed.log("UPDATE CONTENT: " + JSON.stringify(update));
             }
         });
 }
 
-function parseFriendsFeed(response, page, history) {
+feed.parseFriendsFeed = function(response, page, history) {
     page.waiting_hide();
     page.isUpdating = false;
-    var data = processResponse(response, page);
+    var data = api.process(response, page);
     var activities = data.activities;
 
     var count = 0;
@@ -79,7 +83,7 @@ function parseFriendsFeed(response, page, history) {
     }
 
     if (history !== undefined || !updating) {
-        //console.log("MORE DATA: Updated: "+ activities.moreData);
+        feed.log("MORE DATA: Updated: "+ activities.moreData);
         page.moreData = activities.moreData;
     }
     if (activities.leadingMarker > page.leadingMarker)
@@ -96,12 +100,12 @@ function parseFriendsFeed(response, page, history) {
         if (updateTime <= timeObj.createdAt)
             updateTime = timeObj.createdAt;
         if (object.type === "checkin") {
-            if (feedObjParserCheckin(page, object.object, append, count))
+            if (feed.feedObjParserCheckin(page, object.object, append, count))
                 count++;
         } else if (object.type === "photo") {
-            feedObjParserPhoto(page,object.object);
+            feed.feedObjParserPhoto(page,object.object);
         } else if (object.type === "friend" ) {
-            feedObjParserFriend(page, object, append, count);
+            feed.feedObjParserFriend(page, object, append, count);
             count++;
         } else if (object.type === "tip") {
             //TODO: make show tip
@@ -114,18 +118,18 @@ function parseFriendsFeed(response, page, history) {
             }
             page.addItem(itemtest);
 
-            console.log("TIP EVENT: " + JSON.stringify(object.type));
+            feed.debug("TIP EVENT VALUE: " + JSON.stringify(object));
         } else {
             page.loaded -= 1;
-            console.log("CONTENT TYPE: " + object.type);
-            console.log("CONTENT VALUE: " + JSON.stringify(object));
+            feed.log("CONTENT TYPE: " + object.type);
+            feed.log("CONTENT VALUE: " + JSON.stringify(object));
         }
     }
 
     page.loaded += activities.items.length;
     activities.items.forEach(
     function(activity){
-        //console.log("ACTIVITY: " + JSON.stringify(activity));
+        feed.debug("ACTIVITY: " + JSON.stringify(activity));
         if (activity.type === "create") {
             var content = activity.content;
 
@@ -151,14 +155,13 @@ function parseFriendsFeed(response, page, history) {
             }
             page.addItem(itemtest);
 
-            console.log("ACTIVITY TYPE: " + activity.type);
-            //console.log("ACTIVITY CONTENT: " + JSON.stringify(activity.content));
+            feed.log("ACTIVITY TYPE: " + activity.type);
+            feed.debug("ACTIVITY CONTENT: " + JSON.stringify(activity.content));
             return;
         }
     });
 
     if (!updating) {
-        //TODO: enable
         page.timerFeedUpdate.restart();
     } else {
         //Limit all checkins //TODO: Make options at settings of feed length
@@ -180,7 +183,7 @@ function parseFriendsFeed(response, page, history) {
     page.lastUpdateTime = updateTime;
 }
 
-function feedObjParserCheckin(page, checkin, append, count) {
+feed.feedObjParserCheckin = function(page, checkin, append, count) {
     var result = true;
     var userName = makeUserName(checkin.user);
     var venueName = "";
@@ -214,11 +217,11 @@ function feedObjParserCheckin(page, checkin, append, count) {
             "photosCount": checkin.photos.count
         };
         if (append) {
-            //console.log("adding checkin at end");
+            feed.debug("adding checkin at end");
             page.addItem(item);
         } else {
             page.addItem(item,count);
-            //console.log("adding checkin at head");
+            feed.debug("adding checkin at head");
         }
         result = true;
     } else if (venueDistance !== undefined) {
@@ -228,12 +231,12 @@ function feedObjParserCheckin(page, checkin, append, count) {
     return result;
 }
 
-function feedObjParserPhoto(page, photo) {
-    //console.log("NEW PHOTO: " + JSON.stringify(photo) );
+feed.feedObjParserPhoto = function(page, photo) {
+    feed.debug("NEW PHOTO: " + JSON.stringify(photo) );
     for (var i=0;i<page.friendsCheckinsModel.count;i++) {
         if (page.friendsCheckinsModel.get(i).id !== photo.checkin.id)
             continue;
-        //console.log("UPDATE CHECKIN PHOTO: " + photo.checkin.id);
+        feed.log("UPDATE CHECKIN PHOTO: " + photo.checkin.id);
         var photosCount = page.friendsCheckinsModel.get(i).photosCount;
         photosCount++;
         page.updateItem(i,
@@ -247,7 +250,7 @@ function feedObjParserPhoto(page, photo) {
     }
 }
 
-function feedObjParserFriend(page, friend, append, count) {
+feed.feedObjParserFriend = function(page, friend, append, count) {
     if (friend.content.type === "aggregation") {
         //TODO: change if aggregation will be enabled
         //page.loaded -= 1;
@@ -271,10 +274,10 @@ function feedObjParserFriend(page, friend, append, count) {
         "photosCount": "0"
     };
     if (append) {
-        //console.log("adding friend at end");
+        feed.debug("adding friend at end");
         page.addItem(item);
     } else {
-        //console.log("adding friend at head");
+        feed.debug("adding friend at head");
         page.addItem(item,count);
     }
 }

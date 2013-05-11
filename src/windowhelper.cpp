@@ -91,7 +91,7 @@ Q_INVOKABLE void WindowHelper::disableSwype(QVariant disabled){
 Q_INVOKABLE void WindowHelper::setOrientation(QVariant value) {
 #if defined(Q_OS_MAEMO)
     Q_UNUSED(value);
-    //TODO: Maemo Orientation bug (fixed by core chages)
+    //Maemo Orientation bug (fixed by core chages)
     /*
     QString orientation = value.toString();
     QmlApplicationViewer::ScreenOrientation type = QmlApplicationViewer::ScreenOrientationAuto;

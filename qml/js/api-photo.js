@@ -2,28 +2,33 @@
  *
  */
 
-Qt.include("api.js")
+.pragma library
 
-function loadPhoto(page, photoid) {
+api.log("loading api-photo...");
+
+var photos = new ApiObject();
+//photo.debuglevel = 1;
+
+photos.loadPhoto = function(page, photoid) {
     var url = "photos/" + photoid + "?" + getAccessTokenParameter();
     page.waiting_show();
-    doWebRequest("GET", url, page, parsePhoto);
+    api.request("GET", url, page, photos.parsePhoto);
 }
 
-function parsePhoto(response, page) {
-    var photo = processResponse(response).photo;
+photos.parsePhoto = function(response, page) {
+    var obj = api.process(response, page).photo;
     //console.log("FULL PHOTO: " + JSON.stringify(photo))
     page.waiting_hide();
 
-    page.photoUrl = thumbnailPhoto(photo);
-    page.owner.userID = photo.user.id;
-    page.owner.userName = makeUserName(photo.user);
-    page.owner.userPhoto.photoUrl = thumbnailPhoto(photo.user.photo,100);
-    page.owner.userShout = "via " + parse(photo.source.name);
-    page.owner.createdAt = makeTime(photo.createdAt);
+    page.photoUrl = thumbnailPhoto(obj);
+    page.owner.userID = obj.user.id;
+    page.owner.userName = makeUserName(obj.user);
+    page.owner.userPhoto.photoUrl = thumbnailPhoto(obj.user.photo,100);
+    page.owner.userShout = "via " + parse(obj.source.name);
+    page.owner.createdAt = makeTime(obj.createdAt);
 }
 
-function addPhoto(params) {
+photos.addPhoto = function(params, page) {
     params.owner.waiting_show();
     var url = API_URL + "photos/add?";
     url += params.type;
@@ -44,14 +49,15 @@ function addPhoto(params) {
     }
     url += "&" + getAccessTokenParameter();
     if (!pictureHelper.upload(url, params.path, params.owner)) {
-        show_error("Error uploading photo!");
+        //TODO: make a
+        page.show_error("Error uploading photo!");
     }
 }
 
-function parseAddPhoto(response, page) {
+photos.parseAddPhoto = function(response, page) {
     page.waiting_hide();
-    var photo = processResponse(response).photo;
+    var obj = processResponse(response).photo;
     //console.log("ADDED PHOTO: " + JSON.stringify(photo));
     page.photosBox.photosModel.insert(0,
-                makePhoto(photo,300));
+                makePhoto(obj,300));
 }

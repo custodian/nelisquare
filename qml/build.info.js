@@ -1,3 +1,3 @@
-var build = '201305102351';
+var build = '201305112256';
 var version = "0.5.0";
-var changelog = " - Photo uploads working  - Feed updates  - Cache update, smooth loading ";
+var changelog = " - Events added to feed  - Cache update, smooth loading  - Homescreen disabled  - Api structure update ";

@@ -3,7 +3,7 @@ import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import "../components"
 
-import "../js/api-photo.js" as PhotoAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     signal photo(string photo)
@@ -38,7 +38,7 @@ PageWrapper {
             });
         });
         page.change.connect(function(photo) {
-            PhotoAPI.loadPhoto(stack.currentPage,photo);
+            Api.photos.loadPhoto(stack.currentPage,photo);
         });
     }
 

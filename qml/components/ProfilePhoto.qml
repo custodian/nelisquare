@@ -53,14 +53,19 @@ Rectangle {
                 image.visible = (image.status == Image.Ready)
                 loader.visible = (image.status != Image.Ready)
                 if (image.status == Image.Error) {
-                    console.log("Remove bad cached element");
-                    //cache.remove(photoUrl); //DBG
+                    //console.log("Remove bad cached element");
+                    cache.remove(photoUrl);
+                    if (photoCache) {
+                        image.source = "";
+                        cache.get(photoUrl, image);
+                    }
                 }
             }
             Image {
                 id: loader
                 anchors.centerIn: image
                 source: "../pics/"+mytheme.name+"/loader.png"
+                visible: (image.status != Image.Ready)
             }
         }
     //}

@@ -1,10 +1,14 @@
 /*
  *
  */
+.pragma library
 
-Qt.include("api.js")
+api.log("loading api-tip...");
 
-function loadTipsList(page, objectid) {
+var tips = new ApiObject();
+//tips.debuglevel = 1;
+
+tips.loadTipsList = function(page, objectid) {
     //page baseType == "venue" baseType == "user"
     var url;
     if (page.baseType === "user") {
@@ -18,41 +22,41 @@ function loadTipsList(page, objectid) {
         + "&" + getAccessTokenParameter();
 
     page.waiting_show();
-    doWebRequest("GET", url, page, parseTipsList);
+    api.request("GET", url, page, tips.parseTipsList);
 }
 
-function parseTipsList(response,page){
-    var data = processResponse(response, page);
+tips.parseTipsList = function(response,page){
+    var data = api.process(response, page);
     page.waiting_hide();
     //console.log("TIPS LIST: " + JSON.stringify(data));
-    var tips;
+    var tipsobj;
     if (data.tips === undefined) {
-        tips = [];
+        tipsobj = [];
         data.list.listItems.items.forEach(function(item){
             item.tip.venueName = item.venue.name;
-            tips.push(item.tip);
+            tipsobj.push(item.tip);
         });
     } else {
-        tips = data.tips.items;
+        tipsobj = data.tips.items;
     }
 
-    if (tips.length < page.batchsize) {
+    if (tipsobj.length < page.batchsize) {
         page.completed = true;
     }
-    page.loaded += tips.length;
-    tips.forEach(function(tip){
+    page.loaded += tipsobj.length;
+    tipsobj.forEach(function(tip){
         addTipToModel(page,tip);
     });
 }
 
-function loadTipInfo(page, tip) {
+tips.loadTipInfo = function(page, tip) {
     var url = "tips/" + tip + "?" + getAccessTokenParameter();
     page.waiting_show();
-    doWebRequest("GET", url, page, parseTipInfo);
+    api.request("GET", url, page, tips.parseTipInfo);
 }
 
-function parseTipInfo(response, page) {
-    var data = processResponse(response, page);
+tips.parseTipInfo = function(response, page) {
+    var data = api.process(response, page);
     page.waiting_hide();
     //console.log("FULL TIP: " + JSON.stringify(data));
     var tip = data.tip;
@@ -83,7 +87,7 @@ function parseTipInfo(response, page) {
     processLikes(page.likeBox,tip);
 }
 
-function likeTip(page, id, state) {
+tips.likeTip = function(page, id, state) {
     var url = "tips/"+id+"/like?set="
     page.waiting_show();
     if (state) {
@@ -92,11 +96,11 @@ function likeTip(page, id, state) {
         url += "0";
     }
     url += "&" + getAccessTokenParameter();
-    doWebRequest("POST", url, page, parseLikeTip);
+    api.request("POST", url, page, tips.parseLikeTip);
 }
 
-function parseLikeTip(response, page) {
+tips.parseLikeTip = function(response, page) {
     page.waiting_hide();
-    var data = processResponse(response, page);
+    var data = api.process(response, page);
     processLikes(page.likeBox, data);
 }

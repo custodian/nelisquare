@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-user.js" as UserAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     signal badge(variant params)
@@ -22,7 +22,7 @@ PageWrapper {
         page.badge.connect(function(params) {
             stack.push(Qt.resolvedUrl("BadgeInfo.qml"),params);
         });
-        UserAPI.loadBadges(page,userID);
+        Api.users.loadBadges(page,userID);
     }
 
     ListModel {

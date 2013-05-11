@@ -1,9 +1,10 @@
 /*
  * Foursquare API bindings
  */
-//.pragma library
 
-Qt.include("utils.js")
+.pragma library
+
+api.log("loading api-core...");
 
 var MAX_NEARBY_DISTANCE = 100000; //100km
 
@@ -50,8 +51,8 @@ function parseAuth(data, parameterName) {
 }
 
 
-function doWebRequest(method, url, page, callback) {
-    console.log(method + " " + url.replace(/oauth\_token\=([A-Z0-9]+).*\&v\=.*/gm,""));
+api.request = function(method, url, page, callback) {
+    api.log(method + " " + url.replace(/oauth\_token\=([A-Z0-9]+).*\&v\=.*/gm,""));
     url = API_URL + url;
 
     var doc = new XMLHttpRequest();
@@ -81,7 +82,7 @@ function doWebRequest(method, url, page, callback) {
     doc.send();
 }
 
-function processResponse(response, page) {
+api.process = function(response, page) {
     var data = eval("[" + response + "]")[0];
     var meta = data.meta;
     if (meta.code != 200) {
@@ -97,7 +98,6 @@ function processResponse(response, page) {
         //console.log("NOTIFICATIONS: " + JSON.stringify(notifications));
         notifications.forEach(function(notification) {
                 if (parse(notification.type) == "notificationTray") {
-                    //TODO: change it somehow to make library
                     if (page !== undefined)
                         page.updateNotificationCount(notification.item.unreadCount);
                 }
@@ -108,5 +108,28 @@ function processResponse(response, page) {
 
 function doNothing(response,page) {
     // Nothing...
-    processResponse(response);
+    api.process(response, page);
+}
+
+function setPositionSource(source) {
+    api.debug("setting position source");
+    api.positionSource = source;
+}
+
+function getLocationParameter() {
+    var lat = api.positionSource.position.coordinate.latitude;
+    var lon = api.positionSource.position.coordinate.longitude;
+    var result = "ll=" + lat + "," + lon;
+    api.debug("location: " + result);
+    return result;
+}
+
+function setAccessToken(token) {
+    //api.debug("SET TOKEN: " + token);
+    api.accessToken = token;
+}
+function getAccessTokenParameter() {
+    var token = api.accessToken;
+    //api.debug("GET TOKEN: " + token);
+    return "oauth_token=" + token + "&v=" + API_VERSION;
 }

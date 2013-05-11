@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-user.js" as UserAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     id: leaderBoard
@@ -23,7 +23,7 @@ PageWrapper {
         page.user.connect(function(user) {
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
-        UserAPI.loadLeaderBoard(page);
+        Api.users.loadLeaderBoard(page);
     }
 
     MouseArea {

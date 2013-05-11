@@ -171,7 +171,6 @@ QVariant Cache::info()
     }
 
     /*{
-        //TODO: remove legacy code
         // Due to error in 0.4.1 will be there until 0.5.0 is out
         QDir dir2(m_path+"/../");
         dir2.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
@@ -197,8 +196,7 @@ QVariant Cache::reset()
         QFile(list.at(i).absoluteFilePath()).remove();
     }
 
-    {
-        //TODO: remove legacy code
+    /*{
         // Due to error in 0.4.1 will be there until 0.5.0 is out
         QDir dir2(m_path+"/../");
         dir2.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
@@ -207,7 +205,7 @@ QVariant Cache::reset()
         for (int i=0; i<list2.size();i++) {
             QFile(list2.at(i).absoluteFilePath()).remove();
         }
-    }
+    }*/
 
     return QVariant(true);
 }

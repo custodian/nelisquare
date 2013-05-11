@@ -42,11 +42,12 @@ Item   {
     }
 
     Component.onCompleted: {
+        Api.setPositionSource(positionSource);
         loadSettings();
     }
 
     function getupdates() {
-        Updater.getUpdateInfo(checkupdates,onUpdateAvailable);
+        Updater.getUpdateInfo(configuration.platform,checkupdates,onUpdateAvailable);
     }
 
     /*AlignedTimer {
@@ -67,9 +68,14 @@ Item   {
         }
     }
 
+    function setAccessToken(token) {
+        settingChanged("accesstoken",token)
+    }
+
     function settingLoaded(key, value) {
         if(key==="accesstoken") {
             Api.setAccessToken(value);
+            accessToken = value;
         } else if (key === "settings.orientation") {
             if (value === "") value = "auto";
             configuration.orientationType = value;

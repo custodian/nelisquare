@@ -1,21 +1,27 @@
 /*
  *
  */
-Qt.include("api.js")
+.pragma library
 
-function loadVenues(page, query) {
+api.log("loading api-venues...");
+
+var venues = new ApiObject();
+//venues.debuglevel = 1;
+
+
+venues.loadVenues = function(page, query) {
     var url = "venues/search?" +
         getLocationParameter();
     if(query!=null && query.length>0) {
         url += "&query=" + query;
     }
     url += "&" + getAccessTokenParameter();
-    doWebRequest("GET", url, page, parseVenues);
+    api.request("GET", url, page, venues.parseVenues);
     page.waiting_show();
 }
 
-function parseVenues(response, page) {
-    var data = processResponse(response, page);
+venues.parseVenues = function(response, page) {
+    var data = api.process(response, page);
     var count = 0;
     page.placesModel.clear();
     page.waiting_hide();
@@ -44,7 +50,7 @@ function parseVenues(response, page) {
     });
 }
 
-function likeVenue(page, id, state) {
+venues.likeVenue = function(page, id, state) {
     console.log("LIKE VENUE: " + id + " STATE: " + state);
     var url = "venues/"+id+"/like?set="
     if (state) {
@@ -53,17 +59,17 @@ function likeVenue(page, id, state) {
         url += "0";
     }
     url += "&" + getAccessTokenParameter();
-    doWebRequest("POST", url, page, parseLikeVenue);
+    api.request("POST", url, page, venues.parseLikeVenue);
 }
 
-function parseLikeVenue(response, page) {
+venues.parseLikeVenue = function(response, page) {
     //console.log("LIKE RESPONSE: " + JSON.stringify(response));
-    var data = processResponse(response, page);
+    var data = api.process(response, page);
 
     processLikes(page.likeBox, data);
 }
 
-function loadVenue(page, venueID) {
+venues.loadVenue = function(page, venueID) {
     var url = "venues/" + venueID + "?" + getAccessTokenParameter();
     page.waiting_show();
     page.venueID = venueID;
@@ -75,11 +81,11 @@ function loadVenue(page, venueID) {
     page.usersBox.photosModel.clear();
     page.venueMapLat = "";
     page.venueMapLng = "";
-    doWebRequest("GET", url, page, parseVenue);
+    api.request("GET", url, page, venues.parseVenue);
 }
 
-function parseVenue(response, page) {
-    var data = processResponse(response, page);
+venues.parseVenue = function(response, page) {
+    var data = api.process(response, page);
     //console.log("VENUE: "+ JSON.stringify(data));
     page.waiting_hide();
     var venue = data.venue;
@@ -148,7 +154,7 @@ function parseVenue(response, page) {
     }
 }
 
-function loadVenuePhotos(page, venue) {
+venues.loadVenuePhotos = function(page, venue) {
     page.waiting_show();
 
     var url = "/venues/" + venue + "/photos?group=checkin&offset="+page.options.get(0).offset+"&limit="+page.batchsize
@@ -159,11 +165,11 @@ function loadVenuePhotos(page, venue) {
             + "," + encodeURIComponent(url2)
             + "&" + getAccessTokenParameter();
 
-    doWebRequest("GET", urlfull, page, parseVenuePhotosGallery);
+    api.request("GET", urlfull, page, venues.parseVenuePhotosGallery);
 }
 
-function parseVenuePhotosGallery(multiresponse, page) {
-    var multidata = processResponse(multiresponse);
+venues.parseVenuePhotosGallery = function(multiresponse, page) {
+    var multidata = api.process(multiresponse);
     page.waiting_hide();
     for (var key in multidata.responses) {
         var data = multidata.responses[key].response;
@@ -180,28 +186,30 @@ function parseVenuePhotosGallery(multiresponse, page) {
     };
 }
 
-function addTip(page,venueID, text) {
+venues.addTip = function(page,venueID, text) {
     page.waiting_show();
     var url = "tips/add?";
     url += "venueId=" + venueID + "&";
     url += "text=" + encodeURIComponent(text) + "&";
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, page, parseAddTip);
+    api.request("POST", url, page, venues.parseAddTip);
 }
 
-function parseAddTip(response, page){
-    var data = processResponse(response, page);
+venues.parseAddTip = function(response, page){
+    var data = api.process(response, page);
     page.waiting_hide();
     addTipToModel(page,data.tip);
 }
 
-function markVenueToDo(venueID, text) {
+/*
+//TODO: Move this stuff to lists
+lists.markVenueToDo = function(venueID, text) {
     var url = "venues/" + venueID + "/marktodo?";
     if(text!="" && text.length>0) {
         url += "text=" + encodeURIComponent(text) + "&";
     }
     url += getAccessTokenParameter();
-    doWebRequest("POST", url, "", doNothing);
+    api.request("POST", url, "", doNothing);
 }
 
 function loadToDo(page) {
@@ -238,8 +246,9 @@ function parseToDo(response, page) {
         });
     });
 }
+*/
 
-function loadVenueCategories(callback) {
+venues.loadVenueCategories = function(callback) {
     //TODO: change to new callback system
     var url = cache.get(API_URL + "venues/categories&" + getAccessTokenParameter());
     console.log("url " + url);
@@ -262,11 +271,10 @@ function loadVenueCategories(callback) {
     doc.send();
 }
 
-function prepareVenueEdit(page, venue) {
-
-    loadVenueCategories(function(response){
+venues.prepareVenueEdit = function(page, venue) {
+    venues.loadVenueCategories(function(response){
         page.venueCategories.clear();
-        var data = processResponse(response, page);
+        var data = api.process(response, page);
             data.categories.forEach(function(cat) {
                     console.log("CAT: " + cat.name)
                     cat.categories.forEach(function(sub) {
@@ -275,8 +283,7 @@ function prepareVenueEdit(page, venue) {
             });
     });
 
-
     if (venue!=="") {
-
+        //TODO: editing venue
     }
 }

@@ -4,6 +4,8 @@
 
 .pragma library
 
+api.log("loading utils...");
+
 function getRoutePoints(pointA,pointB,callback) {
     //dirflg =
     //d - driver

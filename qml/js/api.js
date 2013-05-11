@@ -1,21 +1,40 @@
 /*
  * Foursquare API bindings
  */
+.pragma library
+
+console.log("loading api...");
+
+function ApiObject() {
+    this.name = "4SQ JS API for QML";
+    this.debuglevel = 1; //1 = log, 2 = debug
+    this.log = function(msg) {
+        if (this.debuglevel > 0) {
+            //console.log("LOG: " + msg)
+            console.log(msg)
+        }
+    }
+    this.debug = function(msg) {
+        if (this.debuglevel > 1) {
+            console.debug("DEBUG: " + msg);
+        }
+    }
+}
+var api = new ApiObject();
+api.accessToken = "";
+api.inverted = false; //TODO: have to move this somewhere to make common function with icons work
+
 Qt.include("api-core.js")
 Qt.include("api-common.js")
 
-function getLocationParameter() {
-    var lat = positionSource.position.coordinate.latitude;
-    var lon = positionSource.position.coordinate.longitude;
-    return "ll=" + lat + "," + lon;
-}
+Qt.include("api-feed.js")
+Qt.include("api-checkin.js")
+Qt.include("api-notifications.js")
+Qt.include("api-photo.js")
+Qt.include("api-tip.js")
+Qt.include("api-user.js")
+Qt.include("api-venue.js")
 
-function setAccessToken(token) {
-    //console.log("SET TOKEN: " + token);
-    configuration.accessToken = token;
-}
-function getAccessTokenParameter() {
-    var token = configuration.accessToken;
-    //console.log("GET TOKEN: " + token);
-    return "oauth_token=" + token + "&v=" + API_VERSION;
-}
+Qt.include("utils.js")
+
+console.log("api loaded.");

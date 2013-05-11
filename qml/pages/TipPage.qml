@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-tip.js" as TipAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     signal like(bool state)
@@ -28,7 +28,7 @@ PageWrapper {
     function load() {
         var page = tipPage;
         page.like.connect(function(state){
-            TipAPI.likeTip(page, tipID, state)
+            Api.tips.likeTip(page, tipID, state)
         });
         page.user.connect(function(user){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
@@ -40,12 +40,12 @@ PageWrapper {
             stack.push(Qt.resolvedUrl("Photo.qml"),{"photoID":photo});
         });
         page.save.connect(function(){
-            TipAPI.show_error("Lists not implemented yet!");
+            tipPage.show_error("Lists not implemented yet!");
         });
         page.markDone.connect(function(){
-            TipAPI.show_error("Lists not implemented yet!");
+            tipPage.show_error("Lists not implemented yet!");
         });
-        TipAPI.loadTipInfo(page,tipID);
+        Api.tips.loadTipInfo(page,tipID);
     }
 
     Flickable{

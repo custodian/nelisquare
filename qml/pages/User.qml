@@ -2,7 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../components"
 
-import "../js/api-user.js" as UserAPI
+import "../js/api.js" as Api
 
 PageWrapper {
     signal openLeaderboard()
@@ -76,19 +76,19 @@ PageWrapper {
     function load() {
         var page = details;
         page.addFriend.connect(function(user){
-            UserAPI.addFriend(page,user);
+            Api.users.addFriend(page,user);
             page.userRelationship = "updated";
         });
         page.removeFriend.connect(function(user){
-            UserAPI.removeFriend(page,user);
+            Api.users.removeFriend(page,user);
             page.userRelationship = "updated";
         });
         page.approveFriend.connect(function(user){
-            UserAPI.approveFriend(page,user);
+            Api.users.approveFriend(page,user);
             page.userRelationship = "updated";
         });
         page.denyFriend.connect(function(user){
-            UserAPI.denyFriend(page,user);
+            Api.users.denyFriend(page,user);
             page.userRelationship = "updated";
         });
         page.user.connect(function(user){
@@ -115,7 +115,7 @@ PageWrapper {
         page.photos.connect(function(user) {
             var photogallery = stack.push(Qt.resolvedUrl("PhotosGallery.qml"));
             photogallery.update.connect(function(){
-               UserAPI.loadUserPhotos(photogallery,user);
+               Api.users.loadUserPhotos(photogallery,user);
             });
             photogallery.caption = "USER PHOTOS";
             photogallery.options.append({"offset":0,"completed":false});
@@ -124,7 +124,7 @@ PageWrapper {
         page.tips.connect(function(user) {
             stack.push(Qt.resolvedUrl("TipsList.qml"),{"baseType":"user","baseID":user});
         });
-        UserAPI.loadUser(page,userID);
+        Api.users.loadUser(page,userID);
     }
 
     Component.onCompleted: {
