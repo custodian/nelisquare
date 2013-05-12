@@ -68,7 +68,7 @@ bool WindowHelper::eventFilter(QObject *obj, QEvent *event) {
             emit visibilityChanged(QVariant(false));
             return true;
 #endif
-//DBG temporarily disabled for maemo because no dbus on maemo yet
+//BUG temporarily disabled for maemo because no dbus on maemo yet
 //#if defined(Q_OS_HARMATTAN)
         case QEvent::Close:
             if (m_swypedisabled) {

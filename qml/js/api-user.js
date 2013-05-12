@@ -197,7 +197,7 @@ users.parseActivityHistory = function(response,page,user) {
         if (checkin.photos.count > 0) {
             venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300, 300);
         }
-        if (venueDistance === undefined || venueDistance < MAX_NEARBY_DISTANCE) {
+        if (venueDistance === undefined || venueDistance < api.MAX_NEARBY_DISTANCE) {
             var item = {
                 "id": checkin.id,
                 "shout": parse(checkin.shout),

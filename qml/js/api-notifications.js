@@ -13,7 +13,7 @@ notifications.loadNotifications = function(page) {
     var url = "updates/notifications?limit=100&" + getAccessTokenParameter();
     page.waiting_show();
     page.notificationsModel.clear();
-    api.request("GET", url, page, parseNotifications);
+    api.request("GET", url, page, notifications.parseNotifications);
 }
 
 notifications.markNotificationsRead = function(page, time) {

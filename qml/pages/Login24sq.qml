@@ -34,7 +34,7 @@ PageWrapper {
         webView.reload.trigger();
     }
 
-    //DBG: remove header. use PageWrapper header
+    //TODO: remove header. use PageWrapper header
     PageHeader{
         id: header
         headerText: qsTr("Sign In to Foursquare")

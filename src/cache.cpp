@@ -112,7 +112,7 @@ QVariant Cache::get(QVariant data, QVariant callback)
             }
         }
     }
-    //DBG disabled to check callback
+    //disabled to check callback is really working
     data = QVariant("");
     return data;
 }

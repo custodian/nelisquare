@@ -69,7 +69,6 @@ Rectangle {
     PageStack {
         id: pageStack
         y: upperbar.height
-        //DBG menu tools
         height: parent.height - upperbar.height
         width: parent.width
 

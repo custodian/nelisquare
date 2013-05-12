@@ -1,3 +1,9 @@
+nelisquare (0.5.0-4) unstable; urgency=low
+  * "Friend added" events added to feed
+  * "Tip liked" events added to feed
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Sun, 12 May 2013 22:26:15 +0400
+
 nelisquare (0.5.0-3) unstable; urgency=low
   * Api structure update
   * Feed events updates

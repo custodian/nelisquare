@@ -11,6 +11,7 @@ PageWrapper {
     signal loadHistory()
     signal user(string userid)
     signal checkin(string checkinid)
+    signal venue(string tipid)
 
     signal shout()
     signal nearby()
@@ -65,6 +66,7 @@ PageWrapper {
     }
 
     function addItem(item, position) {
+        loaded += 1;
         if (position === undefined) {
             friendsCheckinsModel.append(item);
         } else {
@@ -74,7 +76,7 @@ PageWrapper {
         if (configuration.feedAutoUpdate!== "0"
                 && configuration.feedIntegration !=="0") {
 
-            //TODO: //DBG: need to make an callback to addFeedItem with filled photoCache item
+            //TODO: //BUG: need to make an callback to addFeedItem with filled photoCache item
             /*function ObjCallbacker() {
                 this.text = "testObject";
                 this.cacheCallback = function cacheCallback(status,url) {
@@ -111,6 +113,11 @@ PageWrapper {
         page.update.connect(function(lastupdate) {
             if (configuration.feedAutoUpdate === 0) {
                 page.reset();
+            } else {
+                //TODO: rotate check times
+                /*for (var i=0;i<page.friendsCheckinsModel.count;i++){
+                    page.friendsCheckinsModel.setProperty(i,"createdAt", makeTime(page.friendsCheckinsModel.get(i).timestamp));
+                }*/
             }
             Api.feed.loadFriendsFeed(page)
         });
@@ -131,6 +138,9 @@ PageWrapper {
         });
         page.user.connect(function(id){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":id});
+        });
+        page.venue.connect(function(id) {
+            stack.push(Qt.resolvedUrl("Venue.qml"), {"venueID":id});
         });
         timerFeedUpdate.restart(); //Start autoupdate
         update();
@@ -240,11 +250,15 @@ PageWrapper {
             function getComponentByType(type) {
                 if (type === "checkin")
                     return friendsFeedDelegateEvent
+                else if (type === "friend")
+                    return friendsFeedDelegateFriend
+                else if (type === "tip")
+                    return friendsFeedDelegateTip
                 else
                     return testComponent
             }
-            property variant content: model
-            sourceComponent: getComponentByType(content.type)
+            property variant content: model.content
+            sourceComponent: getComponentByType(model.type)
         }
     }
 
@@ -259,10 +273,53 @@ PageWrapper {
     }
 
     Component {
-        id: friendsFeedDelegateEvent
+        id: friendsFeedDelegateFriend
 
         EventBox {
             id: eventbox
+            activeWhole: true
+
+            userName: content.user
+            createdAt: content.createdAt
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = "https://ss0.4sqi.net/img/icon-friendrequests-1c69ce8a7660d4c9bdd0a4395c72753c.png";
+            }
+
+            onAreaClicked: {
+                friendsFeed.user( content.id );
+            }
+        }
+    }
+
+    Component {
+        id: friendsFeedDelegateTip
+
+        EventBox {
+            //id: eventbox
+            activeWhole: true
+
+            userShout: content.shout
+            venueName: content.venueName
+            venuePhoto: content.venuePhoto
+            createdAt: content.createdAt
+            likesCount: content.likesCount
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = content.photo
+            }
+
+            onAreaClicked: {
+                friendsFeed.venue( content.id );
+            }
+        }
+    }
+
+    Component {
+        id: friendsFeedDelegateEvent
+
+        EventBox {
+            //id: eventbox
             activeWhole: true
 
             userName: content.user
@@ -278,21 +335,10 @@ PageWrapper {
 
             Component.onCompleted: {
                 userPhoto.photoUrl = content.photo
-
-                //console.log("LOADED: " + loaded + " index:"+ (index+1));
-                /*if (loaded === (index + 1)){
-                    if (moreData) {
-                        loadHistory();
-                    }
-                }*/
             }
 
             onAreaClicked: {
-                if (content.id) {
-                    friendsFeed.checkin( content.id );
-                } else {
-                    friendsFeed.user( content.userID );
-                }
+                friendsFeed.checkin( content.id );
             }
         }
     }

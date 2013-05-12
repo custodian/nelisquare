@@ -4,7 +4,7 @@ import com.nokia.meego 1.0
 import QtMobility.location 1.2
 
 import "components"
-import "js/api.js" as Api //DBG: possibly have to rebuild that stuff
+import "js/api.js" as Api
 
 PageStackWindow {
     id: appWindow

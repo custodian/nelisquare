@@ -49,6 +49,8 @@ Rectangle {
             //sourceSize.height: height //photoSourceSize
             clip: true
 
+            property bool alreadyTriedCache: false //BUG: Made a quick fix to stop battery drain
+
             onStatusChanged: {
                 image.visible = (image.status == Image.Ready)
                 loader.visible = (image.status != Image.Ready)
@@ -57,7 +59,10 @@ Rectangle {
                     cache.remove(photoUrl);
                     if (photoCache) {
                         image.source = "";
-                        cache.get(photoUrl, image);
+                        if (!alreadyTriedCache) {
+                            alreadyTriedCache = true;
+                            cache.get(photoUrl, image);
+                        }
                     }
                 }
             }

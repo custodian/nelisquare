@@ -134,7 +134,7 @@ PageWrapper {
             update();
         }
 
-        /* //DBG
+        /* //TODO: Add new venue functionality
         footer: Column {
             width: placesView.width
             Item {

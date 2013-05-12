@@ -50,6 +50,7 @@ PageWrapper {
                 text: qsTr("Mark all as read")
                 onClicked: {
                     Api.notifications.markNotificationsRead(notificationsList,Api.getCurrentTime());
+                    Api.notifications.loadNotifications(notificationsList);
                 }
             }
             MenuItem {

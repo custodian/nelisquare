@@ -6,7 +6,7 @@
 api.log("loading api-feed...");
 
 var feed = new ApiObject();
-//feed.debuglevel = 1;
+//feed.debuglevel = 2;
 
 feed.loadFriendsFeed = function(page, history) {
     //activities/recent activities/recent?afterMarker=50ade891e4b0892bb7343597
@@ -84,7 +84,7 @@ feed.parseFriendsFeed = function(response, page, history) {
     }
 
     if (history !== undefined || !updating) {
-        feed.log("MORE DATA: Updated: "+ activities.moreData);
+        feed.debug("MORE DATA: Updated: "+ activities.moreData);
         page.moreData = activities.moreData;
     }
     if (activities.leadingMarker > page.leadingMarker)
@@ -109,25 +109,22 @@ feed.parseFriendsFeed = function(response, page, history) {
             feed.feedObjParserFriend(page, object, append, count);
             count++;
         } else if (object.type === "tip") {
-            //TODO: make show tip
-            /*
-            page.loaded -= 1;
-            */
-            //DBG: testing loader
-            var itemtest = {
-                "type": object.type
-            }
-            page.addItem(itemtest);
-
-            feed.debug("TIP EVENT VALUE: " + JSON.stringify(object));
+            feed.feedObjParserTip(page, object, append, count);
+            count++;
         } else {
-            page.loaded -= 1;
+            //un implemented content types goes here
             feed.log("CONTENT TYPE: " + object.type);
             feed.log("CONTENT VALUE: " + JSON.stringify(object));
+            var itemtest = {
+                "type": object.type,
+                "content": {
+                    "type": object.type
+                }
+            }
+            page.addItem(itemtest);
         }
     }
 
-    page.loaded += activities.items.length;
     activities.items.forEach(
     function(activity){
         feed.debug("ACTIVITY: " + JSON.stringify(activity));
@@ -135,8 +132,6 @@ feed.parseFriendsFeed = function(response, page, history) {
             var content = activity.content;
 
             if (content.type === "aggregation") {
-                page.loaded -= 1;
-                page.loaded += content.object.items.length;
                 content.object.items.forEach(function(item) {
                     feedObjParser(item);
                 });
@@ -145,19 +140,19 @@ feed.parseFriendsFeed = function(response, page, history) {
             }
         } else if (activity.type === "friend") {
             feedObjParser(activity);
+        } else if (activity.type === "like") {
+            feedObjParser(activity.content);
         } else {
-            /*
-            page.loaded -= 1;
-            */
-            //DBG: testing loader
+            //un implemented events goes here
             var itemtest = {
-                "id": "",
-                "type": activity.type
+                "type": activity.type,
+                "content": {
+                    "type": activity.type
+                }
             }
             page.addItem(itemtest);
-
             feed.log("ACTIVITY TYPE: " + activity.type);
-            feed.debug("ACTIVITY CONTENT: " + JSON.stringify(activity.content));
+            feed.debug("ACTIVITY CONTENT: " + JSON.stringify(activity));
             return;
         }
     });
@@ -168,17 +163,12 @@ feed.parseFriendsFeed = function(response, page, history) {
         //Limit all checkins //TODO: Make options at settings of feed length
         if (history===undefined) {
             var currentsize = page.friendsCheckinsModel.count;
-            var maxsize = 100;
-            for (var i=maxsize;i<currentsize;i++){
-                page.removeItem(maxsize);
-                page.loaded -= 1;
+            for (var i=api.MAX_FEED_SIZE;i<currentsize;i++){
+                page.removeItem(api.MAX_FEED_SIZE);
                 page.moreData = true;
             }
             if (currentsize>(maxsize-1))
                 page.trailingMarker = page.friendsCheckinsModel.get(maxsize-1).id;
-        }
-        for (var i=0;i<page.friendsCheckinsModel.count;i++){
-            page.friendsCheckinsModel.setProperty(i,"createdAt", makeTime(page.friendsCheckinsModel.get(i).timestamp));
         }
     }
     page.lastUpdateTime = updateTime;
@@ -199,24 +189,27 @@ feed.feedObjParserCheckin = function(page, checkin, append, count) {
     if (checkin.photos.count > 0) {
         venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300, 300);
     }
-    if (venueDistance === undefined || venueDistance < MAX_NEARBY_DISTANCE) {
+    if (venueDistance === undefined || venueDistance < api.MAX_NEARBY_DISTANCE) {
         var item = {
-            "id": checkin.id,
             "type": "checkin",
-            "shout": parse(checkin.shout),
-            "user": userName,
-            "userID": checkin.user.id,
-            "mayor": parse(checkin.isMayor),
-            "photo": thumbnailPhoto(checkin.user.photo, 100),
-            "venueID": venueID,
-            "venueName": venueName,
-            "createdAt": makeTime(checkin.createdAt),
-            "timestamp": checkin.createdAt,
-            "venuePhoto": venuePhoto,
-            "commentsCount": checkin.comments.count,
-            "comments": checkin.comments.items,
-            "likesCount": checkin.likes.count,
-            "photosCount": checkin.photos.count
+            "content": {
+                "id": checkin.id,
+                "type": "checkin",
+                "shout": parse(checkin.shout),
+                "user": userName,
+                "userID": checkin.user.id,
+                "mayor": parse(checkin.isMayor),
+                "photo": thumbnailPhoto(checkin.user.photo, 100),
+                "venueID": venueID,
+                "venueName": venueName,
+                "createdAt": makeTime(checkin.createdAt),
+                "timestamp": checkin.createdAt,
+                "venuePhoto": venuePhoto,
+                "commentsCount": checkin.comments.count,
+                "comments": checkin.comments.items,
+                "likesCount": checkin.likes.count,
+                "photosCount": checkin.photos.count
+            }
         };
         if (append) {
             feed.debug("adding checkin at end");
@@ -227,7 +220,6 @@ feed.feedObjParserCheckin = function(page, checkin, append, count) {
         }
         result = true;
     } else if (venueDistance !== undefined) {
-        page.loaded -= 1;
         result = false;
     }
     return result;
@@ -255,26 +247,20 @@ feed.feedObjParserPhoto = function(page, photo) {
 feed.feedObjParserFriend = function(page, friend, append, count) {
     if (friend.content.type === "aggregation") {
         //TODO: change if aggregation will be enabled
-        //page.loaded -= 1;
-        //page.loaded -= friend.content.object.items.length;
+        feed.log("FRIEND AGGREGATION!")
+        feed.debug("FRIEND AGGREGATION: " + JSON.stringify(friend));
+        friend.content.object.id = friend.thumbnails[0].id;
     }
+    feed.debug("FRIEND CONTENT: " + JSON.stringify(friend));
     var item = {
-        "id": "",
         "type": friend.type,
-        "shout": "",
-        "user": friend.summary.text,
-        "userID": friend.content.object.id,
-        "mayor": false,
-        "photo": friend.thumbnails[0].photo,
-        "venueID": "",
-        "venueName": "",
-        "createdAt": makeTime(friend.createdAt),
-        "timestamp": friend.createdAt,
-        "venuePhoto": "",
-        "commentsCount": "0",
-        "comments": [],
-        "likesCount": "0",
-        "photosCount": "0"
+        "content": {
+            "type": friend.type,
+            "id": friend.content.object.id,
+            "user": friend.summary.text,
+            "createdAt": makeTime(friend.createdAt),
+            "timestamp": friend.createdAt,
+        }
     };
     if (append) {
         feed.debug("adding friend at end");
@@ -284,3 +270,36 @@ feed.feedObjParserFriend = function(page, friend, append, count) {
         page.addItem(item,count);
     }
 }
+
+feed.feedObjParserTip = function(page, object, append, count) {
+            var tip = object.object;
+            feed.debug("TIP CONTENT: " + JSON.stringify(tip));
+            var icon = "";
+            if (tip.venue.categories[0] !== undefined)
+                icon = parseIcon(tip.venue.categories[0].icon);
+            else
+                icon = parseIcon(defaultVenueIcon);
+            //TODO: somehow add an "Username liked the tip"
+            var item = {
+                "type": "tip",
+                "content": {
+                    "type": "tip",
+                    "id": tip.venue.id,
+                    "shout": tip.text,
+                    "venueName": tip.venue.name,
+                    "photo": icon,
+                    "likesCount": tip.likes.count,
+                    "venuePhoto": thumbnailPhoto(tip.photo, 300, 300),
+                    "createdAt": makeTime(tip.createdAt),
+                    "timestamp": tip.createdAt,
+                }
+            }
+            if (append) {
+                feed.debug("adding friend at end");
+                page.addItem(item);
+            } else {
+                feed.debug("adding friend at head");
+                page.addItem(item,count);
+            }
+};
+
