@@ -1,11 +1,13 @@
 nelisquare (0.5.0) unstable; urgency=low
-  * Tips likes added to feed
-  * Friends added to feed
+  * List saved event added to feed
+  * New tips event added to feed
+  * Tips like event added to feed
+  * New friends added to feed
   * Cache update, smooth loading
   * Homescreen disabled
   * Api structure update
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Sun, 12 May 2013 22:26:15 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 13 May 2013 01:05:32 +0400
 
 nelisquare (0.4.10) stable; urgency=low
   * [in-dev] dialogs updates

@@ -254,6 +254,8 @@ PageWrapper {
                     return friendsFeedDelegateFriend
                 else if (type === "tip")
                     return friendsFeedDelegateTip
+                else if (type === "savelist")
+                    return friendsFeedDelegateSaveList
                 else
                     return testComponent
             }
@@ -299,6 +301,7 @@ PageWrapper {
             //id: eventbox
             activeWhole: true
 
+            userName: content.userName
             userShout: content.shout
             venueName: content.venueName
             venuePhoto: content.venuePhoto
@@ -311,6 +314,31 @@ PageWrapper {
 
             onAreaClicked: {
                 friendsFeed.venue( content.id );
+            }
+        }
+    }
+
+    Component {
+        id: friendsFeedDelegateSaveList
+
+        EventBox {
+            //id: eventbox
+            activeWhole: true
+
+            userName: content.user
+            venueName: content.listName
+            userShout: content.shout
+            venuePhoto: content.venuePhoto
+            createdAt: content.createdAt
+            likesCount: content.likesCount
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = content.photo
+            }
+
+            onAreaClicked: {
+                //friendsFeed.list( content.id );
+                show_error("Sorry, no lists support yet :(");
             }
         }
     }
