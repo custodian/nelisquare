@@ -62,29 +62,15 @@ PageWrapper {
                 id: badgeImage
                 width: 114
                 height: 114
-                source: cache.get(model.image,badgeImage)
+                sourceUncached: model.image
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 MouseArea {
                     anchors.fill: badgeImage
                     onClicked: {
-                        //var badgeObj = model;
-                        /*{
-                            "name":model.name,
-                            "image":model.imageLarge,
-                            "info":model.info,
-                            "venueName":model.venueName,
-                            "venueID":model.venueID,
-                            "time":model.time
-                        }*/
-                        //console.log("badgeItem: " + );
+                        //To get rid of internal properties
                         badgesPage.badge(JSON.parse(JSON.stringify(model)));
                     }
-                }
-                Image {
-                    anchors.centerIn: badgeImage
-                    source: "../pics/"+mytheme.name+"/loader.png"
-                    visible: (badgeImage.status != Image.Ready)
                 }
             }
             Text {

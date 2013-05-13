@@ -14,9 +14,9 @@ function ApiObject() {
             console.log(msg)
         }
     }
-    this.debug = function(msg) {
+    this.debug = function(callback) {
         if (this.debuglevel > 1) {
-            console.debug("DEBUG: " + msg);
+            console.debug(callback());
         }
     }
 }

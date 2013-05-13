@@ -318,8 +318,7 @@ PageWrapper {
             width: scoreRepeater.width - 20
             spacing: 10
             CacheImage {
-                id: imageScore
-                source: cache.get(scoreImage, imageScore)
+                sourceUncached: scoreImage
                 smooth: true
                 width: 24
                 height: 24

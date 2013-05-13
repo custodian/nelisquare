@@ -4,7 +4,9 @@
 #include <QObject>
 #include <QString>
 #include <QVariant>
+#include <QSet>
 #include <QMap>
+#include <QReadWriteLock>
 #include <QtNetwork/QNetworkAccessManager>
 
 class Cache : public QObject
@@ -17,20 +19,29 @@ protected:
     QString makeCachedURL(QString url);
 
     QString m_path;
+
     QMap<QString,QString> m_cachemap;
-    QMap<QString, QVariantList> m_cachequeue;
+    QReadWriteLock m_cachemap_lock;
+
+    typedef QSet<QObject*> CCallbackList;
+    typedef QMap<QString, CCallbackList > CCacheQueue;
+    CCacheQueue m_cachequeue;
+    QReadWriteLock m_cachequeue_lock;
+
     bool m_cacheonly;
 
-    bool queueCacheUpdate(QVariant url, QVariant callback);
+    bool queueCacheUpdate(QVariant url, QObject* callback);
     void makeCallbackAll(bool status, QVariant url);
-    void makeCallback(QVariant callback, bool status, QVariant url);
+    void makeCallback(QObject* callback, bool status, QVariant url);
 
 public:
     explicit Cache(QObject *parent = 0);
     
-    Q_INVOKABLE QVariant get(QVariant url, QVariant callback);
+    Q_INVOKABLE void queueObject(QVariant url, QObject* callback);
 
-    Q_INVOKABLE QVariant remove(QVariant url);
+    Q_INVOKABLE void dequeueObject(QVariant url, QObject* callback);
+
+    Q_INVOKABLE QVariant removeUrl(QVariant url);
 
     Q_INVOKABLE QVariant info();
 

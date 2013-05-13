@@ -301,16 +301,14 @@ PageStackWindow {
 
     function onCacheUpdated(callbackObject, status, url) {
         //console.log("Cache updated: " + status + " url: " + url );
-        if (callbackObject !== undefined) {
-            if (callbackObject.cacheCallback !== undefined) {
-                try {
+        try {
+            if (callbackObject !== undefined) {
+                if (callbackObject.cacheCallback !== undefined) {
                     callbackObject.cacheCallback(status,url);
                 }
-                catch(err) {
-                    console.log("Cache error: " + err);
-                    console.log("Callback Object:" + JSON.stringify(callbackObject));
-                }
             }
+        } catch (err) {
+            console.log("Cache callback error: " + err);
         }
     }
 

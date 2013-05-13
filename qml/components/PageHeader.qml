@@ -59,7 +59,7 @@ Item{
 
     CacheImage{
         id: icon
-        source: headerIcon.length ? cache.get(headerIcon, icon) : headerIcon
+        sourceUncached: headerIcon
         anchors { verticalCenter: parent.verticalCenter; left: parent.left; margins: mytheme.paddingLarge }
         height: sourceSize.height; width: sourceSize.width
         sourceSize { height: mytheme.graphicSizeSmall; width: mytheme.graphicSizeSmall }

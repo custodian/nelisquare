@@ -360,11 +360,10 @@ PageWrapper {
                     radius: 5
 
                     CacheImage {
-                        id: imageBadge
                         y: 10                        
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/newbie.png", imageBadge)
+                        sourceUncached: "https://playfoursquare.s3.amazonaws.com/badge/114/newbie.png"
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -396,11 +395,10 @@ PageWrapper {
                     radius: 5
 
                     CacheImage {
-                        id: imageCheckin
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/bender.png",imageCheckin)
+                        sourceUncached: "https://playfoursquare.s3.amazonaws.com/badge/114/bender.png"
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -432,11 +430,10 @@ PageWrapper {
                     radius: 5
 
                     CacheImage {
-                        id: imageMayor
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/supermayor.png",imageMayor)
+                        sourceUncached: "https://playfoursquare.s3.amazonaws.com/badge/114/supermayor.png"
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -468,11 +465,10 @@ PageWrapper {
                     radius: 5
 
                     CacheImage {
-                        id: imageFriend
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/entourage.png", imageFriend)
+                        sourceUncached: "https://playfoursquare.s3.amazonaws.com/badge/114/entourage.png"
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -504,11 +500,10 @@ PageWrapper {
                     radius: 5
 
                     CacheImage {
-                        id: imagePhoto
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/photogenic.png", imagePhoto)
+                        sourceUncached: "https://playfoursquare.s3.amazonaws.com/badge/114/photogenic.png"
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 
@@ -541,11 +536,10 @@ PageWrapper {
                     radius: 5
 
                     CacheImage {
-                        id: imageTips
                         y: 10
                         width: 64
                         height: 64
-                        source: cache.get("https://playfoursquare.s3.amazonaws.com/badge/114/bookworm.png", imageTips)
+                        sourceUncached: "https://playfoursquare.s3.amazonaws.com/badge/114/bookworm.png"
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
 

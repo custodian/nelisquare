@@ -71,7 +71,7 @@ Item {
                     id: mayorImage
                     anchors.verticalCenter: messageText.verticalCenter
                     asynchronous: true
-                    source: cache.get("https://foursquare.com/img/points/mayor.png",mayorImage)
+                    sourceUncached: "https://foursquare.com/img/points/mayor.png"
                     visible: userMayor
                 }
 
@@ -262,7 +262,7 @@ Item {
         Text {
             width: statusTextArea.width
             color: mytheme.colors.textColorTimestamp
-            text: "<b>" + modelData.user.firstName + "</b>: " + modelData.text
+            text: "<b>" + model.user.firstName + "</b>: " + model.text
             font.pixelSize: fontSize - 2
             wrapMode: Text.Wrap
 

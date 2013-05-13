@@ -30,7 +30,6 @@ Rectangle {
         width: photoWidth
         height: photoHeight
         anchors.fill: parent
-
         mask: Image{ source: "../pics/image_mask.png"}
     */
 
@@ -39,7 +38,7 @@ Rectangle {
             x: photoBorder
             y: photoBorder
             asynchronous: true
-            source: photoCache ? cache.get(photoUrl, image) : photoUrl
+            sourceUncached: photoUrl //photoCache
             //cache: photoCache
             smooth: true
             fillMode: photoAspect
@@ -48,30 +47,6 @@ Rectangle {
             sourceSize.width: width // photoSourceSize
             //sourceSize.height: height //photoSourceSize
             clip: true
-
-            property bool alreadyTriedCache: false //BUG: Made a quick fix to stop battery drain
-
-            onStatusChanged: {
-                image.visible = (image.status == Image.Ready)
-                loader.visible = (image.status != Image.Ready)
-                if (image.status == Image.Error) {
-                    //console.log("Remove bad cached element");
-                    cache.remove(photoUrl);
-                    if (photoCache) {
-                        image.source = "";
-                        if (!alreadyTriedCache) {
-                            alreadyTriedCache = true;
-                            cache.get(photoUrl, image);
-                        }
-                    }
-                }
-            }
-            Image {
-                id: loader
-                anchors.centerIn: image
-                source: "../pics/"+mytheme.name+"/loader.png"
-                visible: (image.status != Image.Ready)
-            }
         }
     //}
 

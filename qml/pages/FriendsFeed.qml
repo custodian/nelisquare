@@ -113,11 +113,6 @@ PageWrapper {
         page.update.connect(function(lastupdate) {
             if (configuration.feedAutoUpdate === 0) {
                 page.reset();
-            } else {
-                //TODO: rotate check times
-                /*for (var i=0;i<page.friendsCheckinsModel.count;i++){
-                    page.friendsCheckinsModel.setProperty(i,"createdAt", makeTime(page.friendsCheckinsModel.get(i).timestamp));
-                }*/
             }
             Api.feed.loadFriendsFeed(page)
         });
@@ -259,7 +254,7 @@ PageWrapper {
                 else
                     return testComponent
             }
-            property variant content: model.content
+            property variant content: model //DBG: .content
             sourceComponent: getComponentByType(model.type)
         }
     }

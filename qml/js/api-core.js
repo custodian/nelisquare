@@ -113,7 +113,7 @@ function doNothing(response,page) {
 }
 
 function setPositionSource(source) {
-    api.debug("setting position source");
+    api.debug(function(){return "setting position source"});
     api.positionSource = source;
 }
 
@@ -121,16 +121,16 @@ function getLocationParameter() {
     var lat = api.positionSource.position.coordinate.latitude;
     var lon = api.positionSource.position.coordinate.longitude;
     var result = "ll=" + lat + "," + lon;
-    api.debug("location: " + result);
+    api.debug(function(){return "location: " + result});
     return result;
 }
 
 function setAccessToken(token) {
-    //api.debug("SET TOKEN: " + token);
+    //api.debug(function(){return"SET TOKEN: " + token});
     api.accessToken = token;
 }
 function getAccessTokenParameter() {
     var token = api.accessToken;
-    //api.debug("GET TOKEN: " + token);
+    //api.debug(function(){return"GET TOKEN: " + token});
     return "oauth_token=" + token + "&v=" + API_VERSION;
 }

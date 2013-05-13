@@ -44,19 +44,28 @@ QVariant Cache::loadtype(QVariant _type) {
 }
 
 void Cache::onDownloadFinished(QNetworkReply * reply){
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug() << "Error downloading: " << reply->errorString();
+        return;
+    }
     QByteArray data = reply->readAll();
-    if (reply->error() != QNetworkReply::NoError)
-        qDebug() << "Error donwloading: " << reply->errorString();
+    if (data.size() == 0) {
+        qDebug() << "Empty data packet";
+        return;
+    }
     QString url = reply->request().url().toString();
     QString name = makeCachedURL(url);
 
-    QFile file(name);
-    file.open(QFile::WriteOnly);
-    file.write(data);
+    {
+        QFile file(name);
+        file.open(QFile::WriteOnly);
+        file.write(data);
+    }
 
+    m_cachemap_lock.lockForWrite();
     m_cachemap.insert(url,name);
-    makeCallbackAll(true,name);
-    //qDebug() << "cache update";
+    m_cachemap_lock.unlock();
+    makeCallbackAll(true,url);
 }
 
 QString Cache::md5(QString data)
@@ -72,24 +81,28 @@ QString Cache::makeCachedURL(QString url)
     return m_path + "/" + md5(url) + ext;
 }
 
-QVariant Cache::remove(QVariant data)
+QVariant Cache::removeUrl(QVariant data)
 {
     QString url = data.toString();
     if (url.size()) {
+        m_cachemap_lock.lockForWrite();
         m_cachemap.remove(url);
+        m_cachemap_lock.unlock();
         QFile::remove(makeCachedURL(url));
     }
     return QVariant(true);
 }
 
-QVariant Cache::get(QVariant data, QVariant callback)
+void Cache::queueObject(QVariant data, QObject *callback)
 {
     QString url = data.toString();
     if (url.size()) {
+        m_cachemap_lock.lockForRead();
         QMap<QString,QString>::iterator it = m_cachemap.find(url);
         if (it!=m_cachemap.end()) {
             //qDebug() << "cache hit";
             data = it.value();
+            m_cachemap_lock.unlock();
             makeCallback(callback,true,data);
         } else {
             //qDebug() << "cache miss";
@@ -98,58 +111,85 @@ QVariant Cache::get(QVariant data, QVariant callback)
             //qDebug() << "Hash:" << name << "Status:" << file.exists() << "URL:" << url;
             if (file.exists()) {
                 data = QVariant(name);
+                m_cachemap_lock.unlock();
+                m_cachemap_lock.lockForWrite();
                 m_cachemap.insert(url,name);
+                m_cachemap_lock.unlock();
                 makeCallback(callback,true,data);
             } else {
                 if (m_cacheonly) {
                     data = QVariant("");
                 } else {
                     //add to queue, post and download query
-                    if (queueCacheUpdate(name, callback)) {
+                    if (queueCacheUpdate(data, callback)) {
                         manager->get(QNetworkRequest(QUrl(url)));
                     }
                 }
-            }
+                m_cachemap_lock.unlock();
+            }            
         }
     }
-    //disabled to check callback is really working
-    data = QVariant("");
-    return data;
 }
 
-bool Cache::queueCacheUpdate(QVariant url, QVariant callback) {
-    bool fresh = false;
-    //qDebug() << "queue to cache" << url;
-    QMap<QString, QVariantList>::iterator it;
+void Cache::dequeueObject(QVariant url, QObject *callback)
+{
+    //qDebug() << "Removing callback from queue" << callback << url;
+    CCacheQueue::iterator it;
+    m_cachequeue_lock.lockForWrite();
     it = m_cachequeue.find(url.toString());
     if (it == m_cachequeue.end()) {
-        m_cachequeue.insert(url.toString(),QVariantList());
+        m_cachequeue_lock.unlock();
+        //qDebug() << "Callback not found";
+        //qDebug() << m_cachequeue;
+        return;
+    }
+    CCallbackList &callbacks = *it;
+    //qDebug() << "Remove callback from queue: ok";
+    callbacks.remove(callback);
+    m_cachequeue_lock.unlock();
+}
+
+bool Cache::queueCacheUpdate(QVariant url, QObject *callback) {
+    bool fresh = false;
+    //qDebug() << "Adding callback to queue" << callback << url;
+    m_cachequeue_lock.lockForWrite();
+    CCacheQueue::iterator it;
+    it = m_cachequeue.find(url.toString());
+    if (it == m_cachequeue.end()) {
+        m_cachequeue.insert(url.toString(),CCallbackList());
         it = m_cachequeue.find(url.toString());
         fresh = true;
     };
-    it->append(callback);
+    it->insert(callback);
+    m_cachequeue_lock.unlock();
     return fresh;
 }
 
 void Cache::makeCallbackAll(bool status, QVariant url)
 {
     //qDebug() << "make all callback" << url;
-    QMap<QString, QVariantList>::iterator it;
+    CCacheQueue::iterator it;
+    m_cachequeue_lock.lockForRead();
     it = m_cachequeue.find(url.toString());
-    if (it == m_cachequeue.end())
+    if (it == m_cachequeue.end()) {
+        m_cachequeue_lock.unlock();
         return;
-    QVariantList &callbacks = *it;
-    QVariantList::iterator itc = callbacks.begin();
+    }
+    CCallbackList &callbacks = *it;
+    CCallbackList::iterator itc = callbacks.begin();
     while(itc!=callbacks.end()) {
         makeCallback(*itc,status,url.toString());
         itc++;
     }
+    m_cachequeue_lock.unlock();
+    m_cachequeue_lock.lockForWrite();
     m_cachequeue.remove(url.toString());
+    m_cachequeue_lock.unlock();
 }
 
-void Cache::makeCallback(QVariant callback, bool status, QVariant url)
+void Cache::makeCallback(QObject* callback, bool status, QVariant url)
 {
-    emit cacheUpdated(callback, QVariant(status), url);
+    emit cacheUpdated(QVariant::fromValue(callback), QVariant(status), url);
 }
 
 QVariant Cache::info()
@@ -170,17 +210,6 @@ QVariant Cache::info()
         }
     }
 
-    /*{
-        // Due to error in 0.4.1 will be there until 0.5.0 is out
-        QDir dir2(m_path+"/../");
-        dir2.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-        dir2.setNameFilters(QStringList("????????????????????????????????"));
-        QFileInfoList list2 = dir2.entryInfoList();
-        for (int i=0; i<list2.size();i++) {
-            total += list2.at(i).size();
-        }
-    }*/
-
     double result = double(total) / 1000000;
     return QVariant(QString("%1 MB").arg(result,0,'g',3));
 }
@@ -195,17 +224,6 @@ QVariant Cache::reset()
     for (int i=0; i<list.size();i++) {
         QFile(list.at(i).absoluteFilePath()).remove();
     }
-
-    /*{
-        // Due to error in 0.4.1 will be there until 0.5.0 is out
-        QDir dir2(m_path+"/../");
-        dir2.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
-        dir2.setNameFilters(QStringList("????????????????????????????????"));
-        QFileInfoList list2 = dir2.entryInfoList();
-        for (int i=0; i<list2.size();i++) {
-            QFile(list2.at(i).absoluteFilePath()).remove();
-        }
-    }*/
 
     return QVariant(true);
 }
