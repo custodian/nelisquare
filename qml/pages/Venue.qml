@@ -47,12 +47,19 @@ PageWrapper {
     property alias likeBox: likeBox
 
     tools: ToolBarLayout{
-        ToolIcon{
+        ToolIcon {
             platformIconId: "toolbar-back"
             onClicked: stack.pop()
         }
 
-        ToolIcon{
+        ToolIcon {
+            platformIconId: likeBox.mylike?"toolbar-frequent-used":"toolbar-frequent-used-dimmed"
+            onClicked: {
+                likeBox.toggleLike();
+            }
+        }
+
+        ToolIcon {
             iconSource: "../icons/icon-m-toolbar-edit"+(theme.inverted?"-white":"")+".png"
             onClicked: {
                 place.showAddTip(place.venueID,place.venueName);

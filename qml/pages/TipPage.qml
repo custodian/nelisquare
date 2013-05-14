@@ -17,6 +17,8 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
+    headerText: "Usefull tip"
+
     property string tipID: ""
 
     property alias ownerVenue: ownerVenue
@@ -24,6 +26,28 @@ PageWrapper {
     property alias likeBox: likeBox
     property alias tipPhoto: tipPhoto
     property string tipPhotoID: ""
+
+    tools: ToolBarLayout{
+        ToolIcon {
+            platformIconId: "toolbar-back"
+            onClicked: stack.pop()
+        }
+
+        ToolIcon {
+            platformIconId: likeBox.mylike?"toolbar-frequent-used":"toolbar-frequent-used-dimmed"
+            onClicked: {
+                likeBox.toggleLike();
+            }
+        }
+
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                //TODO: add menu
+                dummyMenu.open();
+            }
+        }
+    }
 
     function load() {
         var page = tipPage;

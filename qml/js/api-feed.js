@@ -50,17 +50,14 @@ feed.parseFriendsFeedUpdate = function(response, page) {
         function(update){
             if (update.type === "checkin") {
                 for (var i=0;i<page.friendsCheckinsModel.count;i++) {
-                    if (page.friendsCheckinsModel.get(i).id !== update.id)
+                    var info = page.friendsCheckinsModel.get(i).content;
+                    if (info.id !== update.id)
                         continue;
                     feed.log("FOUND CHECKIN in MODEL: " + update.id);
-                    page.updateItem(i,
-                        {
-                        "commentsCount": update.comments.count,
-                        "comments": update.comments.items,
-                        "likesCount": update.likes.count
-                        }
-                    );
-
+                    info.commentsCount = update.comments.count;
+                    info.comments = update.comments.items;
+                    info.likesCount = update.likes.count;
+                    page.updateItem(i,info);
                     break;
                 }
             } else {
@@ -141,10 +138,7 @@ feed.parseFriendsFeed = function(response, page, history) {
             feed.debug(function(){return "CONTENT VALUE: " + JSON.stringify(object)});
             var itemtest = {
                 "type": object.type,
-                //DBG:
-                /*"content": {
-                    "type": object.type
-                }*/
+                "content": {}
             }
             page.addItem(itemtest);
         }
@@ -154,9 +148,15 @@ feed.parseFriendsFeed = function(response, page, history) {
     function(activity){
         feed.debug(function(){return "ACTIVITY: " + JSON.stringify(activity)});
         if (activity.type === "create") {
+            //TODO: pass real activity for create. not a content;
             var content = activity.content;
 
+            if (content.type === "tip") {
+                content.summary = activity.summary;
+            }
+
             if (content.type === "aggregation") {
+                //TODO: move general parts from activity to content to get
                 content.object.items.forEach(function(item) {
                     feedObjParser(item);
                 });
@@ -173,10 +173,7 @@ feed.parseFriendsFeed = function(response, page, history) {
             //un implemented events goes here
             var itemtest = {
                 "type": activity.type,
-                //DBG:
-                /*"content": {
-                    "type": activity.type
-                }*/
+                "content": {}
             }
             feed.log("ACTIVITY TYPE: " + activity.type);
             feed.debug(function(){return "ACTIVITY CONTENT: " + JSON.stringify(activity)});
@@ -195,11 +192,14 @@ feed.parseFriendsFeed = function(response, page, history) {
                 page.moreData = true;
             }
             if (currentsize>(api.MAX_FEED_SIZE-1))
-                page.trailingMarker = page.friendsCheckinsModel.get(api.MAX_FEED_SIZE-1).id;
+                page.trailingMarker = page.friendsCheckinsModel.get(api.MAX_FEED_SIZE-1).content.id;
         }
         //rotate times and dates
+        //DBG: get content, replace, put back
         for (var i=0;i<page.friendsCheckinsModel.count;i++){
-            page.friendsCheckinsModel.setProperty(i,"createdAt", makeTime(page.friendsCheckinsModel.get(i).timestamp));
+            var info = page.friendsCheckinsModel.get(i).content;
+            info.createdAt = makeTime(info.timestamp);
+            page.friendsCheckinsModel.set(i,{"content":info});
         }
     }
     page.lastUpdateTime = updateTime;
@@ -222,11 +222,9 @@ feed.feedObjParserCheckin = function(page, checkin, append, count) {
     }
     if (venueDistance === undefined || venueDistance < api.MAX_NEARBY_DISTANCE) {
         var item = {
-            //DBG:
-            /*"type": "checkin",
-            "content": {*/
+            "type": "checkin",
+            "content": {
                 "id": checkin.id,
-                "type": "checkin",
                 "shout": parse(checkin.shout),
                 "user": userName,
                 "userID": checkin.user.id,
@@ -241,7 +239,7 @@ feed.feedObjParserCheckin = function(page, checkin, append, count) {
                 "comments": checkin.comments.items,
                 "likesCount": checkin.likes.count,
                 "photosCount": checkin.photos.count
-            //DBG: }
+            }
         };
         if (append) {
             feed.debug(function(){return "adding checkin at end"});
@@ -260,18 +258,13 @@ feed.feedObjParserCheckin = function(page, checkin, append, count) {
 feed.feedObjParserPhoto = function(page, photo) {
     feed.debug(function(){return "NEW PHOTO: " + JSON.stringify(photo) });
     for (var i=0;i<page.friendsCheckinsModel.count;i++) {
-        if (page.friendsCheckinsModel.get(i).id !== photo.checkin.id)
+        var info = page.friendsCheckinsModel.get(i).content;
+        if (info.id !== photo.checkin.id)
             continue;
         feed.log("UPDATE CHECKIN PHOTO: " + photo.checkin.id);
-        var photosCount = page.friendsCheckinsModel.get(i).photosCount;
-        photosCount++;
-        page.updateItem(i,
-            {
-            "venuePhoto": thumbnailPhoto(photo,300,300),
-            "photosCount": photosCount,
-            }
-        );
-
+        info.photosCount++;
+        info.venuePhoto = thumbnailPhoto(photo,300,300);
+        page.updateItem(i,info);
         break;
     }
 }
@@ -286,14 +279,12 @@ feed.feedObjParserFriend = function(page, friend, append, count) {
     feed.debug(function(){return "FRIEND CONTENT: " + JSON.stringify(friend)});
     var item = {
         "type": friend.type,
-        //DBG:
-        /*"content": {
-            "type": friend.type,*/
+        "content": {
             "id": friend.content.object.id,
             "user": friend.summary.text,
             "createdAt": makeTime(friend.createdAt),
             "timestamp": friend.createdAt,
-        //DBG: }
+        }
     };
     if (append) {
         feed.debug(function(){return "adding friend at end"});
@@ -312,14 +303,12 @@ feed.feedObjParserTip = function(page, object, append, count) {
         icon = parseIcon(tip.venue.categories[0].icon);
     else
         icon = parseIcon(defaultVenueIcon);
-    //TODO: somehow add an "Username liked the tip"
+
     var item = {
         "type": "tip",
-        //DBG:
-        /*"content": {
-            "type": "tip",*/
-            "id": tip.venue.id,
-            "userName": makeUserName(tip.user) + " added tip",
+        "content": {
+            "id": tip.id,
+            "userName": object.summary.text,
             "shout": tip.text,
             "venueName": tip.venue.name,
             "photo": icon,
@@ -327,7 +316,7 @@ feed.feedObjParserTip = function(page, object, append, count) {
             "venuePhoto": thumbnailPhoto(tip.photo, 300, 300),
             "createdAt": makeTime(tip.createdAt),
             "timestamp": tip.createdAt,
-        //DBG: }
+        }
     }
     if (append) {
         feed.debug(function(){return "adding friend at end"});
@@ -346,22 +335,20 @@ feed.feedObjParserLikeTip = function(page, object, append, count) {
         icon = parseIcon(tip.venue.categories[0].icon);
     else
         icon = parseIcon(defaultVenueIcon);
-    //TODO: somehow add an "Username liked the tip"
+
     var item = {
         "type": "tip",
-        //DBG:
-        /*"content": {
-            "type": "tip",*/
-            "id": tip.venue.id,
-            "shout": tip.text,
+        "content": {
+            "id": tip.id,
             "userName": object.summary.text,
+            "shout": tip.text,
             "venueName": "",
             "photo": icon,
             "likesCount": tip.likes.count,
             "venuePhoto": thumbnailPhoto(tip.photo, 300, 300),
             "createdAt": makeTime(object.createdAt),
             "timestamp": object.createdAt,
-        //}
+        }
     }
     if (append) {
         feed.debug(function(){return "adding friend at end"});
@@ -377,9 +364,7 @@ feed.feedObjParserSaveList = function (page, object, append, count) {
     feed.debug(function(){return "LIST: " + JSON.stringify(list)});
     var item = {
         "type": "savelist",
-        //DBG:
-        /*"content": {
-            "type": "savelist",*/
+        "content": {
             "id": list.id,
             "photo": object.thumbnails[0].photo,
             "user": object.summary.text,
@@ -389,7 +374,7 @@ feed.feedObjParserSaveList = function (page, object, append, count) {
             "likesCount": list.followers.count,
             "createdAt": makeTime(object.createdAt),
             "timestamp": object.createdAt,
-        //}
+        }
     }
     if (append) {
         feed.debug(function(){return "adding friend at end"});

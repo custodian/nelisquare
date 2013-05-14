@@ -4,6 +4,7 @@ import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api.js" as Api
+import "../js/qmlprivate.js" as P
 
 PageWrapper {
     id: friendsFeed
@@ -11,7 +12,8 @@ PageWrapper {
     signal loadHistory()
     signal user(string userid)
     signal checkin(string checkinid)
-    signal venue(string tipid)
+    signal venue(string venueid)
+    signal tip(string tipid)
 
     signal shout()
     signal nearby()
@@ -76,33 +78,54 @@ PageWrapper {
         if (configuration.feedAutoUpdate!== "0"
                 && configuration.feedIntegration !=="0") {
 
-            //TODO: //BUG: need to make an callback to addFeedItem with filled photoCache item
-            /*function ObjCallbacker() {
-                this.text = "testObject";
-                this.cacheCallback = function cacheCallback(status,url) {
-                         console.log("in callback by cache");
-                         if (!status) return;
-                         item.photoCached = url;
-                         console.log("adding object");
-                         platformUtils.addFeedItem(item);
-                     };
-            }
-            var callbacker = new ObjCallbacker();
-            cache.get(item.photo, callbacker);*/
+            /*//TODO: //BUG: need to make an callback to addFeedItem with filled photoCache item
+            function CacheCallbackPhoto(status,url) {
+                    console.log("in cache callback for photo for eventfeed");
+                    if (!status) return;
+                    item.photoCached = url;
+                    item.venuePhotoCached = ""; //DBG
+                    console.log("adding object");
+                    platformUtils.addFeedItem(item);
+            }*/
+
+            /*P.priv(item.id).cacheCallback = function() { console.log("in callback!" + item.id)};
+            cache.queueObject(item.photo, show_error);*/
+
+
+            /*function CacheCallbackVenuePhoto(){
+                this.cacheCallback = function(status,url) {
+                    console.log("in cache callback for venuePhoto for eventfeed");
+                    item.venuePhotoCached = url;
+                    var cb = new CacheCallbackPhoto();
+                    P.priv(item.id).cbPhoto = cb
+                    console.log("items: " + JSON.stringify(P._privs));
+                    cache.queueObject(item.photo, cb);
+                }
+            }*/
+            /*var callbacker = new CacheCallbackVenuePhoto();
+            console.log("function callback: " + typeof(item));
+            console.log("function string: " + item.id);*/
+
+            /*if (item.venuePhoto !== "") {
+                P.priv(item.id).cbVenuePhoto = callbacker;
+                cache.queueObject(item.venuePhoto, item.id);
+            } else {
+                callbacker.cacheCallback(true, "");
+            }*/
         }
     }
 
     function updateItem(position, update) {
-        friendsCheckinsModel.set(position, update);
+        friendsCheckinsModel.set(position, {"content": update});
         if (configuration.feedIntegration !=="0") {
-            var item = JSON.parse(JSON.stringify(friendsCheckinsModel.get(position)))
+            var item = update;
             platformUtils.updateFeedItem(item);
         }
     }
 
     function removeItem(position) {
         if (configuration.feedIntegration !=="0") {
-            var item = JSON.parse(JSON.stringify(friendsCheckinsModel.get(position)));
+            var item = friendsCheckinsModel.get(position).content;
             platformUtils.removeFeedItem(item);
         }
         friendsCheckinsModel.remove(position);
@@ -136,6 +159,9 @@ PageWrapper {
         });
         page.venue.connect(function(id) {
             stack.push(Qt.resolvedUrl("Venue.qml"), {"venueID":id});
+        });
+        page.tip.connect(function(id) {
+            stack.push(Qt.resolvedUrl("TipPage.qml"), {"tipID":id});
         });
         timerFeedUpdate.restart(); //Start autoupdate
         update();
@@ -254,7 +280,7 @@ PageWrapper {
                 else
                     return testComponent
             }
-            property variant content: model //DBG: .content
+            property variant content: model.content
             sourceComponent: getComponentByType(model.type)
         }
     }
@@ -297,8 +323,8 @@ PageWrapper {
             activeWhole: true
 
             userName: content.userName
-            userShout: content.shout
             venueName: content.venueName
+            userShout: content.shout
             venuePhoto: content.venuePhoto
             createdAt: content.createdAt
             likesCount: content.likesCount
@@ -308,7 +334,7 @@ PageWrapper {
             }
 
             onAreaClicked: {
-                friendsFeed.venue( content.id );
+                friendsFeed.tip( content.id );
             }
         }
     }

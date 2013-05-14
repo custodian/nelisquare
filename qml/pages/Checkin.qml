@@ -34,6 +34,13 @@ PageWrapper {
             onClicked: stack.pop()
         }
 
+        ToolIcon {
+            platformIconId: likeBox.mylike?"toolbar-frequent-used":"toolbar-frequent-used-dimmed"
+            onClicked: {
+                likeBox.toggleLike();
+            }
+        }
+
         ToolIcon{
             iconSource: "../icons/icon-m-toolbar-edit"+(theme.inverted?"-white":"")+".png"
             onClicked: {
@@ -196,10 +203,6 @@ PageWrapper {
                     delegate: scoreDelegate
                     visible: scoresModel.count>0
                 }
-            }
-
-            SectionHeader {
-                text: "LIKES"
             }
 
             LikeBox {

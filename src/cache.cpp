@@ -95,6 +95,7 @@ QVariant Cache::removeUrl(QVariant data)
 
 void Cache::queueObject(QVariant data, QObject *callback)
 {
+    //qDebug() << "QueueObject callback: " << callback;
     QString url = data.toString();
     if (url.size()) {
         m_cachemap_lock.lockForRead();
@@ -131,7 +132,7 @@ void Cache::queueObject(QVariant data, QObject *callback)
     }
 }
 
-void Cache::dequeueObject(QVariant url, QObject *callback)
+void Cache::dequeueObject(QVariant url, QObject* callback)
 {
     //qDebug() << "Removing callback from queue" << callback << url;
     CCacheQueue::iterator it;
@@ -144,12 +145,12 @@ void Cache::dequeueObject(QVariant url, QObject *callback)
         return;
     }
     CCallbackList &callbacks = *it;
-    //qDebug() << "Remove callback from queue: ok";
-    callbacks.remove(callback);
+    //qDebug() << "Remove callback from queue" << callback;
+    callbacks.remove(callback); //DBG: //BUG: return removing callback
     m_cachequeue_lock.unlock();
 }
 
-bool Cache::queueCacheUpdate(QVariant url, QObject *callback) {
+bool Cache::queueCacheUpdate(QVariant url, QObject* callback) {
     bool fresh = false;
     //qDebug() << "Adding callback to queue" << callback << url;
     m_cachequeue_lock.lockForWrite();
@@ -189,6 +190,7 @@ void Cache::makeCallbackAll(bool status, QVariant url)
 
 void Cache::makeCallback(QObject* callback, bool status, QVariant url)
 {
+    //qDebug() << "makecallback: " << callback;
     emit cacheUpdated(QVariant::fromValue(callback), QVariant(status), url);
 }
 

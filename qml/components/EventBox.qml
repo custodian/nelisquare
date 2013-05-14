@@ -262,7 +262,7 @@ Item {
         Text {
             width: statusTextArea.width
             color: mytheme.colors.textColorTimestamp
-            text: "<b>" + model.user.firstName + "</b>: " + model.text
+            text: "<b>" + modelData.user.firstName + "</b>: " + modelData.text
             font.pixelSize: fontSize - 2
             wrapMode: Text.Wrap
 

@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = nelisquare
 
-VERSION = 0.4
+VERSION = 0.5
 PACKAGENAME = com.nelisquare
 
 # Additional import path used to resolve QML modules in Creator's code model

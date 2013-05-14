@@ -15,41 +15,47 @@ Item {
     width: parent.width
     height: likeRow.height + 30
 
-    Row {
+    visible: likes>0
+
+    function toggleLike() {
+        likeBox.mylike = !likeBox.mylike;
+        likeBox.like(likeBox.mylike);
+    }
+
+    Column {
         id: likeRow
         width: parent.width
         spacing: 20
         anchors.verticalCenter: parent.verticalCenter
 
-        Image {
-            y: 10
-            //width: 48
-            //height: 48
-            smooth: true
-            asynchronous: true
-            source: "../pics/"+mytheme.name+"/"+((likeBox.mylike)?"heart_liked.png":"heart_like.png")
-
-            MouseArea {
-                anchors.fill: parent
-
-                onClicked: {
-                    likeBox.mylike = !likeBox.mylike;
-                    likeBox.like(likeBox.mylike);
-                }
-            }
+        SectionHeader {
+            text: "USER LIKES"
         }
 
-        Column {
-            width: parent.width - x
+        Row {
+            width: parent.width
+            spacing: 20
 
-            Text {
-                text: likeBox.likes + " " + "like(s)"
-                font.pixelSize: mytheme.font.sizeSigns
-                color: mytheme.colors.textColorOptions
-                visible: likeBox.likes>0
+            Image {
+                id: likeImage
+                y: 10
+                //width: 48
+                //height: 48
+                smooth: true
+                asynchronous: true
+                source: "../pics/"+mytheme.name+"/"+((likeBox.mylike)?"heart_liked.png":"heart_like.png")
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        toggleLike();
+                    }
+                }
             }
 
             Text {
+                anchors.verticalCenter: likeImage.verticalCenter
                 text: likeBox.likeText
                 width: parent.width
                 font.pixelSize: mytheme.font.sizeSigns

@@ -179,18 +179,14 @@ PageStackWindow {
 
     ToolBarLayout {
         id: commonTools
-        //visible: true
-        /* TODO: Should be upper left corner? */
-        /*ToolIcon {
-            iconId: stack.depth > 1 ? "toolbar-back" : "toolbar-refresh"
+        ToolIcon {
+            iconId: stack.depth > 1 ? "toolbar-back" : "toolbar-back-dimmed"//toolbar-refresh"
+            //iconId: "toolbar-back"
             onClicked: {
                 if (stack.depth > 1)
                     stack.pop();
-                else if (tabgroup.currentTab.currentPage.update) {
-                    tabgroup.currentTab.currentPage.update()
-                }
             }
-        }*/
+        }
         ButtonRow {
             style: TabButtonStyle {}
 
@@ -300,15 +296,25 @@ PageStackWindow {
     }
 
     function onCacheUpdated(callbackObject, status, url) {
-        //console.log("Cache updated: " + status + " url: " + url );
+        //console.log("Cache update callback: type: " + typeof(callbackObject) + " status: " + status + " url: " + url );
         try {
-            if (callbackObject !== undefined) {
+            if (typeof(callbackObject) === "function") {
+                //console.log("funtion!");
+                callbackObject(status,url);
+            } else if (typeof(callbackObject) === "object") {
+                //console.log("object!");
                 if (callbackObject.cacheCallback !== undefined) {
                     callbackObject.cacheCallback(status,url);
+                } else {
+                    console.log("object callback is undefined!");
                 }
+            } else if (typeof(callbackObject) === "string") {
+                //console.log("string!");
+            } else {
+                console.log("type is: " + typeof(callbackObject));
             }
         } catch (err) {
-            console.log("Cache callback error: " + err);
+            console.log("Cache callback error: " + err + " type: " + typeof(callbackObject) + " value: " + JSON.stringify(callbackObject) );
         }
     }
 
