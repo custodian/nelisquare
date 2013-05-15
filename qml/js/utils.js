@@ -6,6 +6,32 @@
 
 api.log("loading utils...");
 
+function submitDebugInfo(content, callback) {
+    var data = encodeURIComponent(JSON.stringify(content));
+    api.debug(function(){return "SUBMIT DEBUG: " + data});
+
+    var url = api.DEBUG_URL + data;
+    console.log("URL " + url);
+
+    var doc = new XMLHttpRequest();
+    doc.onreadystatechange = function() {
+        if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
+            var status = doc.status;
+            if(status!=200) {
+                console.log("Routes returned " + status + " " + doc.statusText);
+                callback(false, doc.statusText);
+            }
+        } else if (doc.readyState == XMLHttpRequest.DONE && doc.status == 200) {
+            var contentType = doc.getResponseHeader("Content-Type");
+            var result = JSON.parse(doc.responseText);
+            callback(result.status,result.message);
+        }
+    }
+
+    doc.open("GET", url);
+    doc.send();
+}
+
 function getRoutePoints(pointA,pointB,callback) {
     //dirflg =
     //d - driver

@@ -1,3 +1,11 @@
+nelisquare (0.5.0-7) stable; urgency=low
+  * Debug info submission
+  * Install app event added
+  * Likers list page added
+  * Photouploads fix
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 15 May 2013 21:51:49 +0400
+
 nelisquare (0.5.0-6) unstable; urgency=low
   * Fix for segfaults
 

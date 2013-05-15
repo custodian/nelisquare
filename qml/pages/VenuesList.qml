@@ -94,7 +94,7 @@ PageWrapper {
         id: searchBox
         anchors.top: pagetop
         width: parent.width
-        height: 80
+        height: 70
         color: mytheme.colors.backgroundBlueDark
 
         TextField {
@@ -102,13 +102,13 @@ PageWrapper {
             placeholderText: mytheme.textSearchVenue
             width: parent.width - 180
             x: 10
-            y: 20
+            y: 10
         }
 
         ButtonBlue {
             id: searchButton
             x: parent.width - width - 10
-            y: 20
+            y: 10
             height: searchText.height
             label: "SEARCH"
             width: 150

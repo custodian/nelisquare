@@ -236,8 +236,9 @@ PageStackWindow {
 
     ThemeLoader {
         id: mytheme
-        onNameChanged: {
-            Api.api.inverted = theme.inverted;
+
+        onInvertedChanged: {
+            Api.api.inverted = inverted;
         }
     }
 
@@ -263,6 +264,10 @@ PageStackWindow {
                 }
             }
         }
+    }
+
+    function sendDebugInfo(object) {
+        stack.push(Qt.resolvedUrl("pages/DebugSubmit.qml"), {"content": object});
     }
 
     function popToTop(tab) {

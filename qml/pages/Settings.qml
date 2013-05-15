@@ -29,11 +29,31 @@ PageWrapper {
         }
 
         ToolIcon {
+            platformIconId: "icon-m-user-guide"
+            onClicked: {
+                infoDialog.open();
+            }
+        }
+
+        ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
                 menu.open();
             }
         }
+    }
+
+    QueryDialog  {
+        id: infoDialog
+
+        icon: "image://theme/icon-m-user-guide"
+        titleText: "Nelisquare"
+        message: mytheme.textHelp1
+            + "\n" + mytheme.textHelp2
+            + "\n" + mytheme.textVersionInfo + BuildInfo.version
+            + "\n" + mytheme.textBuildInfo + BuildInfo.build
+
+        rejectButtonText: "Close"
     }
 
     QueryDialog  {
@@ -547,46 +567,6 @@ PageWrapper {
                 source: "../pics/"+mytheme.name+"/separator.png"
             }
 
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: mytheme.textHelp1
-                color: mytheme.colors.textColorOptions
-                font.pixelSize: mytheme.font.sizeHelp
-
-                horizontalAlignment: Text.AlignHCenter
-            }
-
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: mytheme.textHelp2
-                color: mytheme.colors.textColorOptions
-                font.pixelSize: mytheme.font.sizeHelp
-                font.bold: true
-
-                horizontalAlignment: Text.AlignHCenter
-            }
-
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: mytheme.textVersionInfo + BuildInfo.version
-                color: mytheme.colors.textColorOptions
-                font.pixelSize: mytheme.font.sizeHelp
-                horizontalAlignment: Text.AlignHCenter
-            }
-
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: mytheme.textBuildInfo + BuildInfo.build
-                color: mytheme.colors.textColorOptions
-                font.pixelSize: mytheme.font.sizeHelp
-                horizontalAlignment: Text.AlignHCenter
-            }
-
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: mytheme.textHelp3
@@ -603,9 +583,9 @@ PageWrapper {
                 }
             }
 
-            Item {
+            Item{
+                height: 20
                 width: parent.width
-                height: 30
             }
 
         }

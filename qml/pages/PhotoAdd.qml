@@ -116,8 +116,15 @@ PageWrapper {
         }
         onUploadPhoto: {
             photoShareDialog.state="hidden";
-            Api.photos.addPhoto(params, options.owner);
-            stack.pop();
+            Api.photos.addPhoto(params, options.owner,
+                function(url) {
+                    if (!pictureHelper.upload(url, params.path, params.owner)) {
+                        //TODO: make a
+                        show_error("Error uploading photo!");
+                    }
+                    stack.pop();
+                });
+
         }
     }
 }

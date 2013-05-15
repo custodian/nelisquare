@@ -56,7 +56,7 @@ function parseIcon(icon, size) {
     if (size === undefined) {
         size = 32
     }
-    return icon.prefix+((api.inverted)?"bg_":"")+size+icon.suffix;
+    return icon.prefix+((api.inverted)?"":"bg_")+size+icon.suffix;
 }
 
 function processLikes(likebox, data) {

@@ -28,7 +28,7 @@ photos.parsePhoto = function(response, page) {
     page.owner.createdAt = makeTime(obj.createdAt);
 }
 
-photos.addPhoto = function(params, page) {
+photos.addPhoto = function(params, page, callback) {
     params.owner.waiting_show();
     var url = API_URL + "photos/add?";
     url += params.type;
@@ -48,15 +48,12 @@ photos.addPhoto = function(params, page) {
         url += "&broadcast="+broadcast;
     }
     url += "&" + getAccessTokenParameter();
-    if (!pictureHelper.upload(url, params.path, params.owner)) {
-        //TODO: make a
-        page.show_error("Error uploading photo!");
-    }
+    callback(url);
 }
 
 photos.parseAddPhoto = function(response, page) {
     page.waiting_hide();
-    var obj = processResponse(response).photo;
+    var obj = api.process(response).photo;
     //console.log("ADDED PHOTO: " + JSON.stringify(photo));
     page.photosBox.photosModel.insert(0,
                 makePhoto(obj,300));

@@ -1,4 +1,6 @@
 nelisquare (0.5.0) unstable; urgency=low
+  * Debug info submission
+  * Install app event added
   * Likers list page added
   * List saved event added to feed
   * New tips event added to feed
@@ -8,7 +10,7 @@ nelisquare (0.5.0) unstable; urgency=low
   * Homescreen disabled
   * Api structure update
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 13 May 2013 21:17:49 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 15 May 2013 21:51:49 +0400
 
 nelisquare (0.4.10) stable; urgency=low
   * [in-dev] dialogs updates

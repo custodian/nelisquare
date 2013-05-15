@@ -21,7 +21,7 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    headerText: "CHECKIN HISTORY"
+    headerText: "CHECK-IN HISTORY"
     headerIcon: "../icons/icon-header-checkinhistory.png"
 
     function load() {

@@ -117,6 +117,7 @@ feed.parseFriendsFeed = function(response, page, history) {
             } else {
                 feed.log("LIKE TYPE: " + like.type);
                 feed.debug(function(){return "LIKE VALUE: " + JSON.stringify(object)});
+                feed.feedObjParserUnknown(page, object);
             }
         } else if (object.type === "save") {
             var save = object.content;
@@ -127,20 +128,29 @@ feed.parseFriendsFeed = function(response, page, history) {
                 } else {
                     feed.log("SAVE TYPE: " + save.type + " OBJECT: " + save.object.content.type);
                     feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
+                    feed.feedObjParserUnknown(page, object);
                 }
             } else {
                 feed.log("SAVE TYPE: " + save.type);
                 feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
+                feed.feedObjParserUnknown(page, object);
+            }
+        } else if (object.type === "install") {
+            var install = object.content;
+            if (install.type === "plugin") {
+                feed.feedObjParserInstallPlugin(page, object, append, count);
+                count++;
+            } else {
+                feed.log("INSTALL TYPE: " + install.type);
+                feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
+                feed.feedObjParserUnknown(page, object);
             }
         } else {
             //un implemented content types goes here
             feed.log("CONTENT TYPE: " + object.type);
             feed.debug(function(){return "CONTENT VALUE: " + JSON.stringify(object)});
-            var itemtest = {
-                "type": object.type,
-                "content": {}
-            }
-            page.addItem(itemtest);
+            feed.feedObjParserUnknown(page, object);
+            count++;
         }
     }
 
@@ -172,15 +182,14 @@ feed.parseFriendsFeed = function(response, page, history) {
             feedObjParser(activity);
         } else if (activity.type === "save") {
             feedObjParser(activity);
-        } else {
+        } else if (activity.type === "install") {
+            feedObjParser(activity);
+        }else {
             //un implemented events goes here
-            var itemtest = {
-                "type": activity.type,
-                "content": {}
-            }
             feed.log("ACTIVITY TYPE: " + activity.type);
-            feed.debug(function(){return "ACTIVITY CONTENT: " + JSON.stringify(activity)});
-            page.addItem(itemtest);
+            feed.log(function(){return "ACTIVITY CONTENT: " + JSON.stringify(activity)}());
+            feed.feedObjParserUnknown(page, object);
+            count++;
         }
     });
 
@@ -198,7 +207,7 @@ feed.parseFriendsFeed = function(response, page, history) {
                 page.trailingMarker = page.friendsCheckinsModel.get(api.MAX_FEED_SIZE-1).content.id;
         }
         //rotate times and dates
-        //DBG: get content, replace, put back
+        //get content, replace, put back
         for (var i=0;i<page.friendsCheckinsModel.count;i++){
             var info = page.friendsCheckinsModel.get(i).content;
             info.createdAt = makeTime(info.timestamp);
@@ -206,6 +215,14 @@ feed.parseFriendsFeed = function(response, page, history) {
         }
     }
     page.lastUpdateTime = updateTime;
+}
+
+feed.feedObjParserUnknown = function(page, object) {
+    var item = {
+                "type": object.type,
+                "content": object
+    }
+    page.addItem(item);
 }
 
 feed.feedObjParserCheckin = function(page, checkin, append, count) {
@@ -388,4 +405,28 @@ feed.feedObjParserSaveList = function (page, object, append, count) {
     }
 }
 
-
+feed.feedObjParserInstallPlugin = function(page, object, append, count) {
+    var plugin = object.content.object;
+    feed.debug(function(){return "PLUGIN: " + JSON.stringify(plugin)});
+    var item = {
+        "type": "installplugin",
+        "content": {
+            "id": plugin.id,
+            "userName": object.summary.text,
+            "venueName": plugin.name,
+            "photo": plugin.icon,
+            "venuePhoto": plugin.banner,
+            "shout": plugin.tagline,
+            "url": plugin.detailUrl,
+            "createdAt": makeTime(object.createdAt),
+            "timestamp": object.createdAt,
+        }
+    };
+    if (append) {
+        feed.debug(function(){return "adding friend at end"});
+        page.addItem(item);
+    } else {
+        feed.debug(function(){return "adding friend at head"});
+        page.addItem(item,count);
+    }
+}

@@ -15,10 +15,11 @@ PageWrapper {
     signal showAddPhoto(string checkin)
     id: checkin
 
-    headerText: "CHECKIN DETAILS"
+    headerText: "CHECK-IN DETAILS"
     headerIcon: "../icons/icon-header-checkin.png"
 
     property string checkinID: ""
+    property variant checkinCache: undefined
 
     property alias scoreTotal: scoreTotal.text
     property alias owner: checkinOwner
@@ -100,6 +101,21 @@ PageWrapper {
             }});
         });
         Api.checkin.loadCheckin(page, checkinID);
+    }
+
+    onCheckinCacheChanged: {
+        if (checkinCache !== undefined ) {
+            //owner.userID =
+            owner.userName = checkinCache.user
+            owner.createdAt = checkinCache.createdAt
+            owner.userPhoto.photoUrl = checkinCache.photo
+            //owner.venueID =
+            owner.venueName = checkinCache.venueName
+            //owner.venueAddress =
+            //owner.venueCity =
+            //owner.eventOwner =
+            owner.userShout = checkinCache.shout
+        }
     }
 
     ListModel {
@@ -196,6 +212,7 @@ PageWrapper {
                     }
                     Text {
                         id: scoreTotal
+                        text: "--"
                         color: mytheme.colors.textPoints
                         font.pixelSize: mytheme.font.sizeDefault
                     }

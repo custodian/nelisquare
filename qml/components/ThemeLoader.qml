@@ -12,7 +12,7 @@ Item {
     property string colorString: "red"
 
     property int borderSizeMedium: 20
-    property int headerHeight: inPortrait ? 65 : 55
+    property int headerHeight: inPortrait ? 60 : 50
 
     // padding size
     property int paddingSmall: 4

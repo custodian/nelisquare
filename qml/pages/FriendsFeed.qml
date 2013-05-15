@@ -11,7 +11,7 @@ PageWrapper {
     signal update()
     signal loadHistory()
     signal user(string userid)
-    signal checkin(string checkinid)
+    signal checkin(variant content)
     signal venue(string venueid)
     signal tip(string tipid)
 
@@ -152,8 +152,8 @@ PageWrapper {
             page.reset();
             Api.feed.loadFriendsFeed(page);
         });
-        page.checkin.connect(function(id) {
-            stack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":id});
+        page.checkin.connect(function(content) {
+            stack.push(Qt.resolvedUrl("Checkin.qml"),{"checkinID":content.id, "checkinCache": content});
         });
         page.user.connect(function(id){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":id});
@@ -207,7 +207,7 @@ PageWrapper {
             width: parent.width
             Rectangle {
                 width: parent.width
-                height: 90
+                height: 70
                 color: mytheme.colors.toolbarDarkColor
 
                 ButtonRow {
@@ -278,8 +278,10 @@ PageWrapper {
                     return friendsFeedDelegateTip
                 else if (type === "savelist")
                     return friendsFeedDelegateSaveList
+                else if (type === "installplugin")
+                    return friendsFeedDelegateInstallPlugin
                 else
-                    return testComponent
+                    return friendsFeedDelegateUnknown
             }
             property variant content: model.content
             sourceComponent: getComponentByType(model.type)
@@ -287,12 +289,69 @@ PageWrapper {
     }
 
     Component {
-        id: testComponent
+        id: friendsFeedDelegateUnknown
 
-        Text {
-            color: mytheme.colors.textColorOptions
-            font.pixelSize: mytheme.font.sizeSigns
-            text: content.type + " event"
+        Column {
+            width: parent.width
+
+            Text {
+                width: parent.width
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeSettigs
+                text: "Unknown " + content.type + " event!"
+
+                Image {
+                    anchors {
+                        right: parent.right
+                        rightMargin: 20
+                        top: parent.top
+                        topMargin: 20
+                    }
+                    source: "image://theme/icon-l-search"
+                    smooth: true
+                    sourceSize { width: 64; height: 64 }
+
+                    MouseArea {
+                        anchors.fill: parent
+
+                        onClicked: {
+                            appWindow.sendDebugInfo(content);
+                        }
+                    }
+                }
+
+            }
+
+            Text {
+                width: parent.width
+                color: mytheme.colors.textColorOptions
+                font.pixelSize: mytheme.font.sizeSigns
+                text: "This event type is unknown.\nYou can help with resolution."
+            }
+        }
+
+    }
+
+    Component {
+        id: friendsFeedDelegateInstallPlugin
+
+        EventBox {
+            id: eventbox
+            activeWhole: true
+
+            userName: content.userName
+            venueName: content.venueName
+            userShout: content.shout
+            venuePhoto: content.venuePhoto
+            createdAt: content.createdAt
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = content.photo
+            }
+
+            onAreaClicked: {
+                Qt.openUrlExternally(content.url);
+            }
         }
     }
 
@@ -388,7 +447,7 @@ PageWrapper {
             }
 
             onAreaClicked: {
-                friendsFeed.checkin( content.id );
+                friendsFeed.checkin( content );
             }
         }
     }
