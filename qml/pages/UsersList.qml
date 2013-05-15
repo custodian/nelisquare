@@ -8,7 +8,8 @@ PageWrapper {
     id: usersList
     signal user(string id)
 
-    property string userID: ""
+    property string objID: ""
+    property string objType: ""
     property alias usersModel: usersModel
 
     width: parent.width
@@ -16,7 +17,7 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
-    headerText: "USER FRIENDS"
+    headerText: "Loading..."
     headerIcon: "../icons/icon-header-userslist.png"
 
     function load() {
@@ -24,7 +25,13 @@ PageWrapper {
         page.user.connect(function(params){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":params});
         });
-        Api.users.loadUserFriends(page,userID);
+        if (objType === "user") {
+            headerText = "USER FRIENDS"
+            Api.users.loadUserFriends(page,objID);
+        } else {
+            headerText = "LIKERS LIST"
+            Api.users.loadLikeUsers(page,objID,objType);
+        }
     }
 
     ListModel{

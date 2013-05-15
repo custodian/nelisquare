@@ -14,6 +14,7 @@ PageWrapper {
     signal user(string user)
     signal photo(string photo)
     signal like(string venueid, bool state)
+    signal showlikes()
     signal tip(string tipid)
     signal tips()
 
@@ -149,6 +150,9 @@ PageWrapper {
         page.like.connect(function(venueID,state) {
             Api.venues.likeVenue(page,venueID,state);
         });
+        page.showlikes.connect(function(checkin) {
+            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"venue","objID":venueID});
+        })
         Api.venues.loadVenue(page, venueID);
     }
 
@@ -266,6 +270,10 @@ PageWrapper {
                     id: likeBox
                     x: 10
                     width: parent.width - 20
+
+                    onShowlikes: {
+                        place.showlikes();
+                    }
 
                     onLike: {
                         place.like(place.venueID, state);

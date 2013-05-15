@@ -62,7 +62,6 @@ Item{
         sourceUncached: headerIcon
         anchors { verticalCenter: parent.verticalCenter; left: parent.left; margins: mytheme.paddingLarge }
         height: sourceSize.height; width: sourceSize.width
-        sourceSize { height: mytheme.graphicSizeSmall; width: mytheme.graphicSizeSmall }
     }
 
     Text{

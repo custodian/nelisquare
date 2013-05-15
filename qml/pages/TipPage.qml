@@ -6,6 +6,7 @@ import "../js/api.js" as Api
 
 PageWrapper {
     signal like(bool state)
+    signal showlikes()
     signal user(string user)
     signal venue(string venueID)
     signal photo(string photoID)
@@ -55,6 +56,9 @@ PageWrapper {
         page.like.connect(function(state){
             Api.tips.likeTip(page, tipID, state)
         });
+        page.showlikes.connect(function() {
+            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"tip","objID":tipID});
+        })
         page.user.connect(function(user){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
@@ -115,9 +119,19 @@ PageWrapper {
 
             LikeBox {
                 id: likeBox
+
+                onShowlikes: {
+                    tipPage.showlikes();
+                }
+
                 onLike: {
                     tipPage.like(state);
                 }
+            }
+
+            SectionHeader {
+                text: "TIP PHOTO"
+                visible: tipPhotoID!=""
             }
 
             ProfilePhoto{
@@ -130,6 +144,8 @@ PageWrapper {
                     tipPage.photo(tipPhotoID);
                 }
             }
+
+            SectionHeader { }
 
             Row {
                 width: parent.width

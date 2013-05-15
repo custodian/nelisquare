@@ -1,4 +1,5 @@
 nelisquare (0.5.0) unstable; urgency=low
+  * Likers list page added
   * List saved event added to feed
   * New tips event added to feed
   * Tips like event added to feed

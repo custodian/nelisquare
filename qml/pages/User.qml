@@ -111,7 +111,7 @@ PageWrapper {
             stack.push(Qt.resolvedUrl("CheckinHistory.qml"),{"userID":user});
         });
         page.friends.connect(function(user) {
-            stack.push(Qt.resolvedUrl("UsersList.qml"),{"userID":user});
+            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"user","objID":user});
         });
         page.photos.connect(function(user) {
             var photogallery = stack.push(Qt.resolvedUrl("PhotosGallery.qml"));

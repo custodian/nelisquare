@@ -6,6 +6,7 @@ import "../js/api.js" as Api
 
 PageWrapper {
     signal like(string checkin, bool state)
+    signal showlikes()
     signal venue(string venue)
     signal user(string user)
     signal photo(string photo)
@@ -74,6 +75,9 @@ PageWrapper {
         page.like.connect(function(checkin, state) {
             Api.checkin.likeCheckin(page,checkin,state);
         });
+        page.showlikes.connect(function() {
+            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"checkin","objID":checkinID});
+        })
         page.user.connect(function(user){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
         });
@@ -208,6 +212,10 @@ PageWrapper {
 
             LikeBox {
                 id: likeBox
+
+                onShowlikes: {
+                    checkin.showlikes();
+                }
 
                 onLike: {
                     checkin.like(checkin.checkinID,state);

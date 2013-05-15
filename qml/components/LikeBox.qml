@@ -4,6 +4,7 @@ Item {
     id: likeBox
     signal like(bool state)
     signal dislike(bool state)
+    signal showlikes()
 
     property int likes: 0
     property bool mylike: false
@@ -32,7 +33,7 @@ Item {
             text: "USER LIKES"
         }
 
-        Row {
+        /*Row {
             width: parent.width
             spacing: 20
 
@@ -45,24 +46,26 @@ Item {
                 asynchronous: true
                 source: "../pics/"+mytheme.name+"/"+((likeBox.mylike)?"heart_liked.png":"heart_like.png")
 
-                MouseArea {
-                    anchors.fill: parent
 
-                    onClicked: {
-                        toggleLike();
-                    }
-                }
-            }
+            }*/
 
             Text {
-                anchors.verticalCenter: likeImage.verticalCenter
+                //anchors.verticalCenter: likeImage.verticalCenter
                 text: likeBox.likeText
                 width: parent.width
                 font.pixelSize: mytheme.font.sizeSigns
                 color: mytheme.colors.textColorTimestamp
                 wrapMode: Text.Wrap
-                visible: likeBox.likes>0
+                //visible: likeBox.likes>0
             }
+        //}
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        onClicked: {
+            showlikes();
         }
     }
 }

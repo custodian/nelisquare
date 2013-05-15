@@ -303,11 +303,34 @@ users.parseCheckinHistory = function(response, page) {
     });
 }
 
+users.loadLikeUsers = function(page, objectid, objecttype) {
+    page.usersModel.clear();
+    page.waiting_show();
+    var url = objecttype + "s/" + objectid + "/likes?" + getAccessTokenParameter();
+    api.request("GET", url, page, users.parseLikeUsers);
+}
+
+users.parseLikeUsers = function(response, page) {
+    page.waiting_hide();
+    var data = api.process(response, page);
+    users.log("LIKE DATA: " + JSON.stringify(data));
+    data.likes.groups.forEach(function(group){
+        group.items.forEach(function(user){
+            page.usersModel.append({
+                "id":user.id,
+                "name":makeUserName(user),
+                "city":parse(user.homeCity),
+                "photo":thumbnailPhoto(user.photo,100)
+                })
+            })
+        })
+}
+
 users.loadUserFriends = function(page, user) {
     page.usersModel.clear();
     page.waiting_show();
     var url = "users/" + user + "/friends?" + getAccessTokenParameter();
-    api.request("GET",url,page,users.parseUsersList)
+    api.request("GET",url,page,users.parseUsersList);
 }
 
 users.parseUsersList = function(response, page) {

@@ -156,8 +156,11 @@ feed.parseFriendsFeed = function(response, page, history) {
             }
 
             if (content.type === "aggregation") {
-                //TODO: move general parts from activity to content to get
+                feed.log("CREATE AGGREGATION!");
                 content.object.items.forEach(function(item) {
+                    //TODO: move general parts from activity to content to get
+                    //now just copy, looks weird on tips
+                    item.summary = activity.summary;
                     feedObjParser(item);
                 });
             } else {
