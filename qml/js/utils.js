@@ -11,7 +11,6 @@ function submitDebugInfo(content, callback) {
     api.debug(function(){return "SUBMIT DEBUG: " + data});
 
     var url = api.DEBUG_URL + data;
-    console.log("URL " + url);
 
     var doc = new XMLHttpRequest();
     doc.onreadystatechange = function() {

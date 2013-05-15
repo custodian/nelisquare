@@ -175,6 +175,9 @@ PageWrapper {
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.icon
+                //DBG
+                if (model.specialsCount)
+                    console.log("specials: " + model.specialsCount)
             }
 
             onAreaClicked: {

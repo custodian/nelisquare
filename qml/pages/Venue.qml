@@ -42,6 +42,8 @@ PageWrapper {
 
     property string venueTypeUrl: ""
 
+    property variant specials: undefined
+
     property alias tipsModel: tipsModel
     property alias photosBox: photosBox
     property alias usersBox: usersBox
@@ -279,6 +281,14 @@ PageWrapper {
                         place.like(place.venueID, state);
                     }
                 }
+
+                DebugWidget {
+                    debugType: "special"
+                    debugContent: specials
+
+                    visible: specials !== undefined
+                }
+
 
                 PhotosBox {
                     id: usersBox

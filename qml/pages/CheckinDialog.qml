@@ -27,10 +27,10 @@ PageWrapper {
         shoutText.text = "";
     }
 
-    function checkinCompleted(checkinID, message) {
+    function checkinCompleted(checkinID, message, specials) {
         waiting_hide();
         show_info(message);
-        stack.replace(Qt.resolvedUrl("../pages/Checkin.qml"),{"checkinID":checkinID});
+        stack.replace(Qt.resolvedUrl("../pages/Checkin.qml"),{"checkinID":checkinID , "specials": specials});
     }
 
     onCheckin: {

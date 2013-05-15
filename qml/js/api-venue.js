@@ -152,6 +152,8 @@ venues.parseVenue = function(response, page) {
             }
         });
     }
+    if (venue.specials.count>0)
+        page.specials = venue.specials;
 }
 
 venues.loadVenuePhotos = function(page, venue) {

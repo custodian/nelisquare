@@ -20,6 +20,7 @@ PageWrapper {
 
     property string checkinID: ""
     property variant checkinCache: undefined
+    property variant specials: undefined
 
     property alias scoreTotal: scoreTotal.text
     property alias owner: checkinOwner
@@ -225,6 +226,13 @@ PageWrapper {
                     delegate: scoreDelegate
                     visible: scoresModel.count>0
                 }
+            }
+
+            DebugWidget {
+                debugType: "specials"
+                debugContent: specials
+
+                visible: specials!== undefined && specials.items.count>0
             }
 
             LikeBox {

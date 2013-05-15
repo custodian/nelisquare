@@ -3,28 +3,21 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import "."
 
-//Rectangle   {
 Page {
     id: pageWrapper
 
     width: parent.width
     height: parent.height
 
-    //color: mytheme.colors.backgroundMain
-    //property alias color: background.color
     property string color
     property alias pagetop: pageHeader.bottom
-    //property Item tools: commonTools
+
     tools : commonTools
     property alias dummyMenu: dummyMenu
     property alias headerText: pageHeader.headerText
     property alias headerIcon: pageHeader.headerIcon
     property alias headerBubble: pageHeader.countBubbleVisible
     orientationLock: mainPage.orientationLock
-
-/*    property alias headerSelectionTitle: pageHeader.headerSelectionTitle
-    property alias headerSelectionItems: pageHeader.headerSelectionItems
-*/
 
     signal headerSelectedItem(int index)
 
