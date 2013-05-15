@@ -57,6 +57,7 @@ PageWrapper {
     property alias boardModel: boardModel
 
     headerText: "USER DETAILS"
+    headerIcon: "../icons/icon-header-user.png"
 
     /*tools: ToolBarLayout{
         ToolIcon{

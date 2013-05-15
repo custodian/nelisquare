@@ -20,6 +20,7 @@ PageWrapper {
     property alias options: options
 
     headerText: caption
+    headerIcon: "../icons/icon-header-photos.png"
 
     id: venuePhotos
     width: parent.width

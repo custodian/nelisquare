@@ -22,6 +22,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "NOTIFICATIONS"
+    headerIcon: "../icons/icon-header-notifications.png"
     headerBubble: false
 
     tools: ToolBarLayout{

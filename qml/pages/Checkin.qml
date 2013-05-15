@@ -15,6 +15,7 @@ PageWrapper {
     id: checkin
 
     headerText: "CHECKIN DETAILS"
+    headerIcon: "../icons/icon-header-checkin.png"
 
     property string checkinID: ""
 
@@ -35,7 +36,7 @@ PageWrapper {
         }
 
         ToolIcon {
-            platformIconId: likeBox.mylike?"toolbar-frequent-used":"toolbar-frequent-used-dimmed"
+            iconSource: "../icons/icon-m-toolbar-like"+(likeBox.mylike? "-red":(theme.inverted?"-white":""))+".png"
             onClicked: {
                 likeBox.toggleLike();
             }

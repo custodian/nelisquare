@@ -15,7 +15,9 @@ PageWrapper {
     height: parent.height
 
     color: mytheme.colors.backgroundMain
+
     headerText: "PHOTO"
+    headerIcon: "../icons/icon-header-photos.png"
 
     property string photoID: ""
     property string photoUrl: ""

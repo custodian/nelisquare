@@ -20,6 +20,7 @@ PageWrapper {
     signal checkin(string venueID, string comment, bool friends, bool facebook, bool twitter)
 
     headerText: "NEW CHECKIN"
+    headerIcon: "../icons/icon-header-newcheckin.png"
     headerBubble: false
 
     function reset() {

@@ -19,6 +19,7 @@ PageWrapper {
 
     //TODO: no header. show minimap + venues instead
     headerText: "NEARBY VENUES"
+    headerIcon: "../icons/icon-header-venueslist.png"
 
     /*tools: ToolBarLayout{
         ToolIcon{

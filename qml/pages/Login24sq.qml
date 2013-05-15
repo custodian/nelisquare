@@ -15,6 +15,8 @@ PageWrapper {
     //color: mytheme.colors.backgroundMain
 
     headerText: ""
+    //TODO: add some icon (key)
+    //headerIcon: "../icons/icon-header-.png"
 
     function load() {
         loginDialog.finished.connect(function(url) {

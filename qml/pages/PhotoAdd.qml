@@ -15,6 +15,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "Select photo for upload"
+    headerIcon: "../icons/icon-header-photos.png"
 
     tools: ToolBarLayout{
         ToolIcon{

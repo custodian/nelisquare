@@ -16,6 +16,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "BADGES"
+    headerIcon: "../icons/icon-header-badges.png"
 
     function load() {
         var page = badgesPage;

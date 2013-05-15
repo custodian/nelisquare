@@ -17,6 +17,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "USER FRIENDS"
+    headerIcon: "../icons/icon-header-userslist.png"
 
     function load() {
         var page = usersList;

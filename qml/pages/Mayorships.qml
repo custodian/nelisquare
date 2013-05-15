@@ -17,6 +17,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "MAYORSHIPS"
+    headerIcon: "../icons/icon-header-mayorships.png"
 
     function load() {
         var page = mayorships;

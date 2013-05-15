@@ -19,6 +19,7 @@ PageWrapper {
     height: parent.height
 
     headerText: "SETTINGS"
+    headerIcon: "../icons/icon-header-settings.png"
     headerBubble: false
 
     tools: ToolBarLayout{

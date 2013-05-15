@@ -1,20 +1,15 @@
 import Qt 4.7
 import "../components"
 
-//Item {
 PageWrapper {
     id: welcomePage
     signal login()
-
-    //width: window.width
-    //height: window.height
 
     property bool newuser: false
     headerText: ""
 
     function load() {
         welcomePage.login.connect(function(){
-            //loginArea.visible = true;
             //create login Component
             stack.push(Qt.resolvedUrl("Login24sq.qml"));
         });

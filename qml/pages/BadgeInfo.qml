@@ -19,7 +19,8 @@ PageWrapper {
     property string time: ""
     property string index: ""
 
-    headerText: name//"Badge details"
+    headerText: name
+    headerIcon: "../icons/icon-header-badges.png"
 
     function load() {
         var page = badgeInfo;

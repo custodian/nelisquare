@@ -41,6 +41,7 @@ PageWrapper {
         ListElement {name:"Nearby activity"}
     }*/
     headerText: "FRIENDS FEED"
+    headerIcon: "../icons/icon-header-feed.png"
 
     width: parent.width
     height: parent.height

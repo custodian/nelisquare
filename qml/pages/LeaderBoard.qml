@@ -17,6 +17,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "YOU ARE #" + leaderBoard.rank
+    headerIcon: "../icons/icon-header-leadersboard.png"
 
     function load() {
         var page = leaderBoard;

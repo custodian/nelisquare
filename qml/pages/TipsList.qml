@@ -16,6 +16,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "TIPS LIST"
+    headerIcon: "../icons/icon-header-tipslist.png"
 
     property string baseID: ""
     property string baseType: "venues" //"venues/ID/tips" , "lists/ID/todos"("users/ID/tips")

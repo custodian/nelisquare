@@ -36,7 +36,8 @@ Image {
     }
 
     function cacheLoad() {
-        if (__sourceUncached !== "") {
+        if (__sourceUncached !== ""
+                && __sourceUncached.indexOf("http") !== -1 ) {
             //if valid url - queue cache
             //console.log("Queue cache update for: " + __sourceUncached);
             cache.queueObject(__sourceUncached,root);

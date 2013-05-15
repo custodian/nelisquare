@@ -22,6 +22,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     headerText: "CHECKIN HISTORY"
+    headerIcon: "../icons/icon-header-checkinhistory.png"
 
     function load() {
         var page = checkinHistory;
