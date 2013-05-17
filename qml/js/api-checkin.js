@@ -136,7 +136,7 @@ checkin.parseAddCheckin = function(response, page) {
                 console.log("SPECIALS: " + JSON.stringify(noti));
                 specials.items.push(noti);
             } else {
-                console.log("TODO: checkin noti info: " + JSON.stringify(noti));
+                console.log("TODO: NOTI TYPE: " + JSON.stringify(noti));
             }
             //TODO: add specials support info
         }

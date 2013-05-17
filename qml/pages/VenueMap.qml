@@ -2,7 +2,7 @@ import Qt 4.7
 import QtQuick 1.1
 import QtMobility.location 1.2
 import "../components"
-import "../js/utils.js" as Utils
+import "../js/api.js" as Api
 
 PageWrapper {
     id: venueMap
@@ -44,6 +44,7 @@ PageWrapper {
     onRouteChanged: {
         while(routeLine.path.length>0)
             routeLine.removeCoordinate(routeLine.path[0]);
+        //console.log("ROUTE: " + JSON.stringify(route));
         route.Directions.Routes[0].Steps
         .forEach(function(step) {
             var coord = Qt.createQmlObject("import QtQuick 1.1; import QtMobility.location 1.2; Coordinate {}",venueMap);
@@ -184,15 +185,15 @@ PageWrapper {
             label: "GET ROUTE"
             onClicked: {
                 userLocation = {
-                    "lat": window.positionSource.position.coordinate.latitude,
-                    "lng": window.positionSource.position.coordinate.longitude
+                    "lat": Api.api.positionSource.position.coordinate.latitude,
+                    "lng": Api.api.positionSource.position.coordinate.longitude
                 };
                 var venueLocation = {
                     "lng":venueMapLng,
                     "lat":venueMapLat
                 };
                 waiting_show();
-                Utils.getRoutePoints(venueMap.userLocation,
+                Api.getRoutePoints(venueMap.userLocation,
                                      venueLocation,
                                      function(data){
                                          waiting_hide();

@@ -35,7 +35,7 @@ function getRoutePoints(pointA,pointB,callback) {
     //dirflg =
     //d - driver
     //w - walk
-    var url = "http://maps.google.com/maps/nav?output=js&dirflg=w&hl=en&mapclient=jsapi&q=from%3A%20"
+    var url = "http://maps.google.com/maps/nav?output=js&dirflg=d&hl=en&mapclient=jsapi&q=from%3A%20"
         + pointA.lat + "%2C" + pointA.lng
         + "%20to%3A%20"
         + pointB.lat + "%2C" + pointB.lng;

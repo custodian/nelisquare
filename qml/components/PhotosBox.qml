@@ -5,7 +5,7 @@ Item {
     id: photosBoxComponent
     width: parent.width
 
-    property string caption: "Photos"
+    property string caption: "PHOTOS"
     property int photoSize: 200
     property int fontSize: 20
 
