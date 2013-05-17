@@ -8,12 +8,11 @@ api.log("loading api-venues...");
 var venues = new ApiObject();
 //venues.debuglevel = 1;
 
-
 venues.loadVenues = function(page, query) {
     var url = "venues/search?" +
         getLocationParameter();
     if(query!=null && query.length>0) {
-        url += "&query=" + query;
+        url += "&query=" + encodeURIComponent(query);
     }
     url += "&" + getAccessTokenParameter();
     api.request("GET", url, page, venues.parseVenues);
