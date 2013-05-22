@@ -7,6 +7,7 @@ import "../js/api.js" as Api
 
 PageWrapper {
     signal user(string user)
+    signal venue(string venueid)
     signal prevPhoto()
     signal nextPhoto()
 
@@ -56,6 +57,9 @@ PageWrapper {
         var page = photoDetails;
         page.user.connect(function(user) {
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});
+        });
+        page.venue.connect(function(venueid) {
+            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
         });
         Api.photos.loadPhoto(page,photoID);
     }
@@ -166,8 +170,11 @@ PageWrapper {
         id: photoOwner
         anchors.bottom: parent.bottom
         fontSize: 18
-        onAreaClicked: {
+        onUserClicked: {
             user(photoDetails.owner.userID);
+        }
+        onAreaClicked: {
+            venue(photoDetails.owner.venueID);
         }
     }
 }

@@ -16,8 +16,9 @@ photos.loadPhoto = function(page, photoid) {
 }
 
 photos.parsePhoto = function(response, page) {
-    var obj = api.process(response, page).photo;
-    //console.log("FULL PHOTO: " + JSON.stringify(photo))
+    var data = api.process(response, page)
+    //photos.log("FULL PHOTO: " + JSON.stringify(data))
+    var obj = data.photo;
     page.waiting_hide();
 
     page.photoUrl = thumbnailPhoto(obj);
@@ -25,6 +26,8 @@ photos.parsePhoto = function(response, page) {
     page.owner.userName = makeUserName(obj.user);
     page.owner.userPhoto.photoUrl = thumbnailPhoto(obj.user.photo,100);
     page.owner.userShout = "via " + parse(obj.source.name);
+    page.owner.venueID = obj.venue.id;
+    page.owner.venueName = parse(obj.venue.name);
     page.owner.createdAt = makeTime(obj.createdAt);
 }
 

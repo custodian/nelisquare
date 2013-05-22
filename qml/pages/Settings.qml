@@ -29,7 +29,8 @@ PageWrapper {
         }
 
         ToolIcon {
-            platformIconId: "icon-m-user-guide"
+            //platformIconId: "icon-m-user-guide"
+            iconSource: "../icons/icon-m-toolbar-questionmark.png"
             onClicked: {
                 infoDialog.open();
             }
@@ -46,12 +47,13 @@ PageWrapper {
     QueryDialog  {
         id: infoDialog
 
-        icon: "image://theme/icon-m-user-guide"
+        icon: "../pics/nelisquare-logo.png"//"image://theme/icon-m-user-guide"
         titleText: "Nelisquare"
         message: mytheme.textHelp1
             + "\n" + mytheme.textHelp2
             + "\n" + mytheme.textVersionInfo + BuildInfo.version
             + "\n" + mytheme.textBuildInfo + BuildInfo.build
+            + "\n" + mytheme.textHelp3
 
         rejectButtonText: "Close"
     }
@@ -569,7 +571,7 @@ PageWrapper {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: mytheme.textHelp3
+                text: mytheme.textHelp4
                 color: mytheme.colors.textColorOptions
                 font.pixelSize: mytheme.font.sizeHelp
                 font.underline: true
@@ -578,7 +580,7 @@ PageWrapper {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        Qt.openUrlExternally(mytheme.textHelp3);
+                        Qt.openUrlExternally(mytheme.textHelp4);
                     }
                 }
             }

@@ -146,7 +146,7 @@ void Cache::dequeueObject(QVariant url, QObject* callback)
     }
     CCallbackList &callbacks = *it;
     //qDebug() << "Remove callback from queue" << callback;
-    callbacks.remove(callback); //DBG: //BUG: return removing callback
+    callbacks.remove(callback); //return removing callback
     m_cachequeue_lock.unlock();
 }
 

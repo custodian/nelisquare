@@ -84,7 +84,7 @@ PageWrapper {
                     console.log("in cache callback for photo for eventfeed");
                     if (!status) return;
                     item.photoCached = url;
-                    item.venuePhotoCached = ""; //DBG
+                    item.venuePhotoCached = "";
                     console.log("adding object");
                     platformUtils.addFeedItem(item);
             }*/
