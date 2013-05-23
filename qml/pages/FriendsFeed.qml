@@ -276,10 +276,16 @@ PageWrapper {
                     return friendsFeedDelegateFriend
                 else if (type === "tip")
                     return friendsFeedDelegateTip
+                else if (type === "savetip")
+                    return friendsFeedDelegateTip
                 else if (type === "savelist")
                     return friendsFeedDelegateSaveList
+                else if (type === "savevenue")
+                    return friendsFeedDelegateVenue
                 else if (type === "installplugin")
                     return friendsFeedDelegateInstallPlugin
+                else if (type === "likevenue")
+                    return friendsFeedDelegateVenue
                 else
                     return friendsFeedDelegateUnknown
             }
@@ -336,6 +342,27 @@ PageWrapper {
 
             onAreaClicked: {
                 friendsFeed.user( content.id );
+            }
+        }
+    }
+
+    Component {
+        id: friendsFeedDelegateVenue
+
+        EventBox {
+            activeWhole: true
+
+            userName: content.userName
+            venueName: content.venueCity
+            likesCount: content.likesCount
+            createdAt: content.createdAt
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = content.photo
+            }
+
+            onAreaClicked: {
+                friendsFeed.venue( content.id );
             }
         }
     }

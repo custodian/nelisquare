@@ -114,6 +114,9 @@ feed.parseFriendsFeed = function(response, page, history) {
             if (like.type === "tip") {
                 feed.feedObjParserLikeTip(page, object, append, count);
                 count++;
+            } else if (like.type === "venue") {
+                feed.feedObjParserLikeVenue(page, object, append, count);
+                count++;
             } else {
                 feed.log("LIKE TYPE: " + like.type);
                 feed.debug(function(){return "LIKE VALUE: " + JSON.stringify(object)});
@@ -124,6 +127,12 @@ feed.parseFriendsFeed = function(response, page, history) {
             if (save.type === "activity") {
                 if (save.object.content.type === "list") {
                     feed.feedObjParserSaveList(page, object, append, count);
+                    count++;
+                } else if (save.object.content.type === "venue") {
+                    feed.feedObjParserSaveVenue(page, object, append, count);
+                    count++;
+                } else if (save.object.content.type === "tip") {
+                    feed.feedObjParserSaveTip(page, object, append, count);
                     count++;
                 } else {
                     feed.log("SAVE TYPE: " + save.type + " OBJECT: " + save.object.content.type);
@@ -379,6 +388,68 @@ feed.feedObjParserLikeTip = function(page, object, append, count) {
     }
 };
 
+feed.feedObjParserLikeVenue = function(page, object, append, count) {
+    var venue = object.content.object;
+    feed.debug(function(){return "LIKE VENUE CONTENT: " + JSON.stringify(object)});
+    var icon = "";
+    if (venue.categories[0] !== undefined)
+        icon = parseIcon(venue.categories[0].icon);
+    else
+        icon = parseIcon(defaultVenueIcon);
+
+    var item = {
+        "type": "likevenue",
+        "content": {
+            "id": venue.id,
+            "userName": object.summary.text,
+            "venueCity": parse(venue.location.city),
+            "photo": icon,
+            "likesCount": venue.likes.count,
+            "createdAt": makeTime(object.createdAt),
+            "timestamp": object.createdAt,
+        }
+    }
+    if (append) {
+        feed.debug(function(){return "adding friend at end"});
+        page.addItem(item);
+    } else {
+        feed.debug(function(){return "adding friend at head"});
+        page.addItem(item,count);
+    }
+};
+
+feed.feedObjParserSaveTip = function(page, object, append, count) {
+    var tip = object.content.object.content.object;
+    feed.debug(function(){return "SAVE TIP CONTENT: " + JSON.stringify(object)});
+    var icon = "";
+    if (tip.venue.categories[0] !== undefined)
+        icon = parseIcon(tip.venue.categories[0].icon);
+    else
+        icon = parseIcon(defaultVenueIcon);
+
+    var item = {
+        "type": "savetip",
+        "content": {
+            "id": tip.id,
+            "userName": object.summary.text,
+            "shout": tip.text,
+            "venueName": tip.venue.name,
+            "photo": icon,
+            "likesCount": tip.likes.count,
+            "venuePhoto": thumbnailPhoto(tip.photo, 300, 300),
+            "createdAt": makeTime(object.createdAt),
+            "timestamp": object.createdAt,
+        }
+    }
+    if (append) {
+        feed.debug(function(){return "adding friend at end"});
+        page.addItem(item);
+    } else {
+        feed.debug(function(){return "adding friend at head"});
+        page.addItem(item,count);
+    }
+};
+
 feed.feedObjParserSaveList = function (page, object, append, count) {
     var list = object.content.object.content.object;
     feed.debug(function(){return "LIST: " + JSON.stringify(list)});
@@ -392,6 +463,36 @@ feed.feedObjParserSaveList = function (page, object, append, count) {
             "shout": list.description,
             "venuePhoto": thumbnailPhoto(list.photo, 300, 300),
             "likesCount": list.followers.count,
+            "createdAt": makeTime(object.createdAt),
+            "timestamp": object.createdAt,
+        }
+    }
+    if (append) {
+        feed.debug(function(){return "adding friend at end"});
+        page.addItem(item);
+    } else {
+        feed.debug(function(){return "adding friend at head"});
+        page.addItem(item,count);
+    }
+}
+
+feed.feedObjParserSaveVenue = function (page, object, append, count) {
+    var venue = object.content.object.content.object;
+    feed.debug(function(){return "SAVE VENUE CONTENT: " + JSON.stringify(object.content.object)});
+    var icon = "";
+    if (venue.categories[0] !== undefined)
+        icon = parseIcon(venue.categories[0].icon);
+    else
+        icon = parseIcon(defaultVenueIcon);
+
+    var item = {
+        "type": "savevenue",
+        "content": {
+            "id": venue.id,
+            "userName": object.summary.text,
+            "venueCity": venue.name,
+            "photo": icon,
+            "likesCount": venue.likes.count,
             "createdAt": makeTime(object.createdAt),
             "timestamp": object.createdAt,
         }

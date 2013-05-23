@@ -36,5 +36,6 @@ Qt.include("api-user.js")
 Qt.include("api-venue.js")
 
 Qt.include("utils.js")
+Qt.include("debug.js")
 
 console.log("api loaded.");
