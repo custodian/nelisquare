@@ -13,7 +13,7 @@ nelisquare (0.5.0) unstable; urgency=low
   * Homescreen disabled
   * Api structure update
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 24 May 2013 01:54:31 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 24 May 2013 13:57:11 +0400
 
 nelisquare (0.4.10) stable; urgency=low
   * [in-dev] dialogs updates

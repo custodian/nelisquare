@@ -92,23 +92,39 @@ feed.parseFriendsFeed = function(response, page, history) {
 
     var feedObjParser = function(object) {
         var append = (!updating || history!==undefined);
-
         var timeObj = object;
-        if (timeObj.object !== undefined)
+        if (timeObj.object !== undefined) {
             timeObj=timeObj.object;
+        }
+
         if (updateTime <= timeObj.createdAt)
             updateTime = timeObj.createdAt;
-        if (object.type === "checkin") {
-            if (feed.feedObjParserCheckin(page, object.object, append, count))
+
+        if (object.type === "create") {
+            var create = object.content;
+            if (create.type === "checkin") {
+                if (feed.feedObjParserCheckin(page, object, append, count))
+                    count++;
+            } else if (create.type === "photo") {
+                feed.feedObjParserPhoto(page,object);
+            } else if (create.type === "friend" ) {
+                feed.feedObjParserFriend(page, object, append, count);
                 count++;
-        } else if (object.type === "photo") {
-            feed.feedObjParserPhoto(page,object.object);
-        } else if (object.type === "friend" ) {
-            feed.feedObjParserFriend(page, object, append, count);
-            count++;
-        } else if (object.type === "tip") {
-            feed.feedObjParserTip(page, object, append, count);
-            count++;
+            } else if (create.type === "tip") {
+                object.content.summary = object.summary;
+                feed.feedObjParserTip(page, object, append, count);
+                count++;
+            } else if (create.type === "aggregation"){
+                object.content.object.items.forEach(function(item) {
+                    object.content = item;
+                    feedObjParser(object);
+                });
+            } else {
+                feed.log("CREATE TYPE: " + create.type);
+                feed.debug(function(){return "CREATE VALUE: " + JSON.stringify(object)});
+                feed.feedObjParserUnknown(page, object);
+                count++;
+            }
         } else if (object.type === "like") {
             var like = object.content;
             if (like.type === "tip") {
@@ -117,10 +133,16 @@ feed.parseFriendsFeed = function(response, page, history) {
             } else if (like.type === "venue") {
                 feed.feedObjParserLikeVenue(page, object, append, count);
                 count++;
+            } else if (like.type === "aggregation"){
+                object.content.object.items.forEach(function(item) {
+                    object.content = item;
+                    feedObjParser(object);
+                });
             } else {
                 feed.log("LIKE TYPE: " + like.type);
                 feed.debug(function(){return "LIKE VALUE: " + JSON.stringify(object)});
                 feed.feedObjParserUnknown(page, object);
+                count++;
             }
         } else if (object.type === "save") {
             var save = object.content;
@@ -138,11 +160,18 @@ feed.parseFriendsFeed = function(response, page, history) {
                     feed.log("SAVE TYPE: " + save.type + " OBJECT: " + save.object.content.type);
                     feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
                     feed.feedObjParserUnknown(page, object);
+                    count++;
                 }
+            } else if (save.type === "aggregation"){
+                object.content.object.items.forEach(function(item) {
+                    object.content = item;
+                    feedObjParser(object);
+                });
             } else {
                 feed.log("SAVE TYPE: " + save.type);
                 feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
                 feed.feedObjParserUnknown(page, object);
+                count++;
             }
         } else if (object.type === "install") {
             var install = object.content;
@@ -153,6 +182,7 @@ feed.parseFriendsFeed = function(response, page, history) {
                 feed.log("INSTALL TYPE: " + install.type);
                 feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
                 feed.feedObjParserUnknown(page, object);
+                count++;
             }
         } else {
             //un implemented content types goes here
@@ -166,25 +196,10 @@ feed.parseFriendsFeed = function(response, page, history) {
     activities.items.forEach(
     function(activity){
         feed.debug(function(){return "ACTIVITY: " + JSON.stringify(activity)});
+        //DBG
+        //activity = loaddebugobject();
         if (activity.type === "create") {
-            //TODO: pass real activity for create. not a content;
-            var content = activity.content;
-
-            if (content.type === "tip") {
-                content.summary = activity.summary;
-            }
-
-            if (content.type === "aggregation") {
-                feed.log("CREATE AGGREGATION!");
-                content.object.items.forEach(function(item) {
-                    //TODO: move general parts from activity to content to get
-                    //now just copy, looks weird on tips
-                    item.summary = activity.summary;
-                    feedObjParser(item);
-                });
-            } else {
-                feedObjParser(content);
-            }
+            feedObjParser(activity);
         } else if (activity.type === "friend") {
             feedObjParser(activity);
         } else if (activity.type === "like") {
@@ -196,8 +211,8 @@ feed.parseFriendsFeed = function(response, page, history) {
         }else {
             //un implemented events goes here
             feed.log("ACTIVITY TYPE: " + activity.type);
-            feed.log(function(){return "ACTIVITY CONTENT: " + JSON.stringify(activity)}());
-            feed.feedObjParserUnknown(page, object);
+            feed.debug(function(){return "ACTIVITY CONTENT: " + JSON.stringify(activity)});
+            feed.feedObjParserUnknown(page, activity);
             count++;
         }
     });
@@ -234,7 +249,8 @@ feed.feedObjParserUnknown = function(page, object) {
     page.addItem(item);
 }
 
-feed.feedObjParserCheckin = function(page, checkin, append, count) {
+feed.feedObjParserCheckin = function(page, object, append, count) {
+    var checkin = object.content.object;
     var result = true;
     var userName = makeUserName(checkin.user);
     var venueName = "";
@@ -284,7 +300,8 @@ feed.feedObjParserCheckin = function(page, checkin, append, count) {
     return result;
 }
 
-feed.feedObjParserPhoto = function(page, photo) {
+feed.feedObjParserPhoto = function(page, object) {
+    var photo = object.content.object;
     feed.debug(function(){return "NEW PHOTO: " + JSON.stringify(photo) });
     for (var i=0;i<page.friendsCheckinsModel.count;i++) {
         var info = page.friendsCheckinsModel.get(i).content;
@@ -325,7 +342,7 @@ feed.feedObjParserFriend = function(page, friend, append, count) {
 }
 
 feed.feedObjParserTip = function(page, object, append, count) {
-    var tip = object.object;
+    var tip = object.content.object;
     feed.debug(function(){return "TIP CONTENT: " + JSON.stringify(object)});
     var icon = "";
     if (tip.venue.categories[0] !== undefined)

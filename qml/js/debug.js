@@ -6,4 +6,6 @@
 
 api.log("loading debug...");
 
-var debugobject = JSON.parse('');
+function loaddebugobject() {
+    return undefined
+}
