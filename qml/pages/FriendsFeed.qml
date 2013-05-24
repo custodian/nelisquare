@@ -276,6 +276,8 @@ PageWrapper {
                     return friendsFeedDelegateFriend
                 else if (type === "tip")
                     return friendsFeedDelegateTip
+                else if (type === "pageupdate")
+                    return friendsFeedDelegatePage
                 else if (type === "savetip")
                     return friendsFeedDelegateTip
                 else if (type === "savelist")
@@ -286,6 +288,10 @@ PageWrapper {
                     return friendsFeedDelegateInstallPlugin
                 else if (type === "likevenue")
                     return friendsFeedDelegateVenue
+                else if (type === "likepage")
+                    return friendsFeedDelegatePage
+                else if (type === "likepageupdate") //this is disabled now
+                    return friendsFeedDelegatePage
                 else
                     return friendsFeedDelegateUnknown
             }
@@ -363,6 +369,30 @@ PageWrapper {
 
             onAreaClicked: {
                 friendsFeed.venue( content.id );
+            }
+        }
+    }
+
+    Component {
+        id: friendsFeedDelegatePage
+
+        EventBox {
+            activeWhole: true
+
+            userName: content.userName
+            userShout: content.shout
+            venuePhoto: content.venuePhoto
+            likesCount: content.likesCount
+            commentsCount: content.commentsCount
+            peoplesCount: content.peoplesCount
+            createdAt: content.createdAt //TODO: does this needed here?
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = content.photo
+            }
+
+            onAreaClicked: {
+                show_error("Sorry, Pages are not supported yet :(");
             }
         }
     }
