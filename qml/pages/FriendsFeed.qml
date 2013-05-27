@@ -69,13 +69,9 @@ PageWrapper {
         trailingMarker = "";
     }
 
-    function addItem(item, position) {
+    function addItem(item) {
+        friendsCheckinsModel.insert(loaded,item);
         loaded += 1;
-        if (position === undefined) {
-            friendsCheckinsModel.append(item);
-        } else {
-            friendsCheckinsModel.insert(position,item);
-        }
 
         if (configuration.feedAutoUpdate!== "0"
                 && configuration.feedIntegration !=="0") {
@@ -144,6 +140,7 @@ PageWrapper {
         });
         page.loadHistory.connect(function(){
             console.log("FEED: loading history");
+            loaded = friendsCheckinsModel.count;
             Api.feed.loadFriendsFeed(page,true);
         });
         page.recent.connect(function() {
@@ -179,7 +176,6 @@ PageWrapper {
         repeat: true
         onTriggered: {
             friendsFeed.update()
-            //console.log("update triggered");
         }
     }
 
