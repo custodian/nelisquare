@@ -10,11 +10,26 @@ ListView {
     property string releaseMessageString: "Release to refresh..."
     property bool platformInverted: false
 
-    signal refreshEvent()
+    // Private
+    property bool __wasAtYBeginning: false
+    property int __initialContentY: 0
+    property bool __toBeRefresh: false
+
+    signal pulledDown()
+
+    onMovementStarted: {
+        __wasAtYBeginning = atYBeginning
+        __initialContentY = contentY
+    }
+    onMovementEnded: {
+        if (__toBeRefresh) {
+            pulledDown()
+            __toBeRefresh = false
+        }
+    }
+    onContentYChanged: detectPullDownTimer.running = true
 
     Item {
-        property bool __puller : false
-
         id: pull
         width: parent.width
         opacity: -pullImage.rotation / root.rotationThreshold
@@ -32,16 +47,6 @@ ListView {
                 smooth: true
                 source: handleIconSource("toolbar-refresh") //privateStyle.toolBarIconPath("toolbar-refresh", root.platformInverted)
                 rotation: 2 * 360 * root.contentY / root.height
-                onRotationChanged: {
-                    if (pullImage.rotation < -root.rotationThreshold){
-                        if (!pullTimer.running && !pull.__puller)
-                            pullTimer.restart()
-                    }
-                    else if (pullImage.rotation > -root.rotationThreshold){
-                        if (!pullTimer.running && pull.__puller)
-                            pullTimer.restart()
-                    }
-                }
 
                 function handleIconSource(iconId) {
                     var prefix = "icon-m-"
@@ -52,37 +57,18 @@ ListView {
                         iconId =  prefix.concat(iconId).concat(theme.inverted ? inverse : "");
                     return "image://theme/" + iconId;
                 }
-
-                Timer{
-                    id: pullTimer
-                    interval: root.latency
-
-                    onTriggered: {
-                        if(pullImage.rotation < -root.rotationThreshold)
-                            pull.__puller = true
-                        else
-                            pull.__puller = false
-                    }
-                }
             }
 
             Label {
                 id: pullLabel
-                text: {
-                    if (pull.__puller)
-                        return root.releaseMessageString
-
-                    return root.pullMessageString
-                }
+                text: __toBeRefresh ? root.releaseMessageString : root.pullMessageString
             }
         }
     }
 
-    onMovementEnded: {
-        if (pull.__puller)
-            root.refreshEvent()
-
-        pull.__puller = false
-        pullTimer.stop()
+    Timer {
+        id: detectPullDownTimer
+        interval: latency
+        onTriggered: if (__wasAtYBeginning && __initialContentY - contentY > 100) __toBeRefresh = true
     }
 }

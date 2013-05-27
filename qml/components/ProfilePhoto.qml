@@ -2,8 +2,7 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import com.nokia.extras 1.1 //MaskedItem
 
-//DBG Split into 2 different parts
-Item {//DBG Rectangle {
+Item {
     id: profileImage
 
     signal clicked()
@@ -12,48 +11,60 @@ Item {//DBG Rectangle {
     property int photoSize: 64
     property int photoWidth: photoSize
     property int photoHeight: photoSize
-    property int photoBorder: 0 //DBG 4 //Removing edges and backgroundcolor
+    property int photoBorder: 0
     property bool photoCache: true
     property variant photoSourceSize: undefined
     property bool enableMouseArea: true
-    property alias photoSmooth: image.smooth
+    property bool photoSmooth: true
     property variant photoAspect: Image.PreserveAspectCrop
 
-    x: 4*2//photoBorder //DBG
-    y: 4*2//photoBorder //DBG
+    property bool masked: false
+
+    x: 8//photoBorder*4 //FIX: //BUG: remove absolute positions
+    y: 8//photoBorder*4
     width: photoWidth
     height: photoHeight
-    //color: mytheme.colors.photoBackground
-    //border.color: mytheme.colors.photoBorderColor
-    //border.width: 1
 
-    /*MaskedItem {
-        width: photoWidth
-        height: photoHeight
-        anchors.fill: parent
-        mask: Image{
+    Loader {
+        sourceComponent: (masked ? maskedImage : cachedImage)
+    }
+
+    Component {
+        id: maskedImage
+
+        MaskedItem {
             width: photoWidth
             height: photoHeight
-            source: "../pics/image_mask.png"
-        }*/
+            mask: Image{
+                width: photoWidth
+                height: photoHeight
+                source: "../pics/image_mask.png"
+            }
 
+            Loader {
+                sourceComponent: cachedImage
+            }
+
+        }
+    }
+
+    Component {
+        id: cachedImage
 
         CacheImage {
-            id: image
-            //x: photoBorder //DBG
-            //y: photoBorder //DBG
+          id: image
             asynchronous: true
             sourceUncached: photoUrl //photoCache
             //cache: photoCache
-            smooth: true
+            smooth: photoSmooth
             fillMode: photoAspect
-            width: parent.width //- 2*photoBorder + 1 //DBG
-            height: parent.height //- 2*photoBorder + 1 //DBG
+            width: profileImage.width //- 2*photoBorder + 1 //DBG
+            height: profileImage.height //- 2*photoBorder + 1 //DBG
             sourceSize.width: width // photoSourceSize
             //sourceSize.height: height //photoSourceSize
             clip: true
         }
-    //}
+    }
 
     MouseArea {
         anchors.fill: profileImage

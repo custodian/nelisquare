@@ -101,12 +101,12 @@ void Cache::queueObject(QVariant data, QObject *callback)
         m_cachemap_lock.lockForRead();
         QMap<QString,QString>::iterator it = m_cachemap.find(url);
         if (it!=m_cachemap.end()) {
-            //qDebug() << "cache hit";
+            //qDebug() << "cache hit" << url;
             data = it.value();
             m_cachemap_lock.unlock();
             makeCallback(callback,true,data);
         } else {
-            //qDebug() << "cache miss";
+            //qDebug() << "cache miss" << url;
             QString name = makeCachedURL(url);
             QFileInfo file(name);
             //qDebug() << "Hash:" << name << "Status:" << file.exists() << "URL:" << url;
@@ -123,6 +123,7 @@ void Cache::queueObject(QVariant data, QObject *callback)
                 } else {
                     //add to queue, post and download query
                     if (queueCacheUpdate(data, callback)) {
+                        //qDebug() << "download " << url;
                         manager->get(QNetworkRequest(QUrl(url)));
                     }
                 }

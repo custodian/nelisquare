@@ -23,13 +23,14 @@ Item {
 
     property string text: ""
 
-    implicitWidth: parent.width; implicitHeight: text.height
+    implicitWidth: parent.width;
+    implicitHeight: text.text.length ? text.height : 1
 
     Rectangle {
         id: line
         anchors {
             left: parent.left
-            right: text.left; rightMargin: mytheme.paddingXLarge
+            right: text.left; rightMargin: text.text.length ? mytheme.paddingXLarge : 0
             verticalCenter: parent.verticalCenter
         }
         color: mytheme.colors.textColorTimestamp

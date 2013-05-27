@@ -1,3 +1,3 @@
-var build = '201305271230';
+var build = '201305280037';
 var version = "0.5.0";
-var changelog = " - Award badge event added  - Page, update page events added  - Like venue event added  - Save venue event added  - Save tip event added  - Debug info submission  - Install app event added  - Likers list page added  - List saved event added to feed  - New tips event added to feed  - Tips like event added to feed  - New friends added to feed  - Cache update, smooth loading  - Homescreen disabled  - Api structure update ";
+var changelog = " - Image cache update  - Debug info submission  - Award badge, like page, update page, like page update, like venue, save venue, save tip, save list, new tip, new friend, connect app events added to feed  - Users who liked page added  - Homescreen disabled  - Api structure update ";

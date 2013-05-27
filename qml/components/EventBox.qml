@@ -50,6 +50,7 @@ Item {
 
         ProfilePhoto {
             id: profileImage
+            masked: true
 
             onClicked: {
                 eventItem.userClicked();

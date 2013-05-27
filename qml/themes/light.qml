@@ -90,7 +90,7 @@ Item {
             "photoBorderColor": "#ccc",
             "photoBackground": "#fff",
 
-            "backgroundMain": "#e8e3dc",
+            "backgroundMain": "#E0E1E2", //"#e8e3dc",
             "backgroundMenubar": "#404040",
             "backgroundBlueDark": "#176095",
             "backgroundSplash": "#00aedb",

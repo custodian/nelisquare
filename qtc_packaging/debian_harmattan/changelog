@@ -1,17 +1,8 @@
 nelisquare (0.5.0) stable; urgency=low
-  * Award badge event added
-  * Page, update page events added
-  * Like venue event added
-  * Save venue event added
-  * Save tip event added
+  * Image cache update
   * Debug info submission
-  * Install app event added
-  * Likers list page added
-  * List saved event added to feed
-  * New tips event added to feed
-  * Tips like event added to feed
-  * New friends added to feed
-  * Cache update, smooth loading
+  * Award badge, like page, update page, like page update, like venue, save venue, save tip, save list, new tip, new friend, connect app events added to feed
+  * Users who liked page added
   * Homescreen disabled
   * Api structure update
 

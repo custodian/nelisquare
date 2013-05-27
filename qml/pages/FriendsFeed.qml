@@ -200,16 +200,15 @@ PageWrapper {
         cacheBuffer: 400
         spacing: 10
 
-        onRefreshEvent: {
+        onPulledDown: {
             update();
         }
 
         header: Column{
             width: parent.width
-            Rectangle {
+            Item {
                 width: parent.width
                 height: 70
-                color: mytheme.colors.toolbarDarkColor
 
                 ButtonRow {
                     anchors.centerIn: parent
@@ -242,6 +241,7 @@ PageWrapper {
                     }
                 }
             }
+            SectionHeader {}
         }
 
         footer: Column{

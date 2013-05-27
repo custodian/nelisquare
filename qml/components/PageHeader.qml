@@ -60,7 +60,7 @@ Item{
     CacheImage{
         id: icon
         sourceUncached: headerIcon
-        anchors { verticalCenter: parent.verticalCenter; left: parent.left; margins: mytheme.paddingLarge }
+        anchors { verticalCenter: parent.verticalCenter; left: parent.left; margins: mytheme.paddingXXLarge }
         height: sourceSize.height; width: sourceSize.width
     }
 
@@ -70,7 +70,7 @@ Item{
             verticalCenter: parent.verticalCenter
             left: icon.right
             right: busyIndicatorLoader.status === Loader.Ready ? busyIndicatorLoader.left : parent.right
-            margins: mytheme.paddingMedium
+            margins: mytheme.paddingXXLarge
         }
         elide: Text.ElideRight
         font.pixelSize: mytheme.fontSizeLarge
@@ -80,7 +80,7 @@ Item{
 
     Loader{
         id: busyIndicatorLoader
-        anchors{ right: parent.right; rightMargin: mytheme.paddingXLarge; verticalCenter: parent.verticalCenter }
+        anchors{ right: parent.right; rightMargin: mytheme.paddingXXLarge; verticalCenter: parent.verticalCenter }
         sourceComponent: busy ? busyIndicatorComponent : (countBubbleVisible ? countBubbleComponent : undefined)
     }
 

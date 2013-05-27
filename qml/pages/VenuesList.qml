@@ -90,12 +90,11 @@ PageWrapper {
         onClicked: { }
     }
 
-    Rectangle {
+    Item {
         id: searchBox
         anchors.top: pagetop
         width: parent.width
         height: 70
-        color: mytheme.colors.backgroundBlueDark
 
         TextField {
             id: searchText
@@ -117,6 +116,9 @@ PageWrapper {
                 venuesList.search(searchText.text);
             }
         }
+        SectionHeader {
+            anchors.bottom: parent.bottom
+        }
     }
 
     ListViewEx {
@@ -131,7 +133,7 @@ PageWrapper {
         cacheBuffer: 400
         spacing: 5
 
-        onRefreshEvent: {
+        onPulledDown: {
             update();
         }
 
