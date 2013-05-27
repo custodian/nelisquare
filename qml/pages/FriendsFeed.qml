@@ -139,6 +139,7 @@ PageWrapper {
             if (configuration.feedAutoUpdate === 0) {
                 page.reset();
             }
+            loaded = 0;
             Api.feed.loadFriendsFeed(page)
         });
         page.loadHistory.connect(function(){

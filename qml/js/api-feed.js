@@ -62,7 +62,12 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                 }
             } else {
                 feed.log("UPDATE TYPE: " + update.type);
-                feed.log("UPDATE CONTENT: " + JSON.stringify(update));
+                feed.debug(function(){ return "UPDATE CONTENT: " + JSON.stringify(update)});
+                var item = {
+                    "type": "feed-upd",
+                    "content": data
+                }
+                page.addItem(item,0);
             }
         });
 }
