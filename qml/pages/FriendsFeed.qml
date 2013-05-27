@@ -10,6 +10,7 @@ PageWrapper {
     id: friendsFeed
     signal update()
     signal loadHistory()
+    signal badge(variant obj)
     signal user(string userid)
     signal checkin(variant content)
     signal venue(string venueid)
@@ -164,6 +165,9 @@ PageWrapper {
         page.tip.connect(function(id) {
             stack.push(Qt.resolvedUrl("TipPage.qml"), {"tipID":id});
         });
+        page.badge.connect(function(obj) {
+            stack.push(Qt.resolvedUrl("BadgeInfo.qml"), Api.makeBadgeObject(obj));
+        });
         timerFeedUpdate.restart(); //Start autoupdate
         update();
     }
@@ -292,6 +296,8 @@ PageWrapper {
                     return friendsFeedDelegatePage
                 else if (type === "likepageupdate") //this is disabled now
                     return friendsFeedDelegatePage
+                else if (type === "awardbadge")
+                    return friendsFeedDelegateAward
                 else
                     return friendsFeedDelegateUnknown
             }
@@ -393,6 +399,27 @@ PageWrapper {
 
             onAreaClicked: {
                 show_error("Sorry, Pages are not supported yet :(");
+            }
+        }
+    }
+
+    Component {
+        id: friendsFeedDelegateAward
+
+        EventBox {
+            activeWhole: true
+
+            userName: content.userName
+            userShout: content.shout
+            venuePhoto: content.venuePhoto
+            createdAt: content.createdAt
+
+            Component.onCompleted: {
+                userPhoto.photoUrl = content.photo
+            }
+
+            onAreaClicked: {
+                friendsFeed.badge(content.badge)
             }
         }
     }

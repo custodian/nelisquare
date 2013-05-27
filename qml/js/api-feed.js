@@ -192,6 +192,17 @@ feed.parseFriendsFeed = function(response, page, history) {
                 feed.feedObjParserUnknown(page, object);
                 count++;
             }
+        } else if (object.type === "award") {
+            var award = object.content;
+            if (award.type === "badge") {
+                feed.feedObjParserAwardBadge(page, object, append, count);
+                count++;
+            } else {
+                feed.log("AWARD TYPE: " + award.type);
+                feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
+                feed.feedObjParserUnknown(page, object);
+                count++;
+            }
         } else if (object.type === "friend" ) {
             feed.feedObjParserFriend(page, object, append, count);
             count++;
@@ -456,6 +467,31 @@ feed.feedObjParserPageUpdate = function(owner, object, append, count) {
     } else {
         feed.debug(function(){return "adding friend at head"});
         owner.addItem(item,count);
+    }
+}
+
+feed.feedObjParserAwardBadge = function(page, object, append, count) {
+    var badge = object.content.object;
+    feed.debug(function(){return "AWARD BADGE CONTENT: " + JSON.stringify(object)});
+    var item = {
+        "type": "awardbadge",
+        "content": {
+            "id": badge.id,
+            "userName": object.summary.text,
+            "photo": object.thumbnails[0].photo,
+            "shout": badge.badgeText,
+            "venuePhoto": makeImageUrl(badge.image,300),
+            "badge": badge,
+            "createdAt": makeTime(object.createdAt),
+            "timestamp": object.createdAt,
+        }
+    }
+    if (append) {
+        feed.debug(function(){return "adding friend at end"});
+        page.addItem(item);
+    } else {
+        feed.debug(function(){return "adding friend at head"});
+        page.addItem(item,count);
     }
 }
 
