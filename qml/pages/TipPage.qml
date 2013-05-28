@@ -57,7 +57,7 @@ PageWrapper {
             Api.tips.likeTip(page, tipID, state)
         });
         page.showlikes.connect(function() {
-            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"tip","objID":tipID});
+            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"tip","objID":tipID, "limit":likeBox.likes});
         })
         page.user.connect(function(user){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});

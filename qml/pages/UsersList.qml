@@ -10,6 +10,7 @@ PageWrapper {
 
     property string objID: ""
     property string objType: ""
+    property int limit: 0
     property alias usersModel: usersModel
 
     width: parent.width
@@ -30,7 +31,7 @@ PageWrapper {
             Api.users.loadUserFriends(page,objID);
         } else {
             headerText = "LIKERS LIST"
-            Api.users.loadLikeUsers(page,objID,objType);
+            Api.users.loadLikeUsers(page,objID,objType,limit);
         }
     }
 

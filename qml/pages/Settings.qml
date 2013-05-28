@@ -108,7 +108,512 @@ PageWrapper {
         }
     }
 
-    Flickable{
+    TabGroup {
+        id: settingTabGroup
+        anchors { left: parent.left; right: parent.right; top: tabButttonRow.bottom; bottom: parent.bottom }
+        currentTab: generalTab
+
+        Flickable {
+            id: generalTab
+
+            anchors.fill: parent
+            contentHeight: generalTabColumn.height + 2 * mytheme.paddingMedium
+
+            Column {
+                id: generalTabColumn
+                anchors { left: parent.left; right: parent.right; top: parent.top; topMargin: mytheme.paddingMedium }
+                spacing: mytheme.paddingMedium
+
+                //Check updates
+                SectionHeader{
+                    text: "UPDATES CHECK"
+                }
+                ButtonRow {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //width: parent.width
+                    onVisibleChanged: {
+                        if (visible) {
+                            switch(configuration.checkupdates) {
+                            case "none":
+                                checkedButton = btnUpdateNone;
+                                break;
+                            case "stable":
+                                checkedButton = btnUpdateStable;
+                                break;
+                            case "developer":
+                                checkedButton = btnUpdateBeta;
+                                break;
+                            case "alpha":
+                                checkedButton = btnUpdateAlpha;
+                                break;
+                            }
+                        }
+                    }
+                    Button{
+                        id: btnUpdateNone
+                        text: qsTr("None")
+                        onClicked: settingsChanged("checkupdates","none")
+                    }
+
+                    Button{
+                        id: btnUpdateStable
+                        text: qsTr("Stable")
+                        onClicked: settingsChanged("checkupdates","stable")
+                    }
+                    Button{
+                        id: btnUpdateBeta
+                        text: qsTr("Beta")
+                        onClicked: settingsChanged("checkupdates","developer")
+                    }
+
+                    Button{
+                        id: btnUpdateAlpha
+                        text: qsTr("Alpha")
+                        onClicked: settingsChanged("checkupdates","alpha")
+                    }
+                }
+
+                SectionHeader {
+                    text: "INTERVALS"
+                }
+                SettingSlider{
+                    enabled: true//!streamingSwitch.checked
+                    text: qsTr("GPS Unlock timeout") + ": " +
+                          (enabled ? (value === 0 ? qsTr("Instant") : qsTr("%n secs(s)", "", value)) : qsTr("Disabled"))
+                    maximumValue: 120
+                    stepSize: 10
+                    value: configuration.gpsUplockTime
+                    onReleased: settingsChanged("gpsunlock",value)
+                }
+                SettingSlider{
+                    enabled: true//!streamingSwitch.checked
+                    text: qsTr("Feed autoupdate time") + ": " +
+                          (enabled ? (value === 0 ? qsTr("Off") : qsTr("%n min(s)", "", value)) : qsTr("Disabled"))
+                    maximumValue: 60
+                    stepSize: 1
+                    value: configuration.feedAutoUpdate/60
+                    onReleased: settingsChanged("feedupdate",value * 60)
+                }
+
+                SectionHeader{
+                    text: "PERMISSIONS"
+                }
+                SettingSwitch{
+                    text: qsTr("Allow use of Location Data")
+                    checked: configuration.gpsAllow === "1" //TODO: make some variable for it
+                    onCheckedChanged: {
+                        var value = (checked)?"1":"0";
+                        settingsChanged("gpsallow",value);
+                    }
+                }
+                SettingSwitch {
+                    text: qsTr("Always run in background")
+                    checked: configuration.disableSwypedown === "1"
+                    onCheckedChanged: {
+                        var value = (checked)?"1":"0";
+                        settingsChanged("disableswypedown",value);
+                    }
+                }
+                SettingSwitch{
+                    text: qsTr("Enable notifications")
+                    checked: configuration.feedNotification === "1"
+                    onCheckedChanged: {
+                        var value = (checked)?"1":"0";
+                        settingsChanged("feed.notification",value);
+                    }
+                }
+                SettingSwitch{
+                    text: qsTr("Feed at Home screen")
+                    checked: configuration.feedIntegration === "1"
+                    onCheckedChanged: {
+                        var value = (checked)?"1":"0";
+                        settingsChanged("feed.integration",value);
+                    }
+                }
+                SettingSwitch{
+                    text: qsTr("Push notifications")
+                    //checked: configuration. === "1" //TODO: make some variable for it
+                    onCheckedChanged: {
+                        if (checked) {
+                            pushNotificationDialog.open();
+                        }
+                        checked = false;
+                        var value = "0";
+                        settingsChanged("push.enabled",value);
+                    }
+                }
+
+                Image {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    source: "../pics/"+mytheme.name+"/separator.png"
+                }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text: mytheme.textHelp4
+                    color: mytheme.colors.textColorOptions
+                    font.pixelSize: mytheme.font.sizeHelp
+                    font.underline: true
+
+                    horizontalAlignment: Text.AlignHCenter
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            Qt.openUrlExternally(mytheme.textHelp4);
+                        }
+                    }
+                }
+                Item{
+                    height: 20
+                    width: parent.width
+                }
+
+            }
+        }
+        Flickable {
+            id: themeTab
+
+            anchors.fill: parent
+            contentHeight: themeTabColumn.height + 2 * mytheme.paddingMedium
+
+            Column {
+                id: themeTabColumn
+                anchors { left: parent.left; right: parent.right; top: parent.top; topMargin: mytheme.paddingMedium }
+                spacing: mytheme.paddingMedium
+
+                SectionHeader{
+                    text: "COLOR THEME"
+                }
+                ButtonRow {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //width: parent.width
+                    onVisibleChanged: {
+                        if (visible) {
+                            switch(mytheme.name) {
+                            case "light":
+                                checkedButton = btnThemeLight;
+                                break;
+                            case "dark":
+                                checkedButton = btnThemeDark;
+                                break;
+                            }
+                        }
+                    }
+                    Button{
+                        id: btnThemeLight
+                        text: qsTr("Light")
+                        onClicked: settingsChanged("theme","light")
+                    }
+
+                    Button{
+                        id: btnThemeDark
+                        text: qsTr("Dark")
+                        onClicked: settingsChanged("theme","dark")
+                    }
+                }
+
+                SectionHeader{
+                    text: "SCREEN ORIENTATION"
+                }
+                ButtonRow {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //width: parent.width
+                    onVisibleChanged: {
+                        if (visible) {
+                            switch(configuration.orientationType) {
+                            case "auto":
+                                checkedButton = btnOrientationAuto;
+                                break;
+                            case "landscape":
+                                checkedButton = btnOrientationLandscape;
+                                break;
+                            case "portrait":
+                                checkedButton = btnOrientationPortrait;
+                                break;
+                            }
+                        }
+                    }
+                    Button{
+                        id: btnOrientationAuto
+                        text: qsTr("Auto")
+                        onClicked: settingsChanged("orientation","auto")
+                    }
+
+                    Button{
+                        id: btnOrientationLandscape
+                        text: qsTr("Landscape")
+                        onClicked: settingsChanged("orientation","landscape")
+                    }
+                    Button{
+                        id: btnOrientationPortrait
+                        text: qsTr("Portrait")
+                        onClicked: settingsChanged("orientation","portrait")
+                    }
+                }
+
+                SectionHeader{
+                    text: "LANGUAGE"
+                }
+                Button{
+                    text: "Default"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: {
+                        show_error("No translations available!");
+                    }
+                }
+
+                SectionHeader{
+                    text: "MAP PROVIDER"
+                }
+
+                ButtonRow {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //width: parent.width
+                    onVisibleChanged: {
+                        if (visible) {
+                            switch(configuration.mapprovider) {
+                            case "nokia":
+                                checkedButton = btnMapsNokia;
+                                break;
+                            case "google":
+                                checkedButton = btnMapsGoogle;
+                                break;
+                            case "openstreetmap":
+                                checkedButton = btnMapsOsm;
+                                break;
+                            }
+                        }
+                    }
+                    Button{
+                        id: btnMapsNokia
+                        text: qsTr("Nokia")
+                        onClicked: settingsChanged("mapprovider","nokia")
+                    }
+
+                    Button{
+                        id: btnMapsGoogle
+                        text: qsTr("Google")
+                        onClicked: settingsChanged("mapprovider","google")
+                    }
+                    Button{
+                        id: btnMapsOsm
+                        text: qsTr("OSM")
+                        onClicked: settingsChanged("mapprovider","openstreetmap")
+                    }
+                }
+            }
+        }
+        Flickable {
+            id: serviceTab
+
+            anchors.fill: parent
+            contentHeight: serviceTabColumn.height + 2 * mytheme.paddingMedium
+
+            Column {
+                id: serviceTabColumn
+                anchors { left: parent.left; right: parent.right; top: parent.top; topMargin: mytheme.paddingMedium }
+                spacing: mytheme.paddingMedium
+
+                SectionHeader{
+                    text: "IMAGE LOADING"
+                }
+                ButtonRow {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //width: parent.width
+                    onVisibleChanged: {
+                        if (visible) {
+                            switch(configuration.imageLoadType) {
+                            case "cached":
+                                checkedButton = btnImageCache;
+                                break;
+                            case "all":
+                                checkedButton = btnImageAll;
+                                break;
+                            }
+                        }
+                    }
+                    Button{
+                        id: btnImageAll
+                        text: qsTr("All")
+                        onClicked: settingsChanged("imageload","all")
+                    }
+                    Button{
+                        id: btnImageCache
+                        text: qsTr("Cached")
+                        onClicked: settingsChanged("imageload","cached")
+                    }
+                }
+
+                SectionHeader{
+                    text: "INTEGRATION WITH APPS"
+                }
+                Column {
+                    width: parent.width
+                    Button {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: "Download MOLO.ME"
+                        onClicked: {
+                            Qt.openUrlExternally("http://molo.me/meego");
+                        }
+                        visible: !configuration.molome_present
+                    }
+
+                    SettingSwitch{
+                        property bool internalEnabled: configuration.molome_installed
+                        property bool __active: true
+
+                        onInternalEnabledChanged: {
+                            __active = false;
+                            checked = internalEnabled;
+                            __active = true;
+                            enabled = true;
+                            waiting_hide();
+                        }
+
+                        text: qsTr("MOLO.ME Photos")
+                        checked: configuration.molome_installed
+                        onCheckedChanged: {
+                            var value = (checked)?"1":"0";
+                            if (!__active) return;
+                            waiting_show();
+                            enabled = false;
+                            if (value === "1") {
+                                molome.install();
+                            } else {
+                                molome.uninstall();
+                            }
+                        }
+                        visible: configuration.molome_present
+                    }
+
+                    /*Button {
+                        property bool active: false
+                        text: "Enable"
+                        onClicked: {
+                            waiting_show();
+                            active = true;
+                            molome.install();
+                        }
+                        visible: configuration.molome_present && !configuration.molome_installed;
+                        onVisibleChanged: {
+                            if (active) {
+                                waiting_hide();
+                                active = false;
+                            }
+                        }
+                    }
+                    Button {
+                        property bool active: false
+                        text: "Disable"
+                        onClicked: {
+                            waiting_show();
+                            active = true;
+                            molome.uninstall();
+                        }
+                        visible: configuration.molome_installed;
+                        onVisibleChanged: {
+                            if (active) {
+                                waiting_hide();
+                                active = false;
+                            }
+                        }
+                    }*/
+                    visible: configuration.platform === "meego"
+                }
+
+                SectionHeader{
+                    text: "APPLICATION CACHE"
+                }
+                Row {
+                    spacing: 20
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Button {
+                        id: btnCacheClear
+                        text: "Clear"
+                        width: 250
+                        onClicked: {
+                            cache.reset();
+                            cacheSize = cache.info();
+                        }
+                    }
+
+                    TextButton {
+                        anchors.verticalCenter: btnCacheClear.verticalCenter
+                        height: 35
+                        selected: false
+                        label: "Size: " + cacheSize;
+                    }
+
+                }
+                SectionHeader {
+                    text: "AUTHENTICATION"
+                }
+                Button {
+                    text: "Reset authentication"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: {
+                        authDeleted()
+                    }
+                }
+
+            }
+        }
+        Flickable {
+            id: debugTab
+
+            anchors.fill: parent
+            contentHeight: debugTabColumn.height + 2 * mytheme.paddingMedium
+
+            Column {
+                id: debugTabColumn
+                anchors { left: parent.left; right: parent.right; top: parent.top; topMargin: mytheme.paddingMedium }
+                spacing: mytheme.paddingMedium
+
+                SectionHeader {
+                    text: "ACCESS RATE LIMIT"
+                }
+                Text{
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: mytheme.fontSizeLarge
+                    color: mytheme.colors.textColorOptions
+                    text: "API requests available: %1 / %2".arg(configuration.ratelimit.remaining).arg(configuration.ratelimit.limit)
+                }
+                Text{
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: mytheme.fontSizeLarge
+                    color: mytheme.colors.textColorOptions
+                    text: "You are low on X-RATE"
+                    visible: configuration.ratelimit.remaining < 10
+                }
+
+                SectionHeader{
+                    text: "DEBUG"
+                }
+                Text{
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: mytheme.fontSizeLarge
+                    color: mytheme.colors.textColorOptions
+                    text: "Options will be available soon"
+                }
+            }
+        }
+    }
+
+    //ScrollDecorator{ flickableItem: settingTabGroup }
+
+
+    ButtonRow {
+        id: tabButttonRow
+        anchors { top: pagetop; left: parent.left; right: parent.right }
+
+        TabButton { tab: generalTab; text: qsTr("General")}
+        TabButton { tab: themeTab; text: qsTr("Theme") }
+        TabButton { tab: serviceTab; text: qsTr("Service") }
+        TabButton { tab: debugTab; text: qsTr("Debug") }
+    }
+
+    /*Flickable{
         id: flickableArea
         anchors.top: pagetop
         width: parent.width
@@ -130,328 +635,7 @@ PageWrapper {
             x: 10
             spacing: 0
 
-            //Check updates
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Check for updates"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            ButtonRow {
-                anchors.horizontalCenter: parent.horizontalCenter
-                //width: parent.width
-                onVisibleChanged: {
-                    if (visible) {
-                        switch(configuration.checkupdates) {
-                        case "none":
-                            checkedButton = btnUpdateNone;
-                            break;
-                        case "stable":
-                            checkedButton = btnUpdateStable;
-                            break;
-                        case "developer":
-                            checkedButton = btnUpdateBeta;
-                            break;
-                        case "alpha":
-                            checkedButton = btnUpdateAlpha;
-                            break;
-                        }
-                    }
-                }
-                Button{
-                    id: btnUpdateNone
-                    text: qsTr("None")
-                    onClicked: settingsChanged("checkupdates","none")
-                }
 
-                Button{
-                    id: btnUpdateStable
-                    text: qsTr("Stable")
-                    onClicked: settingsChanged("checkupdates","stable")
-                }
-                Button{
-                    id: btnUpdateBeta
-                    text: qsTr("Beta")
-                    onClicked: settingsChanged("checkupdates","developer")
-                }
-
-                Button{
-                    id: btnUpdateAlpha
-                    text: qsTr("Alpha")
-                    onClicked: settingsChanged("checkupdates","alpha")
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //THEME
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Nelisquare theme"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            ButtonRow {
-                anchors.horizontalCenter: parent.horizontalCenter
-                //width: parent.width
-                onVisibleChanged: {
-                    if (visible) {
-                        switch(mytheme.name) {
-                        case "light":
-                            checkedButton = btnThemeLight;
-                            break;
-                        case "dark":
-                            checkedButton = btnThemeDark;
-                            break;
-                        }
-                    }
-                }
-                Button{
-                    id: btnThemeLight
-                    text: qsTr("Light")
-                    onClicked: settingsChanged("theme","light")
-                }
-
-                Button{
-                    id: btnThemeDark
-                    text: qsTr("Dark")
-                    onClicked: settingsChanged("theme","dark")
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //OrientationLock
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Screen orientation"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            ButtonRow {
-                anchors.horizontalCenter: parent.horizontalCenter
-                //width: parent.width
-                onVisibleChanged: {
-                    if (visible) {
-                        switch(configuration.orientationType) {
-                        case "auto":
-                            checkedButton = btnOrientationAuto;
-                            break;
-                        case "landscape":
-                            checkedButton = btnOrientationLandscape;
-                            break;
-                        case "portrait":
-                            checkedButton = btnOrientationPortrait;
-                            break;
-                        }
-                    }
-                }
-                Button{
-                    id: btnOrientationAuto
-                    text: qsTr("Auto")
-                    onClicked: settingsChanged("orientation","auto")
-                }
-
-                Button{
-                    id: btnOrientationLandscape
-                    text: qsTr("Landscape")
-                    onClicked: settingsChanged("orientation","landscape")
-                }
-                Button{
-                    id: btnOrientationPortrait
-                    text: qsTr("Portrait")
-                    onClicked: settingsChanged("orientation","portrait")
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Map provider
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Map provider"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            ButtonRow {
-                anchors.horizontalCenter: parent.horizontalCenter
-                //width: parent.width
-                onVisibleChanged: {
-                    if (visible) {
-                        switch(configuration.mapprovider) {
-                        case "nokia":
-                            checkedButton = btnMapsNokia;
-                            break;
-                        case "google":
-                            checkedButton = btnMapsGoogle;
-                            break;
-                        case "openstreetmap":
-                            checkedButton = btnMapsOsm;
-                            break;
-                        }
-                    }
-                }
-                Button{
-                    id: btnMapsNokia
-                    text: qsTr("Nokia")
-                    onClicked: settingsChanged("mapprovider","nokia")
-                }
-
-                Button{
-                    id: btnMapsGoogle
-                    text: qsTr("Google")
-                    onClicked: settingsChanged("mapprovider","google")
-                }
-                Button{
-                    id: btnMapsOsm
-                    text: qsTr("OSM")
-                    onClicked: settingsChanged("mapprovider","openstreetmap")
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Image loading settings
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Load images"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-            ButtonRow {
-                anchors.horizontalCenter: parent.horizontalCenter
-                //width: parent.width
-                onVisibleChanged: {
-                    if (visible) {
-                        switch(configuration.imageLoadType) {
-                        case "cached":
-                            checkedButton = btnImageCache;
-                            break;
-                        case "all":
-                            checkedButton = btnImageAll;
-                            break;
-                        }
-                    }
-                }
-                Button{
-                    id: btnImageCache
-                    text: qsTr("Cached")
-                    onClicked: settingsChanged("imageload","cached")
-                }
-
-                Button{
-                    id: btnImageAll
-                    text: qsTr("All")
-                    onClicked: settingsChanged("imageload","all")
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Location data support
-            SettingSwitch{
-                text: qsTr("Allow use of Location Data")
-                checked: configuration.gpsAllow === "1" //TODO: make some variable for it
-                onCheckedChanged: {
-                    var value = (checked)?"1":"0";
-                    settingsChanged("gpsallow",value);
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //GPS Unlock time
-            SettingSlider{
-                enabled: true//!streamingSwitch.checked
-                text: qsTr("GPS Unlock timeout") + ": " +
-                      (enabled ? (value === 0 ? qsTr("Instant") : qsTr("%n secs(s)", "", value)) : qsTr("Disabled"))
-                maximumValue: 120
-                stepSize: 10
-                value: configuration.gpsUplockTime
-                onReleased: settingsChanged("gpsunlock",value)
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Feed autoupdate time
-            SettingSlider{
-                enabled: true//!streamingSwitch.checked
-                text: qsTr("Feed autoupdate time") + ": " +
-                      (enabled ? (value === 0 ? qsTr("Off") : qsTr("%n min(s)", "", value)) : qsTr("Disabled"))
-                maximumValue: 60
-                stepSize: 1
-                value: configuration.feedAutoUpdate/60
-                onReleased: settingsChanged("feedupdate",value * 60)
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Swypedown actions
-            SettingSwitch {
-                text: qsTr("Always run in background")
-                checked: configuration.disableSwypedown === "1"
-                onCheckedChanged: {
-                    var value = (checked)?"1":"0";
-                    settingsChanged("disableswypedown",value);
-                }
-            }
-
-            //Notifications
-            SettingSwitch{
-                text: qsTr("Notification popups")
-                checked: configuration.feedNotification === "1"
-                onCheckedChanged: {
-                    var value = (checked)?"1":"0";
-                    settingsChanged("feed.notification",value);
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Event feed integration
-            SettingSwitch{
-                text: qsTr("Feed at Home screen")
-                checked: configuration.feedIntegration === "1"
-                onCheckedChanged: {
-                    var value = (checked)?"1":"0";
-                    settingsChanged("feed.integration",value);
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Push notifications support
-            SettingSwitch{
-                text: qsTr("Push notifications")
-                //checked: configuration. === "1" //TODO: make some variable for it
-                onCheckedChanged: {
-                    if (checked) {
-                        pushNotificationDialog.open();
-                    }
-                    checked = false;
-                    var value = "0";
-                    settingsChanged("push.enabled",value);
-                }
-            }
-            Item{
-                height: 20
-                width: parent.width
-            }
 
             //App cache
             Text {
@@ -459,25 +643,7 @@ PageWrapper {
                 text: "App Cache"
                 font.pixelSize: mytheme.font.sizeSettigs
             }
-            Row {
-                width: parent.width
-                spacing: 20
 
-                Button {
-                    text: "Reset"
-                    width: 150
-                    onClicked: {
-                        cache.reset();
-                        cacheSize = cache.info();
-                    }
-                }
-
-                TextButton {
-                    height: 35
-                    selected: false
-                    label: "Size: " + cacheSize;
-                }
-            }
 
             Item{
                 height: 20
@@ -485,55 +651,7 @@ PageWrapper {
             }
 
             //Molome integration
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "MOLO.me integration"
-                font.pixelSize: mytheme.font.sizeSettigs
-                visible: configuration.platform === "meego"
-            }
-            Button {
-                text: "Download MOLO.me"
-                onClicked: {
-                    Qt.openUrlExternally("http://molo.me/meego");
-                }
-                visible: !configuration.molome_present && configuration.platform === "meego"
-            }
-            Column {
-                width: parent.width
-                Button {
-                    property bool active: false
-                    text: "Enable"
-                    onClicked: {
-                        waiting_show();
-                        active = true;
-                        molome.install();
-                    }
-                    visible: configuration.molome_present && !configuration.molome_installed;
-                    onVisibleChanged: {
-                        if (active) {
-                            waiting_hide();
-                            active = false;
-                        }
-                    }
-                }
-                Button {
-                    property bool active: false
-                    text: "Disable"
-                    onClicked: {
-                        waiting_show();
-                        active = true;
-                        molome.uninstall();
-                    }
-                    visible: configuration.molome_installed;
-                    onVisibleChanged: {
-                        if (active) {
-                            waiting_hide();
-                            active = false;
-                        }
-                    }
-                }
-                visible: configuration.platform === "meego"
-            }
+
             Item{
                 height: 20
                 width: parent.width
@@ -547,43 +665,14 @@ PageWrapper {
                 text: "Reset authentication"
                 font.pixelSize: mytheme.font.sizeSettigs
             }
-            Row {
-                width: parent.width
 
-                Button {
-                    text: "Revoke"
-                    width: 150
-                    onClicked: {
-                        authDeleted()
-                    }
-                }
-            }
 
             Item{
                 height: 20
                 width: parent.width
             }
 
-            Image {
-                anchors.horizontalCenter: parent.horizontalCenter
-                source: "../pics/"+mytheme.name+"/separator.png"
-            }
 
-            Text {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: mytheme.textHelp4
-                color: mytheme.colors.textColorOptions
-                font.pixelSize: mytheme.font.sizeHelp
-                font.underline: true
-
-                horizontalAlignment: Text.AlignHCenter
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        Qt.openUrlExternally(mytheme.textHelp4);
-                    }
-                }
-            }
 
             Item{
                 height: 20
@@ -593,5 +682,6 @@ PageWrapper {
         }
     }
 
-    ScrollDecorator{ flickableItem: flickableArea }
+
+    */
 }

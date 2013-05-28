@@ -130,6 +130,7 @@ PageWrapper {
 
     Component.onCompleted: {
         checkinOwner.userPhoto.photoSize = 200;
+        checkinOwner.userPhoto.masked = false;
     }
 
     onUserPhotoChanged: {

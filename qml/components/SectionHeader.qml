@@ -30,7 +30,8 @@ Item {
         id: line
         anchors {
             left: parent.left
-            right: text.left; rightMargin: text.text.length ? mytheme.paddingXLarge : 0
+            right: text.text.length ? text.left : parent.right;
+            rightMargin: text.text.length ? mytheme.paddingXLarge : 0
             verticalCenter: parent.verticalCenter
         }
         color: mytheme.colors.textColorTimestamp
@@ -39,7 +40,7 @@ Item {
 
     Text {
         id: text
-        anchors { right: parent.right; /*rightMargin: mytheme.paddingXLarge*/ }
+        anchors { right: parent.right; rightMargin: mytheme.paddingXLarge }
         color: mytheme.colors.textColorTimestamp
         elide: Text.ElideRight
         horizontalAlignment: Text.AlignRight

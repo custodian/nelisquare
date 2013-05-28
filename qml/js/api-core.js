@@ -70,6 +70,12 @@ api.request = function(method, url, page, callback) {
             if (doc.status == 200) {
                 var data;
                 var contentType = doc.getResponseHeader("Content-Type");
+                var ratelimit = {
+                    "limit": doc.getResponseHeader("x-ratelimit-limit"),
+                    "remaining": doc.getResponseHeader("x-ratelimit-remaining")
+                }
+                if (ratelimit.limit !== "0")
+                    page.updateRateLimit(ratelimit);
                 data = doc.responseText;
                 callback(data,page);
             } else {

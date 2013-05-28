@@ -29,6 +29,8 @@ Item   {
 
     property string accessToken: "empty"
 
+    property variant ratelimit: {}
+
     property bool molome_present: false
     property bool molome_installed: false
 

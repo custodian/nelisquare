@@ -23,6 +23,7 @@ Item{
     id: root
 
     property string text: ""
+    property alias enabled: switchItem.enabled
     property alias checked: switchItem.checked
     property bool infoButtonVisible: false
     signal infoClicked

@@ -153,7 +153,7 @@ PageWrapper {
             Api.venues.likeVenue(page,venueID,state);
         });
         page.showlikes.connect(function(checkin) {
-            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"venue","objID":venueID});
+            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"venue","objID":venueID, "limit":likeBox.likes});
         })
         Api.venues.loadVenue(page, venueID);
     }

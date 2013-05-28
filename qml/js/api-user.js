@@ -303,10 +303,10 @@ users.parseCheckinHistory = function(response, page) {
     });
 }
 
-users.loadLikeUsers = function(page, objectid, objecttype) {
+users.loadLikeUsers = function(page, objectid, objecttype, limit) {
     page.usersModel.clear();
     page.waiting_show();
-    var url = objecttype + "s/" + objectid + "/likes?" + getAccessTokenParameter();
+    var url = objecttype + "s/" + objectid + "/likes?limit=" + limit + "&" + getAccessTokenParameter();
     api.request("GET", url, page, users.parseLikeUsers);
 }
 

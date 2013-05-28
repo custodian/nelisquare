@@ -78,7 +78,7 @@ PageWrapper {
             Api.checkin.likeCheckin(page,checkin,state);
         });
         page.showlikes.connect(function() {
-            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"checkin","objID":checkinID});
+            stack.push(Qt.resolvedUrl("UsersList.qml"),{"objType":"checkin","objID":checkinID, "limit":likeBox.likes});
         })
         page.user.connect(function(user){
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":user});

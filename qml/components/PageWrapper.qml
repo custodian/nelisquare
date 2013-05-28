@@ -63,6 +63,10 @@ Page {
         notificationDialog.state = "shown";
     }
 
+    function updateRateLimit(value) {
+        configuration.ratelimit = value;
+    }
+
     function updateNotificationCount(value) {
         appWindow.notificationsCount = value
         //console.log("last: " + lastNotiCount + " new: " + value);
