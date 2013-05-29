@@ -46,30 +46,56 @@ feed.loadFriendsFeed = function(page, history) {
 feed.parseFriendsFeedUpdate = function(response, page) {
     var data = api.process(response, page);
     feed.debug(function(){return "UPDATES: " + JSON.stringify(data)});
-    data.updates.items.forEach(
-        function(update){
-            if (update.type === "checkin") {
-                for (var i=0;i<page.friendsCheckinsModel.count;i++) {
-                    var info = page.friendsCheckinsModel.get(i).content;
-                    if (info.id !== update.id)
-                        continue;
-                    feed.log("FOUND CHECKIN in MODEL: " + update.id);
-                    info.commentsCount = update.comments.count;
-                    info.comments = update.comments.items;
-                    info.likesCount = update.likes.count;
-                    page.updateItem(i,info);
-                    break;
-                }
-            } else {
-                feed.log("UPDATE TYPE: " + update.type);
-                feed.debug(function(){ return "UPDATE CONTENT: " + JSON.stringify(update)});
-                var item = {
-                    "type": "feed-upd",
-                    "content": data
-                }
-                page.addItem(item,0);
+
+    for(var prop in data) {
+        if (prop === "updates") {
+            data.updates.items.forEach(
+                function(update){
+                    if (update.type === "checkin") {
+                        for (var i=0;i<page.friendsCheckinsModel.count;i++) {
+                            var info = page.friendsCheckinsModel.get(i).content;
+                            if (info.id !== update.id)
+                                continue;
+                            feed.log("FOUND CHECKIN in MODEL: " + update.id);
+                            info.commentsCount = update.comments.count;
+                            info.comments = update.comments.items;
+                            info.likesCount = update.likes.count;
+                            page.updateItem(i,info);
+                            break;
+                        }
+                    } else {
+                        feed.log("UPDATE FEED TYPE: " + update.type);
+                        feed.debug(function(){ return "UPDATE CONTENT: " + JSON.stringify(update)});
+                        var updateitem = {
+                            "type": "feed-update",
+                            "content": update
+                        }
+                        page.addItem(updateitem,0);
+                    }
+                });
+        } else if (prop === "deletes") {
+            data.deletes.items.forEach(
+                function(del) {
+                    feed.log("UPDATE FEED TYPE: " + del.type);
+                    feed.debug(function(){ return "UPDATE CONTENT: " + JSON.stringify(del)});
+                    var deleteitem = {
+                        "type": "feed-delete",
+                        "content": del
+                    }
+                    page.addItem(deleteitem,0);
+                });
+        } else {
+            feed.log("UPDATE TYPE: " + prop);
+            var propdata = data[prop];
+            if (propdata.type === undefined)
+                propdata.type = "feed-" + prop
+            var propitem = {
+                "type": "feed-" + prop,
+                "content": propdata
             }
-        });
+            page.addItem(propitem,0);
+        }
+    }
 }
 
 feed.parseFriendsFeed = function(response, page, history) {

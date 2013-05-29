@@ -28,7 +28,12 @@ Column {
                 anchors.fill: parent
 
                 onClicked: {
-                    appWindow.sendDebugInfo(debugContent);
+                    appWindow.sendDebugInfo(
+                        {
+                            "debugType": debugType,
+                            "debugContent": debugContent
+                        }
+                    );
                 }
             }
         }
