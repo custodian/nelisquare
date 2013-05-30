@@ -18,7 +18,7 @@ PageWrapper {
     color: mytheme.colors.backgroundMain
 
     //TODO: no header. show minimap + venues instead
-    headerText: "NEARBY VENUES"
+    headerText: qsTr("NEARBY VENUES")
     headerIcon: "../icons/icon-header-venueslist.png"
 
     /*tools: ToolBarLayout{
@@ -98,18 +98,18 @@ PageWrapper {
 
         TextField {
             id: searchText
-            placeholderText: mytheme.textSearchVenue
+            placeholderText: qsTr("Tap to search place...")
             width: parent.width - 180
             x: 10
             y: 10
         }
 
-        ButtonBlue {
+        Button {
             id: searchButton
             x: parent.width - width - 10
             y: 10
             height: searchText.height
-            label: "SEARCH"
+            text: qsTr("SEARCH")
             width: 150
 
             onClicked: {
@@ -144,10 +144,10 @@ PageWrapper {
                 width: placesView.width
                 height: 10
             }
-            ButtonBlue {
+            Button {
                 width: placesView.width * 0.7
                 anchors.horizontalCenter: parent.horizontalCenter
-                label: "ADD NEW VENUE"
+                text: "ADD NEW VENUE"
                 onClicked: {
                     venuesList.addVenue();
                 }

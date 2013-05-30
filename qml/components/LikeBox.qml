@@ -30,7 +30,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
 
         SectionHeader {
-            text: "USER LIKES"
+            text: qsTr("USER LIKES")
         }
 
         /*Row {

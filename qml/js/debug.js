@@ -4,7 +4,7 @@
 
 .pragma library
 
-api.log("loading debug...");
+api.log( qsTr("loading debug...") );
 
 function loaddebugobject() {
     return undefined

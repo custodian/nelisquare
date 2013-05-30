@@ -15,7 +15,7 @@ PageWrapper {
 
     signal submit()
 
-    headerText: "DEBUG SUBMIT"
+    headerText: qsTr("DEBUG SUBMIT")
     headerIcon: "image://theme/icon-l-settings-main-view"
     headerBubble: false
 
@@ -31,7 +31,7 @@ PageWrapper {
             show_info(message);
         }
         else {
-            show_info(message + "<br>Thank you for submit!<br>This will be implemented soon!");
+            show_info(message + "<br>" + qsTr("Thank you for submit!<br>This will be implemented soon!"));
             stack.pop();
         }
     }
@@ -50,7 +50,7 @@ PageWrapper {
             spacing: mytheme.graphicSizeTiny
             ToolButton {
                 id: buttonSubmit
-                text: "SUBMIT"
+                text: qsTr("SUBMIT")
                 platformStyle: SheetButtonAccentStyle { }
                 onClicked: {
                     enabled = false;
@@ -58,7 +58,7 @@ PageWrapper {
                 }
             }
             ToolButton {
-                text: "Cancel"
+                text: qsTr("Cancel")
                 onClicked: stack.pop();
             }
         }
@@ -89,7 +89,7 @@ PageWrapper {
 
             Text {
                 id: venueName
-                text: "You can help me with Nelisquare development by submitting debug info.\n\nThe following information are going to be submitted:"
+                text: qsTr("You can help me with Nelisquare development by submitting debug info.\n\nThe following information are going to be submitted:")
                 width: parent.width
                 wrapMode: Text.WordWrap
                 font.pixelSize: 24

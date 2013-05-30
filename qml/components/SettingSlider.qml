@@ -47,7 +47,7 @@ Item{
         anchors.margins: mytheme.paddingSmall
         enabled: root.enabled
         minimumValue: 0
-        valueIndicatorText: value == 0 ? "Off" : value
+        valueIndicatorText: value == 0 ? qsTr("Off") : value
         valueIndicatorVisible: true
         onPressedChanged: if(!pressed) root.released()
     }

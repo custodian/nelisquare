@@ -143,10 +143,10 @@ PageWrapper {
 
             }*/
 
-            ButtonBlue {
+            Button {
                 width: parent.width * 0.7
                 anchors.horizontalCenter: parent.horizontalCenter
-                label: "CREATE VENUE"
+                text: "CREATE VENUE"
             }
 
             Item {

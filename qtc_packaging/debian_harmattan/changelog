@@ -1,16 +1,16 @@
 nelisquare (0.5.0) stable; urgency=low
+  * Internalization
   * Settings page update
-  * Image cache update
   * Debug info submission
   * Award badge, like page, update page, like page update, like venue, save venue, save tip, save list, new tip, new friend, connect app events added to feed
   * Users who liked page added
   * Homescreen disabled
   * Api structure update
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 27 May 2013 12:25:22 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 31 May 2013 23:53:23 +0400
 
 nelisquare (0.4.10) stable; urgency=low
-  * [in-dev] dialogs updates
+  * dialogs updates
   * background mode added
   * bug fixes
 

@@ -53,6 +53,7 @@ SOURCES += $$PWD/src/main.cpp \
     $$PWD/src/picturehelper.cpp \
     $$PWD/src/cache.cpp \
     $$PWD/src/molome.cpp \
+    $$PWD/src/apptranslator.cpp \
     $$PWD/src/extras/formpost.cpp \
     $$PWD/src/extras/httppostsendbuffer.cpp
 
@@ -61,6 +62,7 @@ HEADERS += \
     $$PWD/src/picturehelper.h \
     $$PWD/src/cache.h \
     $$PWD/src/molome.h \
+    $$PWD/src/apptranslator.h \
     $$PWD/src/extras/formpost.h \
     $$PWD/src/extras/httppostsendbuffer.h
 
@@ -90,11 +92,14 @@ maemo5 {
 # Add more folders to ship with the application, here
 maemo5 {
     qmlresources.source = $$PWD/qml
+    qmli18n.source = $$PWD/i18n/nelisquare_*.qm
 } else {
     qmlresources.source = qml
+    qmli18n.source = i18n/nelisquare_*.qm
 }
 qmlresources.target = .
-DEPLOYMENTFOLDERS += qmlresources
+qmli18n.target = i18n
+DEPLOYMENTFOLDERS += qmlresources qmli18n
 
 #Geoservices providers
 unix {
@@ -133,3 +138,10 @@ OTHER_FILES += \
 OTHER_FILES += \
     nelisquare_maemo.desktop \
     nelisquare_meego.desktop
+
+lupdate_only {
+    SOURCES = qml/main.qml \
+        qml/components/*.qml \
+        qml/pages/*.qml \
+        qml/js/*.js
+}

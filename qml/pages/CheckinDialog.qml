@@ -19,7 +19,7 @@ PageWrapper {
 
     signal checkin(string venueID, string comment, bool friends, bool facebook, bool twitter)
 
-    headerText: "NEW CHECK-IN"
+    headerText: qsTr("NEW CHECK-IN")
     headerIcon: "../icons/icon-header-newcheckin.png"
     headerBubble: false
 
@@ -45,7 +45,7 @@ PageWrapper {
             exclusive: false
             spacing: mytheme.graphicSizeTiny
             ToolButton {
-                text: "CHECK IN"
+                text: qsTr("CHECK IN")
                 platformStyle: SheetButtonAccentStyle { }
                 onClicked: {
                     enabled = false;
@@ -54,7 +54,7 @@ PageWrapper {
                 }
             }
             ToolButton {
-                text: "Cancel"
+                text: qsTr("Cancel")
                 onClicked: stack.pop();
             }
         }
@@ -97,7 +97,7 @@ PageWrapper {
                 width: parent.width - 10
                 height: 130
 
-                placeholderText: mytheme.textDefaultCheckin
+                placeholderText: qsTr("Whats on your mind?")
                 textFormat: TextEdit.PlainText
 
                 font.pixelSize: mytheme.fontSizeMedium
@@ -121,11 +121,11 @@ PageWrapper {
                 width: parent.width
 
                 SectionHeader {
-                    text: "Sharing options"
+                    text: qsTr("Sharing options")
                 }
 
                 SettingSwitch {
-                    text: "Share with Friends"
+                    text: qsTr("Share with Friends")
                     checked: checkin.useFriends
                     onCheckedChanged: {
                         checkin.useFriends = checked
@@ -133,7 +133,7 @@ PageWrapper {
                 }
 
                 SettingSwitch {
-                    text: "Post to Facebook"
+                    text: qsTr("Post to Facebook")
                     checked: checkin.useFacebook
                     onCheckedChanged: {
                         checkin.useFacebook = checked
@@ -141,7 +141,7 @@ PageWrapper {
                 }
 
                 SettingSwitch {
-                    text: "Post to Twitter"
+                    text: qsTr("Post to Twitter")
                     checked: checkin.useTwitter
                     onCheckedChanged: {
                         checkin.useTwitter = checked

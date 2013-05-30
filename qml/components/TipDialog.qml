@@ -37,7 +37,7 @@ Rectangle {
             width: parent.width - 10
             height: 130
 
-            placeholderText: mytheme.textDefaultTip;
+            placeholderText: qsTr("Write some cool tip here");
             textFormat: TextEdit.PlainText
 
             font.pixelSize: mytheme.fontSizeMedium
@@ -63,7 +63,7 @@ Rectangle {
 
             ButtonGreen {
                 id: checkinButton
-                label: "ADD"
+                label: qsTr("ADD")
                 width: parent.width - 130
                 onClicked: {
                     tipDialog.addTip( tipText.text );
@@ -71,7 +71,7 @@ Rectangle {
             }
 
             ButtonGray{
-                label: "Cancel"
+                label: qsTr("Cancel")
                 x: parent.width - 120
                 width: 120
                 onClicked: {

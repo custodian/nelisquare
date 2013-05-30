@@ -21,7 +21,7 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    headerText: "CHECK-IN HISTORY"
+    headerText: qsTr("CHECK-IN HISTORY")
     headerIcon: "../icons/icon-header-checkinhistory.png"
 
     function load() {
@@ -61,7 +61,7 @@ PageWrapper {
             width: parent.width
             ToolButton {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Load More"
+                text: qsTr("Load More")
                 visible: !completed
                 onClicked: {
                     completed = true;

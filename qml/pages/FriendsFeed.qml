@@ -41,7 +41,7 @@ PageWrapper {
         ListElement {name:"Recent activity"}
         ListElement {name:"Nearby activity"}
     }*/
-    headerText: "FRIENDS FEED"
+    headerText: qsTr("FRIENDS FEED")
     headerIcon: "../icons/icon-header-feed.png"
 
     width: parent.width
@@ -214,7 +214,7 @@ PageWrapper {
                     anchors.centerIn: parent
 
                     Button {
-                        text: "RECENT"
+                        text: qsTr("RECENT")
                         height: 50
                         checkable: true
                         checked: !friendsFeed.nearbyPressed
@@ -227,7 +227,7 @@ PageWrapper {
                         //platformStyle: ButtonStyle {}
                     }
                     Button {
-                        text: "NEARBY"
+                        text: qsTr("NEARBY")
                         height: 50
                         checkable: true
                         checked: friendsFeed.nearbyPressed
@@ -248,7 +248,7 @@ PageWrapper {
             width: parent.width
             ToolButton {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Load More"
+                text: qsTr("Load More")
                 visible: moreData
                 onClicked: {
                     moreData = false;
@@ -395,7 +395,7 @@ PageWrapper {
             }
 
             onAreaClicked: {
-                show_error("Sorry, Pages are not supported yet :(");
+                show_error(qsTr("Sorry, Pages are not supported yet :("));
             }
         }
     }
@@ -465,7 +465,7 @@ PageWrapper {
 
             onAreaClicked: {
                 //friendsFeed.list( content.id );
-                show_error("Sorry, no lists support yet :(");
+                show_error(qsTr("Sorry, no lists support yet :("));
             }
         }
     }

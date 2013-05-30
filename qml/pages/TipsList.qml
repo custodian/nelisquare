@@ -15,7 +15,7 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    headerText: "TIPS LIST"
+    headerText: qsTr("TIPS LIST")
     headerIcon: "../icons/icon-header-tipslist.png"
 
     property string baseID: ""

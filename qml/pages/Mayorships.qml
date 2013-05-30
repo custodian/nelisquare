@@ -16,7 +16,7 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
-    headerText: "MAYORSHIPS"
+    headerText: qsTr("MAYORSHIPS")
     headerIcon: "../icons/icon-header-mayorships.png"
 
     function load() {

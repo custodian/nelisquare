@@ -27,6 +27,7 @@ Item   {
 
     property int commentUpdateRate: 300 //currently hardcoded to be 5 mins
 
+    property string interfaceLanguage: translator.getDefaultLanguage()
     property string accessToken: "empty"
 
     property variant ratelimit: {}
@@ -128,6 +129,12 @@ Item   {
             if (value === "") value = "1";
             configuration.disableSwypedown = value;
             windowHelper.disableSwype(value === "1");
+        } else if (key === "settings.language") {
+            if (value !== "") {
+                configuration.interfaceLanguage = value;
+            }
+            Api.setLocale(interfaceLanguage.substring(0,2));
+            translator.changeLanguage(interfaceLanguage);
         } else {
             console.log("Unknown setting: " + key + "=" + value);
         }
@@ -139,7 +146,7 @@ Item   {
     }
 
     function loadSettings() {
-        Storage.getKeyValue("accesstoken", settingLoaded);
+        Storage.getKeyValue("settings.language", settingLoaded);
 
         Storage.getKeyValue("settings.orientation", settingLoaded);
         Storage.getKeyValue("settings.mapprovider", settingLoaded);
@@ -156,8 +163,10 @@ Item   {
         Storage.getKeyValue("settings.theme", settingLoaded);
 
         Storage.getKeyValue("settings.push.enabled",settingLoaded);
-
         Storage.getKeyValue("settings.molome", settingLoaded);
+
+
+        Storage.getKeyValue("accesstoken", settingLoaded);
     }
 
     function resetSettings() {

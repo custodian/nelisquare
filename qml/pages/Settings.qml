@@ -10,7 +10,7 @@ PageWrapper {
 
     signal settingsChanged(string type, string value);
 
-    property string cacheSize: "updating..."
+    property string cacheSize: qsTr("updating...")
 
     id: settings
     color: mytheme.colors.backgroundMain
@@ -18,7 +18,7 @@ PageWrapper {
     width: parent.width
     height: parent.height
 
-    headerText: "SETTINGS"
+    headerText: qsTr("SETTINGS")
     headerIcon: "../icons/icon-header-settings.png"
     headerBubble: false
 
@@ -49,24 +49,56 @@ PageWrapper {
 
         icon: "../pics/nelisquare-logo.png"//"image://theme/icon-m-user-guide"
         titleText: "Nelisquare"
-        message: mytheme.textHelp1
-            + "\n" + mytheme.textHelp2
-            + "\n" + mytheme.textVersionInfo + BuildInfo.version
-            + "\n" + mytheme.textBuildInfo + BuildInfo.build
-            + "\n" + mytheme.textHelp3
+        message: ("%1\n%2\n%3\n%4\n\n%5\n\n%6: %7\n%8: %9\n\n%10")
+        .arg(qsTr("2012-2013 Basil Semuonov"))
+        .arg(qsTr("Idea by Tommi Laukkanen"))
+        .arg(qsTr("Shout out to @knobtviker"))
+        .arg(qsTr("Design by Kim Venetvirta"))
+        .arg(qsTr("If any problems, tweet @basil_s"))
+        .arg(qsTr("Version"))
+        .arg(BuildInfo.version)
+        .arg(qsTr("Build"))
+        .arg(BuildInfo.build)
+        .arg(qsTr("Powered by Foursquare"))
 
-        rejectButtonText: "Close"
+        rejectButtonText: qsTr("Close")
     }
 
     QueryDialog  {
         id: eraseSettingsDialog
         icon: "image://theme/icon-l-accounts"
-        titleText: "Reset settings"
-        message: "This action will erase all data including auth token, application settings and cache."
-        acceptButtonText: "Yes, clear the data"
-        rejectButtonText: "No, thanks"
+        titleText: qsTr("Reset settings")
+        message: qsTr("This action will erase all data including auth token, application settings and cache.")
+        acceptButtonText: qsTr("Yes, clear the data")
+        rejectButtonText: qsTr("No, thanks")
         onAccepted: {
             configuration.resetSettings();
+        }
+    }
+
+    SelectionDialog {
+        id: translationSelector
+        titleText: qsTr("Language")
+        onAccepted: {
+            settingsChanged("language",languageNamesModel.get(selectedIndex).code);
+        }
+    }
+
+    ListModel {
+        id: languageNamesModel
+
+        Component.onCompleted: {
+            var langs = translator.getAvailableLanguages()
+            for(var lang in langs) {
+                languageNamesModel.append({"name":langs[lang],"code":lang});
+            }
+            translationSelector.model = languageNamesModel;
+            /*for (var i=0; i<internal.languagesCodesArray.length; i++) {
+                if (internal.languagesCodesArray[i] === settings.translateLangCode) {
+                    selectedIndex = i
+                    break
+                }
+            }*/
         }
     }
 
@@ -126,7 +158,7 @@ PageWrapper {
 
                 //Check updates
                 SectionHeader{
-                    text: "UPDATES CHECK"
+                    text: qsTr("UPDATES CHECK")
                 }
                 ButtonRow {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -174,12 +206,12 @@ PageWrapper {
                 }
 
                 SectionHeader {
-                    text: "INTERVALS"
+                    text: qsTr("INTERVALS")
                 }
                 SettingSlider{
                     enabled: true//!streamingSwitch.checked
                     text: qsTr("GPS Unlock timeout") + ": " +
-                          (enabled ? (value === 0 ? qsTr("Instant") : qsTr("%n secs(s)", "", value)) : qsTr("Disabled"))
+                          (enabled ? (value === 0 ? qsTr("Instant") : qsTr("%1 secs(s)").arg(value)) : qsTr("Disabled"))
                     maximumValue: 120
                     stepSize: 10
                     value: configuration.gpsUplockTime
@@ -188,7 +220,7 @@ PageWrapper {
                 SettingSlider{
                     enabled: true//!streamingSwitch.checked
                     text: qsTr("Feed autoupdate time") + ": " +
-                          (enabled ? (value === 0 ? qsTr("Off") : qsTr("%n min(s)", "", value)) : qsTr("Disabled"))
+                          (enabled ? (value === 0 ? qsTr("Off") : qsTr("%1 min(s)").arg(value)) : qsTr("Disabled"))
                     maximumValue: 60
                     stepSize: 1
                     value: configuration.feedAutoUpdate/60
@@ -196,7 +228,7 @@ PageWrapper {
                 }
 
                 SectionHeader{
-                    text: "PERMISSIONS"
+                    text: qsTr("PERMISSIONS")
                 }
                 SettingSwitch{
                     text: qsTr("Allow use of Location Data")
@@ -250,7 +282,7 @@ PageWrapper {
 
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    text: mytheme.textHelp4
+                    text: "http://custodian.github.com/nelisquare"
                     color: mytheme.colors.textColorOptions
                     font.pixelSize: mytheme.font.sizeHelp
                     font.underline: true
@@ -259,7 +291,7 @@ PageWrapper {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            Qt.openUrlExternally(mytheme.textHelp4);
+                            Qt.openUrlExternally("http://custodian.github.com/nelisquare");
                         }
                     }
                 }
@@ -282,7 +314,7 @@ PageWrapper {
                 spacing: mytheme.paddingMedium
 
                 SectionHeader{
-                    text: "COLOR THEME"
+                    text: qsTr("COLOR THEME")
                 }
                 ButtonRow {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -313,7 +345,7 @@ PageWrapper {
                 }
 
                 SectionHeader{
-                    text: "SCREEN ORIENTATION"
+                    text: qsTr("SCREEN ORIENTATION")
                 }
                 ButtonRow {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -352,18 +384,18 @@ PageWrapper {
                 }
 
                 SectionHeader{
-                    text: "LANGUAGE"
+                    text: qsTr("LANGUAGE")
                 }
                 Button{
-                    text: "Default"
+                    text: translator.getLanguageName(configuration.interfaceLanguage) //"Default"
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: {
-                        show_error("No translations available!");
+                        translationSelector.open();
                     }
                 }
 
                 SectionHeader{
-                    text: "MAP PROVIDER"
+                    text: qsTr("MAP PROVIDER")
                 }
 
                 ButtonRow {
@@ -415,7 +447,7 @@ PageWrapper {
                 spacing: mytheme.paddingMedium
 
                 SectionHeader{
-                    text: "IMAGE LOADING"
+                    text: qsTr("IMAGE LOADING")
                 }
                 ButtonRow {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -445,13 +477,13 @@ PageWrapper {
                 }
 
                 SectionHeader{
-                    text: "INTEGRATION WITH APPS"
+                    text: qsTr("INTEGRATION WITH APPS")
                 }
                 Column {
                     width: parent.width
                     Button {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: "Download MOLO.ME"
+                        text: qsTr("Download MOLO.ME")
                         onClicked: {
                             Qt.openUrlExternally("http://molo.me/meego");
                         }
@@ -486,43 +518,11 @@ PageWrapper {
                         visible: configuration.molome_present
                     }
 
-                    /*Button {
-                        property bool active: false
-                        text: "Enable"
-                        onClicked: {
-                            waiting_show();
-                            active = true;
-                            molome.install();
-                        }
-                        visible: configuration.molome_present && !configuration.molome_installed;
-                        onVisibleChanged: {
-                            if (active) {
-                                waiting_hide();
-                                active = false;
-                            }
-                        }
-                    }
-                    Button {
-                        property bool active: false
-                        text: "Disable"
-                        onClicked: {
-                            waiting_show();
-                            active = true;
-                            molome.uninstall();
-                        }
-                        visible: configuration.molome_installed;
-                        onVisibleChanged: {
-                            if (active) {
-                                waiting_hide();
-                                active = false;
-                            }
-                        }
-                    }*/
                     visible: configuration.platform === "meego"
                 }
 
                 SectionHeader{
-                    text: "APPLICATION CACHE"
+                    text: qsTr("APPLICATION CACHE")
                 }
                 Row {
                     spacing: 20
@@ -530,7 +530,7 @@ PageWrapper {
 
                     Button {
                         id: btnCacheClear
-                        text: "Clear"
+                        text: qsTr("Clear")
                         width: 250
                         onClicked: {
                             cache.reset();
@@ -542,15 +542,15 @@ PageWrapper {
                         anchors.verticalCenter: btnCacheClear.verticalCenter
                         height: 35
                         selected: false
-                        label: "Size: " + cacheSize;
+                        label: qsTr("Size: %1").arg(cacheSize);
                     }
 
                 }
                 SectionHeader {
-                    text: "AUTHENTICATION"
+                    text: qsTr("AUTHENTICATION")
                 }
                 Button {
-                    text: "Reset authentication"
+                    text: qsTr("Reset authentication")
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: {
                         authDeleted()
@@ -571,30 +571,30 @@ PageWrapper {
                 spacing: mytheme.paddingMedium
 
                 SectionHeader {
-                    text: "ACCESS RATE LIMIT"
+                    text: qsTr("ACCESS RATE LIMIT")
                 }
                 Text{
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: mytheme.fontSizeLarge
                     color: mytheme.colors.textColorOptions
-                    text: "API requests available: %1 / %2".arg(configuration.ratelimit.remaining).arg(configuration.ratelimit.limit)
+                    text: qsTr("API requests available: %1 / %2").arg(configuration.ratelimit.remaining).arg(configuration.ratelimit.limit)
                 }
                 Text{
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: mytheme.fontSizeLarge
                     color: mytheme.colors.textColorOptions
-                    text: "You are low on X-RATE"
+                    text: qsTr("You are low on X-RATE requests")
                     visible: configuration.ratelimit.remaining < 10
                 }
 
                 SectionHeader{
-                    text: "DEBUG"
+                    text: qsTr("DEBUG")
                 }
                 Text{
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: mytheme.fontSizeLarge
                     color: mytheme.colors.textColorOptions
-                    text: "Options will be available soon"
+                    text: qsTr("Options will be available soon")
                 }
             }
         }
@@ -613,75 +613,4 @@ PageWrapper {
         TabButton { tab: debugTab; text: qsTr("Debug") }
     }
 
-    /*Flickable{
-        id: flickableArea
-        anchors.top: pagetop
-        width: parent.width
-        contentWidth: parent.width
-        height: settings.height - y
-
-        clip: true
-        flickableDirection: Flickable.VerticalFlick
-        boundsBehavior: Flickable.StopAtBounds
-        pressDelay: 100
-
-        Column {
-            onHeightChanged: {
-                flickableArea.contentHeight = height + y;
-            }
-
-            width: parent.width - 20
-            y: 30
-            x: 10
-            spacing: 0
-
-
-
-            //App cache
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "App Cache"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-
-
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-            //Molome integration
-
-            Item{
-                height: 20
-                width: parent.width
-                visible: configuration.platform === "meego";
-            }
-
-
-            //Revoke auth token
-            Text {
-                color: mytheme.colors.textColorOptions
-                text: "Reset authentication"
-                font.pixelSize: mytheme.font.sizeSettigs
-            }
-
-
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-
-
-            Item{
-                height: 20
-                width: parent.width
-            }
-
-        }
-    }
-
-
-    */
 }

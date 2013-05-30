@@ -21,7 +21,7 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
-    headerText: "NOTIFICATIONS"
+    headerText: qsTr("NOTIFICATIONS")
     headerIcon: "../icons/icon-header-notifications.png"
     headerBubble: false
 

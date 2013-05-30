@@ -57,7 +57,8 @@ users.parseUserBoard = function(response, page) {
             page.userLeadersboardRank = ranking.rank;
             page.boardModel.append({
                "user": "#" + ranking.rank + ". " +makeUserName(ranking.user),
-               "shout": "<b>"+ranking.scores.recent+" "+"points" + "</b> " + ranking.scores.checkinsCount + " " + "checkins",
+               "scoreRecent": ranking.scores.recent,
+               "checkinCount": ranking.scores.checkinsCount,
                "photo": thumbnailPhoto(ranking.user.photo,100),
         });
     });

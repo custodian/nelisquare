@@ -56,7 +56,7 @@ PageWrapper {
 
     property alias boardModel: boardModel
 
-    headerText: "USER DETAILS"
+    headerText: qsTr("USER DETAILS")
     headerIcon: "../icons/icon-header-user.png"
 
     /*tools: ToolBarLayout{
@@ -267,7 +267,7 @@ PageWrapper {
 
             ButtonGreen {
                 anchors.horizontalCenter: parent.horizontalCenter
-                label: "Add Friend"
+                label: qsTr("Add Friend")
                 width: parent.width - 130
                 onClicked: {
                     details.addFriend(userID);
@@ -278,15 +278,15 @@ PageWrapper {
             Row {
                 width: parent.width
                 spacing: 50
-                ButtonBlue {
-                    label: "Approve Friend"
+                Button {
+                    text: qsTr("Approve Friend")
                     width: parent.width * 0.6
                     onClicked: {
                         details.approveFriend(userID);
                     }
                 }
                 ButtonGray {
-                    label: "Deny"
+                    label: qsTr("Deny friend")
                     width: parent.width * 0.3
                     onClicked: {
                         details.denyFriend(userID);
@@ -298,7 +298,7 @@ PageWrapper {
             ButtonGray {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width - 130
-                label: "Remove Friend"
+                label: qsTr("Remove Friend")
                 onClicked: {
                     details.removeFriend(userID);
                 }
@@ -311,12 +311,12 @@ PageWrapper {
                 height: children[0].height
                 Text {
                     id: lblScoresText
-                    text: "<b>SCORES</b> (LAST 7 DAYS)"
+                    text: qsTr("<b>SCORES</b> (LAST 7 DAYS)")
                     font.pixelSize: mytheme.font.sizeHelp
                     color: mytheme.colors.textColorOptions
                 }
                 Text {
-                    text: "BEST SCORE"
+                    text: qsTr("BEST SCORE")
                     anchors.right: parent.right
                     font.pixelSize: mytheme.font.sizeHelp
                     font.bold: true
@@ -374,7 +374,7 @@ PageWrapper {
                         y: parent.height - height - 2
                         color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
-                        text: details.userBadgesCount + " " + "Badges"
+                        text: details.userBadgesCount + " " + qsTr("Badges")
                     }
 
                     MouseArea {
@@ -409,7 +409,7 @@ PageWrapper {
                         y: parent.height - height - 2
                         color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
-                        text: details.userCheckinsCount + " " + "Checkins"
+                        text: details.userCheckinsCount + " " + qsTr("Checkins")
                     }
                     MouseArea {
                         anchors.fill: parent
@@ -444,7 +444,7 @@ PageWrapper {
                         y: parent.height - height - 2
                         color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
-                        text: details.userMayorshipsCount + " " + "Mayorships"
+                        text: details.userMayorshipsCount + " " + qsTr("Mayorships")
                     }
                     MouseArea {
                         anchors.fill: parent
@@ -479,7 +479,7 @@ PageWrapper {
                         y: parent.height - height - 2
                         color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
-                        text: details.userFriendsCount + " " + "Friends"
+                        text: details.userFriendsCount + " " + qsTr("Friends")
                     }
 
                     MouseArea {
@@ -514,7 +514,7 @@ PageWrapper {
                         y: parent.height - height - 2
                         color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
-                        text: details.userPhotosCount + " " + "Photos"
+                        text: details.userPhotosCount + " " + qsTr("Photos")
                     }
 
                     MouseArea {
@@ -550,7 +550,7 @@ PageWrapper {
                         y: parent.height - height - 2
                         color: mytheme.colors.textColorProfile
                         font.pixelSize: 20
-                        text: details.userTipsCount + " " + "Tips"
+                        text: details.userTipsCount + " " + qsTr("Tips")
                     }
 
                     MouseArea {
@@ -566,7 +566,7 @@ PageWrapper {
                 height: 30
                 width: details.width
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "YOU ARE #" + userLeadersboardRank
+                text: qsTr("YOU ARE #") + userLeadersboardRank
                 visible: userRelationship == "self" && userLeadersboardRank > 0
             }
 
@@ -591,8 +591,7 @@ PageWrapper {
             width: miniLeadersboard.width
 
             userName: model.user
-            //userShout:
-            createdAt: model.shout
+            createdAt: qsTr("<b>%1 points</b> %2 checkins").arg(model.scoreRecent).arg(model.checkinCount)
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo

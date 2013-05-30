@@ -34,7 +34,7 @@ Rectangle {
         spacing: 10
 
         Text {
-            text: "Selected photo"
+            text: qsTr("Selected photo")
             width: parent.width
             font.pixelSize: 24
             color: mytheme.colors.textColorSign
@@ -56,25 +56,25 @@ Rectangle {
                 width: parent.width - selectedPhoto.width - 10
 
                 SectionHeader {
-                    text: "Sharing"
+                    text: qsTr("Sharing")
                 }
 
                 SettingSwitch {
-                    text: "Public"
+                    text: qsTr("Public")
                     checked: photoShare.makePublic
                     onCheckedChanged: {
                         photoShare.makePublic = checked
                     }
                 }
                 SettingSwitch {
-                    text: "Facebook"
+                    text: qsTr("Facebook")
                     checked: photoShare.useFacebook
                     onCheckedChanged: {
                         photoShare.useFacebook = checked
                     }
                 }
                 SettingSwitch {
-                    text: "Twitter"
+                    text: qsTr("Twitter")
                     checked: photoShare.useTwitter
                     onCheckedChanged: {
                         photoShare.useTwitter = checked
@@ -89,7 +89,7 @@ Rectangle {
 
             ButtonGreen {
                 id: checkinButton
-                label: "Upload photo"
+                label: qsTr("Upload photo")
                 width: parent.width - 130
                 onClicked: {
                     var params = options;
@@ -102,7 +102,7 @@ Rectangle {
             }
 
             ButtonGreen {
-                label: "Cancel"
+                label: qsTr("Cancel")
                 x: parent.width - 120
                 width: 120
                 onClicked: photoShare.cancel();

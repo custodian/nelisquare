@@ -6,8 +6,8 @@ ListView {
 
     property int latency: 600
     property int rotationThreshold: 90//135
-    property string pullMessageString: "Pull and hold to refresh..."
-    property string releaseMessageString: "Release to refresh..."
+    property string pullMessageString: qsTr("Pull and hold to refresh...")
+    property string releaseMessageString: qsTr("Release to refresh...")
     property bool platformInverted: false
 
     // Private

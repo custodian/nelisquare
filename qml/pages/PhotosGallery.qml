@@ -10,7 +10,7 @@ PageWrapper {
     signal change(string photo)
     signal update()
 
-    property string caption: "VENUE PHOTOS"
+    property string caption: qsTr("VENUE PHOTOS")
 
     property alias photosModel: photosModel
     property int currentPhotoIndex: 0

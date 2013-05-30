@@ -40,25 +40,6 @@ Item {
     property variant gradientLightGreen
     property variant gradientDarkBlue
 
-    property string textVersionInfo: "Version: "
-    property string textBuildInfo: "Build: "
-
-    property string textHelp1: "© 2012-2013 Basil Semuonov\n© 2011 Tommi Laukkanen\nShout out to @knobtviker\n© Design by Kim Venetvirta"
-    property string textHelp2: "\nIf any problems, tweet @basil_s\n"
-    property string textHelp3: "\nPowered by Foursquare"
-    property string textHelp4: "http://custodian.github.com/nelisquare"
-
-    property string textSplash: "Welcome!"
-
-    property string textDefaultComment: "New awesome comment"
-    property string textDefaultCheckin: "Whats on your mind?"
-    property string textSearchVenue: "Tap to search place..."
-    property string textDefaultTip: "Write some cool tip here"
-
-    property string textDefaultWait: "ONE MOMENT..."
-
-    property string textEnterVenueName: "Type venue name..."
-
     FontLoader {
         id: font;
         source: "../fonts/TitilliumText25L001.otf"

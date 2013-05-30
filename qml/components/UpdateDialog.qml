@@ -9,14 +9,15 @@ QueryDialog  {
     property string changelog: ""
 
     icon: "image://theme/icon-m-content-system-update-dialog"
-    titleText: "New update available"
-    message: "Version: " + version
-             +"<br>Type: " + configuration.checkupdates
-             +"<br>Build: " + build
-             +"<br><br>Changelog:"
-             +"<br>"+changelog
-    acceptButtonText: "Update!"
-    rejectButtonText: "No, thanks"
+    titleText: qsTr("New update available")
+    message: qsTr("Version: %1<br>Type: %2<br>Build: %3<br><br>Changelog: <br>%4")
+        .arg(version)
+        .arg(configuration.checkupdates)
+        .arg(build)
+        .arg(changelog);
+
+    acceptButtonText: qsTr("Update!")
+    rejectButtonText: qsTr("No, thanks")
     onAccepted: {
         Qt.openUrlExternally(url);
         windowHelper.disableSwype(false);

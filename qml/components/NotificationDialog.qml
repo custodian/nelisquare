@@ -1,4 +1,5 @@
 import Qt 4.7
+import com.nokia.meego 1.0
 
 Rectangle {
     id: notification
@@ -30,9 +31,9 @@ Rectangle {
             color: mytheme.colors.textHeader
         }
 
-        ButtonBlue {
+        Button {
             id: checkinButton
-            label: "OK"
+            text: qsTr("OK")
             width: parent.width
             onClicked: {
                 notification.close();

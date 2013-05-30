@@ -18,7 +18,7 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
-    headerText: "Loading..."
+    headerText: qsTr("Loading...")
     headerIcon: "../icons/icon-header-userslist.png"
 
     function load() {
@@ -27,10 +27,10 @@ PageWrapper {
             stack.push(Qt.resolvedUrl("User.qml"),{"userID":params});
         });
         if (objType === "user") {
-            headerText = "USER FRIENDS"
+            headerText = qsTr("USER FRIENDS")
             Api.users.loadUserFriends(page,objID);
         } else {
-            headerText = "LIKERS LIST"
+            headerText = qsTr("LIKERS LIST")
             Api.users.loadLikeUsers(page,objID,objType,limit);
         }
     }

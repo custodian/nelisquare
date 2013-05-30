@@ -5,7 +5,7 @@ Item {
     id: photosBoxComponent
     width: parent.width
 
-    property string caption: "PHOTOS"
+    property string caption: qsTr("PHOTOS")
     property int photoSize: 200
     property int fontSize: 20
 

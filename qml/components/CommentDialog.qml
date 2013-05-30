@@ -23,7 +23,7 @@ Rectangle {
 
         Text {
             id: venueName
-            text: "What is on your mind?"
+            text: qsTr("What is on your mind?")
             width: parent.width
             font.pixelSize: 24
             color: mytheme.colors.textColorSign
@@ -35,7 +35,7 @@ Rectangle {
             width: parent.width - 10
             height: 130
 
-            placeholderText: mytheme.textDefaultComment
+            placeholderText: qsTr("New awesome comment")
             textFormat: TextEdit.PlainText
 
             font.pixelSize: mytheme.fontSizeMedium
@@ -61,7 +61,7 @@ Rectangle {
 
             ButtonGreen {
                 id: commentButton
-                label: "Comment!"
+                label: qsTr("Comment!")
                 width: parent.width - 130
                 onClicked: {
                     comment.shout( commentText.text )
@@ -69,7 +69,7 @@ Rectangle {
             }
 
             ButtonGray {
-                label: "Cancel"
+                label: qsTr("Cancel")
                 x: parent.width - 120
                 width: 120
                 onClicked: {

@@ -1,6 +1,7 @@
 import Qt 4.7
 import QtQuick 1.1
 import QtMobility.location 1.2
+import com.nokia.meego 1.0
 import "../components"
 import "../js/api.js" as Api
 
@@ -178,11 +179,11 @@ PageWrapper {
                     venueMapZoom = 18;
             }
         }
-        ButtonBlue {
+        Button {
             id: routeButton
             width: 200
             anchors.horizontalCenter: parent.horizontalCenter
-            label: "GET ROUTE"
+            text: qsTr("GET ROUTE")
             onClicked: {
                 userLocation = {
                     "lat": Api.api.positionSource.position.coordinate.latitude,

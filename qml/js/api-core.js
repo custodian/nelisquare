@@ -89,6 +89,7 @@ api.request = function(method, url, page, callback) {
     }
 
     doc.open(method, url);
+    doc.setRequestHeader("Accept-Language",api.locale);
     doc.send();
 }
 
@@ -124,6 +125,10 @@ function doNothing(response,page) {
 function setPositionSource(source) {
     api.debug(function(){return "setting position source"});
     api.positionSource = source;
+}
+
+function setLocale(locale) {
+    api.locale = locale;
 }
 
 function getLocationParameter() {

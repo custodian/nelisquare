@@ -11,7 +11,7 @@ Column {
         width: parent.width
         color: mytheme.colors.textColorOptions
         font.pixelSize: mytheme.font.sizeSettigs
-        text: "Unknown " + debugType + " event!"
+        text: qsTr("Unknown %1 event!").arg(debugType)
 
         Image {
             anchors {
@@ -44,6 +44,6 @@ Column {
         width: parent.width
         color: mytheme.colors.textColorOptions
         font.pixelSize: mytheme.font.sizeSigns
-        text: "This event type is unknown.\nYou can help with resolution."
+        text: qsTr("This event type is unknown.\nYou can help with resolution.")
     }
 }

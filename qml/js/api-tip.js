@@ -78,6 +78,7 @@ tips.parseTipInfo = function(response, page) {
     page.ownerUser.userName = makeUserName(tip.user);
     page.ownerUser.userPhoto.photoUrl = thumbnailPhoto(tip.user.photo, 100)
     page.ownerUser.userShout = tip.text;
+    page.ownerUser.eventOwner = tip.user.relationship;
     if (tip.photo!==undefined) {
         page.tipPhoto.photoUrl = thumbnailPhoto(tip.photo, 300, 300);
         page.tipPhotoID = tip.photo.id;

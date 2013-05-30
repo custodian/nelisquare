@@ -14,7 +14,7 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    headerText: "Select photo for upload"
+    headerText: qsTr("Select photo for upload")
     headerIcon: "../icons/icon-header-photos.png"
 
     tools: ToolBarLayout{
@@ -120,7 +120,7 @@ PageWrapper {
                 function(url) {
                     if (!pictureHelper.upload(url, params.path, params.owner)) {
                         //TODO: make a
-                        show_error("Error uploading photo!");
+                        show_error(qsTr("Error uploading photo!"));
                     }
                     stack.pop();
                 });

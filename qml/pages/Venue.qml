@@ -128,7 +128,7 @@ PageWrapper {
             photogallery.update.connect(function(){
                Api.venues.loadVenuePhotos(photogallery,venueID);
             });
-            photogallery.caption = "VENUE PHOTOS";
+            photogallery.caption = qsTr("VENUE PHOTOS");
             photogallery.options.append({"offset":0,"completed":false});
             photogallery.options.append({"offset":0,"completed":false});
             photogallery.update();
@@ -236,7 +236,7 @@ PageWrapper {
                     }
 
                     ButtonGreen {
-                        label: "CHECK-IN HERE!"
+                        label: qsTr("CHECK-IN HERE!")
                         width: parent.width - 20
                         anchors.horizontalCenter: parent.horizontalCenter
 
@@ -258,9 +258,9 @@ PageWrapper {
                     EventBox {
                         id: venueMayorDetails
                         width: parent.width
-                        userName: place.venueMajor.length>0 ? place.venueMajor : "Venue doesn't have mayor yet!"
-                        userShout: place.venueMajor.length>0 ? "is the mayor." : "It could be you!"
-                        createdAt: place.venueMajorCount > 0 ? place.venueMajorCount + " checkins" : ""
+                        userName: place.venueMajor.length>0 ? place.venueMajor : qsTr("Venue doesn't have mayor yet!")
+                        userShout: place.venueMajor.length>0 ? qsTr("is the mayor.") : qsTr("It could be you!")
+                        createdAt: place.venueMajorCount > 0 ? qsTr("%1 checkins").arg(place.venueMajorCount) : ""
 
                         onUserClicked: {
                             place.user(venueMajorID);
@@ -306,7 +306,7 @@ PageWrapper {
                 }
 
                 SectionHeader {
-                    text: "BEST TIPS"
+                    text: qsTr("BEST TIPS")
                     visible: tipsModel.count>0
                 }
 

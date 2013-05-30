@@ -10,6 +10,7 @@
 #include "windowhelper.h"
 #include "cache.h"
 #include "molome.h"
+#include "apptranslator.h"
 
 #include <qplatformdefs.h>
 
@@ -66,6 +67,14 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #endif
 
     QApplication *app = createApplication(argc, argv);
+
+    AppTranslator *appTranslator = new AppTranslator(app);
+
+    //TODO: Enable before stable release, after remastering settings
+    //Also check if app hangs on new install without database
+    //app->setApplicationName("Nelisquare");
+    //app->setOrganizationName("Nelisquare");
+
     QmlApplicationViewer viewer;
 
 #if defined(Q_OS_MAEMO)
@@ -95,6 +104,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
     viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.rootContext()->setContextProperty("cache", cache);
+    viewer.rootContext()->setContextProperty("translator", appTranslator);
 
     Molome *molome = new Molome();
     viewer.rootContext()->setContextProperty("molome", molome);
@@ -112,6 +122,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
     rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
     rootObject->connect(cache,SIGNAL(cacheUpdated(QVariant,QVariant,QVariant)),SLOT(onCacheUpdated(QVariant,QVariant,QVariant)));
+    rootObject->connect(appTranslator,SIGNAL(languageChanged(QVariant)),SLOT(onLanguageChanged(QVariant)));
 
 #if defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
     new NelisquareDbus(app, &viewer);

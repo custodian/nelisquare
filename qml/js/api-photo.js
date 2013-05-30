@@ -58,6 +58,12 @@ photos.parseAddPhoto = function(response, page) {
     page.waiting_hide();
     var obj = api.process(response).photo;
     //console.log("ADDED PHOTO: " + JSON.stringify(photo));
-    page.photosBox.photosModel.insert(0,
-                makePhoto(obj,300));
+    if (page.photosBox !== undefined) {
+        page.photosBox.photosModel.insert(0,
+                    makePhoto(obj,300));
+    }
+    if (page.tipPhoto !== undefined) {
+        page.tipPhoto.photoUrl = thumbnailPhoto(obj, 300, 300);
+        page.tipPhotoID = tip.photo.id;
+    }
 }

@@ -23,6 +23,7 @@ function ApiObject() {
 var api = new ApiObject();
 api.accessToken = "";
 api.inverted = false; //TODO: have to move this somewhere to make common function with icons work
+api.locale = "en";
 
 Qt.include("api-core.js")
 Qt.include("api-common.js")

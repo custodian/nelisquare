@@ -6,6 +6,7 @@ builddir
 debian
 *.user
 *.o
+*.qm
 Makefile*
 Nelisquare_resource.rc
 *_armel.changes

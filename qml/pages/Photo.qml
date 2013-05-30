@@ -17,7 +17,7 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
-    headerText: "PHOTO"
+    headerText: qsTr("PHOTO")
     headerIcon: "../icons/icon-header-photos.png"
 
     property string photoID: ""

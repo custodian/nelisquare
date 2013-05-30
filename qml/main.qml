@@ -105,10 +105,10 @@ PageStackWindow {
         QueryDialog  {
             id: locationAllowDialog
             icon: "image://theme/icon-m-common-location-selected"
-            titleText: "Location data"
-            message: "Nelisquare requires use of user location data. Data is needed to make geo-location services work properly."
-            acceptButtonText: "Allow"
-            rejectButtonText: "Deny"
+            titleText: qsTr("Location data")
+            message: qsTr("Nelisquare requires use of user location data. Data is needed to make geo-location services work properly.")
+            acceptButtonText: qsTr("Allow")
+            rejectButtonText: qsTr("Deny")
             onAccepted: {
                 configuration.settingChanged("settings.gpsallow","1");
             }
@@ -120,12 +120,12 @@ PageStackWindow {
         QueryDialog  {
             id: pushNotificationDialog
             icon: "image://theme/icon-m-settings-notification"
-            titleText: "Push notifications"
-            message: "Incoming push notifications are not supported at this version and are disabled by default.<br/><br/>You will be promted again when they will be available at future versions."
+            titleText: qsTr("Push notifications")
+            message: qsTr("Incoming push notifications are not supported at this version and are disabled by default.<br/><br/>You will be promted again when they will be available at future versions.")
             onAccepted: {
                 configuration.settingChanged("settings.push.enabled","0");
             }
-            acceptButtonText: "OK"
+            acceptButtonText: qsTr("OK")
             /*buttons: ButtonRow {
                 style: ButtonStyle { }
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -152,26 +152,29 @@ PageStackWindow {
         }
     }
 
-    Menu {
+    Component{
         id: dummyMenu
-        MenuLayout {
-            MenuItem {
-                text: qsTr("Check updates")
-                onClicked: {
-                    configuration.getupdates();
+
+        Menu {
+            MenuLayout {
+                MenuItem {
+                    text: qsTr("Check updates")
+                    onClicked: {
+                        configuration.getupdates();
+                    }
                 }
-            }
-            MenuItem {
-                text: qsTr("Settings")
-                onClicked: {
-                    stack.push(Qt.resolvedUrl("pages/Settings.qml"));
+                MenuItem {
+                    text: qsTr("Settings")
+                    onClicked: {
+                        stack.push(Qt.resolvedUrl("pages/Settings.qml"));
+                    }
                 }
-            }
-            MenuItem {
-                text: qsTr("Exit")
-                onClicked: {
-                    windowHelper.disableSwype(false);
-                    Qt.quit();
+                MenuItem {
+                    text: qsTr("Exit")
+                    onClicked: {
+                        windowHelper.disableSwype(false);
+                        Qt.quit();
+                    }
                 }
             }
         }
@@ -211,8 +214,7 @@ PageStackWindow {
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
-                //TODO: add menu
-                dummyMenu.open();
+                dummyMenu.createObject(mainPage).open();
             }
         }
     }
@@ -321,6 +323,14 @@ PageStackWindow {
         } catch (err) {
             console.log("Cache callback error: " + err + " type: " + typeof(callbackObject) + " value: " + JSON.stringify(callbackObject) );
         }
+    }
+
+    function onLanguageChanged(language) {
+        tabLogin.clear();
+        tabFeed.clear();
+        tabVenues.clear();
+        tabMe.clear();
+        tabgroup.currentTab.load();
     }
 
     function onPictureUploaded(response, page) {

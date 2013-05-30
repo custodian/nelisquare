@@ -26,7 +26,7 @@ PageWrapper {
     }
 
     Text {
-        text: mytheme.textSplash
+        text: qsTr("Welcome!")
         anchors.centerIn: parent
         color: mytheme.colors.textColorSign
         font.pixelSize: mytheme.font.sizeDefault
@@ -43,14 +43,14 @@ PageWrapper {
             spacing: 20
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Please, login with Foursquare!"
+                text: qsTr("Please, login with Foursquare!")
                 color: mytheme.colors.textColorSign
                 font.pixelSize: mytheme.font.sizeDefault
             }
             ButtonGreen {
                 anchors.horizontalCenter: parent.horizontalCenter
                 id: loginButton
-                label: "Login"
+                label: qsTr("Login")
                 width: parent.width - 130
                 onClicked: {
                     welcomePage.login();
@@ -64,7 +64,7 @@ PageWrapper {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Foursquare privacy policy"
+                text: qsTr("Foursquare privacy policy")
                 color: mytheme.colors.textColorSign
                 font.underline: true
                 font.pixelSize: mytheme.font.sizeDefault
@@ -78,7 +78,7 @@ PageWrapper {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "Nelisquare privacy policy"
+                text: qsTr("Nelisquare privacy policy")
                 color: mytheme.colors.textColorSign
                 font.underline: true
                 font.pixelSize: mytheme.font.sizeDefault

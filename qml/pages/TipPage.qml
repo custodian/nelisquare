@@ -10,6 +10,7 @@ PageWrapper {
     signal user(string user)
     signal venue(string venueID)
     signal photo(string photoID)
+    signal showAddPhoto(string tip)
     signal save()
     signal markDone()
 
@@ -18,7 +19,7 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    headerText: "Usefull tip"
+    headerText: qsTr("Usefull tip")
     headerIcon: "../icons/icon-header-tipslist.png"
 
     property string tipID: ""
@@ -39,6 +40,14 @@ PageWrapper {
             iconSource: "../icons/icon-m-toolbar-like"+(likeBox.mylike? "-red":(theme.inverted?"-white":""))+".png"
             onClicked: {
                 likeBox.toggleLike();
+            }
+        }
+
+        ToolIcon {
+            iconSource: "../icons/icon-m-toolbar-image-edit"+(theme.inverted?"-white":"")+".png"
+            visible: tipPage.ownerUser.eventOwner === "self"
+            onClicked: {
+                tipPage.showAddPhoto(tipPage.tipID)
             }
         }
 
@@ -73,6 +82,13 @@ PageWrapper {
         });
         page.markDone.connect(function(){
             tipPage.show_error("Lists not implemented yet!");
+        });
+        page.showAddPhoto.connect(function(tip){
+            stack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
+                "type": "tip",
+                "id": tip,
+                "owner": page
+            }});
         });
         Api.tips.loadTipInfo(page,tipID);
     }
@@ -130,7 +146,7 @@ PageWrapper {
             }
 
             SectionHeader {
-                text: "TIP PHOTO"
+                text: qsTr("TIP PHOTO")
                 visible: tipPhotoID!=""
             }
 
@@ -151,16 +167,16 @@ PageWrapper {
                 width: parent.width
                 spacing: 10
 
-                ButtonBlue {
-                    label: "Save tip"
+                Button {
+                    text: qsTr("Save tip")
                     width: (parent.width - 10)/2
                     onClicked: {
                         tipPage.save();
                     }
                 }
 
-                ButtonBlue {
-                    label: "Mark as done"
+                Button {
+                    text: qsTr("Mark as done")
                     width: (parent.width - 10)/2
                     onClicked: {
                         tipPage.markDone();

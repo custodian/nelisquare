@@ -48,13 +48,6 @@ static QmlJsDebuggingEnabler enableDebuggingHelper;
 
 #endif // QMLJSDEBUGGER
 
-class QmlApplicationViewerPrivate
-{
-    QString mainQmlFile;
-    friend class QmlApplicationViewer;
-    static QString adjustPath(const QString &path);
-};
-
 QString QmlApplicationViewerPrivate::adjustPath(const QString &path)
 {
 #ifdef Q_OS_UNIX

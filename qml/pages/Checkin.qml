@@ -15,7 +15,7 @@ PageWrapper {
     signal showAddPhoto(string checkin)
     id: checkin
 
-    headerText: "CHECK-IN DETAILS"
+    headerText: qsTr("CHECK-IN DETAILS")
     headerIcon: "../icons/icon-header-checkin.png"
 
     property string checkinID: ""
@@ -207,7 +207,7 @@ PageWrapper {
                     spacing: 10
                     Text {
                         width: parent.width * 0.90
-                        text: "TOTAL POINTS"
+                        text: qsTr("TOTAL POINTS")
                         color: mytheme.colors.textPoints
                         font.pixelSize: mytheme.font.sizeDefault
                     }
@@ -248,11 +248,7 @@ PageWrapper {
             }
 
             SectionHeader {
-                text: "EARNED BADGES"
-            /*    height: 30
-                width: checkin.width
-                anchors.horizontalCenter: parent.horizontalCenter
-                size: mytheme.font.sizeDefault*/
+                text: qsTr("EARNED BADGES")
                 visible: badgesModel.count>0
             }
 
@@ -274,11 +270,7 @@ PageWrapper {
             }
 
             SectionHeader {
-                text: "COMMENTS"
-                /*width: checkin.width
-                anchors.horizontalCenter: parent.horizontalCenter
-                height: 30
-                size: mytheme.font.sizeDefault*/
+                text: qsTr("COMMENTS")
                 visible: commentsModel.count>0
             }
 
@@ -289,30 +281,6 @@ PageWrapper {
                 delegate: commentDelegate
                 visible: commentsModel.count>0
             }
-
-            /*Row {
-                width:parent.width
-                spacing: 10
-
-                ButtonBlue {
-                    id: btnAddPhoto
-                    label: "Add photo"
-                    width: 150
-
-                    onClicked: {
-                        checkin.showAddPhoto(checkin.checkinID)
-                    }
-                    visible: checkin.owner.eventOwner == "self"
-                }
-
-                ButtonBlue{
-                    label: "Add comment"
-                    width: parent.width - (btnAddPhoto.visible?btnAddPhoto.width:0) - parent.spacing
-                    onClicked: {
-                        checkin.showAddComment(checkin.checkinID);
-                    }
-                }
-            }*/
 
             Item {
                 width: parent.width

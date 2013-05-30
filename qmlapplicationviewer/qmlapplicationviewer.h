@@ -13,6 +13,14 @@
 
 #include <QtDeclarative/QDeclarativeView>
 
+class QmlApplicationViewerPrivate
+{
+    QString mainQmlFile;
+    friend class QmlApplicationViewer;
+public:
+    static QString adjustPath(const QString &path);
+};
+
 class QmlApplicationViewer : public QDeclarativeView
 {
     Q_OBJECT

@@ -15,7 +15,7 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    headerText: "BADGES"
+    headerText: qsTr("BADGES")
     headerIcon: "../icons/icon-header-badges.png"
 
     function load() {

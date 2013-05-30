@@ -16,7 +16,7 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
-    headerText: "YOU ARE #" + leaderBoard.rank
+    headerText: qsTr("YOU ARE #") + leaderBoard.rank
     headerIcon: "../icons/icon-header-leadersboard.png"
 
     function load() {
@@ -60,7 +60,7 @@ PageWrapper {
 
             userName: "#" + model.rank + ". " + model.name
             //userShout:
-            createdAt: "<b>"+model.recent+" "+"points" + "</b> " + model.checkinsCount + " " + "checkins"
+            createdAt: qsTr("<b>%1 points</b> %2 checkins").arg(model.recent).arg(model.checkinsCount)
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.photo
