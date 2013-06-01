@@ -4,7 +4,6 @@ import com.nokia.meego 1.0
 import "../components"
 
 import "../js/api.js" as Api
-import "../js/qmlprivate.js" as P
 
 PageWrapper {
     id: friendsFeed
@@ -73,58 +72,58 @@ PageWrapper {
         friendsCheckinsModel.insert(loaded,item);
         loaded += 1;
 
-        if (configuration.feedAutoUpdate!== "0"
+        if (configuration.feedAutoUpdate !== "0"
                 && configuration.feedIntegration !=="0") {
 
-            /*//TODO: //BUG: need to make an callback to addFeedItem with filled photoCache item
-            function CacheCallbackPhoto(status,url) {
-                    console.log("in cache callback for photo for eventfeed");
-                    if (!status) return;
-                    item.photoCached = url;
-                    item.venuePhotoCached = "";
-                    console.log("adding object");
-                    platformUtils.addFeedItem(item);
-            }*/
+            item.content.photoCached = "";
+            item.content.venuePhotoCached = "";
 
-            /*P.priv(item.id).cacheCallback = function() { console.log("in callback!" + item.id)};
-            cache.queueObject(item.photo, show_error);*/
+            var feeditem = item.content.id + "-feed";
+            var feeditemobj = Api.objs.save(feeditem);
+
+            var feedphoto = item.content.id + "-photo";
+            var feedphotoobj = Api.objs.save(feedphoto);
+
+            feeditemobj.cacheCallback = function(status, url) {
+                if (!status) return;
+                item.content.photoCached = url;
+                platformUtils.addFeedItem(item);
+
+                Api.objs.remove(feeditem);
+                Api.objs.remove(feedphoto);
+            }
 
 
-            /*function CacheCallbackVenuePhoto(){
-                this.cacheCallback = function(status,url) {
-                    console.log("in cache callback for venuePhoto for eventfeed");
-                    item.venuePhotoCached = url;
-                    var cb = new CacheCallbackPhoto();
-                    P.priv(item.id).cbPhoto = cb
-                    console.log("items: " + JSON.stringify(P._privs));
-                    cache.queueObject(item.photo, cb);
-                }
-            }*/
-            /*var callbacker = new CacheCallbackVenuePhoto();
-            console.log("function callback: " + typeof(item));
-            console.log("function string: " + item.id);*/
+            feedphotoobj.cacheCallback = function(status,url) {
+                item.content.venuePhotoCached = url;
+                cache.queueObject(item.content.photo, feeditem);
+            }
 
-            /*if (item.venuePhoto !== "") {
-                P.priv(item.id).cbVenuePhoto = callbacker;
-                cache.queueObject(item.venuePhoto, item.id);
+            if (item.content.venuePhoto !== "") {
+                cache.queueObject(item.content.venuePhoto, feedphoto);
             } else {
-                callbacker.cacheCallback(true, "");
-            }*/
+                feedphotoobj.cacheCallback(true, "");
+            }
         }
     }
 
     function updateItem(position, update) {
-        friendsCheckinsModel.set(position, {"content": update});
+        friendsCheckinsModel.set(position, {"content": update.content});
         if (configuration.feedIntegration !=="0") {
-            var item = update;
-            platformUtils.updateFeedItem(item);
+            platformUtils.updateFeedItem({
+                            "type":update.type,
+                            "content": update.content
+                        });
         }
     }
 
     function removeItem(position) {
         if (configuration.feedIntegration !=="0") {
-            var item = friendsCheckinsModel.get(position).content;
-            platformUtils.removeFeedItem(item);
+            var item = friendsCheckinsModel.get(position);
+            platformUtils.removeFeedItem({
+                             "type":item.type,
+                             "content": item.content
+                         });
         }
         friendsCheckinsModel.remove(position);
     }
@@ -276,7 +275,7 @@ PageWrapper {
                 else if (type === "friend")
                     return friendsFeedDelegateFriend
                 else if (type === "tip")
-                    return friendsFeedDelegateTip
+                   return friendsFeedDelegateTip
                 else if (type === "pageupdate")
                     return friendsFeedDelegatePage
                 else if (type === "savetip")
@@ -307,7 +306,7 @@ PageWrapper {
         id: friendsFeedDelegateUnknown
 
         DebugWidget {
-            debugType: content.type
+            debugType: content.debugType
             debugContent: content
         }
     }
@@ -342,7 +341,7 @@ PageWrapper {
             id: eventbox
             activeWhole: true
 
-            userName: content.user
+            userName: content.userName
             createdAt: content.createdAt
 
             Component.onCompleted: {
@@ -452,7 +451,7 @@ PageWrapper {
             //id: eventbox
             activeWhole: true
 
-            userName: content.user
+            userName: content.userName
             venueName: content.listName
             userShout: content.shout
             venuePhoto: content.venuePhoto
@@ -477,7 +476,7 @@ PageWrapper {
             //id: eventbox
             activeWhole: true
 
-            userName: content.user
+            userName: content.userName
             userShout: content.shout
             userMayor: content.mayor
             venueName: content.venueName

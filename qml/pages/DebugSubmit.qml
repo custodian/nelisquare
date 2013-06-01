@@ -109,7 +109,7 @@ PageWrapper {
                 font.pixelSize: mytheme.fontSizeMedium
 
                 onTextChanged: {
-                    if (text.length>65000) {
+                    if (text.length>15000) {
                         errorHighlight = true;
                     } else {
                         errorHighlight = false;
@@ -119,7 +119,7 @@ PageWrapper {
                     anchors { right: parent.right; bottom: parent.bottom; margins: mytheme.paddingMedium }
                     font.pixelSize: mytheme.fontSizeMedium
                     color: mytheme.colors.textColorTimestamp
-                    text: 65000 - shoutText.text.length
+                    text: 16000 - shoutText.text.length
                 }
             }
         }

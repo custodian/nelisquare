@@ -166,12 +166,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="217"/>
         <source>RECENT</source>
-        <translation>最新</translation>
+        <translation>最新消息</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="230"/>
         <source>NEARBY</source>
-        <translation>最近</translation>
+        <translation>在我附近</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="251"/>
@@ -199,7 +199,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="63"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1 分&lt;/b&gt; %2 個打卡</translation>
     </message>
 </context>
 <context>
@@ -207,7 +207,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/LikeBox.qml" line="33"/>
         <source>USER LIKES</source>
-        <translation>使用者的讚</translation>
+        <translation>按讚的使用者</translation>
     </message>
 </context>
 <context>
@@ -401,7 +401,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="57"/>
         <source>If any problems, tweet @basil_s</source>
-        <translation>如果有任何問題，發推特給 @basil_s</translation>
+        <translation>如果有任何問題，請發推特到 @basil_s</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="58"/>
@@ -447,7 +447,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="81"/>
         <source>Language</source>
-        <translation type="unfinished"/>
+        <translation>語言</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="109"/>
@@ -663,7 +663,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="553"/>
         <source>Reset authentication</source>
-        <translation>重射驗證</translation>
+        <translation>重新驗證</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="574"/>
@@ -688,12 +688,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="597"/>
         <source>Options will be available soon</source>
-        <translation>選項將會儘快開放</translation>
+        <translation>此功能會儘快開放</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="610"/>
         <source>General</source>
-        <translation>一班</translation>
+        <translation>一般</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="611"/>
@@ -716,7 +716,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="40"/>
         <source>Write some cool tip here</source>
-        <translation>在這寫些很酷的提示吧</translation>
+        <translation>在這新增些小提示吧</translation>
     </message>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="66"/>
@@ -823,32 +823,32 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/User.qml" line="377"/>
         <source>Badges</source>
-        <translation>徽章</translation>
+        <translation>個徽章</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="412"/>
         <source>Checkins</source>
-        <translation>打卡</translation>
+        <translation>個打卡</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="447"/>
         <source>Mayorships</source>
-        <translation>市長</translation>
+        <translation>個市長</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="482"/>
         <source>Friends</source>
-        <translation>朋友</translation>
+        <translation>個朋友</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="517"/>
         <source>Photos</source>
-        <translation>相片</translation>
+        <translation>張相片</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="553"/>
         <source>Tips</source>
-        <translation>提示</translation>
+        <translation>個提示</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="569"/>
@@ -858,7 +858,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/User.qml" line="594"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1 分&lt;/b&gt; %2 個打卡</translation>
     </message>
 </context>
 <context>
@@ -904,7 +904,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Venue.qml" line="262"/>
         <source>It could be you!</source>
-        <translation>可能就是你！</translation>
+        <translation>還不快搶！</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="263"/>
@@ -930,7 +930,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/VenueMap.qml" line="186"/>
         <source>GET ROUTE</source>
-        <translation>取得路徑</translation>
+        <translation>計算路線</translation>
     </message>
 </context>
 <context>

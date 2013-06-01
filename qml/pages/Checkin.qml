@@ -107,7 +107,7 @@ PageWrapper {
     onCheckinCacheChanged: {
         if (checkinCache !== undefined ) {
             //owner.userID =
-            owner.userName = checkinCache.user
+            owner.userName = checkinCache.userName
             owner.createdAt = checkinCache.createdAt
             owner.userPhoto.photoUrl = checkinCache.photo
             //owner.venueID =

@@ -78,27 +78,37 @@ void PlatformUtils::removeNotification(const QString &eventType)
 
 void PlatformUtils::addFeedItem(QVariant item)
 {
-    QMap<QString, QVariant> params = item.toMap();
+    QMap<QString, QVariant> content = item.toMap();
+    QMap<QString, QVariant> params = content["content"].toMap();
+
     QStringList imagesList;
     if (params["venuePhotoCached"].toString().size()>0) {
         QVariant photo = params["venuePhotoCached"];
-        if (photo.toString().indexOf("http")==-1)
-            imagesList.append(photo.toString());
+        imagesList.append(photo.toString());
     }
     QString eventid;
+    QString eventtype;
     QUrl callback;
-    if (params["id"].toString().size()>0) {
-        eventid = params["id"].toString();
-        callback = QUrl(QString("nelisquare://checkin/%1").arg(eventid));
-    } else {
-        eventid = params["userID"].toString();
-        callback = QUrl(QString("nelisquare://user/%1").arg(eventid));
+    eventtype = content["type"].toString();
+    eventid = params["id"].toString();
+
+    callback = QUrl(QString("nelisquare://%1/%2").arg(eventtype).arg(eventid));
+
+    QVariant icon = params["photoCached"];
+
+    //TODO: Format eventTitle, eventText by eventtype; (as Feed Elements)
+    QString eventTitle;
+    QString eventText;
+
+    eventTitle = params["userName"].toString();
+    QString eventTitle2 = params["venueName"].toString();
+    if (eventTitle2.length()>0) {
+        eventTitle += (" @ " + eventTitle2);
     }
-    QVariant icon = params["photoCached"];//QString("icon-m-service-nelisquare-notification"),
-    if (icon.toString().indexOf("http")!=-1)
-        icon = "icon-m-service-nelisquare-notification";
-    int count;
+    eventText = QString(params["shout"].toString());
+
     QString statusText;
+    int count;
     count = params["commentsCount"].toInt();
     if (count) {
         statusText += QString("comments: %1").arg(count);
@@ -116,8 +126,8 @@ void PlatformUtils::addFeedItem(QVariant item)
     qlonglong feedid = -1;
 #if defined(Q_OS_HARMATTAN)
     feedid = MEventFeed::instance()->addItem(icon.toString(),
-        QString(params["user"].toString() + " @ " + params["venueName"].toString()), //title
-        QString(params["shout"].toString()),
+        eventTitle,
+        eventText,
         imagesList,
         QDateTime::fromTime_t(params["timestamp"].toLongLong()),
         statusText,
@@ -152,7 +162,11 @@ void PlatformUtils::addFeedItem(QVariant item)
     */
     feedid = 0;
 #endif
-    m_items[eventid] = feedid;
+    if (feedid == -1) {
+        //qDebug() << "Error adding to feed:" << eventtype << "id" << eventid << item;
+    } else {
+        m_items[eventid] = feedid;
+    }
 }
 
 void PlatformUtils::updateFeedItem(QVariant item)
@@ -163,13 +177,10 @@ void PlatformUtils::updateFeedItem(QVariant item)
 
 void PlatformUtils::removeFeedItem(QVariant item)
 {
-    QMap<QString, QVariant> params = item.toMap();
+    QMap<QString, QVariant> content = item.toMap();
+    QMap<QString, QVariant> params = content["content"].toMap();
     QString eventid;
-    if (params["id"].toString().size()>0) {
-        eventid = params["id"].toString();
-    } else {
-        eventid = params["userID"].toString();
-    }
+    eventid = params["id"].toString();
     QMap<QString,qlonglong>::iterator it = m_items.find(eventid);
     if (it!=m_items.end()) {
         //BUG: not working

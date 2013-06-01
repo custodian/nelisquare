@@ -291,12 +291,33 @@ PageStackWindow {
         var id = params[1];
         switch(type) {
         case "start":
+            //TODO: switch to start page
+
             break;
-        case "user":
+        case "friend":
             stack.push(Qt.resolvedUrl("pages/User.qml"),{"userID":id});
             break;
         case "checkin":
             stack.push(Qt.resolvedUrl("pages/Checkin.qml"),{"checkinID":id});
+            break;
+        case "savetip":
+        case "tip":
+            stack.push(Qt.resolvedUrl("pages/TipPage.qml"), {"tipID":id});
+            break;
+        case "savevenue":
+        case "likevenue":
+            stack.push(Qt.resolvedUrl("pages/Venue.qml"), {"venueID":id});
+            break;
+        //TODO: ? how to treat badges?
+        case "awardbadge":
+        //TODO: implement theese as pages will be available
+        case "installplugin":
+        case "likepage":
+        case "pageupdate":
+        case "likepageupdate":
+        case "savelist":
+        default:
+            console.log("Unimplemented feed callback for content: " + type);
             break;
         }
 
@@ -317,6 +338,13 @@ PageStackWindow {
                 }
             } else if (typeof(callbackObject) === "string") {
                 //console.log("string!");
+                var obj = Api.objs.get(callbackObject);
+                if (obj.cacheCallback !== undefined) {
+                    obj.cacheCallback(status,url);
+                } else {
+                    console.log("object callback is undefined!");
+                }
+                Api.objs.remove(callbackObject);
             } else {
                 console.log("type is: " + typeof(callbackObject));
             }

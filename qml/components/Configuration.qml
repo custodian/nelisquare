@@ -25,12 +25,20 @@ Item   {
     property string feedIntegration: "0" //1 == integrate
     property string feedNotification: "0" //1 == notify
 
-    property int commentUpdateRate: 300 //currently hardcoded to be 5 mins
-
     property string interfaceLanguage: translator.getDefaultLanguage()
     property string accessToken: "empty"
 
     property variant ratelimit: {}
+
+    property string debugEnabled: "0"
+
+    property string sharePhotoPublic: "0"
+    property string sharePhotoFacebook: "0"
+    property string sharePhotoTwitter: "0"
+
+    property string shareCheckinFriends: "1"
+    property string shareCheckinFacebook: "0"
+    property string shareCheckinTwitter: "0"
 
     property bool molome_present: false
     property bool molome_installed: false
@@ -135,6 +143,9 @@ Item   {
             }
             Api.setLocale(interfaceLanguage.substring(0,2));
             translator.changeLanguage(interfaceLanguage);
+        } else if (key === "settings.debug.enabled") {
+            if (value === "") value = "1";
+            configuration.debugEnabled = value;
         } else {
             console.log("Unknown setting: " + key + "=" + value);
         }
@@ -165,6 +176,7 @@ Item   {
         Storage.getKeyValue("settings.push.enabled",settingLoaded);
         Storage.getKeyValue("settings.molome", settingLoaded);
 
+        Storage.getKeyValue("settings.debug.enabled", settingLoaded);
 
         Storage.getKeyValue("accesstoken", settingLoaded);
     }

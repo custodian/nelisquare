@@ -15,9 +15,9 @@ Rectangle {
     property variant owner //owner page (photo selection page)
 
     property string photoUrl: ""
-    property bool useFacebook: false
-    property bool useTwitter: false
-    property bool makePublic: false
+    property bool useFacebook: configuration.sharePhotoFacebook === "1"
+    property bool useTwitter: configuration.sharePhotoTwitter === "1"
+    property bool makePublic: configuration.sharePhotoPublic === "1"
 
     onPhotoUrlChanged: {
         selectedPhoto.photoUrl = photoShare.photoUrl
@@ -63,21 +63,21 @@ Rectangle {
                     text: qsTr("Public")
                     checked: photoShare.makePublic
                     onCheckedChanged: {
-                        photoShare.makePublic = checked
+                        configuration.sharePhotoPublic = (checked) ? "1": "0"
                     }
                 }
                 SettingSwitch {
                     text: qsTr("Facebook")
                     checked: photoShare.useFacebook
                     onCheckedChanged: {
-                        photoShare.useFacebook = checked
+                        configuration.sharePhotoFacebook = (checked) ? "1": "0"
                     }
                 }
                 SettingSwitch {
                     text: qsTr("Twitter")
                     checked: photoShare.useTwitter
                     onCheckedChanged: {
-                        photoShare.useTwitter = checked
+                        configuration.sharePhotoTwitter = (checked) ? "1": "0"
                     }
                 }
             }

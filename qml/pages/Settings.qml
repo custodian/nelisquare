@@ -590,11 +590,24 @@ PageWrapper {
                 SectionHeader{
                     text: qsTr("DEBUG")
                 }
-                Text{
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    font.pixelSize: mytheme.fontSizeLarge
-                    color: mytheme.colors.textColorOptions
-                    text: qsTr("Options will be available soon")
+                SettingSwitch{
+                    text: qsTr("Enable debug")
+                    checked: configuration.debugEnabled === "1"
+                    onCheckedChanged: {
+                        var value = (checked)?"1":"0";
+                        settingsChanged("debug.enabled",value);
+                    }
+                }
+
+                Column {
+                    width: parent.width
+                    Text{
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        font.pixelSize: mytheme.fontSizeLarge
+                        color: mytheme.colors.textColorOptions
+                        text: qsTr("Options will be available soon")
+                    }
+                    visible: configuration.debugEnabled === "1"
                 }
             }
         }

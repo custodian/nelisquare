@@ -23,23 +23,23 @@ protected:
     QMap<QString,QString> m_cachemap;
     QReadWriteLock m_cachemap_lock;
 
-    typedef QSet<QObject*> CCallbackList;
+    typedef QSet<QString> CCallbackList;
     typedef QMap<QString, CCallbackList > CCacheQueue;
     CCacheQueue m_cachequeue;
     QReadWriteLock m_cachequeue_lock;
 
     bool m_cacheonly;
 
-    bool queueCacheUpdate(QVariant url, QObject* callback);
+    bool queueCacheUpdate(QVariant url, QVariant callback);
     void makeCallbackAll(bool status, QVariant url);
-    void makeCallback(QObject* callback, bool status, QVariant url);
+    void makeCallback(QVariant callback, bool status, QVariant url);
 
 public:
     explicit Cache(QObject *parent = 0);
     
-    Q_INVOKABLE void queueObject(QVariant url, QObject* callback);
+    Q_INVOKABLE void queueObject(QVariant url, QVariant callback);
 
-    Q_INVOKABLE void dequeueObject(QVariant url, QObject* callback);
+    Q_INVOKABLE void dequeueObject(QVariant url, QVariant callback);
 
     Q_INVOKABLE QVariant removeUrl(QVariant url);
 

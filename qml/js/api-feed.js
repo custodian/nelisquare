@@ -51,21 +51,34 @@ feed.parseFriendsFeedUpdate = function(response, page) {
         if (prop === "updates") {
             data.updates.items.forEach(
                 function(update){
+                    //DBG-OBJECT
+                    //update = loaddebugobject();
                     if (update.type === "checkin") {
                         for (var i=0;i<page.friendsCheckinsModel.count;i++) {
-                            var info = page.friendsCheckinsModel.get(i).content;
-                            if (info.id !== update.id)
+                            var checkin = page.friendsCheckinsModel.get(i);
+                            if (checkin.content.id !== update.id)
                                 continue;
                             feed.log("FOUND CHECKIN in MODEL: " + update.id);
-                            info.commentsCount = update.comments.count;
-                            info.comments = update.comments.items;
-                            info.likesCount = update.likes.count;
-                            page.updateItem(i,info);
+                            checkin.content.commentsCount = update.comments.count;
+                            checkin.content.comments = update.comments.items;
+                            checkin.content.likesCount = update.likes.count;
+                            page.updateItem(i,checkin);
+                            break;
+                        }
+                    } else if (update.type === "tip") {
+                        for (var j=0;j<page.friendsCheckinsModel.count;j++) {
+                            var tip = page.friendsCheckinsModel.get(j);
+                            if (tip.content.id !== update.id)
+                                continue;
+                            feed.log("FOUND TIP in MODEL: " + update.id);
+                            tip.content.likesCount = update.likes.count;
+                            page.updateItem(j,tip);
                             break;
                         }
                     } else {
                         feed.log("UPDATE FEED TYPE: " + update.type);
                         feed.debug(function(){ return "UPDATE CONTENT: " + JSON.stringify(update)});
+                        update.debugType = "feed-update";
                         var updateitem = {
                             "type": "feed-update",
                             "content": update
@@ -78,6 +91,7 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                 function(del) {
                     feed.log("UPDATE FEED TYPE: " + del.type);
                     feed.debug(function(){ return "UPDATE CONTENT: " + JSON.stringify(del)});
+                    del.debugType = "feed-delete";
                     var deleteitem = {
                         "type": "feed-delete",
                         "content": del
@@ -89,6 +103,7 @@ feed.parseFriendsFeedUpdate = function(response, page) {
             var propdata = data[prop];
             if (propdata.type === undefined)
                 propdata.type = "feed-" + prop
+            propdata.debugType = propdata.type;
             var propitem = {
                 "type": "feed-" + prop,
                 "content": propdata
@@ -117,7 +132,7 @@ feed.parseFriendsFeed = function(response, page, history) {
         page.trailingMarker = activities.trailingMarker;
 
     var feedObjParser = function(object) {
-        //DBG
+        //DBG-OBJECT
         //object = loaddebugobject();
         var timeObj = object;
         if (timeObj.object !== undefined) {
@@ -247,9 +262,10 @@ feed.parseFriendsFeed = function(response, page, history) {
 }
 
 feed.feedObjParserUnknown = function(page, object) {
+    object.debugType = object.type;
     var item = {
-                "type": object.type,
-                "content": object
+        "type": object.type,
+        "content": object
     }
     page.addItem(item);
 }
@@ -275,7 +291,7 @@ feed.feedObjParserCheckin = function(page, object) {
             "content": {
                 "id": checkin.id,
                 "shout": parse(checkin.shout),
-                "user": userName,
+                "userName": userName,
                 "userID": checkin.user.id,
                 "mayor": parse(checkin.isMayor),
                 "photo": thumbnailPhoto(checkin.user.photo, 100),
@@ -323,7 +339,7 @@ feed.feedObjParserFriend = function(page, friend) {
         "type": friend.type,
         "content": {
             "id": friend.content.object.id,
-            "user": friend.summary.text,
+            "userName": friend.summary.text,
             "createdAt": makeTime(friend.createdAt),
             "timestamp": friend.createdAt,
         }
@@ -513,7 +529,7 @@ feed.feedObjParserSaveList = function (page, object) {
         "content": {
             "id": list.id,
             "photo": object.thumbnails[0].photo,
-            "user": object.summary.text,
+            "userName": object.summary.text,
             "listName": list.name,
             "shout": list.description,
             "venuePhoto": thumbnailPhoto(list.photo, 300, 300),

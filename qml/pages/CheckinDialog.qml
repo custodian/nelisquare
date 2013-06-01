@@ -13,9 +13,9 @@ PageWrapper {
     state: "hidden"
     property string venueID: ""
     property string venueName: ""
-    property bool useFacebook: false
-    property bool useTwitter: false
-    property bool useFriends: true
+    property bool useFacebook: configuration.shareCheckinFacebook === "1"
+    property bool useTwitter: configuration.shareCheckinTwitter === "1"
+    property bool useFriends: configuration.shareCheckinFriends === "1"
 
     signal checkin(string venueID, string comment, bool friends, bool facebook, bool twitter)
 
@@ -128,7 +128,7 @@ PageWrapper {
                     text: qsTr("Share with Friends")
                     checked: checkin.useFriends
                     onCheckedChanged: {
-                        checkin.useFriends = checked
+                        configuration.shareCheckinFriends = (checked) ? "1": "0"
                     }
                 }
 
@@ -136,7 +136,7 @@ PageWrapper {
                     text: qsTr("Post to Facebook")
                     checked: checkin.useFacebook
                     onCheckedChanged: {
-                        checkin.useFacebook = checked
+                        configuration.shareCheckinFacebook = (checked) ? "1": "0"
                     }
                 }
 
@@ -144,7 +144,7 @@ PageWrapper {
                     text: qsTr("Post to Twitter")
                     checked: checkin.useTwitter
                     onCheckedChanged: {
-                        checkin.useTwitter = checked
+                        configuration.shareCheckinTwitter = (checked) ? "1": "0"
                     }
                 }
             }

@@ -93,7 +93,7 @@ QVariant Cache::removeUrl(QVariant data)
     return QVariant(true);
 }
 
-void Cache::queueObject(QVariant data, QObject *callback)
+void Cache::queueObject(QVariant data, QVariant callback)
 {
     //qDebug() << "QueueObject callback: " << callback;
     QString url = data.toString();
@@ -130,10 +130,12 @@ void Cache::queueObject(QVariant data, QObject *callback)
                 m_cachemap_lock.unlock();
             }            
         }
+    } else {
+        makeCallback(callback,false,data);
     }
 }
 
-void Cache::dequeueObject(QVariant url, QObject* callback)
+void Cache::dequeueObject(QVariant url, QVariant callback)
 {
     //qDebug() << "Removing callback from queue" << callback << url;
     CCacheQueue::iterator it;
@@ -147,11 +149,11 @@ void Cache::dequeueObject(QVariant url, QObject* callback)
     }
     CCallbackList &callbacks = *it;
     //qDebug() << "Remove callback from queue" << callback;
-    callbacks.remove(callback); //return removing callback
+    callbacks.remove(callback.toString()); //return removing callback
     m_cachequeue_lock.unlock();
 }
 
-bool Cache::queueCacheUpdate(QVariant url, QObject* callback) {
+bool Cache::queueCacheUpdate(QVariant url, QVariant callback) {
     bool fresh = false;
     //qDebug() << "Adding callback to queue" << callback << url;
     m_cachequeue_lock.lockForWrite();
@@ -162,7 +164,7 @@ bool Cache::queueCacheUpdate(QVariant url, QObject* callback) {
         it = m_cachequeue.find(url.toString());
         fresh = true;
     };
-    it->insert(callback);
+    it->insert(callback.toString());
     m_cachequeue_lock.unlock();
     return fresh;
 }
@@ -189,10 +191,10 @@ void Cache::makeCallbackAll(bool status, QVariant url)
     m_cachequeue_lock.unlock();
 }
 
-void Cache::makeCallback(QObject* callback, bool status, QVariant url)
+void Cache::makeCallback(QVariant callback, bool status, QVariant url)
 {
     //qDebug() << "makecallback: " << callback;
-    emit cacheUpdated(QVariant::fromValue(callback), QVariant(status), url);
+    emit cacheUpdated(/*QVariant::fromValue(*/callback/*)*/, QVariant(status), url);
 }
 
 QVariant Cache::info()

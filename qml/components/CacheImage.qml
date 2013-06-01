@@ -1,6 +1,8 @@
 import Qt 4.7
 import "."
 
+import "../js/api.js" as Api
+
 Image {
     id: root
 
@@ -27,7 +29,8 @@ Image {
         //console.log("New url arrived: " + sourceUncached + " Old was: " + __sourceUncached);
         //Remove old queue (if any)
         if (__sourceUncached !== "") {
-            cache.dequeueObject(__sourceUncached,root);
+            cache.dequeueObject(__sourceUncached,root.toString());
+            Api.objs.remove(root);
         }
         //setup new url
         __sourceUncached = sourceUncached;
@@ -39,8 +42,8 @@ Image {
         if (__sourceUncached !== ""
                 && __sourceUncached.indexOf("http") !== -1 ) {
             //if valid url - queue cache
-            //console.log("Queue cache update for: " + __sourceUncached);
-            cache.queueObject(__sourceUncached,root);
+            Api.objs.save(root).cacheCallback = cacheCallback;
+            cache.queueObject(__sourceUncached,root.toString());
         } else {
             //just reset source
             source = __sourceUncached;
@@ -51,7 +54,8 @@ Image {
         //remove queue (if any)
         if (__sourceUncached !== "") {
             //console.log("Dequeue cache for: " + __sourceUncached);
-            cache.dequeueObject(__sourceUncached,root);
+            cache.dequeueObject(__sourceUncached,root.toString());
+            Api.objs.remove(root);
         }
     }
 
