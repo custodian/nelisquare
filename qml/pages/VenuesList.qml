@@ -56,10 +56,6 @@ PageWrapper {
         var page = venuesList;
         page.checkin.connect(function(venueID, venueName) {
             stack.push(Qt.resolvedUrl("CheckinDialog.qml"),{ "venueID": venueID, "venueName": venueName});
-            /*checkinDialog.reset();
-            checkinDialog.venueID = venueID;
-            checkinDialog.venueName = venueName;
-            checkinDialog.open();*/
         });
         page.clicked.connect(function(venueid) {
             stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
@@ -68,8 +64,7 @@ PageWrapper {
             if (positionSource.position.latitudeValid) {
                 Api.venues.loadVenues(page, query);
             } else {
-                //TODO: make an window about fuzzy signal
-                console.log("position is invalid");
+                page.show_error(qsTr("GPS signal is fuzzy, cannot get your location"));
             }
         });
         page.addVenue.connect(function(){

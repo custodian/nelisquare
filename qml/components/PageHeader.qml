@@ -89,6 +89,9 @@ Item{
 
         BusyIndicator{
             running: true
+            Component.onCompleted: {
+                platformStyle.inverted = true
+            }
         }
     }
 

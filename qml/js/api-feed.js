@@ -55,9 +55,13 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                     //update = loaddebugobject();
                     if (update.type === "checkin") {
                         for (var i=0;i<page.friendsCheckinsModel.count;i++) {
-                            var checkin = page.friendsCheckinsModel.get(i);
-                            if (checkin.content.id !== update.id)
+                            var oldcheckin = page.friendsCheckinsModel.get(i);
+                            if (oldcheckin.content.id !== update.id)
                                 continue;
+                            var checkin = {
+                                "type": oldcheckin.type,
+                                "content": oldcheckin.content
+                            }
                             feed.log("FOUND CHECKIN in MODEL: " + update.id);
                             checkin.content.commentsCount = update.comments.count;
                             checkin.content.comments = update.comments.items;
@@ -67,9 +71,13 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                         }
                     } else if (update.type === "tip") {
                         for (var j=0;j<page.friendsCheckinsModel.count;j++) {
-                            var tip = page.friendsCheckinsModel.get(j);
-                            if (tip.content.id !== update.id)
+                            var oldtip = page.friendsCheckinsModel.get(j);
+                            if (oldtip.content.id !== update.id)
                                 continue;
+                            var tip = {
+                                "type": oldtip.type,
+                                "content": oldtip.content
+                            }
                             feed.log("FOUND TIP in MODEL: " + update.id);
                             tip.content.likesCount = update.likes.count;
                             page.updateItem(j,tip);
@@ -132,8 +140,6 @@ feed.parseFriendsFeed = function(response, page, history) {
         page.trailingMarker = activities.trailingMarker;
 
     var feedObjParser = function(object) {
-        //DBG-OBJECT
-        //object = loaddebugobject();
         var timeObj = object;
         if (timeObj.object !== undefined) {
             timeObj=timeObj.object;
@@ -211,6 +217,11 @@ feed.parseFriendsFeed = function(response, page, history) {
             var install = object.content;
             if (install.type === "plugin") {
                 feed.feedObjParserInstallPlugin(page, object);
+            } else if (install.type === "aggregation") {
+                object.content.object.items.forEach(function(item) {
+                    object.content = item;
+                    feedObjParser(object);
+                });
             } else {
                 feed.log("INSTALL TYPE: " + install.type);
                 feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
@@ -227,14 +238,29 @@ feed.parseFriendsFeed = function(response, page, history) {
             }
         } else if (object.type === "friend" ) {
             feed.feedObjParserFriend(page, object);
-        } else {
+        } /*else if (object.type === "pageUpdate") {
+            //FIX: Possibly this is not needed, as there is no new formatted
+            // debugContent messages arrived lately
+            //TODO: change to normal logic
+            object.summary = {};
+            object.summary.text = object.shout;
+            object.content = {};
+            object.content.object = object.object;
+            feed.feedObjParserPageUpdate(page, object);
+        }*/ else {
             //un implemented content types goes here
             feed.log("CONTENT TYPE: " + object.type);
+            object.debugType = "unknown-content-type";
             feed.debug(function(){return "CONTENT VALUE: " + JSON.stringify(object)});
             feed.feedObjParserUnknown(page, object);
         }
     }
 
+    //DBG-OBJECT
+    if (api.debugobject) {
+        feedObjParser(loaddebugobject());
+        api.debugobject = false;
+    }
     activities.items.forEach(feedObjParser);
 
     if (!updating) {
@@ -575,7 +601,7 @@ feed.feedObjParserInstallPlugin = function(page, object) {
             "userName": object.summary.text,
             "venueName": plugin.name,
             "photo": plugin.icon,
-            "venuePhoto": plugin.banner,
+            "venuePhoto": parse(plugin.banner),
             "shout": plugin.tagline,
             "url": plugin.detailUrl,
             "createdAt": makeTime(object.createdAt),

@@ -201,7 +201,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="63"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation>b&gt;Очки: %1&lt;/b&gt; Чекины: %2</translation>
+        <translation>&lt;b&gt;Очки: %1&lt;/b&gt; Чекины: %2</translation>
     </message>
 </context>
 <context>
@@ -217,7 +217,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="9"/>
         <source>Pull and hold to refresh...</source>
-        <translation>Потяните и держите для обновления...</translation>
+        <translation>Потяните для обновления...</translation>
     </message>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="10"/>
@@ -860,7 +860,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/User.qml" line="594"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation>b&gt;Очки: %1&lt;/b&gt; Чекины: %2</translation>
+        <translation>&lt;b&gt;Очки: %1&lt;/b&gt; Чекины: %2</translation>
     </message>
 </context>
 <context>

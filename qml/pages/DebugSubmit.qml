@@ -116,7 +116,12 @@ PageWrapper {
                     }
                 }
                 Text {
-                    anchors { right: parent.right; bottom: parent.bottom; margins: mytheme.paddingMedium }
+                    anchors {
+                        right: parent.right;
+                        bottom: parent.bottom;
+                        bottomMargin: mytheme.paddingMedium;
+                        rightMargin: mytheme.paddingXLarge
+                    }
                     font.pixelSize: mytheme.fontSizeMedium
                     color: mytheme.colors.textColorTimestamp
                     text: 16000 - shoutText.text.length

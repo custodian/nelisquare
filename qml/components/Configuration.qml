@@ -6,7 +6,7 @@ import "../js/update.js" as Updater
 import "../js/storage.js" as Storage
 import "../js/api.js" as Api
 
-Item   {
+Item {
     id: configuration
 
     property string platform: windowHelper.isMaemo() ? "maemo" : "meego"
@@ -14,6 +14,7 @@ Item   {
     property string orientationType: "auto"
     property string mapprovider: "google"
     property string checkupdates: "none"
+    property string startPage: ""
 
     property string imageLoadType: "all"
     property int gpsUplockTime: 0 //in seconds
@@ -143,6 +144,8 @@ Item   {
             }
             Api.setLocale(interfaceLanguage.substring(0,2));
             translator.changeLanguage(interfaceLanguage);
+        } else if (key === "settings.startpage") {
+            configuration.startPage = value;
         } else if (key === "settings.debug.enabled") {
             if (value === "") value = "1";
             configuration.debugEnabled = value;
@@ -158,6 +161,7 @@ Item   {
 
     function loadSettings() {
         Storage.getKeyValue("settings.language", settingLoaded);
+        Storage.getKeyValue("settings.startpage", settingLoaded);
 
         Storage.getKeyValue("settings.orientation", settingLoaded);
         Storage.getKeyValue("settings.mapprovider", settingLoaded);

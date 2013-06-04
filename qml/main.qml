@@ -224,7 +224,7 @@ PageStackWindow {
 
         onAccessTokenChanged: {
             if(accessToken.length>0) {
-                tabgroup.currentTab = tabFeed;
+                openStartPage();
                 tabLogin.clear();
             } else {
                 tabFeed.clear();
@@ -272,6 +272,21 @@ PageStackWindow {
         stack.push(Qt.resolvedUrl("pages/DebugSubmit.qml"), {"content": object});
     }
 
+    function openStartPage() {
+        switch(configuration.startPage) {
+        case "self":
+            tabgroup.currentTab = tabMe;
+            break;
+        case "venues":
+            tabgroup.currentTab = tabVenues;
+            break;
+        case "feed":
+        default:
+            tabgroup.currentTab = tabFeed;
+            break;
+        }
+    }
+
     function popToTop(tab) {
         if (tabgroup.lastTab === tab) {
             while (tab.depth > 1) {
@@ -289,10 +304,10 @@ PageStackWindow {
         var params = url.split("/");
         var type = params[0];
         var id = params[1];
+        popToTop(tabgroup.currentTab);
         switch(type) {
         case "start":
-            //TODO: switch to start page
-
+            openStartPage();
             break;
         case "friend":
             stack.push(Qt.resolvedUrl("pages/User.qml"),{"userID":id});

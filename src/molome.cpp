@@ -151,7 +151,7 @@ void Molome::removeFolder(QString sourceFolder) {
     {
         QString srcName = sourceFolder + "/" + files[i];
         removeFolder(srcName);
-        qDebug() << "remove dir" << srcName;
+        //qDebug() << "remove dir" << srcName;
     }
     files.clear();
     files = sourceDir.entryList(QDir::Files);
@@ -159,7 +159,7 @@ void Molome::removeFolder(QString sourceFolder) {
     {
         QString srcName = sourceFolder + "/" + files[i];
         QFile::remove(srcName);
-        qDebug() << "remove file" << srcName;
+        //qDebug() << "remove file" << srcName;
     }
     sourceDir.rmdir(sourceFolder);
 }
@@ -181,7 +181,7 @@ void Molome::copyFolder(QString sourceFolder, QString destFolder)
         QString srcName = sourceFolder + "/" + files[i];
         QString destName = destFolder + "/" + files[i];
         QFile::copy(srcName, destName);
-        qDebug() << "copy file" << srcName << destName;
+        //qDebug() << "copy file" << srcName << destName;
     }
     files.clear();
     files = sourceDir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot);
@@ -190,6 +190,6 @@ void Molome::copyFolder(QString sourceFolder, QString destFolder)
         QString srcName = sourceFolder + "/" + files[i];
         QString destName = destFolder + "/" + files[i];
         copyFolder(srcName, destName);
-        qDebug() << "copy dir" << srcName << destName;
+        //qDebug() << "copy dir" << srcName << destName;
     }
 }

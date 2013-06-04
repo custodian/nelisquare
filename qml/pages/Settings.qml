@@ -384,6 +384,45 @@ PageWrapper {
                 }
 
                 SectionHeader{
+                    text: qsTr("STARTUP PAGE")
+                }
+                ButtonRow {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    //width: parent.width
+                    onVisibleChanged: {
+                        if (visible) {
+                            switch(configuration.startPage) {
+                            case "feed":
+                                checkedButton = btnPageFeed;
+                                break;
+                            case "venues":
+                                checkedButton = btnPageVenues;
+                                break;
+                            case "self":
+                                checkedButton = btnPageMe;
+                                break;
+                            }
+                        }
+                    }
+                    Button{
+                        id: btnPageFeed
+                        text: qsTr("Feed")
+                        onClicked: settingsChanged("startpage","feed")
+                    }
+
+                    Button{
+                        id: btnPageVenues
+                        text: qsTr("Venues")
+                        onClicked: settingsChanged("startpage","venues")
+                    }
+                    Button{
+                        id: btnPageMe
+                        text: qsTr("Self")
+                        onClicked: settingsChanged("startpage","self")
+                    }
+                }
+
+                SectionHeader{
                     text: qsTr("LANGUAGE")
                 }
                 Button{

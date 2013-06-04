@@ -1,5 +1,6 @@
 nelisquare (0.5.0) stable; urgency=low
-  * Homescreen feed is back!
+  * Language pack update (Turkish, Portuguese-Brazil)
+  * Startup page selection
   * Internalization
   * Settings page update
   * Debug info submission
