@@ -289,8 +289,13 @@ PageStackWindow {
 
     function popToTop(tab) {
         if (tabgroup.lastTab === tab) {
-            while (tab.depth > 1) {
-                tab.pop(tab.depth > 2);
+            if (tab.depth === 1) {
+                if (tab.currentPage.scrollTop !== undefined)
+                    tab.currentPage.scrollTop();
+            } else {
+                while (tab.depth > 1) {
+                    tab.pop(tab.depth > 2);
+                }
             }
         }
         tabgroup.lastTab = tab;
@@ -368,12 +373,16 @@ PageStackWindow {
         }
     }
 
-    function onLanguageChanged(language) {
+    function reloadUI() {
         tabLogin.clear();
         tabFeed.clear();
         tabVenues.clear();
         tabMe.clear();
         tabgroup.currentTab.load();
+    }
+
+    function onLanguageChanged(language) {
+        reloadUI();
     }
 
     function onPictureUploaded(response, page) {

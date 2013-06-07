@@ -128,6 +128,11 @@ PageWrapper {
         friendsCheckinsModel.remove(position);
     }
 
+    //TODO: make some new name for that func
+    function scrollTop() {
+        friendsCheckinsView.positionViewAtBeginning();
+    }
+
     function load() {
         var page = friendsFeed;
         page.update.connect(function(lastupdate) {

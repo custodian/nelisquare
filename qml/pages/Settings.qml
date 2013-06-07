@@ -585,6 +585,16 @@ PageWrapper {
                     }
 
                 }
+
+                SectionHeader{
+                    text: qsTr("UI")
+                }
+                Button{
+                    text: qsTr("Reload UI")
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: appWindow.reloadUI()
+                }
+
                 SectionHeader {
                     text: qsTr("AUTHENTICATION")
                 }

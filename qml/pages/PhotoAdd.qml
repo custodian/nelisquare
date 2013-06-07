@@ -5,7 +5,8 @@ import "../components"
 import "../js/api.js" as Api
 
 PageWrapper {
-    signal uploadPhoto(string photo)
+    signal selectPhoto(string photo)
+    signal uploadPhoto(variant params)
 
     property variant options: {}
 
@@ -42,17 +43,30 @@ PageWrapper {
 
     function load() {
         var page = photoAdd;
-        page.uploadPhoto.connect(function(photo){
-            photoShareDialog.photoUrl = photo;
-            photoShareDialog.state = "shown";
+        page.selectPhoto.connect(function(photo){
+            stack.push(Qt.resolvedUrl("../pages/PhotoShareDialog.qml"), {"photoUrl": photo, "options": options, "owner":page});
         });
-        photoShareDialog.options = options;
-        photoShareDialog.owner = page;
+        page.uploadPhoto.connect(function(params) {
+            waiting_show();
+            Api.photos.addPhoto(params, options.owner,
+                function(url) {
+                    waiting_hide();
+                    if (!pictureHelper.upload(url, params.path, params.owner)) {
+                        //TODO: make a
+                        show_error(qsTr("Error uploading photo!"));
+                    }
+                    //photo selection
+                    stack.pop();
+                }
+            );
+            //sharing dialog
+            stack.pop();
+        });
     }
 
     function molomePhoto(state, photoUrl) {
         if (state) {
-            uploadPhoto(photoUrl);
+            selectPhoto(photoUrl);
         }
         waiting_hide();
         galleryModel.reload();
@@ -99,32 +113,10 @@ PageWrapper {
             photoAspect: Image.PreserveAspectFit
             photoCache: false
             onClicked: {
-                photoAdd.uploadPhoto(model.filePath);
+                photoAdd.selectPhoto(model.filePath);
             }
 
             //TODO: make textname overlap photo
-        }
-    }
-
-    PhotoShareDialog {
-        id: photoShareDialog
-        z: 20
-        width: parent.width
-        state: "hidden"
-        onCancel:{
-            photoShareDialog.state="hidden";
-        }
-        onUploadPhoto: {
-            photoShareDialog.state="hidden";
-            Api.photos.addPhoto(params, options.owner,
-                function(url) {
-                    if (!pictureHelper.upload(url, params.path, params.owner)) {
-                        //TODO: make a
-                        show_error(qsTr("Error uploading photo!"));
-                    }
-                    stack.pop();
-                });
-
         }
     }
 }
