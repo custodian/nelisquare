@@ -43,6 +43,18 @@ PageWrapper {
     property string venueTypeUrl: ""
 
     property variant specials: undefined
+    onSpecialsChanged: {
+        if (specials === undefined) return;
+        specials.items.forEach(function(special) {
+            specialsList.specialsModel.append({
+                  "specialName": special.title,
+                  "specialState": special.unlocked,
+                  "specialText": special.message,
+                  "specialIcon": special.icon,
+                  "likesCount": special.likes.count,
+            });
+        });
+    }
 
     property alias tipsModel: tipsModel
     property alias photosBox: photosBox
@@ -268,6 +280,10 @@ PageWrapper {
                     }
                 }
 
+                SpecialsList {
+                    id: specialsList
+                }
+
                 LikeBox {
                     id: likeBox
                     x: 10
@@ -281,14 +297,6 @@ PageWrapper {
                         place.like(place.venueID, state);
                     }
                 }
-
-                DebugWidget {
-                    debugType: "special"
-                    debugContent: specials
-
-                    visible: specials !== undefined
-                }
-
 
                 PhotosBox {
                     id: usersBox

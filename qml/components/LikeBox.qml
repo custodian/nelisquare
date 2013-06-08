@@ -33,32 +33,13 @@ Item {
             text: qsTr("USER LIKES")
         }
 
-        /*Row {
+        Text {
+            text: likeBox.likeText
             width: parent.width
-            spacing: 20
-
-            Image {
-                id: likeImage
-                y: 10
-                //width: 48
-                //height: 48
-                smooth: true
-                asynchronous: true
-                source: "../pics/"+mytheme.name+"/"+((likeBox.mylike)?"heart_liked.png":"heart_like.png")
-
-
-            }*/
-
-            Text {
-                //anchors.verticalCenter: likeImage.verticalCenter
-                text: likeBox.likeText
-                width: parent.width
-                font.pixelSize: mytheme.font.sizeSigns
-                color: mytheme.colors.textColorTimestamp
-                wrapMode: Text.Wrap
-                //visible: likeBox.likes>0
-            }
-        //}
+            font.pixelSize: mytheme.font.sizeSigns
+            color: mytheme.colors.textColorTimestamp
+            wrapMode: Text.Wrap
+        }
     }
 
     MouseArea {

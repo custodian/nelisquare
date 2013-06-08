@@ -10,3 +10,9 @@ api.debugobject = false;
 function loaddebugobject() {
     return undefined
 }
+
+api.debugspecial = false;
+function loaddebugspecial() {
+    return undefined
+}
+

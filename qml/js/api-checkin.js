@@ -123,6 +123,9 @@ checkin.parseAddCheckin = function(response, page) {
     var specials = {};
     specials.type = "aftercheckin";
     specials.items = [];
+    if (api.debugspecial) {
+        specials = loaddebugspecial();
+    }
     data.notifications.forEach(function(noti) {
         //console.log("NOTIFICATION: "+ JSON.stringify(noti));
         if(noti.item.message!==undefined) {
@@ -133,8 +136,7 @@ checkin.parseAddCheckin = function(response, page) {
             if (noti.type === "tip") {
                 message += "<br/>" + noti.item.tip.text;
             } else if (noti.type === "specials"){
-                console.log("SPECIALS: " + JSON.stringify(noti));
-                specials.items.push(noti);
+                specials.items.push(noti.item);
             } else {
                 console.log("TODO: NOTI TYPE: " + JSON.stringify(noti));
             }

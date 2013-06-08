@@ -40,7 +40,7 @@ PageWrapper {
         }
     }*/
 
-    Menu {
+    /*Menu {
         id: menu
         MenuLayout {
             MenuItem {
@@ -50,7 +50,7 @@ PageWrapper {
                 }
             }
         }
-    }
+    }*/
 
     function load() {
         var page = venuesList;
@@ -68,7 +68,7 @@ PageWrapper {
             }
         });
         page.addVenue.connect(function(){
-            stack.push(Qt.resolvedUrl("VenueEdit.qml"),{"venueID":""});
+            stack.push(Qt.resolvedUrl("VenueAdd.qml"),{"venueID":""});
         });
         update();
     }
@@ -132,8 +132,8 @@ PageWrapper {
             update();
         }
 
-        /* //TODO: Add new venue functionality
-        footer: Column {
+        //TODO: Add new venue functionality
+        /*footer: Column {
             width: placesView.width
             Item {
                 width: placesView.width

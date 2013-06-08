@@ -21,6 +21,19 @@ PageWrapper {
     property string checkinID: ""
     property variant checkinCache: undefined
     property variant specials: undefined
+    onSpecialsChanged: {
+        if (specials === undefined) return;
+        specials.items.forEach(function(special) {
+            if (!special.unlocked) return;
+            specialsList.specialsModel.append({
+                  "specialName": special.title,
+                  "specialState": special.unlocked,
+                  "specialText": special.message,
+                  "specialIcon": special.icon,
+                  "likesCount": special.likes.count,
+            });
+        });
+    }
 
     property alias scoreTotal: scoreTotal.text
     property alias owner: checkinOwner
@@ -228,11 +241,8 @@ PageWrapper {
                 }
             }
 
-            DebugWidget {
-                debugType: "specials"
-                debugContent: specials
-
-                visible: specials!== undefined && specials.items.count>0
+            SpecialsList {
+                id: specialsList
             }
 
             LikeBox {

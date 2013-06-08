@@ -57,7 +57,7 @@ PageWrapper {
         id: badgeDelegate
 
         Item {
-            //width: badgeGrid.cellWidth
+            width: badgeGrid.cellWidth
 
             CacheImage {
                 id: badgeImage

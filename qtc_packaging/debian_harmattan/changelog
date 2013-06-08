@@ -1,4 +1,5 @@
 nelisquare (0.5.0) stable; urgency=low
+  * Specials support
   * UI Reload
   * Photo upload dialog
   * Internalization
@@ -8,7 +9,7 @@ nelisquare (0.5.0) stable; urgency=low
   * Users who liked page added
   * Api structure update
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Sat, 08 Jun 2013 00:20:21 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Sat, 08 Jun 2013 14:53:42 +0400
 
 nelisquare (0.4.10) stable; urgency=low
   * dialogs updates

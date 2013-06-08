@@ -151,8 +151,12 @@ venues.parseVenue = function(response, page) {
             }
         });
     }
-    if (venue.specials.count>0)
+    if (api.debugspecial) {
+        page.specials = loaddebugspecial();
+    }
+    if (venue.specials.count>0) {
         page.specials = venue.specials;
+    }
 }
 
 venues.loadVenuePhotos = function(page, venue) {
