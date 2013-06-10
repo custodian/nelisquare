@@ -91,7 +91,9 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                             "type": "feed-update",
                             "content": update
                         }
-                        page.addItem(updateitem,0);
+                        if (api.debugenabled) {
+                            page.addItem(updateitem,0);
+                        }
                     }
                 });
         } else if (prop === "deletes") {
@@ -104,7 +106,9 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                         "type": "feed-delete",
                         "content": del
                     }
-                    page.addItem(deleteitem,0);
+                    if (api.debugenabled) {
+                        page.addItem(deleteitem,0);
+                    }
                 });
         } else {
             feed.log("UPDATE TYPE: " + prop);
@@ -116,7 +120,9 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                 "type": "feed-" + prop,
                 "content": propdata
             }
-            page.addItem(propitem,0);
+            if (api.debugenabled) {
+                page.addItem(propitem,0);
+            }
         }
     }
 }
@@ -293,7 +299,9 @@ feed.feedObjParserUnknown = function(page, object) {
         "type": object.type,
         "content": object
     }
-    page.addItem(item);
+    if (api.debugenabled) {
+        page.addItem(item);
+    }
 }
 
 feed.feedObjParserCheckin = function(page, object) {

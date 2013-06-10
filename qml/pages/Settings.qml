@@ -334,13 +334,19 @@ PageWrapper {
                     Button{
                         id: btnThemeLight
                         text: qsTr("Light")
-                        onClicked: settingsChanged("theme","light")
+                        onClicked: {
+                            settingsChanged("theme","light");
+                            appWindow.reloadUI();
+                        }
                     }
 
                     Button{
                         id: btnThemeDark
                         text: qsTr("Dark")
-                        onClicked: settingsChanged("theme","dark")
+                        onClicked: {
+                            settingsChanged("theme","dark");
+                            appWindow.reloadUI();
+                        }
                     }
                 }
 

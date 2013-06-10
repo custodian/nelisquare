@@ -15,17 +15,17 @@
         <translation>CHECK-IN TIEDOT</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="210"/>
+        <location filename="../qml/pages/Checkin.qml" line="223"/>
         <source>TOTAL POINTS</source>
         <translation>PISTEET</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="251"/>
+        <location filename="../qml/pages/Checkin.qml" line="261"/>
         <source>EARNED BADGES</source>
         <translation>ANSAITUT ARVOMERKIT</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="273"/>
+        <location filename="../qml/pages/Checkin.qml" line="283"/>
         <source>COMMENTS</source>
         <translation>KOMMENTIT</translation>
     </message>
@@ -53,22 +53,22 @@
         <translation>Mitä mietit?</translation>
     </message>
     <message>
-        <location filename="../qml/pages/CheckinDialog.qml" line="124"/>
+        <location filename="../qml/pages/CheckinDialog.qml" line="129"/>
         <source>Sharing options</source>
         <translation>Jakamisen asetukset</translation>
     </message>
     <message>
-        <location filename="../qml/pages/CheckinDialog.qml" line="128"/>
+        <location filename="../qml/pages/CheckinDialog.qml" line="133"/>
         <source>Share with Friends</source>
         <translation>Jaa kavereiden kanssa</translation>
     </message>
     <message>
-        <location filename="../qml/pages/CheckinDialog.qml" line="136"/>
+        <location filename="../qml/pages/CheckinDialog.qml" line="141"/>
         <source>Post to Facebook</source>
         <translation>Jaa Facebookiin</translation>
     </message>
     <message>
-        <location filename="../qml/pages/CheckinDialog.qml" line="144"/>
+        <location filename="../qml/pages/CheckinDialog.qml" line="149"/>
         <source>Post to Twitter</source>
         <translation>Jaa Twitteriin</translation>
     </message>
@@ -99,12 +99,12 @@
         <translation>Uusi loistava kommentti</translation>
     </message>
     <message>
-        <location filename="../qml/components/CommentDialog.qml" line="64"/>
+        <location filename="../qml/components/CommentDialog.qml" line="69"/>
         <source>Comment!</source>
         <translation>Kommentoi!</translation>
     </message>
     <message>
-        <location filename="../qml/components/CommentDialog.qml" line="72"/>
+        <location filename="../qml/components/CommentDialog.qml" line="77"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
@@ -159,32 +159,32 @@ Voit auttaa ongelman ratkaisussa.</translation>
 <context>
     <name>FriendsFeed</name>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="44"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="43"/>
         <source>FRIENDS FEED</source>
         <translation>SYÖTE</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="217"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="221"/>
         <source>RECENT</source>
         <translation>VIIMEISIMMÄT</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="230"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="234"/>
         <source>NEARBY</source>
         <translation>LÄHISTÖLLÄ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="251"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="255"/>
         <source>Load More</source>
         <translation>Lataa lisää</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="398"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="402"/>
         <source>Sorry, Pages are not supported yet :(</source>
         <translation>Pahoittelut, Sivut-ominaisuus ei ole vielä saatavilla :(</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="468"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="472"/>
         <source>Sorry, no lists support yet :(</source>
         <translation>Pahoittelut, Listat-ominaisuus ei ole vielä tuettu :(</translation>
     </message>
@@ -294,12 +294,12 @@ Voit auttaa ongelman ratkaisussa.</translation>
 <context>
     <name>PhotoAdd</name>
     <message>
-        <location filename="../qml/pages/PhotoAdd.qml" line="17"/>
+        <location filename="../qml/pages/PhotoAdd.qml" line="18"/>
         <source>Select photo for upload</source>
         <translation>Valitse ladattava kuva</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PhotoAdd.qml" line="123"/>
+        <location filename="../qml/pages/PhotoAdd.qml" line="56"/>
         <source>Error uploading photo!</source>
         <translation>Virhe ladattaessa kuvaa!</translation>
     </message>
@@ -307,37 +307,37 @@ Voit auttaa ongelman ratkaisussa.</translation>
 <context>
     <name>PhotoShareDialog</name>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="37"/>
-        <source>Selected photo</source>
-        <translation>Valittu kuva</translation>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="20"/>
+        <source>PHOTO UPLOAD</source>
+        <translation>KUVAN LATAAMINEN</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="59"/>
-        <source>Sharing</source>
-        <translation>Jakaminen</translation>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="36"/>
+        <source>UPLOAD</source>
+        <translation>LATAA</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="63"/>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="86"/>
+        <source>Sharing options</source>
+        <translation>Jakamisen asetukset</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="90"/>
         <source>Public</source>
         <translation>Julkinen</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="70"/>
-        <source>Facebook</source>
-        <translation>Facebook</translation>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="97"/>
+        <source>Post to Facebook</source>
+        <translation>Jaa Facebookiin</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="77"/>
-        <source>Twitter</source>
-        <translation>Twitter</translation>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="104"/>
+        <source>Post to Twitter</source>
+        <translation>Jaa Twitteriin</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="92"/>
-        <source>Upload photo</source>
-        <translation>Lataa kuva</translation>
-    </message>
-    <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="105"/>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="48"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
@@ -487,7 +487,7 @@ Voit auttaa ongelman ratkaisussa.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="213"/>
         <source>GPS Unlock timeout</source>
-        <translation>GPS-lukituksen aikaraja</translation>
+        <translation>GPS päällä, kun sovellus taustalla</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="214"/>
@@ -497,7 +497,7 @@ Voit auttaa ongelman ratkaisussa.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="214"/>
         <source>%1 secs(s)</source>
-        <translation>%1 sekunti(a)</translation>
+        <translation>%1 s</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="214"/>
@@ -518,7 +518,7 @@ Voit auttaa ongelman ratkaisussa.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="223"/>
         <source>%1 min(s)</source>
-        <translation>%1 minuutti(a)</translation>
+        <translation>%1 min</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="231"/>
@@ -587,128 +587,176 @@ Voit auttaa ongelman ratkaisussa.</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="387"/>
+        <source>STARTUP PAGE</source>
+        <translation>ALOITUSSIVU</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="409"/>
+        <source>Feed</source>
+        <translation>Syöte</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="415"/>
+        <source>Venues</source>
+        <translation>Kohteet</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="420"/>
+        <source>Self</source>
+        <translation>Omat tiedot</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="426"/>
         <source>LANGUAGE</source>
         <translation>KIELI</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="398"/>
+        <location filename="../qml/pages/Settings.qml" line="437"/>
         <source>MAP PROVIDER</source>
         <translation>KARTTOJEN TOIMITTAJA</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="421"/>
+        <location filename="../qml/pages/Settings.qml" line="460"/>
         <source>Nokia</source>
         <translation>Nokia</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="427"/>
+        <location filename="../qml/pages/Settings.qml" line="466"/>
         <source>Google</source>
         <translation>Google</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="432"/>
+        <location filename="../qml/pages/Settings.qml" line="471"/>
         <source>OSM</source>
         <translation>OSM</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="450"/>
+        <location filename="../qml/pages/Settings.qml" line="489"/>
         <source>IMAGE LOADING</source>
         <translation>KUVIEN LATAAMINEN</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="469"/>
+        <location filename="../qml/pages/Settings.qml" line="508"/>
         <source>All</source>
         <translation>Kaikki</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="474"/>
+        <location filename="../qml/pages/Settings.qml" line="513"/>
         <source>Cached</source>
         <translation>Välimuisti</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="480"/>
+        <location filename="../qml/pages/Settings.qml" line="519"/>
         <source>INTEGRATION WITH APPS</source>
         <translation>YHDISTÄ MUIHIN SOVELLUKSIIN</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="486"/>
+        <location filename="../qml/pages/Settings.qml" line="525"/>
         <source>Download MOLO.ME</source>
         <translation>Lataa MOLO.ME</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="505"/>
+        <location filename="../qml/pages/Settings.qml" line="544"/>
         <source>MOLO.ME Photos</source>
         <translation>MOLO.ME-kuvat</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="525"/>
+        <location filename="../qml/pages/Settings.qml" line="564"/>
         <source>APPLICATION CACHE</source>
         <translation>SOVELLUKSEN VÄLIMUISTI</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="533"/>
+        <location filename="../qml/pages/Settings.qml" line="572"/>
         <source>Clear</source>
         <translation>Tyhjennä</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="545"/>
+        <location filename="../qml/pages/Settings.qml" line="584"/>
         <source>Size: %1</source>
         <translation>Koko: %1</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="550"/>
+        <location filename="../qml/pages/Settings.qml" line="590"/>
+        <source>UI</source>
+        <translation>KÄYTTÖLIITTYMÄ</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="593"/>
+        <source>Reload UI</source>
+        <translation>Lataa käyttöliittymä uudelleen</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="599"/>
         <source>AUTHENTICATION</source>
         <translation>TODENNUS</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="553"/>
+        <location filename="../qml/pages/Settings.qml" line="602"/>
         <source>Reset authentication</source>
         <translation>Nollaa todennustiedot</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="574"/>
+        <location filename="../qml/pages/Settings.qml" line="623"/>
         <source>ACCESS RATE LIMIT</source>
         <translation>ACCESS RATE LIMIT</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="580"/>
+        <location filename="../qml/pages/Settings.qml" line="629"/>
         <source>API requests available: %1 / %2</source>
         <translation>API-pyyntöjä saatavilla: %1 / %2</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="586"/>
+        <location filename="../qml/pages/Settings.qml" line="635"/>
         <source>You are low on X-RATE requests</source>
         <translation>Sinulla on vähän X-RATE pyyntöjä</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="591"/>
+        <location filename="../qml/pages/Settings.qml" line="640"/>
         <source>DEBUG</source>
         <translation>DEBUG</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="597"/>
+        <location filename="../qml/pages/Settings.qml" line="643"/>
+        <source>Enable debug</source>
+        <translation>Aktivoi debug-ominaisuudet</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="657"/>
         <source>Options will be available soon</source>
         <translation>Asetukset ovat saatavilla pian</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="610"/>
+        <location filename="../qml/pages/Settings.qml" line="672"/>
         <source>General</source>
         <translation>Yleiset</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="611"/>
+        <location filename="../qml/pages/Settings.qml" line="673"/>
         <source>Theme</source>
         <translation>Teema</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="612"/>
+        <location filename="../qml/pages/Settings.qml" line="674"/>
         <source>Service</source>
         <translation>Palvelu</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="613"/>
+        <location filename="../qml/pages/Settings.qml" line="675"/>
         <source>Debug</source>
         <translation>Debug</translation>
+    </message>
+</context>
+<context>
+    <name>SpecialsList</name>
+    <message>
+        <location filename="../qml/components/SpecialsList.qml" line="13"/>
+        <source>VENUE SPECIALS</source>
+        <translation>KOHTEEN TARJOUKSET</translation>
+    </message>
+    <message>
+        <location filename="../qml/components/SpecialsList.qml" line="31"/>
+        <source>Unlocked!</source>
+        <translation>Avattu!</translation>
     </message>
 </context>
 <context>
@@ -719,12 +767,12 @@ Voit auttaa ongelman ratkaisussa.</translation>
         <translation>Jätä loistava vinkki</translation>
     </message>
     <message>
-        <location filename="../qml/components/TipDialog.qml" line="66"/>
+        <location filename="../qml/components/TipDialog.qml" line="71"/>
         <source>ADD</source>
         <translation>LISÄÄ</translation>
     </message>
     <message>
-        <location filename="../qml/components/TipDialog.qml" line="74"/>
+        <location filename="../qml/components/TipDialog.qml" line="79"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
@@ -882,45 +930,45 @@ Voit auttaa ongelman ratkaisussa.</translation>
 <context>
     <name>Venue</name>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="131"/>
+        <location filename="../qml/pages/Venue.qml" line="143"/>
         <source>VENUE PHOTOS</source>
         <translation>KOHTEEN KUVAT</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="239"/>
+        <location filename="../qml/pages/Venue.qml" line="251"/>
         <source>CHECK-IN HERE!</source>
         <translation>TEE CHECK-IN!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="261"/>
+        <location filename="../qml/pages/Venue.qml" line="273"/>
         <source>Venue doesn&apos;t have mayor yet!</source>
         <translation>Kohteella ei ole pormestaria vielä!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="262"/>
+        <location filename="../qml/pages/Venue.qml" line="274"/>
         <source>is the mayor.</source>
         <translation>on pormestari.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="262"/>
+        <location filename="../qml/pages/Venue.qml" line="274"/>
         <source>It could be you!</source>
         <translation>Se voit olla sinä!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="263"/>
+        <location filename="../qml/pages/Venue.qml" line="275"/>
         <source>%1 checkins</source>
         <translation>%1 check-iniä</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="309"/>
+        <location filename="../qml/pages/Venue.qml" line="317"/>
         <source>BEST TIPS</source>
         <translation>PARHAAT VINKIT</translation>
     </message>
 </context>
 <context>
-    <name>VenueEdit</name>
+    <name>VenueAdd</name>
     <message>
-        <location filename="../qml/pages/VenueEdit.qml" line="91"/>
+        <location filename="../qml/pages/VenueAdd.qml" line="91"/>
         <source>Venue name</source>
         <translation>Kohteen nimi</translation>
     </message>
@@ -941,17 +989,17 @@ Voit auttaa ongelman ratkaisussa.</translation>
         <translation>LÄHEISET KOHTEET</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="47"/>
-        <source>Add new venue</source>
-        <translation>Lisää uusi kohde</translation>
+        <location filename="../qml/pages/VenuesList.qml" line="67"/>
+        <source>GPS signal is fuzzy, cannot get your location</source>
+        <translation>Häiriöitä GPS-signaalissa. Sijainnin määrittäminen ei onnistu.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="101"/>
+        <location filename="../qml/pages/VenuesList.qml" line="96"/>
         <source>Tap to search place...</source>
         <translation>Hae...</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="112"/>
+        <location filename="../qml/pages/VenuesList.qml" line="107"/>
         <source>SEARCH</source>
         <translation>HAE</translation>
     </message>

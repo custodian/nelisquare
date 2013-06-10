@@ -15,17 +15,17 @@
         <translation>CHECK-IN DETAILS</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="210"/>
+        <location filename="../qml/pages/Checkin.qml" line="223"/>
         <source>TOTAL POINTS</source>
         <translation>TOTAL POINTS</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="251"/>
+        <location filename="../qml/pages/Checkin.qml" line="261"/>
         <source>EARNED BADGES</source>
         <translation>EARNED BADGES</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="273"/>
+        <location filename="../qml/pages/Checkin.qml" line="283"/>
         <source>COMMENTS</source>
         <translation>COMMENTS</translation>
     </message>
@@ -53,22 +53,22 @@
         <translation>Whats on your mind?</translation>
     </message>
     <message>
-        <location filename="../qml/pages/CheckinDialog.qml" line="124"/>
+        <location filename="../qml/pages/CheckinDialog.qml" line="129"/>
         <source>Sharing options</source>
         <translation>Sharing options</translation>
     </message>
     <message>
-        <location filename="../qml/pages/CheckinDialog.qml" line="128"/>
+        <location filename="../qml/pages/CheckinDialog.qml" line="133"/>
         <source>Share with Friends</source>
         <translation>Share with Friends</translation>
     </message>
     <message>
-        <location filename="../qml/pages/CheckinDialog.qml" line="136"/>
+        <location filename="../qml/pages/CheckinDialog.qml" line="141"/>
         <source>Post to Facebook</source>
         <translation>Post to Facebook</translation>
     </message>
     <message>
-        <location filename="../qml/pages/CheckinDialog.qml" line="144"/>
+        <location filename="../qml/pages/CheckinDialog.qml" line="149"/>
         <source>Post to Twitter</source>
         <translation>Post to Twitter</translation>
     </message>
@@ -99,12 +99,12 @@
         <translation>New awesome comment</translation>
     </message>
     <message>
-        <location filename="../qml/components/CommentDialog.qml" line="64"/>
+        <location filename="../qml/components/CommentDialog.qml" line="69"/>
         <source>Comment!</source>
         <translation>Comment!</translation>
     </message>
     <message>
-        <location filename="../qml/components/CommentDialog.qml" line="72"/>
+        <location filename="../qml/components/CommentDialog.qml" line="77"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -159,32 +159,32 @@ You can help with resolution.</translation>
 <context>
     <name>FriendsFeed</name>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="44"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="43"/>
         <source>FRIENDS FEED</source>
         <translation>FRIENDS FEED</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="217"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="221"/>
         <source>RECENT</source>
         <translation>RECENT</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="230"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="234"/>
         <source>NEARBY</source>
         <translation>NEARBY</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="251"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="255"/>
         <source>Load More</source>
         <translation>Load More</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="398"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="402"/>
         <source>Sorry, Pages are not supported yet :(</source>
         <translation>Sorry, Pages are not supported yet :(</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="468"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="472"/>
         <source>Sorry, no lists support yet :(</source>
         <translation>Sorry, no lists support yet :(</translation>
     </message>
@@ -294,12 +294,12 @@ You can help with resolution.</translation>
 <context>
     <name>PhotoAdd</name>
     <message>
-        <location filename="../qml/pages/PhotoAdd.qml" line="17"/>
+        <location filename="../qml/pages/PhotoAdd.qml" line="18"/>
         <source>Select photo for upload</source>
         <translation>Select photo for upload</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PhotoAdd.qml" line="123"/>
+        <location filename="../qml/pages/PhotoAdd.qml" line="56"/>
         <source>Error uploading photo!</source>
         <translation>Error uploading photo!</translation>
     </message>
@@ -307,37 +307,37 @@ You can help with resolution.</translation>
 <context>
     <name>PhotoShareDialog</name>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="37"/>
-        <source>Selected photo</source>
-        <translation>Selected photo</translation>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="20"/>
+        <source>PHOTO UPLOAD</source>
+        <translation>PHOTO UPLOAD</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="59"/>
-        <source>Sharing</source>
-        <translation>Sharing</translation>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="36"/>
+        <source>UPLOAD</source>
+        <translation>UPLOAD</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="63"/>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="86"/>
+        <source>Sharing options</source>
+        <translation>Sharing options</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="90"/>
         <source>Public</source>
         <translation>Public</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="70"/>
-        <source>Facebook</source>
-        <translation>Facebook</translation>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="97"/>
+        <source>Post to Facebook</source>
+        <translation>Post to Facebook</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="77"/>
-        <source>Twitter</source>
-        <translation>Twitter</translation>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="104"/>
+        <source>Post to Twitter</source>
+        <translation>Post to Twitter</translation>
     </message>
     <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="92"/>
-        <source>Upload photo</source>
-        <translation>Upload photo</translation>
-    </message>
-    <message>
-        <location filename="../qml/components/PhotoShareDialog.qml" line="105"/>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="48"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -587,128 +587,176 @@ You can help with resolution.</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="387"/>
+        <source>STARTUP PAGE</source>
+        <translation>STARTUP PAGE</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="409"/>
+        <source>Feed</source>
+        <translation>Feed</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="415"/>
+        <source>Venues</source>
+        <translation>Venues</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="420"/>
+        <source>Self</source>
+        <translation>Self</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="426"/>
         <source>LANGUAGE</source>
         <translation>LANGUAGE</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="398"/>
+        <location filename="../qml/pages/Settings.qml" line="437"/>
         <source>MAP PROVIDER</source>
         <translation>MAP PROVIDER</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="421"/>
+        <location filename="../qml/pages/Settings.qml" line="460"/>
         <source>Nokia</source>
         <translation>Nokia</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="427"/>
+        <location filename="../qml/pages/Settings.qml" line="466"/>
         <source>Google</source>
         <translation>Google</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="432"/>
+        <location filename="../qml/pages/Settings.qml" line="471"/>
         <source>OSM</source>
         <translation>OSM</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="450"/>
+        <location filename="../qml/pages/Settings.qml" line="489"/>
         <source>IMAGE LOADING</source>
         <translation>IMAGE LOADING</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="469"/>
+        <location filename="../qml/pages/Settings.qml" line="508"/>
         <source>All</source>
         <translation>All</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="474"/>
+        <location filename="../qml/pages/Settings.qml" line="513"/>
         <source>Cached</source>
         <translation>Cached</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="480"/>
+        <location filename="../qml/pages/Settings.qml" line="519"/>
         <source>INTEGRATION WITH APPS</source>
         <translation>INTEGRATION WITH APPS</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="486"/>
+        <location filename="../qml/pages/Settings.qml" line="525"/>
         <source>Download MOLO.ME</source>
         <translation>Download MOLO.ME</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="505"/>
+        <location filename="../qml/pages/Settings.qml" line="544"/>
         <source>MOLO.ME Photos</source>
         <translation>MOLO.ME Photos</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="525"/>
+        <location filename="../qml/pages/Settings.qml" line="564"/>
         <source>APPLICATION CACHE</source>
         <translation>APPLICATION CACHE</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="533"/>
+        <location filename="../qml/pages/Settings.qml" line="572"/>
         <source>Clear</source>
         <translation>Clear</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="545"/>
+        <location filename="../qml/pages/Settings.qml" line="584"/>
         <source>Size: %1</source>
         <translation>Size: %1</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="550"/>
+        <location filename="../qml/pages/Settings.qml" line="590"/>
+        <source>UI</source>
+        <translation>UI</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="593"/>
+        <source>Reload UI</source>
+        <translation>Reload UI</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="599"/>
         <source>AUTHENTICATION</source>
         <translation>AUTHENTICATION</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="553"/>
+        <location filename="../qml/pages/Settings.qml" line="602"/>
         <source>Reset authentication</source>
         <translation>Reset authentication</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="574"/>
+        <location filename="../qml/pages/Settings.qml" line="623"/>
         <source>ACCESS RATE LIMIT</source>
         <translation>ACCESS RATE LIMIT</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="580"/>
+        <location filename="../qml/pages/Settings.qml" line="629"/>
         <source>API requests available: %1 / %2</source>
         <translation>API requests available: %1 / %2</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="586"/>
+        <location filename="../qml/pages/Settings.qml" line="635"/>
         <source>You are low on X-RATE requests</source>
         <translation>You are low on X-RATE requests</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="591"/>
+        <location filename="../qml/pages/Settings.qml" line="640"/>
         <source>DEBUG</source>
         <translation>DEBUG</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="597"/>
+        <location filename="../qml/pages/Settings.qml" line="643"/>
+        <source>Enable debug</source>
+        <translation>Enable debug</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Settings.qml" line="657"/>
         <source>Options will be available soon</source>
         <translation>Options will be available soon</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="610"/>
+        <location filename="../qml/pages/Settings.qml" line="672"/>
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="611"/>
+        <location filename="../qml/pages/Settings.qml" line="673"/>
         <source>Theme</source>
         <translation>Theme</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="612"/>
+        <location filename="../qml/pages/Settings.qml" line="674"/>
         <source>Service</source>
         <translation>Service</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="613"/>
+        <location filename="../qml/pages/Settings.qml" line="675"/>
         <source>Debug</source>
         <translation>Debug</translation>
+    </message>
+</context>
+<context>
+    <name>SpecialsList</name>
+    <message>
+        <location filename="../qml/components/SpecialsList.qml" line="13"/>
+        <source>VENUE SPECIALS</source>
+        <translation>VENUE SPECIALS</translation>
+    </message>
+    <message>
+        <location filename="../qml/components/SpecialsList.qml" line="31"/>
+        <source>Unlocked!</source>
+        <translation>Unlocked!</translation>
     </message>
 </context>
 <context>
@@ -719,12 +767,12 @@ You can help with resolution.</translation>
         <translation>Write some cool tip here</translation>
     </message>
     <message>
-        <location filename="../qml/components/TipDialog.qml" line="66"/>
+        <location filename="../qml/components/TipDialog.qml" line="71"/>
         <source>ADD</source>
         <translation>ADD</translation>
     </message>
     <message>
-        <location filename="../qml/components/TipDialog.qml" line="74"/>
+        <location filename="../qml/components/TipDialog.qml" line="79"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
@@ -882,45 +930,45 @@ You can help with resolution.</translation>
 <context>
     <name>Venue</name>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="131"/>
+        <location filename="../qml/pages/Venue.qml" line="143"/>
         <source>VENUE PHOTOS</source>
         <translation>VENUE PHOTOS</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="239"/>
+        <location filename="../qml/pages/Venue.qml" line="251"/>
         <source>CHECK-IN HERE!</source>
         <translation>CHECK-IN HERE!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="261"/>
+        <location filename="../qml/pages/Venue.qml" line="273"/>
         <source>Venue doesn&apos;t have mayor yet!</source>
         <translation>Venue doesn&apos;t have mayor yet!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="262"/>
+        <location filename="../qml/pages/Venue.qml" line="274"/>
         <source>is the mayor.</source>
         <translation>is the mayor.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="262"/>
+        <location filename="../qml/pages/Venue.qml" line="274"/>
         <source>It could be you!</source>
         <translation>It could be you!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="263"/>
+        <location filename="../qml/pages/Venue.qml" line="275"/>
         <source>%1 checkins</source>
         <translation>%1 checkins</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="309"/>
+        <location filename="../qml/pages/Venue.qml" line="317"/>
         <source>BEST TIPS</source>
         <translation>BEST TIPS</translation>
     </message>
 </context>
 <context>
-    <name>VenueEdit</name>
+    <name>VenueAdd</name>
     <message>
-        <location filename="../qml/pages/VenueEdit.qml" line="91"/>
+        <location filename="../qml/pages/VenueAdd.qml" line="91"/>
         <source>Venue name</source>
         <translation>Venue name</translation>
     </message>
@@ -941,17 +989,17 @@ You can help with resolution.</translation>
         <translation>NEARBY VENUES</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="47"/>
-        <source>Add new venue</source>
-        <translation>Add new venue</translation>
+        <location filename="../qml/pages/VenuesList.qml" line="67"/>
+        <source>GPS signal is fuzzy, cannot get your location</source>
+        <translation>GPS signal is fuzzy, cannot get your location</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="101"/>
+        <location filename="../qml/pages/VenuesList.qml" line="96"/>
         <source>Tap to search place...</source>
         <translation>Tap to search place...</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="112"/>
+        <location filename="../qml/pages/VenuesList.qml" line="107"/>
         <source>SEARCH</source>
         <translation>SEARCH</translation>
     </message>

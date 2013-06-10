@@ -147,8 +147,9 @@ Item {
         } else if (key === "settings.startpage") {
             configuration.startPage = value;
         } else if (key === "settings.debug.enabled") {
-            if (value === "") value = "1";
+            if (value === "") value = "0";
             configuration.debugEnabled = value;
+            Api.api.debugenabled = (value === "1");
         } else {
             console.log("Unknown setting: " + key + "=" + value);
         }
