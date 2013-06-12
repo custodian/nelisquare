@@ -72,6 +72,76 @@ PageWrapper {
         anchors.top: pagetop
         width: parent.width
         height: parent.height - y - 70
+        focus: true
+        Keys.onPressed: {
+            if (event.key === Qt.Key_VolumeUp) {
+                if (venueMapZoom < 18)
+                    venueMapZoom++;
+                event.accepted = true;
+            } else if (event.key === Qt.Key_VolumeDown) {
+                if (venueMapZoom > 1)
+                    venueMapZoom--;
+                event.accepted = true;
+            }
+        }
+
+        /*Keys.onVolumeUpPressed: {
+            if (venueMapZoom < 18)
+                venueMapZoom++;
+            event.accepted = true;
+        }
+        Keys.onVolumeDownPressed: {
+            if (venueMapZoom > 1)
+                venueMapZoom--;
+            event.accepted = true;
+        }*/
+
+        PinchArea {
+            id: pincharea;
+            property double __oldZoom;
+            anchors.fill: fullMap;
+            function calcZoomDelta(zoom, percent) {
+                return zoom + Math.log(percent)/Math.log(2);
+            }
+            onPinchStarted: {
+                __oldZoom = venueMapZoom;
+            }
+            onPinchUpdated: {
+                venueMapZoom = calcZoomDelta(__oldZoom, pinch.scale);
+            }
+            onPinchFinished: {
+                venueMapZoom = calcZoomDelta(__oldZoom, pinch.scale);
+            }
+            enabled: configuration.platform !== "maemo"
+        }
+
+        MouseArea {
+          id: mousearea;
+          property bool __isPanning: false;
+          property int __lastX: -1;
+          property int __lastY: -1;
+          anchors.fill : fullMap;
+          onPressed: {
+             __isPanning = true;
+             __lastX = mouse.x;
+             __lastY = mouse.y;
+          }
+          onReleased: {
+             __isPanning = false;
+          }
+          onPositionChanged: {
+             if (__isPanning) {
+                var dx = mouse.x - __lastX;
+                var dy = mouse.y - __lastY;
+                map.pan(-dx, -dy);
+                __lastX = mouse.x;
+                __lastY = mouse.y;
+             }
+          }
+          onCanceled: {
+             __isPanning = false;
+          }
+        }
 
         Map {
             id: map
@@ -89,6 +159,11 @@ PageWrapper {
                 coordinate: Coordinate{
                 }
                 source: "../pics/pin_user.png"
+                MapMouseArea {
+                    onClicked: {
+                        console.log("clicked on user");
+                    }
+                }
             }
             MapImage{
                 id: markerVenue
@@ -97,6 +172,11 @@ PageWrapper {
                 coordinate: Coordinate{
                 }
                 source: "../pics/pin_venue.png"
+                MapMouseArea {
+                    onClicked: {
+                        console.log("clicked on venue");
+                    }
+                }
             }
             MapPolyline {
                 id: routeLine
@@ -104,59 +184,6 @@ PageWrapper {
                 border.width: 10
                 visible: false
             }
-        }
-
-        Component.onCompleted: {
-            if (configuration.platform !== "maemo") {
-               Qt.createQmlObject("import QtQuick 1.1; \
-                        PinchArea { \
-                            id: pincharea; \
-                            property double __oldZoom; \
-                            anchors.fill: parent; \
-                            function calcZoomDelta(zoom, percent) { \
-                                return zoom + Math.log(percent)/Math.log(2); \
-                            } \
-                            onPinchStarted: { \
-                                __oldZoom = venueMapZoom; \
-                            } \
-                            onPinchUpdated: { \
-                                venueMapZoom = calcZoomDelta(__oldZoom, pinch.scale); \
-                            } \
-                            onPinchFinished: { \
-                                venueMapZoom = calcZoomDelta(__oldZoom, pinch.scale); \
-                            } \
-                    }", fullMap);
-            }
-
-            Qt.createQmlObject("import Qt 4.7; \
-                MouseArea { \
-                  id: mousearea; \
-                  property bool __isPanning: false; \
-                  property int __lastX: -1; \
-                  property int __lastY: -1; \
-                  anchors.fill : parent; \
-                  onPressed: { \
-                     __isPanning = true; \
-                     __lastX = mouse.x; \
-                     __lastY = mouse.y; \
-                  } \
-                  onReleased: { \
-                     __isPanning = false; \
-                  } \
-                  onPositionChanged: { \
-                     if (__isPanning) { \
-                        var dx = mouse.x - __lastX; \
-                        var dy = mouse.y - __lastY; \
-                        map.pan(-dx, -dy); \
-                        __lastX = mouse.x; \
-                        __lastY = mouse.y; \
-                     } \
-                  } \
-                  onCanceled: { \
-                     __isPanning = false; \
-                  } \
-                } \
-            ", fullMap);
         }
     }
 

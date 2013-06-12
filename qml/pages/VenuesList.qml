@@ -97,6 +97,11 @@ PageWrapper {
             width: parent.width - 180
             x: 10
             y: 10
+
+            Keys.onReturnPressed: {
+                searchBox.forceActiveFocus();
+                venuesList.search(searchText.text);
+            }
         }
 
         Button {

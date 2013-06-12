@@ -117,6 +117,16 @@ PageWrapper {
         }
     }
 
+    function deleteItem(itemid) {
+        for (var i=0;i<friendsCheckinsModel.count;i++) {
+            var item = friendsCheckinsModel.get(i);
+            if (item.content.id === itemid) {
+                removeItem(i);
+                return;
+            }
+        }
+    }
+
     function removeItem(position) {
         if (configuration.feedIntegration !=="0") {
             var item = friendsCheckinsModel.get(position);

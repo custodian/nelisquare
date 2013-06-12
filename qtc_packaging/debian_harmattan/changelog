@@ -1,3 +1,9 @@
+nelisquare (0.5.1) stable; urgency=low
+  * Full-sized photos view&save
+  * Delete-events at feed
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 10 Jun 2013 23:26:14 +0400
+
 nelisquare (0.5.0) stable; urgency=low
   * Specials support
   * UI Reload

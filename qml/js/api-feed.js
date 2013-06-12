@@ -101,13 +101,21 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                 function(del) {
                     feed.log("UPDATE FEED TYPE: " + del.type);
                     feed.debug(function(){ return "UPDATE CONTENT: " + JSON.stringify(del)});
-                    del.debugType = "feed-delete";
-                    var deleteitem = {
-                        "type": "feed-delete",
-                        "content": del
-                    }
-                    if (api.debugenabled) {
-                        page.addItem(deleteitem,0);
+                    if (del.type === "photo") {
+                        //do nothing, just skip that.
+                    } else if (del.type === "checkin") {
+                        page.deleteItem(del.id);
+                    } else if (del.type === "activity"){
+                        page.deleteItem(del.id);
+                    } else {
+                        del.debugType = "feed-delete";
+                        var deleteitem = {
+                            "type": "feed-delete",
+                            "content": del
+                        }
+                        if (api.debugenabled) {
+                            page.addItem(deleteitem,0);
+                        }
                     }
                 });
         } else {
