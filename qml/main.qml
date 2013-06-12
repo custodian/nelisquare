@@ -374,6 +374,7 @@ PageStackWindow {
     }
 
     function reloadUI() {
+        platformUtils.clearFeed();
         tabLogin.clear();
         tabFeed.clear();
         tabVenues.clear();

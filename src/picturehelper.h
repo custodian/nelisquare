@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QDeclarativeItem>
 #include <QtNetwork/QNetworkAccessManager>
 
 class PictureHelper : public QObject
@@ -16,6 +17,8 @@ public:
     explicit PictureHelper(QObject *parent = 0);
     
     Q_INVOKABLE QVariant upload(QVariant url, QVariant path, QVariant window);
+
+    Q_INVOKABLE QString saveImage(QDeclarativeItem *imageObject);
 
 signals:
     void pictureUploaded(QVariant result, QVariant page);

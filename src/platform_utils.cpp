@@ -28,9 +28,7 @@
 PlatformUtils::PlatformUtils(QObject *parent, Cache *cache) :
     QObject(parent),m_cache(cache)
 {
-#ifdef Q_OS_HARMATTAN
-    MEventFeed::instance()->removeItemsBySourceName("nelisquare");
-#endif
+    clearFeed();
 }
 
 void PlatformUtils::addNotification(const QString &eventType, const QString &summary, const QString &body,
@@ -73,6 +71,13 @@ void PlatformUtils::removeNotification(const QString &eventType)
     }
 #else
     Q_UNUSED(eventType);
+#endif
+}
+
+void PlatformUtils::clearFeed()
+{
+#if defined(Q_OS_HARMATTAN)
+    MEventFeed::instance()->removeItemsBySourceName(QString("nelisquare"));
 #endif
 }
 

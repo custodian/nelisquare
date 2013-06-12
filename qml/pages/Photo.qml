@@ -40,8 +40,18 @@ PageWrapper {
         ToolIcon {
             iconSource: "../icons/icon-m-toolbar-directory-move-to"+(theme.inverted?"-white":"")+".png"
             onClicked: {
-                //TODO: save image to disk
-                dummyMenu.open();
+                waiting_show();
+                if (fullImage.status != Image.Ready) {
+                    show_error(qsTr("You cannot save image until download is finished"))
+                } else {
+                    var filePath = pictureHelper.saveImage(fullImage);
+                    if (filePath) {
+                        show_info(qsTr("Image saved to %1").arg(filePath));
+                    } else {
+                        show_error(qsTr("Failed to save image"));
+                    }
+                }
+                waiting_hide();
             }
         }
         ToolIcon {
@@ -64,28 +74,68 @@ PageWrapper {
         Api.photos.loadPhoto(page,photoID);
     }
 
-    Item {
-        id: imageHolder
+    Flickable {
+        id: imageFlickable
+        anchors {
+            top: pagetop
+            bottom: photoOwner.top
+        }
         width: parent.width
-        height: parent.height - photoOwner.height
-        anchors.top: parent.top
 
-        Image {
-            id: fullImage
-            width: imageHolder.width
-            height: imageHolder.height
+        contentWidth: imageContainer.width; contentHeight: imageContainer.height
+        clip: true
+        onHeightChanged: if (fullImage.status === Image.Ready) fullImage.fitToScreen()
 
-            asynchronous: true
-            //cache: false
-            fillMode: Image.PreserveAspectFit
-            source: photoDetails.photoUrl
-            onProgressChanged: {
-                loadProgress.value = progress*100;
+        Item {
+            id: imageContainer
+            width: Math.max(fullImage.width * fullImage.scale, imageFlickable.width)
+            height: Math.max(fullImage.height * fullImage.scale, imageFlickable.height)
+
+            Image {
+                id: fullImage
+
+                anchors.centerIn: parent
+                fillMode: Image.PreserveAspectFit
+                cache: false
+                asynchronous: true
+                source: photoDetails.photoUrl
+                sourceSize.height: 1000
+                smooth: !imageFlickable.moving
+
+                onProgressChanged: {
+                    loadProgress.value = progress*100;
+                }
+
+                onStatusChanged: {
+                    if (status == Image.Ready) {
+                        fitToScreen()
+                    }
+                }
+
+                onScaleChanged: {
+                    if ((width * scale) > imageFlickable.width) {
+                        var xoff = (imageFlickable.width / 2 + imageFlickable.contentX) * scale / prevScale;
+                        imageFlickable.contentX = xoff - imageFlickable.width / 2
+                    }
+                    if ((height * scale) > imageFlickable.height) {
+                        var yoff = (imageFlickable.height / 2 + imageFlickable.contentY) * scale / prevScale;
+                        imageFlickable.contentY = yoff - imageFlickable.height / 2
+                    }
+                    prevScale = scale
+                }
+
+                property real prevScale
+
+                function fitToScreen() {
+                    scale = Math.min(imageFlickable.width / width, imageFlickable.height / height, 1)
+                    pinchArea.minScale = scale
+                    prevScale = scale
+                }
             }
 
             ProgressBar2 {
                 id: loadProgress
-                anchors.centerIn: fullImage
+                anchors.centerIn: imageContainer
                 minimumValue: 0
                 maximumValue: 100
                 width: parent.width*0.8
@@ -94,77 +144,40 @@ PageWrapper {
             }
         }
 
-        SwypeArea {
-            id: swypeArea
-            onPan: {
-                //console.log("PAN: dx:" + dx + " dy:" + dy);
-                if (dx>0) {
-                    if (fullImage.x<0)
-                        fullImage.x += dx;
-                } else {
-                    if ((fullImage.x + fullImage.width) > imageHolder.width)
-                        fullImage.x += dx;
-                }
+        PinchArea {
+            id: pinchArea
 
-                if (dy>0) {
-                    if (fullImage.y<0)
-                        fullImage.y += dy;
-                } else {
-                    if ((fullImage.y + fullImage.height) > imageHolder.height)
-                        fullImage.y += dy;
+            property real minScale: 1.0
+            property real maxScale: 4.0
+
+            anchors.fill: parent
+            enabled: fullImage.status === Image.Ready
+            pinch.target: fullImage
+            pinch.minimumScale: minScale * 0.5 // This is to create "bounce back effect"
+            pinch.maximumScale: maxScale * 1.5 // when over zoomed
+
+            onPinchFinished: {
+                imageFlickable.returnToBounds()
+                if (fullImage.scale < pinchArea.minScale) {
+                    bounceBackAnimation.to = pinchArea.minScale
+                    bounceBackAnimation.start()
+                }
+                else if (fullImage.scale > pinchArea.maxScale) {
+                    bounceBackAnimation.to = pinchArea.maxScale
+                    bounceBackAnimation.start()
                 }
             }
 
-            onZoom: {
-                //console.log("ZOOM: " + zoom);
-                var delta;
-                //TODO: polish zoomin/zoomout for full fit
-                if (zoom>0) {
-                    if (fullImage.width < fullImage.sourceSize.width){
-                        delta = (fullImage.width * zoom);
-                        fullImage.width += delta;
-                        fullImage.x -= delta/2;
-                    }
-                    if (fullImage.height < fullImage.sourceSize.height) {
-                        delta = (fullImage.height * zoom);
-                        fullImage.height += delta;
-                        fullImage.y -= delta/2;
-                    }
-                } else {
-                    if (fullImage.width > imageHolder.width) {
-                        delta = (fullImage.width * zoom);
-                        fullImage.x -= delta/2;
-                        if (fullImage.x>0) {
-                            delta -= fullImage.x
-                            fullImage.x = 0;
-                        }
-                        fullImage.width += delta
-                    }
-                    if (fullImage.height > imageHolder.height) {
-                        delta = (fullImage.height * zoom);
-                        fullImage.y -= delta/2;
-                        if (fullImage.y>0) {
-                            delta -= fullImage.y
-                            fullImage.y = 0;
-                        }
-                        fullImage.height += delta
-                    }
-                }
-            }
-
-            onSwype: {
-                if (fullImage.width <= imageHolder.width) {
-                    fullImage.width = imageHolder.width;
-                    fullImage.height = imageHolder.height;
-                    if (type === 4 || type === 8) {
-                        photoDetails.prevPhoto();
-                    } else if (type === 6 || type === 2) {
-                        photoDetails.nextPhoto();
-                    }
-                }
+            NumberAnimation {
+                id: bounceBackAnimation
+                target: fullImage
+                duration: 250
+                property: "scale"
+                from: fullImage.scale
             }
         }
     }
+    ScrollDecorator { flickableItem: imageFlickable }
 
     EventBox {
         id: photoOwner

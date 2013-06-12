@@ -24,6 +24,9 @@ public:
     // Clear system notifications based on eventType
     Q_INVOKABLE void removeNotification(const QString &eventType);
 
+    // Clear event feed
+    Q_INVOKABLE void clearFeed();
+
     // Add new item to feed
     Q_INVOKABLE void addFeedItem(QVariant item);
 
