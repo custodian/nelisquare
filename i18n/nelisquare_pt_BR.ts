@@ -91,7 +91,7 @@
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="26"/>
         <source>What is on your mind?</source>
-        <translation>O que você está pensando?</translation>
+        <translation>No que você está pensando?</translation>
     </message>
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="38"/>
@@ -196,7 +196,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="19"/>
         <source>YOU ARE #</source>
-        <translation>VOCÊ É #</translation>
+        <translation>VOCÊ ESTÁ NA POSIÇÃO Nº</translation>
     </message>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="63"/>
@@ -209,7 +209,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/components/LikeBox.qml" line="33"/>
         <source>USER LIKES</source>
-        <translation>CURTIDAS</translation>
+        <translation>CURTIRAM</translation>
     </message>
 </context>
 <context>
@@ -222,7 +222,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="10"/>
         <source>Release to refresh...</source>
-        <translation>Solte para atualizar...</translation>
+        <translation>Solte para atualizar</translation>
     </message>
 </context>
 <context>
@@ -272,7 +272,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/components/PageWrapper.qml" line="88"/>
         <source>Check updates</source>
-        <translation>Checar atualização</translation>
+        <translation>Verificar atualizações</translation>
     </message>
     <message>
         <location filename="../qml/components/PageWrapper.qml" line="94"/>
@@ -303,7 +303,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/PhotoAdd.qml" line="56"/>
         <source>Error uploading photo!</source>
-        <translation>Erro enviando foto!</translation>
+        <translation>Erro ao enviar foto!</translation>
     </message>
 </context>
 <context>
@@ -311,17 +311,17 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="20"/>
         <source>PHOTO UPLOAD</source>
-        <translation type="unfinished"/>
+        <translation>ENIVAR FOTO</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="36"/>
         <source>UPLOAD</source>
-        <translation type="unfinished"/>
+        <translation>ENVIAR</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="86"/>
         <source>Sharing options</source>
-        <translation type="unfinished"/>
+        <translation>Opções de compartilhamento</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="90"/>
@@ -331,12 +331,12 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="97"/>
         <source>Post to Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Postar no Facebook</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="104"/>
         <source>Post to Twitter</source>
-        <translation type="unfinished"/>
+        <translation>Postar no Twitter</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="48"/>
@@ -357,7 +357,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/PhotosGallery.qml" line="13"/>
         <source>VENUE PHOTOS</source>
-        <translation>FOTOS DO LOCAL</translation>
+        <translation>FOTOS DO LUGAR</translation>
     </message>
 </context>
 <context>
@@ -418,7 +418,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="62"/>
         <source>Powered by Foursquare</source>
-        <translation>Alimentado por Foursquare</translation>
+        <translation>Motorizado por Foursquare</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="64"/>
@@ -459,12 +459,12 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="161"/>
         <source>UPDATES CHECK</source>
-        <translation>CHECAR ATUALIZAÇÃO DE VERSÃO</translation>
+        <translation>CANAL PARA VERIFICAR ATUALIZAÇÕES</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="186"/>
         <source>None</source>
-        <translation>Não checar</translation>
+        <translation>Nenhum</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="192"/>
@@ -489,7 +489,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="213"/>
         <source>GPS Unlock timeout</source>
-        <translation>Tempo de desbloqueio do GPS</translation>
+        <translation>Liberar o uso do GPS</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="214"/>
@@ -530,12 +530,12 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="234"/>
         <source>Allow use of Location Data</source>
-        <translation>Permitir uso de dados de localização</translation>
+        <translation>Usar de dados de localização</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="242"/>
         <source>Always run in background</source>
-        <translation>Sempre executar em segundo plano</translation>
+        <translation>Executar em segundo plano</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="250"/>
@@ -590,22 +590,22 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="387"/>
         <source>STARTUP PAGE</source>
-        <translation type="unfinished"/>
+        <translation>PÁGINA INICIAL</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="409"/>
         <source>Feed</source>
-        <translation type="unfinished"/>
+        <translation>Feed</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="415"/>
         <source>Venues</source>
-        <translation type="unfinished"/>
+        <translation>Lugares</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="420"/>
         <source>Self</source>
-        <translation type="unfinished"/>
+        <translation>Próprio</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="426"/>
@@ -635,7 +635,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="489"/>
         <source>IMAGE LOADING</source>
-        <translation>CARREGAR IMAGENS</translation>
+        <translation>MOSTRAR IMAGENS</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="508"/>
@@ -680,12 +680,12 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="590"/>
         <source>UI</source>
-        <translation type="unfinished"/>
+        <translation>Interface</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="593"/>
         <source>Reload UI</source>
-        <translation type="unfinished"/>
+        <translation>Recarregar interface</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="599"/>
@@ -695,7 +695,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="602"/>
         <source>Reset authentication</source>
-        <translation>Reiniciar autentiação</translation>
+        <translation>Reiniciar autenticação</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="623"/>
@@ -710,7 +710,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="635"/>
         <source>You are low on X-RATE requests</source>
-        <translation>Você está com requisições X-RATE baixos</translation>
+        <translation>Você está com requisições X-RATE baixas</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="640"/>
@@ -720,12 +720,12 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="643"/>
         <source>Enable debug</source>
-        <translation type="unfinished"/>
+        <translation>Habilitar debug</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="657"/>
         <source>Options will be available soon</source>
-        <translation>Outras opções estarão disponíveis em breve</translation>
+        <translation>Mais opções estarão disponíveis em breve</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="672"/>
@@ -753,12 +753,12 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="13"/>
         <source>VENUE SPECIALS</source>
-        <translation type="unfinished"/>
+        <translation>OFERTAS ESPECIAIS</translation>
     </message>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="31"/>
         <source>Unlocked!</source>
-        <translation type="unfinished"/>
+        <translation>Desbloqueado!</translation>
     </message>
 </context>
 <context>
@@ -766,7 +766,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="40"/>
         <source>Write some cool tip here</source>
-        <translation>Escreva alguma dica interessante aqui</translation>
+        <translation>Coloque uma dica interessante aqui</translation>
     </message>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="71"/>
@@ -868,7 +868,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/User.qml" line="319"/>
         <source>BEST SCORE</source>
-        <translation>MELHOR PONTUAÇÃO</translation>
+        <translation>MAIOR PONTUAÇÃO</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="377"/>
@@ -972,7 +972,7 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="91"/>
         <source>Venue name</source>
-        <translation type="unfinished"/>
+        <translation>Nome do lugar</translation>
     </message>
 </context>
 <context>
@@ -993,12 +993,12 @@ Você pode nos ajudar a resolvê-lo.</translation>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="67"/>
         <source>GPS signal is fuzzy, cannot get your location</source>
-        <translation type="unfinished"/>
+        <translation>Sinal de GPS fraco, impossível determinar localização</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="96"/>
         <source>Tap to search place...</source>
-        <translation>Clique para procurar lugares...</translation>
+        <translation>Toque para buscar</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="107"/>
