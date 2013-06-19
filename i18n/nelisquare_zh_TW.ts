@@ -309,17 +309,17 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="20"/>
         <source>PHOTO UPLOAD</source>
-        <translation type="unfinished"/>
+        <translation>上傳相片</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="36"/>
         <source>UPLOAD</source>
-        <translation type="unfinished"/>
+        <translation>上傳</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="86"/>
         <source>Sharing options</source>
-        <translation type="unfinished"/>
+        <translation>分享選項</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="90"/>
@@ -329,12 +329,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="97"/>
         <source>Post to Facebook</source>
-        <translation type="unfinished"/>
+        <translation>分享至 Facebook</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="104"/>
         <source>Post to Twitter</source>
-        <translation type="unfinished"/>
+        <translation>分享至 Twitter</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="48"/>
@@ -588,7 +588,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="387"/>
         <source>STARTUP PAGE</source>
-        <translation type="unfinished"/>
+        <translation>起始頁面</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="409"/>

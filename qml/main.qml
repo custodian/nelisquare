@@ -255,7 +255,7 @@ PageStackWindow {
 
     PositionSource {
         id: positionSource
-        updateInterval: 5000
+        updateInterval: 1000
         active: false
         onPositionChanged: {
             if (configuration.platform === "maemo") {

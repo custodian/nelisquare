@@ -566,7 +566,7 @@ PageWrapper {
                 height: 30
                 width: details.width
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("YOU ARE #") + userLeadersboardRank
+                text: qsTr("YOU ARE #%1").arg(userLeadersboardRank)
                 visible: userRelationship == "self" && userLeadersboardRank > 0
             }
 

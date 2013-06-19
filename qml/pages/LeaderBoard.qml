@@ -16,7 +16,7 @@ PageWrapper {
 
     color: mytheme.colors.backgroundMain
 
-    headerText: qsTr("YOU ARE #") + leaderBoard.rank
+    headerText: qsTr("YOU ARE #%1").arg(leaderBoard.rank)
     headerIcon: "../icons/icon-header-leadersboard.png"
 
     function load() {

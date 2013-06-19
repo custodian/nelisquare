@@ -1,4 +1,5 @@
 import Qt 4.7
+import QtMobility.location 1.2
 import com.nokia.meego 1.0
 import "../components"
 
@@ -20,37 +21,6 @@ PageWrapper {
     //TODO: no header. show minimap + venues instead
     headerText: qsTr("NEARBY VENUES")
     headerIcon: "../icons/icon-header-venueslist.png"
-
-    /*tools: ToolBarLayout{
-        ToolIcon{
-            platformIconId: "toolbar-back"
-            onClicked: stack.pop()
-        }
-
-        ToolIcon{
-            platformIconId: "toolbar-refresh"
-            onClicked: searchButton.clicked();
-        }
-
-        ToolIcon {
-            platformIconId: "toolbar-view-menu"
-            onClicked: {
-                menu.open();
-            }
-        }
-    }*/
-
-    /*Menu {
-        id: menu
-        MenuLayout {
-            MenuItem {
-                text: qsTr("Add new venue")
-                onClicked: {
-                    venuesList.addVenue();
-                }
-            }
-        }
-    }*/
 
     function load() {
         var page = venuesList;
@@ -86,8 +56,47 @@ PageWrapper {
     }
 
     Item {
+        id: mapArea
+        anchors {
+            top: pagetop
+            left: parent.left
+            right: parent.right
+        }
+        height: 150
+        Plugin {
+            property string provider: configuration.mapprovider
+            onProviderChanged: {
+                mapProvider.name = provider;
+                map.plugin = mapProvider;
+            }
+            id: mapProvider
+            name : configuration.mapprovider
+        }
+        Map {
+            id: map
+            anchors.fill: parent
+
+            zoomLevel: 14
+
+            center: positionSource.position.coordinate
+            /*Coordinate{
+               latitude: posi
+               longitude: venueMapLng
+            }*/
+
+            MapImage{
+                id: markerUser
+                offset.x: -24
+                offset.y: -24
+                coordinate: positionSource.position.coordinate
+                source: "../pics/pin_user.png"
+            }
+        }
+    }
+
+    Item {
         id: searchBox
-        anchors.top: pagetop
+        anchors.top: mapArea.bottom
         width: parent.width
         height: 70
 

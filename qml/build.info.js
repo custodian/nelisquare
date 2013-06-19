@@ -1,3 +1,3 @@
-var build = '201306122352';
+var build = '201306200035';
 var version = "0.5.1";
-var changelog = " - Full-sized photos view&save  - Delete-events at feed ";
+var changelog = " - Venues list update  - Language pack update  - Full-sized photos view&save  - Delete-events at feed ";
