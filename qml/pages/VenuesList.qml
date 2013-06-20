@@ -1,6 +1,7 @@
 import Qt 4.7
 import QtMobility.location 1.2
 import com.nokia.meego 1.0
+import com.nokia.extras 1.1
 import "../components"
 
 import "../js/api.js" as Api
@@ -10,6 +11,7 @@ PageWrapper {
     signal checkin(string venueid, string venuename)
     signal clicked(string venueid)
     signal search(string query)
+    signal explore()
     signal addVenue()
 
     property alias placesModel: placesModel
@@ -37,13 +39,38 @@ PageWrapper {
                 page.show_error(qsTr("GPS signal is fuzzy, cannot get your location"));
             }
         });
+        page.explore.connect(function() {
+            stack.push(Qt.resolvedUrl("Explore.qml"));
+        });
         page.addVenue.connect(function(){
             stack.push(Qt.resolvedUrl("VenueAdd.qml"),{"venueID":""});
         });
         update();
     }
     function update() {
-        search("");
+        updateTimer.start();
+    }
+
+    Timer{
+        id: updateTimer
+        interval: 50
+        repeat: true
+        onTriggered: {
+            if (positionSource.position.latitudeValid) {
+                updateTimer.stop();
+                updateTimer.interval = 50;
+                waiting_hide();
+                infoBanner.shown = false;
+                search("");
+            } else {
+                updateTimer.interval = 1000;
+                if (!infoBanner.shown) {
+                    infoBanner.shown = true;
+                    infoBanner.show();
+                }
+                waiting_show();
+            }
+        }
     }
 
     ListModel {
@@ -60,9 +87,9 @@ PageWrapper {
         anchors {
             top: pagetop
             left: parent.left
-            right: parent.right
         }
-        height: 150
+        height: configuration.isPortrait ? 100 : parent.height
+        width: configuration.isPortrait ? parent.width : parent.width * 2/5
         Plugin {
             property string provider: configuration.mapprovider
             onProviderChanged: {
@@ -76,14 +103,14 @@ PageWrapper {
             id: map
             anchors.fill: parent
 
-            zoomLevel: 14
+            zoomLevel: 15
 
             center: positionSource.position.coordinate
-            /*Coordinate{
-               latitude: posi
-               longitude: venueMapLng
-            }*/
-
+            MapMouseArea {
+                onClicked: {
+                    venuesList.explore();
+                }
+            }
             MapImage{
                 id: markerUser
                 offset.x: -24
@@ -92,12 +119,21 @@ PageWrapper {
                 source: "../pics/pin_user.png"
             }
         }
+        InfoBanner {
+            id: infoBanner
+            property bool shown: false
+            text: qsTr("Locking GPS, please wait")
+            topMargin: 10
+        }
     }
 
     Item {
         id: searchBox
-        anchors.top: mapArea.bottom
-        width: parent.width
+        anchors {
+            top: configuration.isPortrait? mapArea.bottom : pagetop
+            left: configuration.isPortrait ? parent.left : mapArea.right
+            right: parent.right
+        }
         height: 70
 
         TextField {
@@ -132,8 +168,11 @@ PageWrapper {
 
     ListViewEx {
         id: placesView
-        anchors.top: searchBox.bottom
-        width: parent.width
+        anchors {
+            top: searchBox.bottom
+            left: configuration.isPortrait ? parent.left : mapArea.right
+            right: parent.right
+        }
         height: parent.height - y
         model: placesModel
         delegate: venuesListDelegate

@@ -10,6 +10,7 @@ Item {
     id: configuration
 
     property string platform: windowHelper.isMaemo() ? "maemo" : "meego"
+    property bool isPortrait: screen.orientationString === "Portrait"
 
     property string orientationType: "auto"
     property string mapprovider: "google"

@@ -257,15 +257,6 @@ PageStackWindow {
         id: positionSource
         updateInterval: 1000
         active: false
-        onPositionChanged: {
-            if (configuration.platform === "maemo") {
-                if(positionSource.position.latitudeValid) {
-                    //TODO: signalIcon.visible = false;
-                } else {
-                    //TODO: signalIcon.visible = true;
-                }
-            }
-        }
     }
 
     function sendDebugInfo(object) {

@@ -108,8 +108,15 @@ void Cache::queueObject(QVariant data, QVariant callback)
         } else {
             //qDebug() << "cache miss" << url;
             QString name = makeCachedURL(url);
-            QFileInfo file(name);
             //qDebug() << "Hash:" << name << "Status:" << file.exists() << "URL:" << url;
+            {
+                QFileInfo fileinfo(name);
+                QDateTime modif = fileinfo.lastModified();
+                if (modif.daysTo(QDateTime::currentDateTime()) > CACHE_DAY_DURATION) {
+                    QFile(fileinfo.absoluteFilePath()).remove();
+                }
+            }
+            QFileInfo file(name);
             if (file.exists()) {
                 data = QVariant(name);
                 m_cachemap_lock.unlock();
@@ -206,13 +213,7 @@ QVariant Cache::info()
     dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
     QFileInfoList list = dir.entryInfoList();
     for (int i=0; i<list.size();i++) {
-        QDateTime modif = list.at(i).lastModified();
-        if (modif.daysTo(today) > 14) {
-            QFile(list.at(i).absoluteFilePath()).remove();
-        }
-        else {
             total += list.at(i).size();
-        }
     }
 
     double result = double(total) / 1000000;

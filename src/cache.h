@@ -1,6 +1,8 @@
 #ifndef QMLCACHE_H
 #define QMLCACHE_H
 
+#define CACHE_DAY_DURATION 14
+
 #include <QObject>
 #include <QString>
 #include <QVariant>
