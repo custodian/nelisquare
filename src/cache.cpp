@@ -54,16 +54,16 @@ void Cache::onDownloadFinished(QNetworkReply * reply){
         return;
     }
     QString url = reply->request().url().toString();
-    QString name = makeCachedURL(url);
+    QString namelocal = makeCachedURL(url);
 
     {
-        QFile file(name);
+        QFile file(namelocal);
         file.open(QFile::WriteOnly);
         file.write(data);
     }
 
     m_cachemap_lock.lockForWrite();
-    m_cachemap.insert(url,name);
+    m_cachemap.insert(url,namelocal);
     m_cachemap_lock.unlock();
     makeCallbackAll(true,url);
 }
@@ -81,9 +81,9 @@ QString Cache::makeCachedURL(QString url)
     return m_path + "/" + md5(url) + ext;
 }
 
-QVariant Cache::removeUrl(QVariant data)
+QVariant Cache::removeUrl(QVariant dataurl)
 {
-    QString url = data.toString();
+    QString url = dataurl.toString();
     if (url.size()) {
         m_cachemap_lock.lockForWrite();
         m_cachemap.remove(url);
@@ -93,52 +93,52 @@ QVariant Cache::removeUrl(QVariant data)
     return QVariant(true);
 }
 
-void Cache::queueObject(QVariant data, QVariant callback)
+void Cache::queueObject(QVariant dataurl, QVariant callback)
 {
     //qDebug() << "QueueObject callback: " << callback;
-    QString url = data.toString();
+    QString namelocal;
+    QString url = dataurl.toString();
     if (url.size()) {
         m_cachemap_lock.lockForRead();
         QMap<QString,QString>::iterator it = m_cachemap.find(url);
         if (it!=m_cachemap.end()) {
             //qDebug() << "cache hit" << url;
-            data = it.value();
+            namelocal = it.value();
             m_cachemap_lock.unlock();
-            makeCallback(callback,true,data);
+            makeCallback(callback,true,namelocal);
         } else {
             //qDebug() << "cache miss" << url;
-            QString name = makeCachedURL(url);
+            namelocal = makeCachedURL(url);
             //qDebug() << "Hash:" << name << "Status:" << file.exists() << "URL:" << url;
             {
-                QFileInfo fileinfo(name);
+                QFileInfo fileinfo(namelocal);
                 QDateTime modif = fileinfo.lastModified();
                 if (modif.daysTo(QDateTime::currentDateTime()) > CACHE_DAY_DURATION) {
                     QFile(fileinfo.absoluteFilePath()).remove();
                 }
             }
-            QFileInfo file(name);
+            QFileInfo file(namelocal);
             if (file.exists()) {
-                data = QVariant(name);
                 m_cachemap_lock.unlock();
                 m_cachemap_lock.lockForWrite();
-                m_cachemap.insert(url,name);
+                m_cachemap.insert(url,namelocal);
                 m_cachemap_lock.unlock();
-                makeCallback(callback,true,data);
+                makeCallback(callback,true,namelocal);
             } else {
+                m_cachemap_lock.unlock();
                 if (m_cacheonly) {
-                    data = QVariant("");
+                    dataurl = QVariant("");
                 } else {
                     //add to queue, post and download query
-                    if (queueCacheUpdate(data, callback)) {
+                    if (queueCacheUpdate(dataurl, callback)) {
                         //qDebug() << "download " << url;
                         manager->get(QNetworkRequest(QUrl(url)));
                     }
                 }
-                m_cachemap_lock.unlock();
             }            
         }
     } else {
-        makeCallback(callback,false,data);
+        makeCallback(callback,false,dataurl);
     }
 }
 
@@ -186,10 +186,11 @@ void Cache::makeCallbackAll(bool status, QVariant url)
         m_cachequeue_lock.unlock();
         return;
     }
+    QString namelocal = makeCachedURL(url.toString());
     CCallbackList &callbacks = *it;
     CCallbackList::iterator itc = callbacks.begin();
     while(itc!=callbacks.end()) {
-        makeCallback(*itc,status,url.toString());
+        makeCallback(*itc,status,namelocal);
         itc++;
     }
     m_cachequeue_lock.unlock();

@@ -88,9 +88,6 @@ PageWrapper {
                 if (!status) return;
                 item.content.photoCached = url;
                 platformUtils.addFeedItem(item);
-
-                Api.objs.remove(feeditem);
-                Api.objs.remove(feedphoto);
             }
 
 
@@ -103,6 +100,7 @@ PageWrapper {
                 cache.queueObject(item.content.venuePhoto, feedphoto);
             } else {
                 feedphotoobj.cacheCallback(true, "");
+                Api.objs.remove(feedphoto);
             }
         }
     }

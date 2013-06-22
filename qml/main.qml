@@ -297,6 +297,7 @@ PageStackWindow {
     }
 
     function processURI(url) {
+        console.log("uri: " + url);
         var params = url.split("/");
         var type = params[0];
         var id = params[1];
@@ -304,6 +305,9 @@ PageStackWindow {
         switch(type) {
         case "start":
             openStartPage();
+            if (id === "top") {
+                popToTop(tabgroup.currentTab);
+            }
             break;
         case "friend":
             stack.push(Qt.resolvedUrl("pages/User.qml"),{"userID":id});

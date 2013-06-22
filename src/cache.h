@@ -22,10 +22,13 @@ protected:
 
     QString m_path;
 
+    // url, localname
     QMap<QString,QString> m_cachemap;
     QReadWriteLock m_cachemap_lock;
 
+    // ids
     typedef QSet<QString> CCallbackList;
+    // url, list of ids
     typedef QMap<QString, CCallbackList > CCacheQueue;
     CCacheQueue m_cachequeue;
     QReadWriteLock m_cachequeue_lock;

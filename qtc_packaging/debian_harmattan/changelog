@@ -1,4 +1,5 @@
 nelisquare (0.5.1) stable; urgency=low
+  * Bug fixes
   * Venues list update
   * Language pack update
   * Full-sized photos view&save
