@@ -33,6 +33,17 @@ Cache::Cache(QObject *parent) :
     connect(manager,SIGNAL(finished(QNetworkReply*)),SLOT(onDownloadFinished(QNetworkReply*)));
 }
 
+QVariant Cache::getFile(QVariant url)
+{
+    QString data;
+    QFile file(url.toString());
+    if (file.exists()) {
+        file.open(QIODevice::ReadOnly);
+        data = file.readAll();
+    }
+    return QVariant(data);
+}
+
 QVariant Cache::loadtype(QVariant _type) {
     QString type = _type.toString();
     if (type == "all") {
@@ -78,6 +89,7 @@ QString Cache::md5(QString data)
 QString Cache::makeCachedURL(QString url)
 {
     QString ext = url.right(url.size() - url.lastIndexOf("."));
+    ext = ext.left(ext.indexOf("/"));
     return m_path + "/" + md5(url) + ext;
 }
 
@@ -110,6 +122,7 @@ void Cache::queueObject(QVariant dataurl, QVariant callback)
             //qDebug() << "cache miss" << url;
             namelocal = makeCachedURL(url);
             //qDebug() << "Hash:" << name << "Status:" << file.exists() << "URL:" << url;
+#ifndef Q_WS_SIMULATOR
             {
                 QFileInfo fileinfo(namelocal);
                 QDateTime modif = fileinfo.lastModified();
@@ -117,6 +130,7 @@ void Cache::queueObject(QVariant dataurl, QVariant callback)
                     QFile(fileinfo.absoluteFilePath()).remove();
                 }
             }
+#endif
             QFileInfo file(namelocal);
             if (file.exists()) {
                 m_cachemap_lock.unlock();

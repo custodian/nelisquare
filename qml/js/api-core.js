@@ -82,7 +82,7 @@ api.request = function(method, url, page, callback) {
                 if (doc.status == 0) {
                     page.show_error("Network connection error");
                 } else {
-                    page.show_error("General error: " + doc.status);
+                    page.show_error("General error: " + doc.status + "<br>" + doc.statusText);
                 }
             }
         }

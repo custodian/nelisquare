@@ -253,27 +253,45 @@ function parseToDo(response, page) {
 }
 */
 
-venues.loadVenueCategories = function(callback) {
+venues.getCategoryInfoURL = function() {
+    var url = API_URL + "venues/categories?locale="+api.locale+"&"+getAccessTokenParameter();
+    return url;
+}
+
+
+venues.parseCategoryInfo = function(page,url) {
     //TODO: change to new callback system
-    var url = cache.get(API_URL + "venues/categories&" + getAccessTokenParameter());
-    console.log("url " + url);
+    console.log("url: " + url);
     var doc = new XMLHttpRequest();
     doc.onreadystatechange = function() {
-        if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
-            var status = doc.status;
-            if(status!=200) {
-                console.log("Routes returned " + status + " " + doc.statusText);
-            }
-        } else if (doc.readyState == XMLHttpRequest.DONE && doc.status == 200) {
-            var contentType = doc.getResponseHeader("Content-Type");
-            var data = JSON.parse(doc.responseText);
-
-            callback(data);
+        if (doc.readyState == XMLHttpRequest.DONE) {
+            var data = api.process(doc.responseText,page);
+            page.categories = data.categories;
         }
     }
-
     doc.open("GET", url);
     doc.send();
+}
+
+venues.createVenue = function(page, params) {
+    page.waiting_show();
+    var url = "venues/add?";
+    url += "primaryCategoryId="+params.category;
+    url += "&name="+encodeURIComponent(params.name);
+    if (params.address) {
+        url += "&address="+encodeURIComponent(params.address);
+    }
+    url += "&ll=" + params.ll;
+    url += "&" + getAccessTokenParameter();
+
+    api.request("POST", url, page, venues.parseCreateVenue);
+}
+
+venues.parseCreateVenue = function(response, page) {
+    var data = api.process(response,page);
+    page.waiting_hide();
+    var venue = data.venue;
+    page.createCompleted(venue.id);
 }
 
 venues.prepareVenueEdit = function(page, venue) {

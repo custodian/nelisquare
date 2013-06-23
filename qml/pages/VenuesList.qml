@@ -20,7 +20,6 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    //TODO: no header. show minimap + venues instead
     headerText: qsTr("NEARBY VENUES")
     headerIcon: "../icons/icon-header-venueslist.png"
 
@@ -40,6 +39,7 @@ PageWrapper {
             }
         });
         page.explore.connect(function() {
+            //TODO: explorer mode
             stack.push(Qt.resolvedUrl("Explore.qml"));
         });
         page.addVenue.connect(function(){
@@ -185,8 +185,8 @@ PageWrapper {
             update();
         }
 
-        //TODO: Add new venue functionality
-        /*footer: Column {
+        //Add new venue functionality
+        footer: Column {
             width: placesView.width
             Item {
                 width: placesView.width
@@ -204,7 +204,7 @@ PageWrapper {
                 width: placesView.width
                 height: 30
             }
-        }*/
+        }
     }
 
     ScrollDecorator{ flickableItem: placesView }

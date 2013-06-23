@@ -1,6 +1,7 @@
 import Qt 4.7
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import com.nokia.extras 1.1
 import "."
 
 Page {
@@ -37,6 +38,14 @@ Page {
         visible: headerText.length > 0
     }
 
+    InfoBanner {
+        id: infoBanner
+        z: 1
+        anchors.top: pagetop
+        property bool shown: false
+        topMargin: 10
+    }
+
     function waiting_show() {
         pageHeader.busy = true;
     }
@@ -53,9 +62,13 @@ Page {
     function show_error_base(msg){
         waiting_hide();
         console.log("Error: "+ msg);
+        infoBanner.text = msg;
+        infoBanner.show();
+        /*
         notificationDialog.message += msg + "<br/>"
         notificationDialog.state = "shown";
         notificationDialog.hider.restart();
+        */
     }
 
     function show_info(msg) {

@@ -593,17 +593,17 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="409"/>
         <source>Feed</source>
-        <translation type="unfinished"/>
+        <translation>動態消息</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="415"/>
         <source>Venues</source>
-        <translation type="unfinished"/>
+        <translation>地盤</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="420"/>
         <source>Self</source>
-        <translation type="unfinished"/>
+        <translation>個人檔案</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="426"/>
@@ -678,12 +678,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="590"/>
         <source>UI</source>
-        <translation type="unfinished"/>
+        <translation>介面</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="593"/>
         <source>Reload UI</source>
-        <translation type="unfinished"/>
+        <translation>重載介面</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="599"/>
@@ -718,7 +718,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="643"/>
         <source>Enable debug</source>
-        <translation type="unfinished"/>
+        <translation>啟用除錯</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="657"/>
@@ -751,12 +751,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="13"/>
         <source>VENUE SPECIALS</source>
-        <translation type="unfinished"/>
+        <translation>專屬地盤</translation>
     </message>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="31"/>
         <source>Unlocked!</source>
-        <translation type="unfinished"/>
+        <translation>已解鎖！</translation>
     </message>
 </context>
 <context>
@@ -970,7 +970,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="91"/>
         <source>Venue name</source>
-        <translation type="unfinished"/>
+        <translation>地盤名稱</translation>
     </message>
 </context>
 <context>
@@ -991,7 +991,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="67"/>
         <source>GPS signal is fuzzy, cannot get your location</source>
-        <translation type="unfinished"/>
+        <translation>GPS 訊號太微弱，無法取得你的位置</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="96"/>

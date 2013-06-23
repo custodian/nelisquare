@@ -603,7 +603,7 @@ Możesz pomóc to rozwiązać.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="420"/>
         <source>Self</source>
-        <translation>Js</translation>
+        <translation>JA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="426"/>

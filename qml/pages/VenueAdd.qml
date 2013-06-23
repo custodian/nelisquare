@@ -6,54 +6,112 @@ import "../components"
 import "../js/api.js" as Api
 
 PageWrapper {
-    id: venueEdit
-    signal update(variant venue)
-    signal updateCompleted(string venue)
+    id: venueAdd
+    signal create(variant venue)
+    signal createCompleted(string venue)
 
     property string venueID: ""
-    property alias venueCategories: venueCategories
+    property variant categories: undefined
+    property string categoryID: ""
 
-    property string mapprovider: configuration.mapprovider
+    property alias categoriesModel: categoriesModel
+
+    onCategoriesChanged: {
+        if (categories!==undefined) {
+            waiting_hide();
+            categories.forEach(function(category) {
+                categoriesModel.append(category)
+            });
+        }
+    }
 
     width: parent.width
     height: parent.height
-
     color: mytheme.colors.backgroundMain
 
-    onMapproviderChanged: {
-        mapplugin.name = mapprovider
-        map.plugin = mapplugin;
+    headerText: qsTr("ADD NEW VENUE")
+    headerIcon: "../icons/icon-header-venueslist.png"
+
+    function load() {
+        var page = venueAdd;
+        page.create.connect(function(params){
+            Api.venues.createVenue(page,params);
+        });
+        page.createCompleted.connect(function(venue){
+            stack.replace(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
+        });
+
+        waiting_show();
+        var catinfo = "catinfo-object";
+        var catinfoobj = Api.objs.save(catinfo);
+
+        catinfoobj.cacheCallback = function(status, url) {
+            if (!status) return;
+            Api.venues.parseCategoryInfo(page,url);
+        }
+        cache.queueObject(Api.venues.getCategoryInfoURL(), catinfo);
     }
 
     Plugin {
         id: mapplugin
+        property string mapprovider: configuration.mapprovider
+        onMapproviderChanged: {
+            mapplugin.name = mapprovider
+            map.plugin = mapplugin;
+        }
         name: configuration.mapprovider
     }
 
-    function load() {
-        var page = venueEdit;
-        page.update.connect(function(params){
-            Api.venues.updateVenueInfo(page,params);
-        });
-        page.updateCompleted.connect(function(venue){
-            stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venue});
-        });
-        Api.venues.prepareVenueEdit(page,venueID);
+    ListModel {
+        id: categoriesModel
     }
-
-    ListModel{
-        id: venueCategories
+    ListModel {
+        id: subCategoriesModel
     }
 
     SelectionDialog {
-        id: selectionvenue
-        model: venueCategories
+        id: categoryDialog
+        titleText: qsTr("Select category")
+        model: categoriesModel
+        onAccepted: {
+            subCategoriesModel.clear();
+            var catid = categoriesModel.get(selectedIndex).id;
+            var subcats;
+            categories.forEach(function(category) {
+                if (category.id === catid)
+                    subcats = category.categories;
+            });
+            subcats.forEach(function(category) {
+                subCategoriesModel.append(category)
+            });
+            subCategoryDialog.selectedIndex = -1;
+            subCategoryDialog.open();
+        }
+    }
+
+    SelectionDialog {
+        id: subCategoryDialog
+        titleText: qsTr("Select sub-category")
+        model: subCategoriesModel
+        onAccepted: {
+            var category = subCategoriesModel.get(selectedIndex);
+            categoryID = category.id;
+            categoryBox.userShout = categoriesModel.get(categoryDialog.selectedIndex).name;
+            categoryBox.userName = category.name;
+            categoryBox.userPhoto.photoUrl = Api.parseIcon(category.icon);
+        }
+        onRejected: {
+            categoryDialog.open();
+        }
     }
 
     Flickable{
-
         id: flickableArea
-        anchors.fill: parent
+        anchors {
+            top: pagetop
+            bottom: parent.bottom
+        }
+        width: parent.width
         contentWidth: parent.width
 
         clip: true
@@ -63,95 +121,108 @@ PageWrapper {
 
         Column {
             onHeightChanged: {
-                flickableArea.contentHeight = height + y;
+                flickableArea.contentHeight = height;
             }
 
-            x: 10
-            width: parent.width - 20
-            spacing: 20
+            width: parent.width
+            spacing: 10
 
-            LineGreen {
-                id: editVenueLabel
-                height: 40
-                width: venueEdit.width
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "ENTER DETAILS FOR VENUE"
+            SectionHeader {
+                text: qsTr("VENUE NAME");
             }
 
-            Text {
-                id: textNameLabel
-                text: "NAME"
-                color: mytheme.colors.textColorOptions
-                font.pixelSize: mytheme.font.sizeToolbar
-                font.family: "Nokia Pure" //mytheme.font.name
-                font.bold: true
-
-                TextField {
-                    id: textVenueName
-                    placeholderText: qsTr("Venue name")
-                    anchors.left: textNameLabel.right
-                    anchors.leftMargin: 20
-                    anchors.verticalCenter: textNameLabel.verticalCenter
-                    width: parent.parent.width - textNameLabel.width - 20
+            TextField {
+                id: textVenueName
+                placeholderText: qsTr("Venue name required")
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
                 }
             }
 
-            LineGreen{
-                height: 30
-                width: venueEdit.width
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "VENUE LOCATION"
+            SectionHeader {
+                text: qsTr("VENUE ADDRESS");
             }
 
-            Map {
-                id: map
-                center: positionSource.position.coordinate
-                size.width: parent.width
-                zoomLevel: 15
-                size.height: 150
-
-                MapImage{
-                    id: markerVenue
-                    offset.x: -24
-                    offset.y: -24
-                    coordinate: positionSource.position.coordinate
-                    source: "../pics/pin_venue.png"
+            TextField {
+                id: textVenueAddress
+                placeholderText: qsTr("Venue address is optional")
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    margins: 10
                 }
             }
 
-            LineGreen{
-                height: 30
-                width: venueEdit.width
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "VENUE CATEGORY"
+            SectionHeader {
+                text: qsTr("VENUE CATEGORY")
             }
 
             EventBox {
-                userName: "Select category"
-                userShout: "Venue category"
-            }
-            EventBox {
-                userShout: "Venue subcategory"
+                id: categoryBox
+                userName: qsTr("Not selected")
+                userShout: qsTr("Tap to select category")
+                activeWhole: true
+
+                onAreaClicked: {
+                    if (categoriesModel.count > 0)
+                        categoryDialog.open();
+                    else {
+                        show_error(qsTr("Venue categories are not loaded yet"));
+                    }
+                }
+
+                Component.onCompleted: {
+                    userPhoto.photoUrl = Api.parseIcon(Api.defaultVenueIcon);
+                }
             }
 
-            LineGreen{
-                height: 30
-                text: "VENUE DESCRIPTION"
+            SectionHeader {
+                text: qsTr("VENUE LOCATION");
             }
 
-            /*TextArea {
+            Item {
+                id: mapArea
+                width: parent.width
+                height: 200
 
-            }*/
+                Map {
+                    id: map
+                    anchors.fill: parent
+                    center: positionSource.position.coordinate
+                    zoomLevel: 15
+
+                    MapImage{
+                        id: markerVenue
+                        offset.x: -24
+                        offset.y: -24
+                        coordinate: positionSource.position.coordinate
+                        source: "../pics/pin_venue.png"
+                    }
+                }
+            }
 
             Button {
                 width: parent.width * 0.7
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: "CREATE VENUE"
-            }
-
-            Item {
-                width: parent.width
-                height: 50
+                onClicked: {
+                    if (textVenueName.text.length < 3) {
+                        show_error(qsTr("You should specify venue name"));
+                        return;
+                    }
+                    if (categoryID === "") {
+                        show_error(qsTr("You should select category"));
+                        return;
+                    }
+                    var params = {};
+                    params.address = textVenueAddress.text;
+                    params.name = textVenueName.text;
+                    params.ll = map.center.latitude + "," + map.center.longitude;;
+                    params.category = categoryID;
+                    venueAdd.create(params);
+                }
             }
         }
     }

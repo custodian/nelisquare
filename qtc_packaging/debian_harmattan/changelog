@@ -1,11 +1,12 @@
 nelisquare (0.5.1) stable; urgency=low
+  * Venue add function
   * Bug fixes
   * Venues list update
   * Language pack update
   * Full-sized photos view&save
   * Delete-events at feed
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 10 Jun 2013 23:26:14 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 24 Jun 2013 01:07:50 +0400
 
 nelisquare (0.5.0) stable; urgency=low
   * Specials support

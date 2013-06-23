@@ -17,7 +17,7 @@ function submitDebugInfo(content, callback) {
         if (doc.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
             var status = doc.status;
             if(status!=200) {
-                console.log("Routes returned " + status + " " + doc.statusText);
+                console.log("Debug info submit " + status + " " + doc.statusText);
                 callback(false, doc.statusText);
             }
         } else if (doc.readyState == XMLHttpRequest.DONE && doc.status == 200) {

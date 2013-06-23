@@ -41,6 +41,8 @@ protected:
 
 public:
     explicit Cache(QObject *parent = 0);
+
+    Q_INVOKABLE QVariant getFile(QVariant url);
     
     Q_INVOKABLE void queueObject(QVariant url, QVariant callback);
 
