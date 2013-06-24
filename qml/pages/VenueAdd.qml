@@ -147,7 +147,7 @@ PageWrapper {
 
             TextField {
                 id: textVenueAddress
-                placeholderText: qsTr("Venue address is optional")
+                placeholderText: qsTr("Street address is optional")
                 anchors {
                     left: parent.left
                     right: parent.right
@@ -206,7 +206,7 @@ PageWrapper {
             Button {
                 width: parent.width * 0.7
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "CREATE VENUE"
+                text: qsTr("CREATE VENUE")
                 onClicked: {
                     if (textVenueName.text.length < 3) {
                         show_error(qsTr("You should specify venue name"));
@@ -214,6 +214,10 @@ PageWrapper {
                     }
                     if (categoryID === "") {
                         show_error(qsTr("You should select category"));
+                        return;
+                    }
+                    if (!positionSource.position.latitudeValid) {
+                        show_error(qsTr("Can't get GPS position for venue"));
                         return;
                     }
                     var params = {};

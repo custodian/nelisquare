@@ -25,7 +25,10 @@ PageWrapper {
     tools: ToolBarLayout{
         ToolIcon{
             platformIconId: "toolbar-back"
-            onClicked: stack.pop()
+            onClicked: {
+                console.log("poping")
+                stack.pop()
+            }
         }
 
         ToolIcon {

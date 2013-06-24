@@ -16,7 +16,7 @@ protected:
 public:
     explicit PictureHelper(QObject *parent = 0);
     
-    Q_INVOKABLE QVariant upload(QVariant url, QVariant path, QVariant window);
+    Q_INVOKABLE QVariant upload(QVariant url, QVariant path, QVariant window, QVariant maxsize);
 
     Q_INVOKABLE QString saveImage(QDeclarativeItem *imageObject);
 

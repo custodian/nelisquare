@@ -9,6 +9,7 @@ PageWrapper {
     signal uploadPhoto(variant params)
 
     property variant options: {}
+    property int maxPhotoSize: options.type === "avatar" ? 100 : 5000
 
     id: photoAdd
     width: parent.width
@@ -51,12 +52,14 @@ PageWrapper {
             Api.photos.addPhoto(params, options.owner,
                 function(url) {
                     waiting_hide();
-                    if (!pictureHelper.upload(url, params.path, params.owner)) {
-                        //TODO: make a
-                        show_error(qsTr("Error uploading photo!"));
+                    var result = pictureHelper.upload(url, params.path, params.owner, maxPhotoSize);
+                    if (result === true) {
+                        //photo selection
+                        stack.pop();
+                    } else {
+                        params.owner.show_error(qsTr("Error uploading photo!<br>Photo size should be less than %1KB").arg(maxPhotoSize));
+                        //stack.pop();
                     }
-                    //photo selection
-                    stack.pop();
                 }
             );
             //sharing dialog
@@ -82,9 +85,25 @@ PageWrapper {
         properties: [ "filePath", "url" ]    //real
         //rootType: DocumentGallery.Image //sim
         //properties: [ "fileName" ]      //sim
-        filter: GalleryWildcardFilter {
-            property: "fileName";
-            value: "*.jpg";
+        filter: GalleryFilterUnion {
+            filters: [
+                GalleryWildcardFilter {
+                    property: "fileName";
+                    value: "*.jpg";
+                }/*,
+                GalleryWildcardFilter {
+                    property: "fileName";
+                    value: "*.jpeg";
+                },
+                GalleryWildcardFilter {
+                    property: "fileName";
+                    value: "*.png";
+                }*/
+                /*GalleryEqualsFilter {
+                    property: "fileName"
+                    value: /.+(jpg|jpeg|JPG|JPEG|png|PNG)/
+                }*/
+            ]
         }
         sortProperties: [ "-lastModified" ]
     }
@@ -104,7 +123,7 @@ PageWrapper {
     Component {
         id: photoDelegate
         ProfilePhoto {
-            photoUrl: url               //real
+            photoUrl: decodeURIComponent(url)               //real
             //photoUrl: model.fileName        //sim
             photoSize: photoGrid.cellWidth
             photoSourceSize: photoGrid.cellWidth
@@ -113,7 +132,8 @@ PageWrapper {
             photoAspect: Image.PreserveAspectFit
             photoCache: false
             onClicked: {
-                photoAdd.selectPhoto(model.filePath);
+                photoAdd.selectPhoto(decodeURIComponent(model.filePath)); //real
+                //photoAdd.selectPhoto(model.fileName); //sim
             }
 
             //TODO: make textname overlap photo

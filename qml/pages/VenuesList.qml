@@ -195,7 +195,7 @@ PageWrapper {
             Button {
                 width: placesView.width * 0.7
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: "ADD NEW VENUE"
+                text: qsTr("ADD NEW VENUE")
                 onClicked: {
                     venuesList.addVenue();
                 }

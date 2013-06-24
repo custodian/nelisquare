@@ -214,7 +214,11 @@ PageStackWindow {
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
-                dummyMenu.createObject(mainPage).open();
+                if (stack.currentPage.pageMenu !== undefined) {
+                    stack.currentPage.pageMenu.open();
+                } else {
+                    dummyMenu.createObject(mainPage).open();
+                }
             }
         }
     }

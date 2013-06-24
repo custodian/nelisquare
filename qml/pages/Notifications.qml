@@ -51,7 +51,10 @@ PageWrapper {
                 text: qsTr("Mark all as read")
                 onClicked: {
                     Api.notifications.markNotificationsRead(notificationsList,Api.getCurrentTime());
-                    Api.notifications.loadNotifications(notificationsList);
+                    for (var i=0;i<notificationsModel.count;i++) {
+                        notificationsModel.set(i,{"unreaded":false});
+                    }
+                    //Api.notifications.loadNotifications(notificationsList);
                 }
             }
             MenuItem {

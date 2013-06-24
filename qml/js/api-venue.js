@@ -260,8 +260,6 @@ venues.getCategoryInfoURL = function() {
 
 
 venues.parseCategoryInfo = function(page,url) {
-    //TODO: change to new callback system
-    console.log("url: " + url);
     var doc = new XMLHttpRequest();
     doc.onreadystatechange = function() {
         if (doc.readyState == XMLHttpRequest.DONE) {

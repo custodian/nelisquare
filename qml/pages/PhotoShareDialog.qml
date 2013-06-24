@@ -82,29 +82,35 @@ PageWrapper {
                 photoSize: 300
             }
 
-            SectionHeader {
-                text: qsTr("Sharing options")
-            }
+            Column {
+                spacing: 10
+                width:parent.width
+                visible: options.type !== "avatar"
 
-            SettingSwitch {
-                text: qsTr("Public")
-                checked: photoShare.makePublic
-                onCheckedChanged: {
-                    configuration.sharePhotoPublic = (checked) ? "1": "0"
+                SectionHeader {
+                    text: qsTr("Sharing options")
                 }
-            }
-            SettingSwitch {
-                text: qsTr("Post to Facebook")
-                checked: photoShare.useFacebook
-                onCheckedChanged: {
-                    configuration.sharePhotoFacebook = (checked) ? "1": "0"
+
+                SettingSwitch {
+                    text: qsTr("Public")
+                    checked: photoShare.makePublic
+                    onCheckedChanged: {
+                        configuration.sharePhotoPublic = (checked) ? "1": "0"
+                    }
                 }
-            }
-            SettingSwitch {
-                text: qsTr("Post to Twitter")
-                checked: photoShare.useTwitter
-                onCheckedChanged: {
-                    configuration.sharePhotoTwitter = (checked) ? "1": "0"
+                SettingSwitch {
+                    text: qsTr("Post to Facebook")
+                    checked: photoShare.useFacebook
+                    onCheckedChanged: {
+                        configuration.sharePhotoFacebook = (checked) ? "1": "0"
+                    }
+                }
+                SettingSwitch {
+                    text: qsTr("Post to Twitter")
+                    checked: photoShare.useTwitter
+                    onCheckedChanged: {
+                        configuration.sharePhotoTwitter = (checked) ? "1": "0"
+                    }
                 }
             }
         }

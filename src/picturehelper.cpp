@@ -8,6 +8,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 #include <QFile>
+#include <QFileInfo>
 #include <QByteArray>
 #include <QDebug>
 
@@ -20,11 +21,12 @@ PictureHelper::PictureHelper(QObject *parent) :
     connect(manager,SIGNAL(finished(QNetworkReply*)),SLOT(onFinished(QNetworkReply*)));
 }
 
-QVariant PictureHelper::upload(QVariant url, QVariant path, QVariant window)
+QVariant PictureHelper::upload(QVariant url, QVariant path, QVariant window, QVariant maxsize)
 {
     m_window = window;
-    //TODO: check for 5MB limit
     FormPost *formPost = new FormPost("nelisquare");
+    if (QFileInfo(path.toString()).size()/1024 > maxsize.toInt())
+        return QVariant(false);
     formPost->setFile("photo", path.toString(), "image/jpeg");
 
     formPost->setNetworkAccessManager(manager);

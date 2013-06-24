@@ -14,7 +14,7 @@ Page {
     property alias pagetop: pageHeader.bottom
 
     tools : commonTools
-    property alias dummyMenu: dummyMenu
+    property Menu pageMenu: defaultMenu
     property alias headerText: pageHeader.headerText
     property alias headerIcon: pageHeader.headerIcon
     property alias headerBubble: pageHeader.countBubbleVisible
@@ -95,7 +95,7 @@ Page {
     }
 
     Menu {
-        id: dummyMenu
+        id: defaultMenu
         MenuLayout {
             MenuItem {
                 text: qsTr("Check updates")
@@ -106,7 +106,7 @@ Page {
             MenuItem {
                 text: qsTr("Settings")
                 onClicked: {
-                    stack.replace(Qt.resolvedUrl("../pages/Settings.qml"));
+                    stack.push(Qt.resolvedUrl("../pages/Settings.qml"));
                 }
             }
             MenuItem {
@@ -118,5 +118,4 @@ Page {
             }
         }
     }
-
 }

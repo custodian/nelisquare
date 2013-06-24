@@ -99,8 +99,7 @@ PageWrapper {
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
-                //TODO: add menu
-                dummyMenu.open();
+                pageMenu.open();
             }
         }
     }

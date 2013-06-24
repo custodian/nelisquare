@@ -6,6 +6,7 @@ import "../js/api.js" as Api
 
 PageWrapper {
     signal openLeaderboard()
+    signal selectavatar();
     signal user(string user)
     signal venue(string venue);
 
@@ -59,20 +60,42 @@ PageWrapper {
     headerText: qsTr("USER DETAILS")
     headerIcon: "../icons/icon-header-user.png"
 
-    /*tools: ToolBarLayout{
-        ToolIcon{
-            platformIconId: "toolbar-back"
-            onClicked: stack.pop()
-        }
+    pageMenu: userMenu
+    Menu {
+        id: userMenu
 
-        ToolIcon {
-            platformIconId: "toolbar-view-menu"
-            onClicked: {
-                //TODO: add menu
-                dummyMenu.open();
+        MenuLayout {
+            MenuItem {
+                text: qsTr("Change avatar")
+                onClicked: {
+                    //configuration.getupdates();
+                    details.selectavatar();
+                }
+                visible: userRelationship === "self"
+            }
+            MenuItem {
+                text: qsTr("User lists")
+                onClicked: {
+                    show_error("Lists are not supported yet! :()");
+                    //TODO: lists support
+                    //details.lists(userID);
+                }
+            }
+            MenuItem {
+                text: qsTr("Settings")
+                onClicked: {
+                    stack.push(Qt.resolvedUrl("../pages/Settings.qml"));
+                }
+            }
+            MenuItem {
+                text: qsTr("Exit")
+                onClicked: {
+                    windowHelper.disableSwype(false);
+                    Qt.quit();
+                }
             }
         }
-    }*/
+    }
 
     function load() {
         var page = details;
@@ -124,6 +147,12 @@ PageWrapper {
         });
         page.tips.connect(function(user) {
             stack.push(Qt.resolvedUrl("TipsList.qml"),{"baseType":"user","baseID":user});
+        });
+        page.selectavatar.connect(function() {
+            stack.push(Qt.resolvedUrl("PhotoAdd.qml"),{"options":{
+                "type": "avatar",
+                "owner": page
+            }});
         });
         Api.users.loadUser(page,userID);
     }
@@ -277,7 +306,7 @@ PageWrapper {
 
             Row {
                 width: parent.width
-                spacing: 50
+                spacing: 5
                 Button {
                     text: qsTr("Approve Friend")
                     width: parent.width * 0.6

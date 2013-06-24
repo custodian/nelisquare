@@ -1,4 +1,5 @@
 nelisquare (0.5.1) stable; urgency=low
+  * User avatar upload
   * Venue add function
   * Bug fixes
   * Venues list update

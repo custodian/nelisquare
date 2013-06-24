@@ -33,22 +33,27 @@ photos.parsePhoto = function(response, page) {
 
 photos.addPhoto = function(params, page, callback) {
     params.owner.waiting_show();
-    var url = API_URL + "photos/add?";
-    url += params.type;
-    url += "Id=" + params.id;
-    if (params.makepublic == "1") {
-        url += "&public=1";
-    }
-    var broadcast = "";
-    if (params.facebook) {
-        broadcast = "facebook";
-    }
-    if (params.twitter) {
-        if (broadcast!="") broadcast += ",";
-        broadcast += "twitter";
-    }
-    if (broadcast != "") {
-        url += "&broadcast="+broadcast;
+    var url = API_URL;
+    if (params.type === "avatar") {
+        url += "users/self/update?"
+    } else {
+        url += "photos/add?";
+        url += params.type;
+        url += "Id=" + params.id;
+        if (params.makepublic == "1") {
+            url += "&public=1";
+        }
+        var broadcast = "";
+        if (params.facebook) {
+            broadcast = "facebook";
+        }
+        if (params.twitter) {
+            if (broadcast!="") broadcast += ",";
+            broadcast += "twitter";
+        }
+        if (broadcast != "") {
+            url += "&broadcast="+broadcast;
+        }
     }
     url += "&" + getAccessTokenParameter();
     callback(url);
@@ -56,14 +61,18 @@ photos.addPhoto = function(params, page, callback) {
 
 photos.parseAddPhoto = function(response, page) {
     page.waiting_hide();
-    var obj = api.process(response).photo;
-    //console.log("ADDED PHOTO: " + JSON.stringify(photo));
+    var obj = api.process(response);
+    //console.log("ADDED PHOTO: " + JSON.stringify(obj));
     if (page.photosBox !== undefined) {
         page.photosBox.photosModel.insert(0,
-                    makePhoto(obj,300));
+                    makePhoto(obj.photo,300));
     }
     if (page.tipPhoto !== undefined) {
-        page.tipPhoto.photoUrl = thumbnailPhoto(obj, 300, 300);
-        page.tipPhotoID = tip.photo.id;
+        page.tipPhoto.photoUrl = thumbnailPhoto(obj.tip.photo, 300, 300);
+        page.tipPhotoID = obj.tip.photo.id;
+    }
+    if (page.userPhoto !== undefined) {
+        page.userPhoto = thumbnailPhoto(obj.user.photo, 300, 300);
+        page.userPhotoLarge = thumbnailPhoto(obj.user.photo, 500, 500);
     }
 }
