@@ -24,11 +24,23 @@ PictureHelper::PictureHelper(QObject *parent) :
 QVariant PictureHelper::upload(QVariant url, QVariant path, QVariant window, QVariant maxsize)
 {
     m_window = window;
-    FormPost *formPost = new FormPost("nelisquare");
-    if (QFileInfo(path.toString()).size()/1024 > maxsize.toInt())
-        return QVariant(false);
-    formPost->setFile("photo", path.toString(), "image/jpeg");
+    QString filepath = path.toString();
+    QFileInfo fileinfo(filepath);
+    if (fileinfo.size()/1024 > maxsize.toInt()) {
+        //Scale image to fit maxsize
+        QImage pic(filepath);
+        int width = pic.width() * maxsize.toInt() * 1.5 / (fileinfo.size()/1024.) ;
+        filepath += ".scaled." + fileinfo.suffix();
+        QImage scpic = pic.scaledToWidth(width);
+        scpic.save(filepath);
+    }
 
+    QString mime = "image/jpeg";
+    if (fileinfo.suffix() == "png") {
+        mime = "image/png";
+    };
+    FormPost *formPost = new FormPost("nelisquare");
+    formPost->setFile("photo", filepath, mime);
     formPost->setNetworkAccessManager(manager);
 
     QNetworkReply *reply = formPost->postData(url.toString());

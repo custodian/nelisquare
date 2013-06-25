@@ -90,7 +90,7 @@ PageWrapper {
                 GalleryWildcardFilter {
                     property: "fileName";
                     value: "*.jpg";
-                }/*,
+                },
                 GalleryWildcardFilter {
                     property: "fileName";
                     value: "*.jpeg";
@@ -98,7 +98,7 @@ PageWrapper {
                 GalleryWildcardFilter {
                     property: "fileName";
                     value: "*.png";
-                }*/
+                }
                 /*GalleryEqualsFilter {
                     property: "fileName"
                     value: /.+(jpg|jpeg|JPG|JPEG|png|PNG)/
