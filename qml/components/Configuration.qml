@@ -171,7 +171,6 @@ Item {
 
         Storage.getKeyValue("settings.imageload", settingLoaded);
         Storage.getKeyValue("settings.gpsunlock", settingLoaded);
-        Storage.getKeyValue("settings.gpsallow", settingLoaded);
         Storage.getKeyValue("settings.feedupdate", settingLoaded);
 
         Storage.getKeyValue("settings.disableswypedown", settingLoaded);
@@ -179,10 +178,13 @@ Item {
         Storage.getKeyValue("settings.feed.notification", settingLoaded);
         Storage.getKeyValue("settings.theme", settingLoaded);
 
-        Storage.getKeyValue("settings.push.enabled",settingLoaded);
         Storage.getKeyValue("settings.molome", settingLoaded);
 
         Storage.getKeyValue("settings.debug.enabled", settingLoaded);
+
+        //Ask dialogs on first start
+        Storage.getKeyValue("settings.push.enabled",settingLoaded);
+        Storage.getKeyValue("settings.gpsallow", settingLoaded);
 
         Storage.getKeyValue("accesstoken", settingLoaded);
     }
@@ -215,7 +217,9 @@ Item {
             updateDialog.version = version;
             updateDialog.url = url;
             updateDialog.changelog = changelog;
-            updateDialog.open();
+            if (accessToken.length > 0) {
+                updateDialog.open();
+            }
         }
     }
 }

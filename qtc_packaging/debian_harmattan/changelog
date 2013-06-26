@@ -1,11 +1,11 @@
 nelisquare (0.5.1) stable; urgency=low
   * User avatar upload
   * Venue add function
-  * Bug fixes
   * Venues list update
   * Language pack update
   * Full-sized photos view&save
   * Delete-events at feed
+  * Bug fixes
 
  -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 24 Jun 2013 01:07:50 +0400
 

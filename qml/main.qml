@@ -14,7 +14,7 @@ PageStackWindow {
 
     property alias stack: tabgroup.currentTab;
 
-    showToolBar: tabgroup.currentTab !== tabLogin
+    showToolBar: tabgroup.currentTab !== tabLogin || tabLogin.depth > 1
     showStatusBar: inPortrait
 
     onWindowActiveChanged: {
@@ -94,43 +94,6 @@ PageStackWindow {
                     tabLogin.push(Qt.resolvedUrl("pages/Welcome.qml"),{"newuser":true},true);
                 }
             }
-        }
-
-        //TODO: remove to single "Sheet"
-        UpdateDialog {
-            id: updateDialog
-            z: 30
-        }
-
-        QueryDialog  {
-            id: locationAllowDialog
-            icon: "image://theme/icon-m-common-location-selected"
-            titleText: qsTr("Location data")
-            message: qsTr("Nelisquare requires use of user location data. Data is needed to make geo-location services work properly.")
-            acceptButtonText: qsTr("Allow")
-            rejectButtonText: qsTr("Deny")
-            onAccepted: {
-                configuration.settingChanged("settings.gpsallow","1");
-            }
-            onRejected: {
-                configuration.settingChanged("settings.gpsallow","0");
-            }
-        }
-
-        QueryDialog  {
-            id: pushNotificationDialog
-            icon: "image://theme/icon-m-settings-notification"
-            titleText: qsTr("Push notifications")
-            message: qsTr("Incoming push notifications are not supported at this version and are disabled by default.<br/><br/>You will be promted again when they will be available at future versions.")
-            onAccepted: {
-                configuration.settingChanged("settings.push.enabled","0");
-            }
-            acceptButtonText: qsTr("OK")
-            /*buttons: ButtonRow {
-                style: ButtonStyle { }
-                anchors.horizontalCenter: parent.horizontalCenter
-                Button { text: "OK"; onClicked: pushNotificationDialog.accept(); }
-            }*/
         }
 
         NotificationDialog {
@@ -230,12 +193,14 @@ PageStackWindow {
             if(accessToken.length>0) {
                 openStartPage();
                 tabLogin.clear();
+                windowHelper.disableSwype(configuration.disableSwypedown === "1");
             } else {
                 tabFeed.clear();
                 tabVenues.clear();
                 tabMe.clear();
                 tabLogin.load();
                 tabgroup.currentTab = tabLogin;
+                windowHelper.disableSwype(false);
             }
         }
     }
@@ -408,5 +373,42 @@ PageStackWindow {
         } else if (value === "portrait") {
             mainPage.orientationLock = PageOrientation.LockPortrait
         }
+    }
+
+    //TODO: remove to single "Sheet"
+    UpdateDialog {
+        id: updateDialog
+        z: 30
+    }
+
+    QueryDialog  {
+        id: locationAllowDialog
+        icon: "image://theme/icon-m-common-location-selected"
+        titleText: qsTr("Location data")
+        message: qsTr("Nelisquare requires use of user location data. Data is needed to make geo-location services work properly.")
+        acceptButtonText: qsTr("Allow")
+        rejectButtonText: qsTr("Deny")
+        onAccepted: {
+            configuration.settingChanged("settings.gpsallow","1");
+        }
+        onRejected: {
+            configuration.settingChanged("settings.gpsallow","0");
+        }
+    }
+
+    QueryDialog  {
+        id: pushNotificationDialog
+        icon: "image://theme/icon-m-settings-notification"
+        titleText: qsTr("Push notifications")
+        message: qsTr("Incoming push notifications are not supported at this version and are disabled by default.<br/><br/>You will be promted again when they will be available at future versions.")
+        onAccepted: {
+            configuration.settingChanged("settings.push.enabled","0");
+        }
+        acceptButtonText: qsTr("OK")
+        /*buttons: ButtonRow {
+            style: ButtonStyle { }
+            anchors.horizontalCenter: parent.horizontalCenter
+            Button { text: "OK"; onClicked: pushNotificationDialog.accept(); }
+        }*/
     }
 }

@@ -6,17 +6,46 @@ import "../components"
 
 import "../js/api.js" as Api
 
-//Rectangle {
 PageWrapper {
     id: loginDialog
     signal finished(string url)
     signal loadFailed()
     anchors.fill: parent
-    //color: mytheme.colors.backgroundMain
 
-    headerText: ""
-    //TODO: add some icon (key)
-    //headerIcon: "../icons/icon-header-.png"
+    headerText: qsTr("Sign In to Foursquare")
+    headerIcon: "image://theme/icon-l-accounts-main-view"
+
+    tools: ToolBarLayout{
+        ToolIcon{
+            platformIconId: "toolbar-back"
+            onClicked: stack.pop()
+        }
+        ToolIcon {
+            platformIconId: "toolbar-refresh"
+            onClicked: {
+                reset();
+            }
+        }
+        ToolIcon {
+            platformIconId: "toolbar-view-menu"
+            onClicked: {
+                menu.open();
+            }
+        }
+    }
+
+    Menu {
+        id: menu
+        MenuLayout {
+            MenuItem {
+                text: qsTr("Exit")
+                onClicked: {
+                    windowHelper.disableSwype(false);
+                    Qt.quit();
+                }
+            }
+        }
+    }
 
     function load() {
         loginDialog.finished.connect(function(url) {
@@ -27,6 +56,7 @@ PageWrapper {
         });
         loginDialog.loadFailed.connect(function() {
             //TODO: error loading page - show some details
+            show_error(qsTr("Error connecting to Foursquare site"));
         });
         reset();
     }
@@ -36,43 +66,24 @@ PageWrapper {
         webView.reload.trigger();
     }
 
-    //TODO: remove header. use PageWrapper header
-    PageHeader{
-        id: header
-        headerText: qsTr("Sign In to Foursquare")
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                reset();
-            }
-        }
-    }
-
     WebView {
         id: webView
-        anchors {top:header.bottom; bottom:parent.bottom; left:parent.left; right:parent.right}
+        anchors {top:pagetop; bottom:parent.bottom; left:parent.left; right:parent.right}
         preferredHeight: height
         preferredWidth: width
         url: ""
 
         onLoadStarted: {
-            //console.log("URL is now " + webView.url);
-            //waiting_show();
-            header.busy = true;
+            waiting_show();
         }
 
         onLoadFinished: {
-            //console.log("URL is now " + webView.url);
-            //waiting_hide();
-            header.busy = false;
+            waiting_hide();
             loginDialog.finished( webView.url );
         }
 
         onLoadFailed: {
-            //console.log("FAILED URL is now " + webView.url);
-            //waiting_hide();
-            header.busy = false;
+            waiting_hide();
             loginDialog.loadFailed();
         }
     }

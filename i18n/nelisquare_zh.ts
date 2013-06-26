@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh_HK" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="zh" version="2.0">
 <context>
     <name>Badges</name>
     <message>
@@ -12,22 +12,22 @@
     <message>
         <location filename="../qml/pages/Checkin.qml" line="18"/>
         <source>CHECK-IN DETAILS</source>
-        <translation>打卡內容</translation>
+        <translation>签到详情</translation>
     </message>
     <message>
         <location filename="../qml/pages/Checkin.qml" line="223"/>
         <source>TOTAL POINTS</source>
-        <translation>總分</translation>
+        <translation>得分总计</translation>
     </message>
     <message>
         <location filename="../qml/pages/Checkin.qml" line="261"/>
         <source>EARNED BADGES</source>
-        <translation>得到的徽章</translation>
+        <translation>已获得徽章</translation>
     </message>
     <message>
         <location filename="../qml/pages/Checkin.qml" line="283"/>
         <source>COMMENTS</source>
-        <translation>留言</translation>
+        <translation>评论</translation>
     </message>
 </context>
 <context>
@@ -35,12 +35,12 @@
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="22"/>
         <source>NEW CHECK-IN</source>
-        <translation>新的打卡</translation>
+        <translation>新地盘</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="48"/>
         <source>CHECK IN</source>
-        <translation>打卡</translation>
+        <translation>签到</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="57"/>
@@ -50,27 +50,27 @@
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="100"/>
         <source>Whats on your mind?</source>
-        <translation>在想什麼呢？</translation>
+        <translation>想说点啥呢？</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="129"/>
         <source>Sharing options</source>
-        <translation>分享選項</translation>
+        <translation>分享设置</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="133"/>
         <source>Share with Friends</source>
-        <translation>與朋友分享</translation>
+        <translation>分享给好友</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="141"/>
         <source>Post to Facebook</source>
-        <translation>分享至 Facebook</translation>
+        <translation>同步到Facebook</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="149"/>
         <source>Post to Twitter</source>
-        <translation>分享至 Twitter</translation>
+        <translation>同步到Twitter</translation>
     </message>
 </context>
 <context>
@@ -78,12 +78,12 @@
     <message>
         <location filename="../qml/pages/CheckinHistory.qml" line="24"/>
         <source>CHECK-IN HISTORY</source>
-        <translation>打卡紀錄</translation>
+        <translation>签到历史</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinHistory.qml" line="64"/>
         <source>Load More</source>
-        <translation>載入更多</translation>
+        <translation>载入更多</translation>
     </message>
 </context>
 <context>
@@ -91,17 +91,17 @@
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="26"/>
         <source>What is on your mind?</source>
-        <translation>在想什麼呢？</translation>
+        <translation>想说点啥呢？</translation>
     </message>
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="38"/>
         <source>New awesome comment</source>
-        <translation>新的留言</translation>
+        <translation>新的评论</translation>
     </message>
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="69"/>
         <source>Comment!</source>
-        <translation>發文！</translation>
+        <translation>评论！</translation>
     </message>
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="77"/>
@@ -114,17 +114,17 @@
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="18"/>
         <source>DEBUG SUBMIT</source>
-        <translation>除錯資料傳送</translation>
+        <translation>提交BUG</translation>
     </message>
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="34"/>
         <source>Thank you for submit!&lt;br&gt;This will be implemented soon!</source>
-        <translation>感謝你的回報！&lt;br&gt;我們會盡快搞定的！</translation>
+        <translation>谢谢你的提交！&lt;br&gt;很快将对问题进行改进！</translation>
     </message>
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="53"/>
         <source>SUBMIT</source>
-        <translation>送出</translation>
+        <translation>提交</translation>
     </message>
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="61"/>
@@ -136,9 +136,8 @@
         <source>You can help me with Nelisquare development by submitting debug info.
 
 The following information are going to be submitted:</source>
-        <translation>你可以傳送除錯訊息來協助我開發 Nelisquare 。
-
-下列的資訊將會被傳送：</translation>
+        <translation>你可以通过提交debug信息，来帮助作者开发完善Nelisquare
+下列的信息将被提交给作者：</translation>
     </message>
 </context>
 <context>
@@ -146,14 +145,14 @@ The following information are going to be submitted:</source>
     <message>
         <location filename="../qml/components/DebugWidget.qml" line="14"/>
         <source>Unknown %1 event!</source>
-        <translation>未知的 %1 事件！</translation>
+        <translation>未知 %1 事件！</translation>
     </message>
     <message>
         <location filename="../qml/components/DebugWidget.qml" line="47"/>
         <source>This event type is unknown.
 You can help with resolution.</source>
-        <translation>未知的事件型態。
-你可以協助分析。</translation>
+        <translation>此事件的类型是未知的。
+你可以帮助解决。</translation>
     </message>
 </context>
 <context>
@@ -161,32 +160,32 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="43"/>
         <source>FRIENDS FEED</source>
-        <translation>朋友動態</translation>
+        <translation>好友动态</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="221"/>
         <source>RECENT</source>
-        <translation>最新消息</translation>
+        <translation>最新</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="234"/>
         <source>NEARBY</source>
-        <translation>在我附近</translation>
+        <translation>附近</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="255"/>
         <source>Load More</source>
-        <translation>載入更多</translation>
+        <translation>载入更多</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="402"/>
         <source>Sorry, Pages are not supported yet :(</source>
-        <translation>抱歉，尚未支援這頁面 :(</translation>
+        <translation>对不起，页面还不支持:(</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="472"/>
         <source>Sorry, no lists support yet :(</source>
-        <translation>抱歉，尚未支援清單 :(</translation>
+        <translation>对不起，列表还不支持:(</translation>
     </message>
 </context>
 <context>
@@ -194,12 +193,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="19"/>
         <source>YOU ARE #</source>
-        <translation>你是第 </translation>
+        <translation>你的排名 #</translation>
     </message>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="63"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation>&lt;b&gt;%1 分&lt;/b&gt; %2 個打卡</translation>
+        <translation>&lt;b&gt;%1 分&lt;/b&gt; %2 个签到</translation>
     </message>
 </context>
 <context>
@@ -207,7 +206,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/LikeBox.qml" line="33"/>
         <source>USER LIKES</source>
-        <translation>按讚的使用者</translation>
+        <translation>大家喜欢</translation>
     </message>
 </context>
 <context>
@@ -215,12 +214,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="9"/>
         <source>Pull and hold to refresh...</source>
-        <translation>下拉即可更新...</translation>
+        <translation>下来按住可刷新</translation>
     </message>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="10"/>
         <source>Release to refresh...</source>
-        <translation>釋放立即更新...</translation>
+        <translation>松开即可刷新</translation>
     </message>
 </context>
 <context>
@@ -228,7 +227,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Login24sq.qml" line="42"/>
         <source>Sign In to Foursquare</source>
-        <translation>登入至 Foursquare</translation>
+        <translation>登陆Foursquare</translation>
     </message>
 </context>
 <context>
@@ -236,7 +235,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Mayorships.qml" line="19"/>
         <source>MAYORSHIPS</source>
-        <translation>市長</translation>
+        <translation>地主</translation>
     </message>
 </context>
 <context>
@@ -244,7 +243,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/NotificationDialog.qml" line="36"/>
         <source>OK</source>
-        <translation>確定</translation>
+        <translation>确定</translation>
     </message>
 </context>
 <context>
@@ -257,12 +256,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Notifications.qml" line="51"/>
         <source>Mark all as read</source>
-        <translation>全部標示為以獨</translation>
+        <translation>标记所有为已读</translation>
     </message>
     <message>
         <location filename="../qml/pages/Notifications.qml" line="58"/>
         <source>Settings</source>
-        <translation>設定</translation>
+        <translation>设置</translation>
     </message>
 </context>
 <context>
@@ -270,17 +269,17 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/PageWrapper.qml" line="88"/>
         <source>Check updates</source>
-        <translation>檢查更新</translation>
+        <translation>检查更新</translation>
     </message>
     <message>
         <location filename="../qml/components/PageWrapper.qml" line="94"/>
         <source>Settings</source>
-        <translation>設定</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../qml/components/PageWrapper.qml" line="100"/>
         <source>Exit</source>
-        <translation>離開</translation>
+        <translation>退出</translation>
     </message>
 </context>
 <context>
@@ -288,7 +287,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Photo.qml" line="20"/>
         <source>PHOTO</source>
-        <translation>相片</translation>
+        <translation>图片</translation>
     </message>
 </context>
 <context>
@@ -296,12 +295,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/PhotoAdd.qml" line="18"/>
         <source>Select photo for upload</source>
-        <translation>選擇要上傳的相片</translation>
+        <translation>选择图片上传</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoAdd.qml" line="56"/>
         <source>Error uploading photo!</source>
-        <translation>相片上傳錯誤！</translation>
+        <translation>上传图片出错！</translation>
     </message>
 </context>
 <context>
@@ -309,32 +308,32 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="20"/>
         <source>PHOTO UPLOAD</source>
-        <translation>上傳相片</translation>
+        <translation>上传的图片</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="36"/>
         <source>UPLOAD</source>
-        <translation>上傳</translation>
+        <translation>已上传</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="86"/>
         <source>Sharing options</source>
-        <translation>分享選項</translation>
+        <translation>分享设置</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="90"/>
         <source>Public</source>
-        <translation>公開</translation>
+        <translation>公开</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="97"/>
         <source>Post to Facebook</source>
-        <translation>分享至 Facebook</translation>
+        <translation>同步到Facebook</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="104"/>
         <source>Post to Twitter</source>
-        <translation>分享至 Twitter</translation>
+        <translation>同步到Twitter</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="48"/>
@@ -347,7 +346,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/PhotosBox.qml" line="8"/>
         <source>PHOTOS</source>
-        <translation>相片</translation>
+        <translation>图片</translation>
     </message>
 </context>
 <context>
@@ -355,7 +354,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/PhotosGallery.qml" line="13"/>
         <source>VENUE PHOTOS</source>
-        <translation>地盤相片</translation>
+        <translation>图片墙</translation>
     </message>
 </context>
 <context>
@@ -363,7 +362,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/SettingSlider.qml" line="50"/>
         <source>Off</source>
-        <translation>關閉</translation>
+        <translation>关闭</translation>
     </message>
 </context>
 <context>
@@ -371,12 +370,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="13"/>
         <source>updating...</source>
-        <translation>更新中...</translation>
+        <translation>更新中。。。</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="21"/>
         <source>SETTINGS</source>
-        <translation>設定</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="53"/>
@@ -386,32 +385,32 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="54"/>
         <source>Idea by Tommi Laukkanen</source>
-        <translation>構想： Tommi Laukkanen</translation>
+        <translation>创意：Tommi Laukkanen</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="55"/>
         <source>Shout out to @knobtviker</source>
-        <translation>感謝 @knobtviker</translation>
+        <translation>提出者：@knobtviker</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="56"/>
         <source>Design by Kim Venetvirta</source>
-        <translation>設計： Kim Venetvirta</translation>
+        <translation>设计：Kim Venetvirta</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="57"/>
         <source>If any problems, tweet @basil_s</source>
-        <translation>如果有任何問題，請發推特到 @basil_s</translation>
+        <translation>如有任何问题，请发推给@basil_s</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="58"/>
         <source>Version</source>
-        <translation>Version</translation>
+        <translation>版本</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="60"/>
         <source>Build</source>
-        <translation>Build</translation>
+        <translation>创建</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="62"/>
@@ -421,33 +420,33 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="64"/>
         <source>Close</source>
-        <translation>關閉</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="70"/>
         <location filename="../qml/pages/Settings.qml" line="115"/>
         <source>Reset settings</source>
-        <translation>重設所有設定</translation>
+        <translation>重置设置</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="71"/>
         <source>This action will erase all data including auth token, application settings and cache.</source>
-        <translation>這動作將會清除所有資料，包括驗證、程式設定及快取。</translation>
+        <translation>此操作将清除所有数据，包括账户验证、应用程序设置和缓存。</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="72"/>
         <source>Yes, clear the data</source>
-        <translation>是，清除資料</translation>
+        <translation>好的，清除数据</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="73"/>
         <source>No, thanks</source>
-        <translation>不了</translation>
+        <translation>不要，谢谢</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="81"/>
         <source>Language</source>
-        <translation>語言</translation>
+        <translation>语言</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="109"/>
@@ -457,42 +456,42 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="161"/>
         <source>UPDATES CHECK</source>
-        <translation>檢查更新</translation>
+        <translation>更新检查</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="186"/>
         <source>None</source>
-        <translation>無</translation>
+        <translation>不检查</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="192"/>
         <source>Stable</source>
-        <translation>正式版</translation>
+        <translation>稳定版</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="197"/>
         <source>Beta</source>
-        <translation>Beta</translation>
+        <translation>测试</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="203"/>
         <source>Alpha</source>
-        <translation>Alpha</translation>
+        <translation>预览版</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="209"/>
         <source>INTERVALS</source>
-        <translation>時間週期</translation>
+        <translation>时间间隔</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="213"/>
         <source>GPS Unlock timeout</source>
-        <translation>GPS 解鎖逾時時間</translation>
+        <translation>GPS解锁超时</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="214"/>
         <source>Instant</source>
-        <translation>立即</translation>
+        <translation>瞬间</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="214"/>
@@ -503,17 +502,17 @@ You can help with resolution.</source>
         <location filename="../qml/pages/Settings.qml" line="214"/>
         <location filename="../qml/pages/Settings.qml" line="223"/>
         <source>Disabled</source>
-        <translation>停用</translation>
+        <translation>禁用</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="222"/>
         <source>Feed autoupdate time</source>
-        <translation>動態消息自動更新時間</translation>
+        <translation>动态自动更新时间</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="223"/>
         <source>Off</source>
-        <translation>關閉</translation>
+        <translation>关闭</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="223"/>
@@ -523,97 +522,97 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="231"/>
         <source>PERMISSIONS</source>
-        <translation>權限</translation>
+        <translation>允许</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="234"/>
         <source>Allow use of Location Data</source>
-        <translation>允許使用定位資料</translation>
+        <translation>总是允许使用定位数据</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="242"/>
         <source>Always run in background</source>
-        <translation>總是在背景執行</translation>
+        <translation>总是允许后台运行</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="250"/>
         <source>Enable notifications</source>
-        <translation>啟用通知</translation>
+        <translation>开启通知</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="258"/>
         <source>Feed at Home screen</source>
-        <translation>主畫面動態消息</translation>
+        <translation>在主屏订阅里显示</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="266"/>
         <source>Push notifications</source>
-        <translation>通知推播</translation>
+        <translation>推送通知</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="317"/>
         <source>COLOR THEME</source>
-        <translation>佈景主題</translation>
+        <translation>主题颜色</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="336"/>
         <source>Light</source>
-        <translation>亮色系</translation>
+        <translation>明亮</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="342"/>
         <source>Dark</source>
-        <translation>暗色系</translation>
+        <translation>暗</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="348"/>
         <source>SCREEN ORIENTATION</source>
-        <translation>螢幕轉向</translation>
+        <translation>屏幕方向</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="370"/>
         <source>Auto</source>
-        <translation>自動</translation>
+        <translation>自动</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="376"/>
         <source>Landscape</source>
-        <translation>橫放</translation>
+        <translation>横屏</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="381"/>
         <source>Portrait</source>
-        <translation>直立</translation>
+        <translation>竖屏</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="387"/>
         <source>STARTUP PAGE</source>
-        <translation>起始頁面</translation>
+        <translation>启动页面</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="409"/>
         <source>Feed</source>
-        <translation>動態消息</translation>
+        <translation>动态</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="415"/>
         <source>Venues</source>
-        <translation>地盤</translation>
+        <translation>地盘</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="420"/>
         <source>Self</source>
-        <translation>個人檔案</translation>
+        <translation>个人</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="426"/>
         <source>LANGUAGE</source>
-        <translation>語言</translation>
+        <translation>语言</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="437"/>
         <source>MAP PROVIDER</source>
-        <translation>圖資提供者</translation>
+        <translation>地图提供商</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="460"/>
@@ -633,7 +632,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="489"/>
         <source>IMAGE LOADING</source>
-        <translation>相片載入</translation>
+        <translation>图片加载</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="508"/>
@@ -643,27 +642,27 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="513"/>
         <source>Cached</source>
-        <translation>已快取的</translation>
+        <translation>缓存</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="519"/>
         <source>INTEGRATION WITH APPS</source>
-        <translation>整合其他 App</translation>
+        <translation>应用程序整合</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="525"/>
         <source>Download MOLO.ME</source>
-        <translation>下載 MOLO.ME</translation>
+        <translation>下载MOLO.ME</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="544"/>
         <source>MOLO.ME Photos</source>
-        <translation>MOLO.ME 的相片</translation>
+        <translation>MOLO.ME图片</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="564"/>
         <source>APPLICATION CACHE</source>
-        <translation>程式快取</translation>
+        <translation>程序缓存</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="572"/>
@@ -673,57 +672,57 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="584"/>
         <source>Size: %1</source>
-        <translation>大小： %1</translation>
+        <translation>大小：%1</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="590"/>
         <source>UI</source>
-        <translation>介面</translation>
+        <translation>界面</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="593"/>
         <source>Reload UI</source>
-        <translation>重載介面</translation>
+        <translation>重载界面</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="599"/>
         <source>AUTHENTICATION</source>
-        <translation>驗證</translation>
+        <translation>账户认证</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="602"/>
         <source>Reset authentication</source>
-        <translation>重新驗證</translation>
+        <translation>重置认证</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="623"/>
         <source>ACCESS RATE LIMIT</source>
-        <translation>存取頻率限制</translation>
+        <translation>访问上限</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="629"/>
         <source>API requests available: %1 / %2</source>
-        <translation>可用 API 請求： %1 / %2</translation>
+        <translation>API可用访问: %1 / %2</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="635"/>
         <source>You are low on X-RATE requests</source>
-        <translation>你所剩的 X-RATE 請求次數不多</translation>
+        <translation>现在你的X-RATE访问请求比较低</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="640"/>
         <source>DEBUG</source>
-        <translation>除錯</translation>
+        <translation>DEBUG</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="643"/>
         <source>Enable debug</source>
-        <translation>啟用除錯</translation>
+        <translation>允许Debug</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="657"/>
         <source>Options will be available soon</source>
-        <translation>此功能會儘快開放</translation>
+        <translation>很快就可以使用此操作</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="672"/>
@@ -733,17 +732,17 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="673"/>
         <source>Theme</source>
-        <translation>佈景主題</translation>
+        <translation>主题</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="674"/>
         <source>Service</source>
-        <translation>服務</translation>
+        <translation>服务</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="675"/>
         <source>Debug</source>
-        <translation>除錯</translation>
+        <translation>D额不过</translation>
     </message>
 </context>
 <context>
@@ -751,12 +750,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="13"/>
         <source>VENUE SPECIALS</source>
-        <translation>專屬地盤</translation>
+        <translation>特殊地盘</translation>
     </message>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="31"/>
         <source>Unlocked!</source>
-        <translation>已解鎖！</translation>
+        <translation>解锁！</translation>
     </message>
 </context>
 <context>
@@ -764,12 +763,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="40"/>
         <source>Write some cool tip here</source>
-        <translation>在這新增些小提示吧</translation>
+        <translation>来，写些酷点的建议呗</translation>
     </message>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="71"/>
         <source>ADD</source>
-        <translation>新增</translation>
+        <translation>添加</translation>
     </message>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="79"/>
@@ -782,22 +781,22 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/TipPage.qml" line="22"/>
         <source>Usefull tip</source>
-        <translation>有用的提示</translation>
+        <translation>有用的建议</translation>
     </message>
     <message>
         <location filename="../qml/pages/TipPage.qml" line="149"/>
         <source>TIP PHOTO</source>
-        <translation>相片提示</translation>
+        <translation>建议的图片</translation>
     </message>
     <message>
         <location filename="../qml/pages/TipPage.qml" line="171"/>
         <source>Save tip</source>
-        <translation>儲存提示</translation>
+        <translation>保存建议</translation>
     </message>
     <message>
         <location filename="../qml/pages/TipPage.qml" line="179"/>
         <source>Mark as done</source>
-        <translation>標示已完成</translation>
+        <translation>标记为已完成</translation>
     </message>
 </context>
 <context>
@@ -805,7 +804,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/TipsList.qml" line="18"/>
         <source>TIPS LIST</source>
-        <translation>提示列表</translation>
+        <translation>建议列表</translation>
     </message>
 </context>
 <context>
@@ -813,12 +812,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/UpdateDialog.qml" line="12"/>
         <source>New update available</source>
-        <translation>有新的更新可用</translation>
+        <translation>有新版本可下载</translation>
     </message>
     <message>
         <location filename="../qml/components/UpdateDialog.qml" line="13"/>
         <source>Version: %1&lt;br&gt;Type: %2&lt;br&gt;Build: %3&lt;br&gt;&lt;br&gt;Changelog: &lt;br&gt;%4</source>
-        <translation>Version: %1&lt;br&gt;Type: %2&lt;br&gt;Build: %3&lt;br&gt;&lt;br&gt;更新紀錄： &lt;br&gt;%4</translation>
+        <translation>版本： %1&lt;br&gt;类型： %2&lt;br&gt;创建： %3&lt;br&gt;&lt;br&gt;更新记录： &lt;br&gt;%4</translation>
     </message>
     <message>
         <location filename="../qml/components/UpdateDialog.qml" line="19"/>
@@ -828,7 +827,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/UpdateDialog.qml" line="20"/>
         <source>No, thanks</source>
-        <translation>不了</translation>
+        <translation>不要，谢谢</translation>
     </message>
 </context>
 <context>
@@ -836,77 +835,77 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/User.qml" line="59"/>
         <source>USER DETAILS</source>
-        <translation>用戶資料</translation>
+        <translation>用户详情</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="270"/>
         <source>Add Friend</source>
-        <translation>家為朋友</translation>
+        <translation>添加好友</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="282"/>
         <source>Approve Friend</source>
-        <translation>加入朋友</translation>
+        <translation>同意添加好友</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="289"/>
         <source>Deny friend</source>
-        <translation>拒絕邀請</translation>
+        <translation>拒绝添加为好友</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="301"/>
         <source>Remove Friend</source>
-        <translation>移除朋友</translation>
+        <translation>删除好友</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="314"/>
         <source>&lt;b&gt;SCORES&lt;/b&gt; (LAST 7 DAYS)</source>
-        <translation>&lt;b&gt;分數&lt;/b&gt; （近七日內）</translation>
+        <translation>&lt;b&gt;得分&lt;/b&gt; (最近七天)</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="319"/>
         <source>BEST SCORE</source>
-        <translation>最佳分數</translation>
+        <translation>最高得分</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="377"/>
         <source>Badges</source>
-        <translation>個徽章</translation>
+        <translation>徽章</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="412"/>
         <source>Checkins</source>
-        <translation>個打卡</translation>
+        <translation>签到</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="447"/>
         <source>Mayorships</source>
-        <translation>個市長</translation>
+        <translation>地主</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="482"/>
         <source>Friends</source>
-        <translation>個朋友</translation>
+        <translation>好友</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="517"/>
         <source>Photos</source>
-        <translation>張相片</translation>
+        <translation>照片</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="553"/>
         <source>Tips</source>
-        <translation>個提示</translation>
+        <translation>建议</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="569"/>
         <source>YOU ARE #</source>
-        <translation>你是第 </translation>
+        <translation>你的排名 #</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="594"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation>&lt;b&gt;%1 分&lt;/b&gt; %2 個打卡</translation>
+        <translation>&lt;b&gt;%1 分&lt;/b&gt; %2 个签到</translation>
     </message>
 </context>
 <context>
@@ -914,17 +913,17 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/UsersList.qml" line="21"/>
         <source>Loading...</source>
-        <translation>載入中...</translation>
+        <translation>载入中。。。</translation>
     </message>
     <message>
         <location filename="../qml/pages/UsersList.qml" line="30"/>
         <source>USER FRIENDS</source>
-        <translation>朋友</translation>
+        <translation>用户好友</translation>
     </message>
     <message>
         <location filename="../qml/pages/UsersList.qml" line="33"/>
         <source>LIKERS LIST</source>
-        <translation>案讚名單</translation>
+        <translation>喜欢列表</translation>
     </message>
 </context>
 <context>
@@ -932,37 +931,37 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Venue.qml" line="143"/>
         <source>VENUE PHOTOS</source>
-        <translation>地盤相片</translation>
+        <translation>图片墙</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="251"/>
         <source>CHECK-IN HERE!</source>
-        <translation>在這打卡！</translation>
+        <translation>在这里签到！</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="273"/>
         <source>Venue doesn&apos;t have mayor yet!</source>
-        <translation>這裡還沒有市長！</translation>
+        <translation>这个地盘还没有地主哟！</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="274"/>
         <source>is the mayor.</source>
-        <translation>是市長。</translation>
+        <translation>是此地地主！</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="274"/>
         <source>It could be you!</source>
-        <translation>還不快搶！</translation>
+        <translation>将会是你的地盘！</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="275"/>
         <source>%1 checkins</source>
-        <translation>%1 打卡</translation>
+        <translation>%1 次签到</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="317"/>
         <source>BEST TIPS</source>
-        <translation>最佳提示</translation>
+        <translation>最佳建议</translation>
     </message>
 </context>
 <context>
@@ -970,7 +969,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="91"/>
         <source>Venue name</source>
-        <translation>地盤名稱</translation>
+        <translation>地盘名字</translation>
     </message>
 </context>
 <context>
@@ -978,7 +977,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/VenueMap.qml" line="186"/>
         <source>GET ROUTE</source>
-        <translation>計算路線</translation>
+        <translation>获取路线</translation>
     </message>
 </context>
 <context>
@@ -986,22 +985,22 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="21"/>
         <source>NEARBY VENUES</source>
-        <translation>附近的地盤</translation>
+        <translation>附近地盘</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="67"/>
         <source>GPS signal is fuzzy, cannot get your location</source>
-        <translation>GPS 訊號太微弱，無法取得你的位置</translation>
+        <translation>GPS信号太差了。无法定位你的位置。</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="96"/>
         <source>Tap to search place...</source>
-        <translation>點擊以搜尋地點...</translation>
+        <translation>点击搜索地盘</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="107"/>
         <source>SEARCH</source>
-        <translation>搜尋</translation>
+        <translation>搜索</translation>
     </message>
 </context>
 <context>
@@ -1009,27 +1008,27 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="29"/>
         <source>Welcome!</source>
-        <translation>歡迎！</translation>
+        <translation>欢迎！</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="46"/>
         <source>Please, login with Foursquare!</source>
-        <translation>請登入 Foursquare ！</translation>
+        <translation>请登陆Foursquare！</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="53"/>
         <source>Login</source>
-        <translation>登入</translation>
+        <translation>登陆</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="67"/>
         <source>Foursquare privacy policy</source>
-        <translation>Foursquare 隱私權政策</translation>
+        <translation>Foursquare 隐私政策</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="81"/>
         <source>Nelisquare privacy policy</source>
-        <translation>Nelisquare 隱私權政策</translation>
+        <translation>Nelisquare 隐私政策</translation>
     </message>
 </context>
 <context>
@@ -1037,22 +1036,22 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/main.qml" line="108"/>
         <source>Location data</source>
-        <translation>訂位資料</translation>
+        <translation>定位数据</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="109"/>
         <source>Nelisquare requires use of user location data. Data is needed to make geo-location services work properly.</source>
-        <translation>Nelisquare 必須使用使用者定位資料以確保定位服務正常工作。</translation>
+        <translation>Nelisquare需要使用用户的位置数据。位置数据要求设备的定位服务工作正常。</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="110"/>
         <source>Allow</source>
-        <translation>允許</translation>
+        <translation>允许</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="111"/>
         <source>Deny</source>
-        <translation>拒絕</translation>
+        <translation>拒绝</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="123"/>
@@ -1062,27 +1061,27 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/main.qml" line="124"/>
         <source>Incoming push notifications are not supported at this version and are disabled by default.&lt;br/&gt;&lt;br/&gt;You will be promted again when they will be available at future versions.</source>
-        <translation>新訊息的推送通知在此版本尚未正式啟用&lt;br/&gt;&lt;br/&gt;當此功能於未來版本啟用時你將會得到通知。</translation>
+        <translation>在这个版本中不支持接收推送通知，默认设置下是禁用的。&lt;br/&gt;&lt;br/&gt;你可以在以后的版本里试试看此功能是否可用。</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="128"/>
         <source>OK</source>
-        <translation>確定</translation>
+        <translation>确定</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="161"/>
         <source>Check updates</source>
-        <translation>檢查更新</translation>
+        <translation>检查更新</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="167"/>
         <source>Settings</source>
-        <translation>設定</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="173"/>
         <source>Exit</source>
-        <translation>離開</translation>
+        <translation>退出</translation>
     </message>
 </context>
 </TS>
