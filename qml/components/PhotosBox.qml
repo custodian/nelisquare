@@ -8,6 +8,7 @@ Item {
     property string caption: qsTr("PHOTOS")
     property int photoSize: 200
     property int fontSize: 20
+    property bool masked: false
 
     property alias photosModel: photosModel
 
@@ -45,6 +46,7 @@ Item {
             photoUrl: model.photoThumb
             photoCache: true
             photoSize: photosBoxComponent.photoSize
+            masked: photosBoxComponent.masked
             //photoAspect: Image.PreserveAspectCrop
             //enableMouseArea: false
             onClicked: {

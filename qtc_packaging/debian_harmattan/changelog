@@ -7,7 +7,7 @@ nelisquare (0.5.1) stable; urgency=low
   * Delete-events at feed
   * Bug fixes
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 24 Jun 2013 01:07:50 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 28 Jun 2013 12:38:22 +0400
 
 nelisquare (0.5.0) stable; urgency=low
   * Specials support

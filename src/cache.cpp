@@ -201,16 +201,18 @@ void Cache::makeCallbackAll(bool status, QVariant url)
         return;
     }
     QString namelocal = makeCachedURL(url.toString());
-    CCallbackList &callbacks = *it;
+    CCallbackList callbacks = *it; //Make a copy of list
+    m_cachequeue_lock.unlock();
+    m_cachequeue_lock.lockForWrite();
+    m_cachequeue.remove(url.toString());
+    m_cachequeue_lock.unlock();
+
+    //Make callbacks
     CCallbackList::iterator itc = callbacks.begin();
     while(itc!=callbacks.end()) {
         makeCallback(*itc,status,namelocal);
         itc++;
     }
-    m_cachequeue_lock.unlock();
-    m_cachequeue_lock.lockForWrite();
-    m_cachequeue.remove(url.toString());
-    m_cachequeue_lock.unlock();
 }
 
 void Cache::makeCallback(QVariant callback, bool status, QVariant url)

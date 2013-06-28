@@ -300,6 +300,7 @@ PageWrapper {
                 PhotosBox {
                     id: usersBox
                     photoSize: 64
+                    masked: true
                     onItemSelected: {
                         place.user(object)
                     }

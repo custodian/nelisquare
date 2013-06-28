@@ -14,7 +14,7 @@ Page {
     property alias pagetop: pageHeader.bottom
 
     tools : commonTools
-    property Menu pageMenu: defaultMenu
+    property QtObject pageMenu: defaultMenu
     property alias headerText: pageHeader.headerText
     property alias headerIcon: pageHeader.headerIcon
     property alias headerBubble: pageHeader.countBubbleVisible
