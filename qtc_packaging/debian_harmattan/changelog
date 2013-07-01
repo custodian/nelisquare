@@ -1,3 +1,9 @@
+nelisquare (0.5.2) stable; urgency=low
+  * Minor ui improvements
+  * Aggregated like, install, save events added
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 28 Jun 2013 16:30:29 +0400
+
 nelisquare (0.5.1) stable; urgency=low
   * User avatar upload
   * Venue add function

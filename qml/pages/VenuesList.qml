@@ -45,9 +45,9 @@ PageWrapper {
         page.addVenue.connect(function(){
             stack.push(Qt.resolvedUrl("VenueAdd.qml"),{"venueID":""});
         });
-        update();
+        updateView();
     }
-    function update() {
+    function updateView() {
         updateTimer.start();
     }
 

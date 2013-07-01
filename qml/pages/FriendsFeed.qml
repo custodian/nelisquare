@@ -137,7 +137,7 @@ PageWrapper {
     }
 
     //TODO: make some new name for that func
-    function scrollTop() {
+    function updateView() {
         friendsCheckinsView.positionViewAtBeginning();
     }
 

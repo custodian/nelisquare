@@ -250,8 +250,8 @@ PageStackWindow {
     function popToTop(tab) {
         if (tabgroup.lastTab === tab) {
             if (tab.depth === 1) {
-                if (tab.currentPage.scrollTop !== undefined)
-                    tab.currentPage.scrollTop();
+                if (tab.currentPage.updateView !== undefined)
+                    tab.currentPage.updateView();
             } else {
                 while (tab.depth > 1) {
                     tab.pop(tab.depth > 2);

@@ -194,10 +194,19 @@ feed.parseFriendsFeed = function(response, page, history) {
             } else if (like.type === "pageUpdate") {
                 feed.feedObjParserLikePageUpdate(page, object);
             } else if (like.type === "aggregation"){
-                object.content.object.items.forEach(function(item) {
-                    object.content = item;
+                feed.log("LIKE AGGREGATION");
+                feed.debug(function(){return "LIKE VALUE: " + JSON.stringify(object)});
+                if (object.content.object.groupContent !== undefined) {
+                    //Multiple users, same item
+                    object.content = object.content.object.groupContent;
                     feedObjParser(object);
-                });
+                } else {
+                    //One user multiple items
+                    object.content.object.items.forEach(function(item) {
+                        object.content = item;
+                        feedObjParser(object);
+                    });
+                }
             } else {
                 feed.log("LIKE TYPE: " + like.type);
                 feed.debug(function(){return "LIKE VALUE: " + JSON.stringify(object)});
@@ -218,10 +227,17 @@ feed.parseFriendsFeed = function(response, page, history) {
                     feed.feedObjParserUnknown(page, object);
                 }
             } else if (save.type === "aggregation"){
-                object.content.object.items.forEach(function(item) {
-                    object.content = item;
+                if (object.content.object.groupContent !== undefined) {
+                    //Multiple users, same item
+                    object.content = object.content.object.groupContent;
                     feedObjParser(object);
-                });
+                } else {
+                    //One user multiple items
+                    object.content.object.items.forEach(function(item) {
+                        object.content = item;
+                        feedObjParser(object);
+                    });
+                }
             } else {
                 feed.log("SAVE TYPE: " + save.type);
                 feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});
@@ -232,10 +248,17 @@ feed.parseFriendsFeed = function(response, page, history) {
             if (install.type === "plugin") {
                 feed.feedObjParserInstallPlugin(page, object);
             } else if (install.type === "aggregation") {
-                object.content.object.items.forEach(function(item) {
-                    object.content = item;
+                if (object.content.object.groupContent !== undefined) {
+                    //Multiple users, same item
+                    object.content = object.content.object.groupContent;
                     feedObjParser(object);
-                });
+                } else {
+                    //One user multiple items
+                    object.content.object.items.forEach(function(item) {
+                        object.content = item;
+                        feedObjParser(object);
+                    });
+                }
             } else {
                 feed.log("INSTALL TYPE: " + install.type);
                 feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});

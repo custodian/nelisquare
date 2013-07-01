@@ -154,7 +154,11 @@ PageWrapper {
                 "owner": page
             }});
         });
-        Api.users.loadUser(page,userID);
+        updateView();
+    }
+
+    function updateView() {
+        Api.users.loadUser(details,userID);
     }
 
     Component.onCompleted: {
