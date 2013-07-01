@@ -34,6 +34,13 @@ PageStackWindow {
             timerGPSUnlock.stop();
             positionSource.active = windowActive;
         }
+    }    
+
+    Component.onCompleted: {
+        if ( configuration.platform === "maemo") {
+            appWindow.allowSwitch  = false;
+            appWindow.allowClose = false;
+        }
     }
 
     initialPage: mainPage

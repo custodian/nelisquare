@@ -98,6 +98,11 @@ Item {
             configuration.mapprovider = value;
         } else if (key === "settings.checkupdates") {
             if (value === "") value = "stable";
+            //dbg for 2-3 beta builds
+            if (value === "developer") {
+                value = "beta";
+                settingChanged(key,value);
+            }
             configuration.checkupdates = value;
         } else if (key === "settings.molome") {
             //TODO: make install/uninstall (first see) notification enable
@@ -197,7 +202,7 @@ Item {
 
     function onUpdateAvailable(build, version, changelog, url) {
         var update = false;
-        if (checkupdates == "developer") {
+        if (checkupdates == "beta") {
             if (build > BuildInfo.build) {
                 update = true;
             }

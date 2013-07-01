@@ -227,17 +227,21 @@ feed.parseFriendsFeed = function(response, page, history) {
                     feed.feedObjParserUnknown(page, object);
                 }
             } else if (save.type === "aggregation"){
+                feed.log("SAVE AGGREGATION");
+                feed.debug(function(){ return "SAVE OBJECT: " + JSON.stringify(object);});
+                /*
+                //disabled until aggregation items will be added
                 if (object.content.object.groupContent !== undefined) {
                     //Multiple users, same item
                     object.content = object.content.object.groupContent;
                     feedObjParser(object);
-                } else {
+                } else {*/
                     //One user multiple items
                     object.content.object.items.forEach(function(item) {
                         object.content = item;
                         feedObjParser(object);
                     });
-                }
+                //}
             } else {
                 feed.log("SAVE TYPE: " + save.type);
                 feed.debug(function(){return "SAVE VALUE: " + JSON.stringify(object)});

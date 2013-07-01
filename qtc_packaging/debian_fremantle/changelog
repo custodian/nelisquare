@@ -1,10 +1,12 @@
-nelisquare (0.5.2) stable; urgency=low
-  * Umm, just version bump :p
+nelisquare (0.5.2.0) stable; urgency=low
+  * Minor ui improvements
+  * Aggregated like, install, save events added
+  * Layout buttons fixed
 
- -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 28 Jun 2013 16:30:29 +0400
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Mon, 01 Jul 2013 22:49:34 +0400
 
 nelisquare (0.5.1.2) stable; urgency=low
-  * Bug fix: hand
+  * Bug fix: hang
   * UI improvements
 
  -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 28 Jun 2013 12:38:22 +0400

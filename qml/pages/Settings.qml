@@ -174,7 +174,7 @@ PageWrapper {
                             case "stable":
                                 checkedButton = btnUpdateStable;
                                 break;
-                            case "developer":
+                            case "beta":
                                 checkedButton = btnUpdateBeta;
                                 break;
                             case "alpha":
@@ -197,7 +197,7 @@ PageWrapper {
                     Button{
                         id: btnUpdateBeta
                         text: qsTr("Beta")
-                        onClicked: settingsChanged("checkupdates","developer")
+                        onClicked: settingsChanged("checkupdates","beta")
                     }
 
                     Button{
