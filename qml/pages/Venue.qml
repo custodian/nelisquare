@@ -212,7 +212,7 @@ PageWrapper {
         contentWidth: parent.width
         height: place.height - y
 
-        clip: true
+        //DBG clip: true
         flickableDirection: Flickable.VerticalFlick
         boundsBehavior: Flickable.StopAtBounds
         pressDelay: 100

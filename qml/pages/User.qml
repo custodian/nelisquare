@@ -201,7 +201,7 @@ PageWrapper {
         contentWidth: parent.width
         height: details.height - y
 
-        clip: true
+        //DBG clip: true
         flickableDirection: Flickable.VerticalFlick
         boundsBehavior: Flickable.StopAtBounds
         pressDelay: 100
@@ -608,7 +608,7 @@ PageWrapper {
                 model: boardModel
                 width: parent.width
                 delegate: leaderBoardDelegate
-                clip: true
+                //DBG clip: true
                 visible: userRelationship == "self" && userLeadersboardRank > 0
             }
 

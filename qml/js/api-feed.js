@@ -105,6 +105,8 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                         //do nothing, just skip that.
                     } else if (del.type === "checkin") {
                         page.deleteItem(del.id);
+                    } else if (del.type === "tip") {
+                        page.deleteItem(del.id);
                     } else if (del.type === "activity"){
                         page.deleteItem(del.id);
                     } else {

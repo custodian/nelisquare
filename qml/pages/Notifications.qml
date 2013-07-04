@@ -105,7 +105,7 @@ PageWrapper {
         delegate: notificationDelegate
         spacing: 10
         //highlightFollowsCurrentItem: true
-        clip: true
+        //DBG clip: true
     }
 
     ScrollDecorator{ flickableItem: notificationRepeater }

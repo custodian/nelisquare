@@ -39,12 +39,11 @@ Item {
 
     id: eventItem
     width: parent.width
-    height: titleContainer.height + 2
+    height: titleContainer.height
 
     Rectangle {
         id: titleContainer
         color: mouseArea.pressed || highlight ? mytheme.colors.backgroundSand : mytheme.colors.backgroundMain
-        y: 1
         width: parent.width
         height: 10 + (showText ? Math.max(statusTextArea.height,profileImage.height) : profileImage.height)
 
@@ -60,13 +59,18 @@ Item {
         Column {
             id: statusTextArea
             spacing: 4
-            x: profileImage.width + 12
-            y: 4
-            width: parent.width - x - 12
+            anchors {
+                left: profileImage.right
+                leftMargin: 12
+                right: parent.right
+                rightMargin: 12
+                top: parent.top
+                topMargin: 4
+            }
 
             Row {
                 width: parent.width
-                spacing: userMayor?5:0
+                spacing: userMayor ? 5 : 0
 
                 CacheImage {
                     id: mayorImage

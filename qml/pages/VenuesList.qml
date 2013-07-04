@@ -177,7 +177,7 @@ PageWrapper {
         model: placesModel
         delegate: venuesListDelegate
         //highlightFollowsCurrentItem: true
-        clip: true
+        //DBG clip: true
         cacheBuffer: 400
         spacing: 5
 

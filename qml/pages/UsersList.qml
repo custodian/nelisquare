@@ -51,7 +51,7 @@ PageWrapper {
         width: parent.width
         height: parent.height - y
         delegate: usersDelegate
-        clip: true
+        //DBG clip: true
     }
 
     ScrollDecorator{ flickableItem: listViewUsers }

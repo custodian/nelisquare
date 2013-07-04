@@ -208,7 +208,7 @@ PageWrapper {
         height: parent.height - y
         delegate: friendsFeedDelegate
         //highlightFollowsCurrentItem: true
-        //clip: true
+        ////DBG clip: true
         cacheBuffer: 400
         spacing: 10
 

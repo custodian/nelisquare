@@ -38,7 +38,7 @@ PageWrapper {
             left: parent.left
             right: parent.right
         }
-        clip: true
+        //DBG clip: true
 
         cellWidth: parent.width/3
         cellHeight: cellWidth
