@@ -82,7 +82,7 @@ PageWrapper {
         width: parent.width
 
         contentWidth: imageContainer.width; contentHeight: imageContainer.height
-        //DBG clip: true
+        clip: true
         onHeightChanged: if (fullImage.status === Image.Ready) fullImage.fitToScreen()
 
         Item {

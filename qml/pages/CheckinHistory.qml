@@ -54,7 +54,7 @@ PageWrapper {
         height: parent.height - y
         delegate: checkinHistoryDelegate
         //highlightFollowsCurrentItem: true
-        ////DBG clip: true
+        clip: true
         cacheBuffer: 400
 
         footer: Column{

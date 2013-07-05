@@ -33,7 +33,7 @@ Item {
             orientation: ListView.Horizontal
             boundsBehavior: ListView.StopAtBounds
             spacing: 5
-            //DBG clip: true
+            clip: true
             model: photosModel
             delegate: photoDelegate
         }

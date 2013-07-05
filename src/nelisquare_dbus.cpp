@@ -26,8 +26,8 @@ NelisquareDbus::NelisquareDbus(QApplication *parent, QDeclarativeView *view) :
 void NelisquareDbus::top_application() {
     m_view->show();
     m_view->activateWindow();
-    //TODO: BUG: process killed when event emited
-    //emit processURI(QVariant("nelisquare://start/top"));
+    //TODO: //BUG: process killed when event emited
+    //emit processURI(QVariant("start/top"));
 }
 
 void NelisquareDbus::loadURI(const QStringList &url)

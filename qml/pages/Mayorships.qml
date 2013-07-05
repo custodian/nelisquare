@@ -44,7 +44,7 @@ PageWrapper {
         height: parent.height - y
         delegate: mayorshipsDelegate
         //highlightFollowsCurrentItem: true
-        //DBG clip: true
+        clip: true
     }
 
     ScrollDecorator{ flickableItem: listViewMayorships }
