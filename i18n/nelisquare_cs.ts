@@ -15,17 +15,17 @@
         <translation>DETAILY CHECK-INU</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="223"/>
+        <location filename="../qml/pages/Checkin.qml" line="222"/>
         <source>TOTAL POINTS</source>
         <translation>VŠECHNY BODY</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="261"/>
+        <location filename="../qml/pages/Checkin.qml" line="260"/>
         <source>EARNED BADGES</source>
         <translation>ZÍSKANÉ ODZNAKY</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Checkin.qml" line="283"/>
+        <location filename="../qml/pages/Checkin.qml" line="282"/>
         <source>COMMENTS</source>
         <translation>KOMENTÁŘE</translation>
     </message>
@@ -164,27 +164,27 @@ Můžete pomoci s řešením.</translation>
         <translation>KANÁL PŘÁTEL</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="221"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="229"/>
         <source>RECENT</source>
         <translation>NEDÁVNÉ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="234"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="242"/>
         <source>NEARBY</source>
         <translation>POBLÍŽ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="255"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="263"/>
         <source>Load More</source>
         <translation>Načíst další</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="402"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="410"/>
         <source>Sorry, Pages are not supported yet :(</source>
         <translation>Bohužel, Stránky ještě nejsou podporované :(</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FriendsFeed.qml" line="472"/>
+        <location filename="../qml/pages/FriendsFeed.qml" line="480"/>
         <source>Sorry, no lists support yet :(</source>
         <translation>Bohužel, seznamy ještě nejsou podporované :(</translation>
     </message>
@@ -193,8 +193,8 @@ Můžete pomoci s řešením.</translation>
     <name>LeaderBoard</name>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="19"/>
-        <source>YOU ARE #</source>
-        <translation>JSTE #</translation>
+        <source>YOU ARE #%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="63"/>
@@ -226,9 +226,19 @@ Můžete pomoci s řešením.</translation>
 <context>
     <name>Login24sq</name>
     <message>
-        <location filename="../qml/pages/Login24sq.qml" line="42"/>
+        <location filename="../qml/pages/Login24sq.qml" line="15"/>
         <source>Sign In to Foursquare</source>
         <translation>Přihlásit se do Foursquare</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/Login24sq.qml" line="41"/>
+        <source>Exit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/Login24sq.qml" line="59"/>
+        <source>Error connecting to Foursquare site</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -260,7 +270,7 @@ Můžete pomoci s řešením.</translation>
         <translation>Označit vše jako přečtené</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Notifications.qml" line="58"/>
+        <location filename="../qml/pages/Notifications.qml" line="61"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
@@ -268,17 +278,17 @@ Můžete pomoci s řešením.</translation>
 <context>
     <name>PageWrapper</name>
     <message>
-        <location filename="../qml/components/PageWrapper.qml" line="88"/>
+        <location filename="../qml/components/PageWrapper.qml" line="101"/>
         <source>Check updates</source>
         <translation>Zkontrolovat nové verze</translation>
     </message>
     <message>
-        <location filename="../qml/components/PageWrapper.qml" line="94"/>
+        <location filename="../qml/components/PageWrapper.qml" line="107"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../qml/components/PageWrapper.qml" line="100"/>
+        <location filename="../qml/components/PageWrapper.qml" line="113"/>
         <source>Exit</source>
         <translation>Ukončit</translation>
     </message>
@@ -290,18 +300,33 @@ Můžete pomoci s řešením.</translation>
         <source>PHOTO</source>
         <translation>FOTKA</translation>
     </message>
+    <message>
+        <location filename="../qml/pages/Photo.qml" line="45"/>
+        <source>You cannot save image until download is finished</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/Photo.qml" line="49"/>
+        <source>Image saved to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/Photo.qml" line="51"/>
+        <source>Failed to save image</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>PhotoAdd</name>
     <message>
-        <location filename="../qml/pages/PhotoAdd.qml" line="18"/>
+        <location filename="../qml/pages/PhotoAdd.qml" line="19"/>
         <source>Select photo for upload</source>
         <translation>Vyberte obrázek k nahrání</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PhotoAdd.qml" line="56"/>
-        <source>Error uploading photo!</source>
-        <translation>Chyba při nahrávání obrázku</translation>
+        <location filename="../qml/pages/PhotoAdd.qml" line="60"/>
+        <source>Error uploading photo!&lt;br&gt;Photo size should be less than %1KB</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -317,22 +342,22 @@ Můžete pomoci s řešením.</translation>
         <translation>NAHRÁVÁNÍ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PhotoShareDialog.qml" line="86"/>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="91"/>
         <source>Sharing options</source>
         <translation>Možnosti sdílení</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PhotoShareDialog.qml" line="90"/>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="95"/>
         <source>Public</source>
         <translation>Veřejné</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PhotoShareDialog.qml" line="97"/>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="102"/>
         <source>Post to Facebook</source>
         <translation>Sdílet na Facebooku</translation>
     </message>
     <message>
-        <location filename="../qml/pages/PhotoShareDialog.qml" line="104"/>
+        <location filename="../qml/pages/PhotoShareDialog.qml" line="109"/>
         <source>Post to Twitter</source>
         <translation>Sdílet na Twitteru</translation>
     </message>
@@ -379,369 +404,369 @@ Můžete pomoci s řešením.</translation>
         <translation>NASTAVENÍ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="53"/>
+        <location filename="../qml/pages/Settings.qml" line="55"/>
         <source>2012-2013 Basil Semuonov</source>
         <translation>2012-2013 Basil Semuonov</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="54"/>
+        <location filename="../qml/pages/Settings.qml" line="56"/>
         <source>Idea by Tommi Laukkanen</source>
         <translation>Napád od Tommiho Laukkanena</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="55"/>
+        <location filename="../qml/pages/Settings.qml" line="57"/>
         <source>Shout out to @knobtviker</source>
         <translation>Ozvěte se na @knobtviker</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="56"/>
+        <location filename="../qml/pages/Settings.qml" line="58"/>
         <source>Design by Kim Venetvirta</source>
         <translation>Design od Kima Venetvirta</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="57"/>
+        <location filename="../qml/pages/Settings.qml" line="59"/>
         <source>If any problems, tweet @basil_s</source>
         <translation>Při potížích tweetujte na @basil_s</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="58"/>
+        <location filename="../qml/pages/Settings.qml" line="60"/>
         <source>Version</source>
         <translation>Verze</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="60"/>
+        <location filename="../qml/pages/Settings.qml" line="62"/>
         <source>Build</source>
         <translation>Sestavení</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="62"/>
+        <location filename="../qml/pages/Settings.qml" line="64"/>
         <source>Powered by Foursquare</source>
         <translation>Poháněno Foursquare</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="64"/>
+        <location filename="../qml/pages/Settings.qml" line="66"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="70"/>
-        <location filename="../qml/pages/Settings.qml" line="115"/>
+        <location filename="../qml/pages/Settings.qml" line="72"/>
+        <location filename="../qml/pages/Settings.qml" line="117"/>
         <source>Reset settings</source>
         <translation>Obnovit nastavení</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="71"/>
+        <location filename="../qml/pages/Settings.qml" line="73"/>
         <source>This action will erase all data including auth token, application settings and cache.</source>
         <translation>Tato volba vymaže veškerá data, včetně přihlašovací tokenu, nastavení a cache</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="72"/>
+        <location filename="../qml/pages/Settings.qml" line="74"/>
         <source>Yes, clear the data</source>
         <translation>Ano, vymazat data</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="73"/>
+        <location filename="../qml/pages/Settings.qml" line="75"/>
         <source>No, thanks</source>
         <translation>Ne, děkuji</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="81"/>
+        <location filename="../qml/pages/Settings.qml" line="83"/>
         <source>Language</source>
         <translation>Jazyk</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="109"/>
+        <location filename="../qml/pages/Settings.qml" line="111"/>
         <source>Notifications</source>
         <translation>Upozornění</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="161"/>
+        <location filename="../qml/pages/Settings.qml" line="163"/>
         <source>UPDATES CHECK</source>
         <translation>KONTROLA NOVÉ VERZE</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="186"/>
+        <location filename="../qml/pages/Settings.qml" line="188"/>
         <source>None</source>
         <translation>Žádná</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="192"/>
+        <location filename="../qml/pages/Settings.qml" line="194"/>
         <source>Stable</source>
         <translation>Stabilní</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="197"/>
+        <location filename="../qml/pages/Settings.qml" line="199"/>
         <source>Beta</source>
         <translation>Beta</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="203"/>
+        <location filename="../qml/pages/Settings.qml" line="205"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="209"/>
+        <location filename="../qml/pages/Settings.qml" line="211"/>
         <source>INTERVALS</source>
         <translation>INTERVALY</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="213"/>
+        <location filename="../qml/pages/Settings.qml" line="215"/>
         <source>GPS Unlock timeout</source>
         <translation>Časový limit odemčení GPS</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="214"/>
+        <location filename="../qml/pages/Settings.qml" line="216"/>
         <source>Instant</source>
         <translation>Ihned</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="214"/>
+        <location filename="../qml/pages/Settings.qml" line="216"/>
         <source>%1 secs(s)</source>
         <translation>%1 s</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="214"/>
-        <location filename="../qml/pages/Settings.qml" line="223"/>
+        <location filename="../qml/pages/Settings.qml" line="216"/>
+        <location filename="../qml/pages/Settings.qml" line="225"/>
         <source>Disabled</source>
         <translation>Vypnuto</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="222"/>
+        <location filename="../qml/pages/Settings.qml" line="224"/>
         <source>Feed autoupdate time</source>
         <translation>Čas automatické aktualizace kanálu</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="223"/>
+        <location filename="../qml/pages/Settings.qml" line="225"/>
         <source>Off</source>
         <translation>Vypnuto</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="223"/>
+        <location filename="../qml/pages/Settings.qml" line="225"/>
         <source>%1 min(s)</source>
         <translation>%1 min</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="231"/>
+        <location filename="../qml/pages/Settings.qml" line="233"/>
         <source>PERMISSIONS</source>
         <translation>OPRÁVNĚNÍ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="234"/>
+        <location filename="../qml/pages/Settings.qml" line="236"/>
         <source>Allow use of Location Data</source>
         <translation>Povolit použití lokalizace</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="242"/>
+        <location filename="../qml/pages/Settings.qml" line="244"/>
         <source>Always run in background</source>
         <translation>Vždy nechat běžet na pozadí</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="250"/>
+        <location filename="../qml/pages/Settings.qml" line="252"/>
         <source>Enable notifications</source>
         <translation>Povolit upozornění</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="258"/>
+        <location filename="../qml/pages/Settings.qml" line="260"/>
         <source>Feed at Home screen</source>
         <translation>Kanál na Domovské stránce</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="266"/>
+        <location filename="../qml/pages/Settings.qml" line="268"/>
         <source>Push notifications</source>
         <translation>Přímá upozornění</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="317"/>
+        <location filename="../qml/pages/Settings.qml" line="319"/>
         <source>COLOR THEME</source>
         <translation>BAREVNÉ TÉMA</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="336"/>
+        <location filename="../qml/pages/Settings.qml" line="338"/>
         <source>Light</source>
         <translation>Světlé</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="342"/>
+        <location filename="../qml/pages/Settings.qml" line="347"/>
         <source>Dark</source>
         <translation>Tmavé</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="348"/>
+        <location filename="../qml/pages/Settings.qml" line="356"/>
         <source>SCREEN ORIENTATION</source>
         <translation>ROTACE DISPLEJE</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="370"/>
+        <location filename="../qml/pages/Settings.qml" line="378"/>
         <source>Auto</source>
         <translation>Automaticky</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="376"/>
+        <location filename="../qml/pages/Settings.qml" line="384"/>
         <source>Landscape</source>
         <translation>Na šířku</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="381"/>
+        <location filename="../qml/pages/Settings.qml" line="389"/>
         <source>Portrait</source>
         <translation>Na výšku</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="387"/>
+        <location filename="../qml/pages/Settings.qml" line="395"/>
         <source>STARTUP PAGE</source>
         <translation>STRÁNKA PŘI SPUŠTĚNÍ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="409"/>
+        <location filename="../qml/pages/Settings.qml" line="417"/>
         <source>Feed</source>
         <translation>Kanál</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="415"/>
+        <location filename="../qml/pages/Settings.qml" line="423"/>
         <source>Venues</source>
         <translation>Podniky</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="420"/>
+        <location filename="../qml/pages/Settings.qml" line="428"/>
         <source>Self</source>
         <translation>Vlastní</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="426"/>
+        <location filename="../qml/pages/Settings.qml" line="434"/>
         <source>LANGUAGE</source>
         <translation>JAZYK</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="437"/>
+        <location filename="../qml/pages/Settings.qml" line="445"/>
         <source>MAP PROVIDER</source>
         <translation>POSKYTOVATEL MAP</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="460"/>
+        <location filename="../qml/pages/Settings.qml" line="468"/>
         <source>Nokia</source>
         <translation>Nokia</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="466"/>
+        <location filename="../qml/pages/Settings.qml" line="474"/>
         <source>Google</source>
         <translation>Google</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="471"/>
+        <location filename="../qml/pages/Settings.qml" line="479"/>
         <source>OSM</source>
         <translation>OSM</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="489"/>
+        <location filename="../qml/pages/Settings.qml" line="497"/>
         <source>IMAGE LOADING</source>
         <translation>NAČÍTÁNÍ OBRÁZKŮ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="508"/>
+        <location filename="../qml/pages/Settings.qml" line="516"/>
         <source>All</source>
         <translation>Vše</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="513"/>
+        <location filename="../qml/pages/Settings.qml" line="521"/>
         <source>Cached</source>
         <translation>Načtené</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="519"/>
+        <location filename="../qml/pages/Settings.qml" line="527"/>
         <source>INTEGRATION WITH APPS</source>
         <translation>INTEGRACE S APLIKACEMI</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="525"/>
+        <location filename="../qml/pages/Settings.qml" line="533"/>
         <source>Download MOLO.ME</source>
         <translation>Stáhnout MOLO.ME</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="544"/>
+        <location filename="../qml/pages/Settings.qml" line="552"/>
         <source>MOLO.ME Photos</source>
         <translation>Fotografie MOLO.ME</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="564"/>
+        <location filename="../qml/pages/Settings.qml" line="572"/>
         <source>APPLICATION CACHE</source>
         <translation>CACHE APLIKACE</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="572"/>
+        <location filename="../qml/pages/Settings.qml" line="580"/>
         <source>Clear</source>
         <translation>Vymazat</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="584"/>
+        <location filename="../qml/pages/Settings.qml" line="592"/>
         <source>Size: %1</source>
         <translation>Velikost: %1</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="590"/>
+        <location filename="../qml/pages/Settings.qml" line="598"/>
         <source>UI</source>
         <translation>UI</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="593"/>
+        <location filename="../qml/pages/Settings.qml" line="601"/>
         <source>Reload UI</source>
         <translation>Znovu nahrát UI</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="599"/>
+        <location filename="../qml/pages/Settings.qml" line="607"/>
         <source>AUTHENTICATION</source>
         <translation>PŘIHLÁŠENÍ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="602"/>
+        <location filename="../qml/pages/Settings.qml" line="610"/>
         <source>Reset authentication</source>
         <translation>Obnovit přihlášení</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="623"/>
+        <location filename="../qml/pages/Settings.qml" line="631"/>
         <source>ACCESS RATE LIMIT</source>
         <translation>LIMIT PŘÍSTUPŮ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="629"/>
+        <location filename="../qml/pages/Settings.qml" line="637"/>
         <source>API requests available: %1 / %2</source>
         <translation>Zbývající API požadavky: %1 / %2</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="635"/>
+        <location filename="../qml/pages/Settings.qml" line="643"/>
         <source>You are low on X-RATE requests</source>
         <translation>Zbývá málo X-RATE požadavkůů</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="640"/>
+        <location filename="../qml/pages/Settings.qml" line="648"/>
         <source>DEBUG</source>
         <translation>CHYBOVÁ HLÁŠENÍ</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="643"/>
+        <location filename="../qml/pages/Settings.qml" line="651"/>
         <source>Enable debug</source>
         <translation>Povolit chybová hlášení</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="657"/>
+        <location filename="../qml/pages/Settings.qml" line="665"/>
         <source>Options will be available soon</source>
         <translation>Možnosti budou brzy dostupné</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="672"/>
+        <location filename="../qml/pages/Settings.qml" line="680"/>
         <source>General</source>
         <translation>Obecné</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="673"/>
+        <location filename="../qml/pages/Settings.qml" line="681"/>
         <source>Theme</source>
         <translation>Vzhled</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="674"/>
+        <location filename="../qml/pages/Settings.qml" line="682"/>
         <source>Service</source>
         <translation>Služby</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Settings.qml" line="675"/>
+        <location filename="../qml/pages/Settings.qml" line="683"/>
         <source>Debug</source>
         <translation>Chyby</translation>
     </message>
@@ -785,17 +810,17 @@ Můžete pomoci s řešením.</translation>
         <translation>Užitečný tip</translation>
     </message>
     <message>
-        <location filename="../qml/pages/TipPage.qml" line="149"/>
+        <location filename="../qml/pages/TipPage.qml" line="148"/>
         <source>TIP PHOTO</source>
         <translation>TIP NA FOTO</translation>
     </message>
     <message>
-        <location filename="../qml/pages/TipPage.qml" line="171"/>
+        <location filename="../qml/pages/TipPage.qml" line="170"/>
         <source>Save tip</source>
         <translation>Uložit tip</translation>
     </message>
     <message>
-        <location filename="../qml/pages/TipPage.qml" line="179"/>
+        <location filename="../qml/pages/TipPage.qml" line="178"/>
         <source>Mark as done</source>
         <translation>Označit jako hotové</translation>
     </message>
@@ -834,77 +859,97 @@ Můžete pomoci s řešením.</translation>
 <context>
     <name>User</name>
     <message>
-        <location filename="../qml/pages/User.qml" line="59"/>
+        <location filename="../qml/pages/User.qml" line="60"/>
         <source>USER DETAILS</source>
         <translation>DETAILY UŽIVATELE</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="270"/>
+        <location filename="../qml/pages/User.qml" line="69"/>
+        <source>Change avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/User.qml" line="77"/>
+        <source>User lists</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/User.qml" line="85"/>
+        <source>Settings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/User.qml" line="91"/>
+        <source>Exit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/User.qml" line="303"/>
         <source>Add Friend</source>
         <translation>Přidat Přítele</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="282"/>
+        <location filename="../qml/pages/User.qml" line="315"/>
         <source>Approve Friend</source>
         <translation>Potvrdit Přítele</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="289"/>
+        <location filename="../qml/pages/User.qml" line="322"/>
         <source>Deny friend</source>
         <translation>Odmítnout Přítele</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="301"/>
+        <location filename="../qml/pages/User.qml" line="334"/>
         <source>Remove Friend</source>
         <translation>Odstranit Přítele</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="314"/>
+        <location filename="../qml/pages/User.qml" line="347"/>
         <source>&lt;b&gt;SCORES&lt;/b&gt; (LAST 7 DAYS)</source>
         <translation>&lt;b&gt;SKÓRE&lt;/b&gt; (POSLEDNÍ TÝDEN)</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="319"/>
+        <location filename="../qml/pages/User.qml" line="352"/>
         <source>BEST SCORE</source>
         <translation>NEJLEPŠÍ SKÓRE</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="377"/>
+        <location filename="../qml/pages/User.qml" line="410"/>
         <source>Badges</source>
         <translation>Odznaky</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="412"/>
+        <location filename="../qml/pages/User.qml" line="445"/>
         <source>Checkins</source>
         <translation>Checkiny</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="447"/>
+        <location filename="../qml/pages/User.qml" line="480"/>
         <source>Mayorships</source>
         <translation>Starostou</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="482"/>
+        <location filename="../qml/pages/User.qml" line="515"/>
         <source>Friends</source>
         <translation>Přátelé</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="517"/>
+        <location filename="../qml/pages/User.qml" line="550"/>
         <source>Photos</source>
         <translation>Fotky</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="553"/>
+        <location filename="../qml/pages/User.qml" line="586"/>
         <source>Tips</source>
         <translation>Tipy</translation>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="569"/>
-        <source>YOU ARE #</source>
-        <translation>JSTE #</translation>
+        <location filename="../qml/pages/User.qml" line="602"/>
+        <source>YOU ARE #%1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qml/pages/User.qml" line="594"/>
+        <location filename="../qml/pages/User.qml" line="627"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
         <translation>&lt;b&gt;%1 bodů&lt;/b&gt; %2 checkinů</translation>
     </message>
@@ -930,32 +975,32 @@ Můžete pomoci s řešením.</translation>
 <context>
     <name>Venue</name>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="143"/>
+        <location filename="../qml/pages/Venue.qml" line="142"/>
         <source>VENUE PHOTOS</source>
         <translation>FOTKY PODNIKU</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="251"/>
+        <location filename="../qml/pages/Venue.qml" line="250"/>
         <source>CHECK-IN HERE!</source>
         <translation>CHECK-IN ZDE!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="273"/>
+        <location filename="../qml/pages/Venue.qml" line="272"/>
         <source>Venue doesn&apos;t have mayor yet!</source>
         <translation>Tento podnik ještě nemá starostu!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="274"/>
+        <location filename="../qml/pages/Venue.qml" line="273"/>
         <source>is the mayor.</source>
         <translation>je starostou.</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="274"/>
+        <location filename="../qml/pages/Venue.qml" line="273"/>
         <source>It could be you!</source>
         <translation>Můžete to být vy!</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Venue.qml" line="275"/>
+        <location filename="../qml/pages/Venue.qml" line="274"/>
         <source>%1 checkins</source>
         <translation>%1 checkinů</translation>
     </message>
@@ -968,15 +1013,90 @@ Můžete pomoci s řešením.</translation>
 <context>
     <name>VenueAdd</name>
     <message>
-        <location filename="../qml/pages/VenueAdd.qml" line="91"/>
-        <source>Venue name</source>
-        <translation>Jméno podniku</translation>
+        <location filename="../qml/pages/VenueAdd.qml" line="32"/>
+        <source>ADD NEW VENUE</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="74"/>
+        <source>Select category</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="94"/>
+        <source>Select sub-category</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="131"/>
+        <source>VENUE NAME</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="136"/>
+        <source>Venue name required</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="145"/>
+        <source>VENUE ADDRESS</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="150"/>
+        <source>Street address is optional</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="159"/>
+        <source>VENUE CATEGORY</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="164"/>
+        <source>Not selected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="165"/>
+        <source>Tap to select category</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="172"/>
+        <source>Venue categories are not loaded yet</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="182"/>
+        <source>VENUE LOCATION</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="209"/>
+        <source>CREATE VENUE</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="212"/>
+        <source>You should specify venue name</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="216"/>
+        <source>You should select category</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenueAdd.qml" line="220"/>
+        <source>Can&apos;t get GPS position for venue</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>VenueMap</name>
     <message>
-        <location filename="../qml/pages/VenueMap.qml" line="186"/>
+        <location filename="../qml/pages/VenueMap.qml" line="213"/>
         <source>GET ROUTE</source>
         <translation>JAK SE TAM DOSTANU</translation>
     </message>
@@ -984,24 +1104,34 @@ Můžete pomoci s řešením.</translation>
 <context>
     <name>VenuesList</name>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="21"/>
+        <location filename="../qml/pages/VenuesList.qml" line="23"/>
         <source>NEARBY VENUES</source>
         <translation>BLÍZKÉ PODNIKY</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="67"/>
+        <location filename="../qml/pages/VenuesList.qml" line="38"/>
         <source>GPS signal is fuzzy, cannot get your location</source>
         <translation>GPS signál není nic moc, nelze vás najít</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="96"/>
+        <location filename="../qml/pages/VenuesList.qml" line="125"/>
+        <source>Locking GPS, please wait</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenuesList.qml" line="141"/>
         <source>Tap to search place...</source>
         <translation>Klikněte pro hledání místa...</translation>
     </message>
     <message>
-        <location filename="../qml/pages/VenuesList.qml" line="107"/>
+        <location filename="../qml/pages/VenuesList.qml" line="157"/>
         <source>SEARCH</source>
         <translation>HLEDAT</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/VenuesList.qml" line="198"/>
+        <source>ADD NEW VENUE</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1035,52 +1165,52 @@ Můžete pomoci s řešením.</translation>
 <context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="108"/>
+        <location filename="../qml/main.qml" line="387"/>
         <source>Location data</source>
         <translation>Lokalizační data</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="109"/>
+        <location filename="../qml/main.qml" line="388"/>
         <source>Nelisquare requires use of user location data. Data is needed to make geo-location services work properly.</source>
         <translation>Nelisquare vyžaduje použití lokalizačních dat uživatele. Tato data jsou potřebná pro správný chod lokalizačních funkcí.</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="110"/>
+        <location filename="../qml/main.qml" line="389"/>
         <source>Allow</source>
         <translation>Povolit</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="111"/>
+        <location filename="../qml/main.qml" line="390"/>
         <source>Deny</source>
         <translation>Zakázat</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="123"/>
+        <location filename="../qml/main.qml" line="402"/>
         <source>Push notifications</source>
         <translation>Přímá upozornění</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="124"/>
+        <location filename="../qml/main.qml" line="403"/>
         <source>Incoming push notifications are not supported at this version and are disabled by default.&lt;br/&gt;&lt;br/&gt;You will be promted again when they will be available at future versions.</source>
         <translation>Přímá příchozí upozornění nejsou podporována v této verzi a proto nejsou ve výchozím stavu povolena..&lt;br/&gt;&lt;br/&gt;Jakmile budou dostupná v nové verzi, oznámíme vám to.</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="128"/>
+        <location filename="../qml/main.qml" line="407"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="161"/>
+        <location filename="../qml/main.qml" line="124"/>
         <source>Check updates</source>
         <translation>Zkontrolovat nové verze</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="167"/>
+        <location filename="../qml/main.qml" line="130"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="173"/>
+        <location filename="../qml/main.qml" line="136"/>
         <source>Exit</source>
         <translation>Ukončit</translation>
     </message>
