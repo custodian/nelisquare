@@ -109,6 +109,8 @@ feed.parseFriendsFeedUpdate = function(response, page) {
                         page.deleteItem(del.id);
                     } else if (del.type === "activity"){
                         page.deleteItem(del.id);
+                    } else if (del.type === "list") {
+                        page.deleteItem(del.id);
                     } else {
                         del.debugType = "feed-delete";
                         var deleteitem = {

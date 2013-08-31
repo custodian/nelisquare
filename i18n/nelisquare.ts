@@ -1164,52 +1164,52 @@ You can help with resolution.</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../qml/main.qml" line="387"/>
+        <location filename="../qml/main.qml" line="394"/>
         <source>Location data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="388"/>
+        <location filename="../qml/main.qml" line="395"/>
         <source>Nelisquare requires use of user location data. Data is needed to make geo-location services work properly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="389"/>
+        <location filename="../qml/main.qml" line="396"/>
         <source>Allow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="390"/>
+        <location filename="../qml/main.qml" line="397"/>
         <source>Deny</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="402"/>
+        <location filename="../qml/main.qml" line="409"/>
         <source>Push notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="403"/>
+        <location filename="../qml/main.qml" line="410"/>
         <source>Incoming push notifications are not supported at this version and are disabled by default.&lt;br/&gt;&lt;br/&gt;You will be promted again when they will be available at future versions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="407"/>
+        <location filename="../qml/main.qml" line="414"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="124"/>
+        <location filename="../qml/main.qml" line="131"/>
         <source>Check updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="130"/>
+        <location filename="../qml/main.qml" line="137"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/main.qml" line="136"/>
+        <location filename="../qml/main.qml" line="143"/>
         <source>Exit</source>
         <translation type="unfinished"></translation>
     </message>

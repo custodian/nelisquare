@@ -182,7 +182,7 @@ PageWrapper {
         spacing: 5
 
         onPulledDown: {
-            update();
+            updateView();
         }
 
         //Add new venue functionality
