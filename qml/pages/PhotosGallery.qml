@@ -85,7 +85,7 @@ PageWrapper {
         height: parent.height - y
         cellWidth: Math.min((width-5)/3,height)
         cellHeight: cellWidth
-        //DBG clip: true
+        clip: true
         cacheBuffer: 400
         model: photosModel
         delegate: photoDelegate

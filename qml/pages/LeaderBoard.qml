@@ -44,7 +44,7 @@ PageWrapper {
         height: parent.height - y
         delegate: leaderBoardDelegate
         //highlightFollowsCurrentItem: true
-        //DBG clip: true
+        clip: true
 
         spacing: 5
     }

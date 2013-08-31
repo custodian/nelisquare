@@ -1,6 +1,7 @@
 import Qt 4.7
 
-Item {
+//Item {
+Rectangle {
     signal userClicked()
     signal areaClicked()
     signal areaPressAndHold()
@@ -38,11 +39,11 @@ Item {
     property variant comments: []
 
     id: eventItem
-    width: parent.width
-    height: titleContainer.height
+    //width: parent.width
+    //height: titleContainer.height
 
-    Rectangle {
-        id: titleContainer
+    //Rectangle {
+        //id: titleContainer
         color: mouseArea.pressed || highlight ? mytheme.colors.backgroundSand : mytheme.colors.backgroundMain
         width: parent.width
         height: 10 + (showText ? Math.max(statusTextArea.height,profileImage.height) : profileImage.height)
@@ -239,7 +240,7 @@ Item {
 
         Rectangle {
             anchors.right: parent.right
-            color: titleContainer.color//window.color
+            color: eventItem.color//titleContainer.color//window.color
             width: 32
             height: 32
             visible: eventOwner == "self" && showRemoveButton
@@ -259,7 +260,7 @@ Item {
                 }
             }
         }
-    }
+    //}
 
     Component {
         id: commentsDelegate
