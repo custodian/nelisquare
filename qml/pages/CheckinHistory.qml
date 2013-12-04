@@ -48,6 +48,7 @@ PageWrapper {
     }
 
     ListView {
+        id: checkinHistoryView
         model: checkinHistoryModel
         anchors.top: pagetop
         width: parent.width
@@ -73,6 +74,10 @@ PageWrapper {
                 height: 20
             }
         }
+    }
+
+    SectionScroller {
+        listView: checkinHistoryView
     }
 
     Component {

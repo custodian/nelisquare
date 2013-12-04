@@ -7,7 +7,7 @@
 api.log("loading api-photo...");
 
 var photos = new ApiObject();
-//photo.debuglevel = 1;
+photos.debuglevel = 2;
 
 photos.loadPhoto = function(page, photoid) {
     var url = "photos/" + photoid + "?" + getAccessTokenParameter();
@@ -62,7 +62,7 @@ photos.addPhoto = function(params, page, callback) {
 photos.parseAddPhoto = function(response, page) {
     page.waiting_hide();
     var obj = api.process(response);
-    //console.log("ADDED PHOTO: " + JSON.stringify(obj));
+    photos.debug(function(){console.log("ADDED PHOTO: " + JSON.stringify(obj));});
     if (page.photosBox !== undefined) {
         page.photosBox.photosModel.insert(0,
                     makePhoto(obj.photo,300));

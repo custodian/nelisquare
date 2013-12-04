@@ -1,10 +1,10 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="it_IT" version="2.0">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="hr" version="2.0">
 <context>
     <name>Badges</name>
     <message>
         <location filename="../qml/pages/Badges.qml" line="18"/>
         <source>BADGES</source>
-        <translation>BADGE</translation>
+        <translation>BEDŽEVI</translation>
     </message>
 </context>
 <context>
@@ -12,22 +12,22 @@
     <message>
         <location filename="../qml/pages/Checkin.qml" line="18"/>
         <source>CHECK-IN DETAILS</source>
-        <translation>DETTAGLI SUL CHECK-IN</translation>
+        <translation>DETALJI PRIJAVE</translation>
     </message>
     <message>
         <location filename="../qml/pages/Checkin.qml" line="222"/>
         <source>TOTAL POINTS</source>
-        <translation>PUNTI TOTALI</translation>
+        <translation>UKUPNI BODOVI</translation>
     </message>
     <message>
         <location filename="../qml/pages/Checkin.qml" line="260"/>
         <source>EARNED BADGES</source>
-        <translation>BADGE OTTENUTI</translation>
+        <translation>OSVOJENI BEDŽEVI</translation>
     </message>
     <message>
         <location filename="../qml/pages/Checkin.qml" line="282"/>
         <source>COMMENTS</source>
-        <translation>COMMENTI</translation>
+        <translation>KOMENTARI</translation>
     </message>
 </context>
 <context>
@@ -35,42 +35,42 @@
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="22"/>
         <source>NEW CHECK-IN</source>
-        <translation>NUOVO CHECK-IN</translation>
+        <translation>NOVA PRIJAVA</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="48"/>
         <source>CHECK IN</source>
-        <translation>CHECK-IN</translation>
+        <translation>PRIJAVI SE</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="57"/>
         <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation>Odustani</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="100"/>
         <source>Whats on your mind?</source>
-        <translation>Che ti passa per la testa?</translation>
+        <translation>Što Vam je na umu?</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="129"/>
         <source>Sharing options</source>
-        <translation>Opzioni di condivisione</translation>
+        <translation>Opcije dijeljenja</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="133"/>
         <source>Share with Friends</source>
-        <translation>Condividi con gli Amici</translation>
+        <translation>Podijeli s prijateljima</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="141"/>
         <source>Post to Facebook</source>
-        <translation>Condividi su Facebook</translation>
+        <translation>Objavi na Facebook</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinDialog.qml" line="149"/>
         <source>Post to Twitter</source>
-        <translation>Condividi su Twitter</translation>
+        <translation>Objavi na Twitter</translation>
     </message>
 </context>
 <context>
@@ -78,12 +78,12 @@
     <message>
         <location filename="../qml/pages/CheckinHistory.qml" line="24"/>
         <source>CHECK-IN HISTORY</source>
-        <translation>CRONOLOGIA CHECK-IN</translation>
+        <translation>POVIJEST PRIJAVLJIVANJA</translation>
     </message>
     <message>
         <location filename="../qml/pages/CheckinHistory.qml" line="64"/>
         <source>Load More</source>
-        <translation>Carica altro</translation>
+        <translation>Učitaj još</translation>
     </message>
 </context>
 <context>
@@ -91,22 +91,22 @@
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="26"/>
         <source>What is on your mind?</source>
-        <translation>Che ti passa per la testa?</translation>
+        <translation>Što Vam je u umu?</translation>
     </message>
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="38"/>
         <source>New awesome comment</source>
-        <translation>Nuovo incredibile commento</translation>
+        <translation>Novi fenomenalan komentar</translation>
     </message>
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="69"/>
         <source>Comment!</source>
-        <translation>Commenta!</translation>
+        <translation>Komentiraj!</translation>
     </message>
     <message>
         <location filename="../qml/components/CommentDialog.qml" line="77"/>
         <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation>Odustani</translation>
     </message>
 </context>
 <context>
@@ -114,31 +114,30 @@
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="18"/>
         <source>DEBUG SUBMIT</source>
-        <translation>INVIA DEBUG</translation>
+        <translation>DEBUG POŠALJI</translation>
     </message>
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="34"/>
         <source>Thank you for submit!&lt;br&gt;This will be implemented soon!</source>
-        <translation>Grazie per aver inviato! &lt;br&gt;Questo verrà implementato presto!</translation>
+        <translation>Hvala Vam za prijavu! Ovo će uskoro biti primijenjeno!</translation>
     </message>
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="53"/>
         <source>SUBMIT</source>
-        <translation>INVIA</translation>
+        <translation>PODNESI</translation>
     </message>
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="61"/>
         <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation>Odustani</translation>
     </message>
     <message>
         <location filename="../qml/pages/DebugSubmit.qml" line="92"/>
         <source>You can help me with Nelisquare development by submitting debug info.
 
 The following information are going to be submitted:</source>
-        <translation>Puoi aiutarmi nello sviluppo di Nelisquare inviando informazioni di debug.
-
-Le seguenti informazioni stanno per essere inviate:</translation>
+        <translation>Možete mi pomoći sa razvojem Nelisquarea tako da podnesete informaciju o pogrešci.
+Bit će podnesene slijedeće informacije:</translation>
     </message>
 </context>
 <context>
@@ -146,14 +145,14 @@ Le seguenti informazioni stanno per essere inviate:</translation>
     <message>
         <location filename="../qml/components/DebugWidget.qml" line="14"/>
         <source>Unknown %1 event!</source>
-        <translation>Evento %1 sconosciuto</translation>
+        <translation>Nepoznat %1 događaj!</translation>
     </message>
     <message>
         <location filename="../qml/components/DebugWidget.qml" line="47"/>
         <source>This event type is unknown.
 You can help with resolution.</source>
-        <translation>Questo evento è di tipo sconosciuto.
-Puoi aiutare fornendo dettagli.</translation>
+        <translation>Ovaj tip događaja je nepoznat.
+Možete mi pomoći u razlučivanju.</translation>
     </message>
 </context>
 <context>
@@ -161,32 +160,32 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="43"/>
         <source>FRIENDS FEED</source>
-        <translation>ATTIVITÀ</translation>
+        <translation>IZVORI PRIJATELJA</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="229"/>
         <source>RECENT</source>
-        <translation>RECENTI</translation>
+        <translation>NEDAVNO</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="242"/>
         <source>NEARBY</source>
-        <translation>NELLE VICINANZE</translation>
+        <translation>U BLIZINI</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="263"/>
         <source>Load More</source>
-        <translation>Carica altro</translation>
+        <translation>Učitaj više</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="410"/>
         <source>Sorry, Pages are not supported yet :(</source>
-        <translation>Spiacente, le Pagine non sono ancora supportate :(</translation>
+        <translation>Ispričavamo se, stranice još nisu podržane :(</translation>
     </message>
     <message>
         <location filename="../qml/pages/FriendsFeed.qml" line="480"/>
         <source>Sorry, no lists support yet :(</source>
-        <translation>Spiacente, le liste non sono ancora supportate :(</translation>
+        <translation>Ispričavamo se, liste još nisu podržane :(</translation>
     </message>
 </context>
 <context>
@@ -194,12 +193,12 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="19"/>
         <source>YOU ARE #%1</source>
-        <translation type="unfinished"/>
+        <translation>VI STE #%1</translation>
     </message>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="63"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation>&lt;b&gt;%1punti&lt;/b&gt; %2 check-in</translation>
+        <translation>&lt;b&gt;%1 bodovi&lt;/b&gt; %2 prijave</translation>
     </message>
 </context>
 <context>
@@ -207,7 +206,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/LikeBox.qml" line="33"/>
         <source>USER LIKES</source>
-        <translation>È PIACIUTO A</translation>
+        <translation>KORISNICI KOJIMA SE SVIĐA</translation>
     </message>
 </context>
 <context>
@@ -215,12 +214,12 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="9"/>
         <source>Pull and hold to refresh...</source>
-        <translation>Tira verso il basso per aggiornare...</translation>
+        <translation>Povucite i držite za osvježavanje...</translation>
     </message>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="10"/>
         <source>Release to refresh...</source>
-        <translation>Rilascia per aggiornare...</translation>
+        <translation>Otpustite za osvježavanje...</translation>
     </message>
 </context>
 <context>
@@ -228,17 +227,17 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Login24sq.qml" line="15"/>
         <source>Sign In to Foursquare</source>
-        <translation>Accedi a Foursquare</translation>
+        <translation>Prijavite se na Foursquare</translation>
     </message>
     <message>
         <location filename="../qml/pages/Login24sq.qml" line="41"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Izlaz</translation>
     </message>
     <message>
         <location filename="../qml/pages/Login24sq.qml" line="59"/>
         <source>Error connecting to Foursquare site</source>
-        <translation type="unfinished"/>
+        <translation>Greška prilikom spajanja na Foursquare stranicu</translation>
     </message>
 </context>
 <context>
@@ -246,7 +245,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Mayorships.qml" line="19"/>
         <source>MAYORSHIPS</source>
-        <translation>MAYORSHIP</translation>
+        <translation>NAČELNIŠTVA</translation>
     </message>
 </context>
 <context>
@@ -254,7 +253,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/NotificationDialog.qml" line="36"/>
         <source>OK</source>
-        <translation>Ok</translation>
+        <translation>U REDU</translation>
     </message>
 </context>
 <context>
@@ -262,17 +261,17 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Notifications.qml" line="24"/>
         <source>NOTIFICATIONS</source>
-        <translation>NOTIFICHE</translation>
+        <translation>OBAVIJESTI</translation>
     </message>
     <message>
         <location filename="../qml/pages/Notifications.qml" line="51"/>
         <source>Mark all as read</source>
-        <translation>Segna tutte come lette</translation>
+        <translation>Označi sve kao pročitano</translation>
     </message>
     <message>
         <location filename="../qml/pages/Notifications.qml" line="61"/>
         <source>Settings</source>
-        <translation>Impostazioni</translation>
+        <translation>Postavke</translation>
     </message>
 </context>
 <context>
@@ -280,17 +279,17 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/PageWrapper.qml" line="101"/>
         <source>Check updates</source>
-        <translation>Controlla aggiornamenti</translation>
+        <translation>Provjeri ažuriranja</translation>
     </message>
     <message>
         <location filename="../qml/components/PageWrapper.qml" line="107"/>
         <source>Settings</source>
-        <translation>Impostazioni</translation>
+        <translation>Postavke</translation>
     </message>
     <message>
         <location filename="../qml/components/PageWrapper.qml" line="113"/>
         <source>Exit</source>
-        <translation>Esci</translation>
+        <translation>Izlaz</translation>
     </message>
 </context>
 <context>
@@ -298,22 +297,22 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Photo.qml" line="20"/>
         <source>PHOTO</source>
-        <translation>FOTO</translation>
+        <translation>SLIKA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Photo.qml" line="45"/>
         <source>You cannot save image until download is finished</source>
-        <translation type="unfinished"/>
+        <translation>Ne može se spremiti slika dok preuzimanje nije završeno</translation>
     </message>
     <message>
         <location filename="../qml/pages/Photo.qml" line="49"/>
         <source>Image saved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Slika spremljena u %1</translation>
     </message>
     <message>
         <location filename="../qml/pages/Photo.qml" line="51"/>
         <source>Failed to save image</source>
-        <translation type="unfinished"/>
+        <translation>Neuspjelo spremanje slike</translation>
     </message>
 </context>
 <context>
@@ -321,12 +320,12 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/PhotoAdd.qml" line="19"/>
         <source>Select photo for upload</source>
-        <translation>Scegli la foto da caricare</translation>
+        <translation>Odaberi sliku za prijenos</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoAdd.qml" line="60"/>
         <source>Error uploading photo!&lt;br&gt;Photo size should be less than %1KB</source>
-        <translation type="unfinished"/>
+        <translation>Pogreška pri prijenosu slike!&lt;br&gt;Veličina slike treba biti manja od %1KB</translation>
     </message>
 </context>
 <context>
@@ -334,37 +333,37 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="20"/>
         <source>PHOTO UPLOAD</source>
-        <translation>CARICAMENTO FOTO</translation>
+        <translation>UČITAVANJE SLIKA</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="36"/>
         <source>UPLOAD</source>
-        <translation>CARICAMENTO</translation>
+        <translation>UČITAJ</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="91"/>
         <source>Sharing options</source>
-        <translation>Opzioni di condivisione</translation>
+        <translation>Opcije dijeljenja</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="95"/>
         <source>Public</source>
-        <translation>Pubblico</translation>
+        <translation>Javno</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="102"/>
         <source>Post to Facebook</source>
-        <translation>Condividi su Facebook</translation>
+        <translation>Objavi na Facebook</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="109"/>
         <source>Post to Twitter</source>
-        <translation>Condividi su Twitter</translation>
+        <translation>Objavi na Twitter</translation>
     </message>
     <message>
         <location filename="../qml/pages/PhotoShareDialog.qml" line="48"/>
         <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation>Odustani</translation>
     </message>
 </context>
 <context>
@@ -372,7 +371,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/PhotosBox.qml" line="8"/>
         <source>PHOTOS</source>
-        <translation>FOTO</translation>
+        <translation>SLIKE</translation>
     </message>
 </context>
 <context>
@@ -380,7 +379,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/PhotosGallery.qml" line="13"/>
         <source>VENUE PHOTOS</source>
-        <translation>FOTO DEL LUOGO</translation>
+        <translation>SLIKE MJESTA</translation>
     </message>
 </context>
 <context>
@@ -388,7 +387,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/SettingSlider.qml" line="50"/>
         <source>Off</source>
-        <translation>Disattiva</translation>
+        <translation>Isključeno</translation>
     </message>
 </context>
 <context>
@@ -396,12 +395,12 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="13"/>
         <source>updating...</source>
-        <translation>aggiornamento...</translation>
+        <translation>ažuriranje...</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="21"/>
         <source>SETTINGS</source>
-        <translation>IMPOSTAZIONI</translation>
+        <translation>POSTAVKE</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="55"/>
@@ -411,88 +410,88 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="56"/>
         <source>Idea by Tommi Laukkanen</source>
-        <translation>Idea di Tommi Laukkanen</translation>
+        <translation>Tommi Laukkanen ideja</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="57"/>
         <source>Shout out to @knobtviker</source>
-        <translation>Fai un fischio a @knobtviker</translation>
+        <translation>Pozdrav @knobtviker</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="58"/>
         <source>Design by Kim Venetvirta</source>
-        <translation>Design di Kim Venetvirta</translation>
+        <translation>Kim Venetvirta dizajn</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="59"/>
         <source>If any problems, tweet @basil_s</source>
-        <translation>Se hai un qualsiasi problema, twitta a @basil_s</translation>
+        <translation>U slučaju problema, tweet @basil_s</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="60"/>
         <source>Version</source>
-        <translation>Versione</translation>
+        <translation>Verzija</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="62"/>
         <source>Build</source>
-        <translation>Build</translation>
+        <translation>Inačica verzije</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="64"/>
         <source>Powered by Foursquare</source>
-        <translation>Powered by Foursquare</translation>
+        <translation>Pokretano Foursquareom</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="66"/>
         <source>Close</source>
-        <translation>Chiudi</translation>
+        <translation>Zatvori</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="72"/>
         <location filename="../qml/pages/Settings.qml" line="117"/>
         <source>Reset settings</source>
-        <translation>Azzera impostazioni</translation>
+        <translation>Resetiraj postavke</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="73"/>
         <source>This action will erase all data including auth token, application settings and cache.</source>
-        <translation>Questa azione cancellerà tutti i dati, inclusi il token di autorizzazione, le impostazioni dell&apos;applicazione e la cache.</translation>
+        <translation>Ova akcija će izbrisati sve podatke, uključujući autorizaciju tokena, postavke aplikacija i priručne memorije.</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="74"/>
         <source>Yes, clear the data</source>
-        <translation>Sì, cancella i dati</translation>
+        <translation>Da, izbriši podatke</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="75"/>
         <source>No, thanks</source>
-        <translation>No, grazie</translation>
+        <translation>Ne, hvala</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="83"/>
         <source>Language</source>
-        <translation>Lingua</translation>
+        <translation>Jezik</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="111"/>
         <source>Notifications</source>
-        <translation>Notifiche</translation>
+        <translation>Notifikacije</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="163"/>
         <source>UPDATES CHECK</source>
-        <translation>CONTROLLO AGGIORNAMENTI</translation>
+        <translation>PROVJERI AŽURIRANJA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="188"/>
         <source>None</source>
-        <translation>Nessuno</translation>
+        <translation>Ništa</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="194"/>
         <source>Stable</source>
-        <translation>Stabile</translation>
+        <translation>Stabilno</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="199"/>
@@ -502,143 +501,143 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="205"/>
         <source>Alpha</source>
-        <translation>Alpha</translation>
+        <translation>Alfa</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="211"/>
         <source>INTERVALS</source>
-        <translation>INTERVALLI</translation>
+        <translation>INTERVALI</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="215"/>
         <source>GPS Unlock timeout</source>
-        <translation>Tempo di sblocco del GPS</translation>
+        <translation>Vrijeme rada GPSa</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="216"/>
         <source>Instant</source>
-        <translation>Istantaneo</translation>
+        <translation>Trenutno</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="216"/>
         <source>%1 secs(s)</source>
-        <translation>%1 secwazapp/language/it/</translation>
+        <translation>%1 sekundi(a)</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="216"/>
         <location filename="../qml/pages/Settings.qml" line="225"/>
         <source>Disabled</source>
-        <translation>Disattivato</translation>
+        <translation>Deaktiviran</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="224"/>
         <source>Feed autoupdate time</source>
-        <translation>Aggiornamento attività</translation>
+        <translation>Osvježavanje liste novosti</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="225"/>
         <source>Off</source>
-        <translation>Disattiva</translation>
+        <translation>Isključeno</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="225"/>
         <source>%1 min(s)</source>
-        <translation>%1 min</translation>
+        <translation>%1 minuta(e)</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="233"/>
         <source>PERMISSIONS</source>
-        <translation>PERMESSI</translation>
+        <translation>DOPUŠTENJA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="236"/>
         <source>Allow use of Location Data</source>
-        <translation>Permetti l&apos;uso dei dati sulla posizione</translation>
+        <translation>Dopustite korištenje podataka o lokaciji</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="244"/>
         <source>Always run in background</source>
-        <translation>Mantieni in esecuzione in background</translation>
+        <translation> Omogućen rad aplikacije u pozadini</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="252"/>
         <source>Enable notifications</source>
-        <translation>Attiva notifiche</translation>
+        <translation>Omogućavanje obavijesti</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="260"/>
         <source>Feed at Home screen</source>
-        <translation>Feed nella Schermata Iniziale</translation>
+        <translation>Obavijesti na početnom zaslonu</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="268"/>
         <source>Push notifications</source>
-        <translation>Notifiche push</translation>
+        <translation>Push obavijesti</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="319"/>
         <source>COLOR THEME</source>
-        <translation>COLORE TEMA</translation>
+        <translation>TEMATSKA BOJA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="338"/>
         <source>Light</source>
-        <translation>Chiaro</translation>
+        <translation>Svijetlo</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="347"/>
         <source>Dark</source>
-        <translation>Scuro</translation>
+        <translation>Tamno</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="356"/>
         <source>SCREEN ORIENTATION</source>
-        <translation>ORIENTAMENTO SCHERMO</translation>
+        <translation>ORIJENTACIJA ZASLONA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="378"/>
         <source>Auto</source>
-        <translation>Auto</translation>
+        <translation>Automatski</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="384"/>
         <source>Landscape</source>
-        <translation>Orizzontale</translation>
+        <translation>Vodoravno</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="389"/>
         <source>Portrait</source>
-        <translation>Verticale</translation>
+        <translation>Uspravno</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="395"/>
         <source>STARTUP PAGE</source>
-        <translation>PAGINA INIZIALE</translation>
+        <translation>POČETNA STRANICA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="417"/>
         <source>Feed</source>
-        <translation>Aggiornamenti</translation>
+        <translation>Sadržaj</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="423"/>
         <source>Venues</source>
-        <translation>Luoghi</translation>
+        <translation>Mjesta</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="428"/>
         <source>Self</source>
-        <translation>Profilo</translation>
+        <translation>Osobno</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="434"/>
         <source>LANGUAGE</source>
-        <translation>LINGUA</translation>
+        <translation>JEZIK</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="445"/>
         <source>MAP PROVIDER</source>
-        <translation>FORNITORE MAPPE</translation>
+        <translation>POSLUŽITELJ KARTI</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="468"/>
@@ -658,102 +657,102 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="497"/>
         <source>IMAGE LOADING</source>
-        <translation>CARICAMENTO IMMAGINI</translation>
+        <translation>UČITAVANJE SLIKA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="516"/>
         <source>All</source>
-        <translation>Tutte</translation>
+        <translation>Sve</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="521"/>
         <source>Cached</source>
-        <translation>Nella cache</translation>
+        <translation>Iz predmemorije</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="527"/>
         <source>INTEGRATION WITH APPS</source>
-        <translation>APP INTEGRATE</translation>
+        <translation>INTEGRACIJA S APLIKACIJAMA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="533"/>
         <source>Download MOLO.ME</source>
-        <translation>Scarica MOLO.ME</translation>
+        <translation>Preuzeti MOLO.ME</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="552"/>
         <source>MOLO.ME Photos</source>
-        <translation>Foto da MOLO.ME</translation>
+        <translation>MOLO.ME Slike</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="572"/>
         <source>APPLICATION CACHE</source>
-        <translation>CACHE DELL&apos;APPLICAZIONE</translation>
+        <translation>PREDMEMORIJA APLIKACIJE</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="580"/>
         <source>Clear</source>
-        <translation>Cancella</translation>
+        <translation>Obriši</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="592"/>
         <source>Size: %1</source>
-        <translation>Dimensione: %1</translation>
+        <translation>Veličina: %1</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="598"/>
         <source>UI</source>
-        <translation>UI</translation>
+        <translation>Korisničko sučelje</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="601"/>
         <source>Reload UI</source>
-        <translation>Ricarica UI</translation>
+        <translation>Učitaj ponovno korisničko sučelje</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="607"/>
         <source>AUTHENTICATION</source>
-        <translation>AUTENTICAZIONE</translation>
+        <translation>AUTENTIČNOST</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="610"/>
         <source>Reset authentication</source>
-        <translation>Annulla autenticazione</translation>
+        <translation>Resetiranje autentifikacije</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="631"/>
         <source>ACCESS RATE LIMIT</source>
-        <translation>LIMITE DI ACCESSO</translation>
+        <translation>PRISTUPNA STOPA OGRANIČENJA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="637"/>
         <source>API requests available: %1 / %2</source>
-        <translation>Richieste API disponibili: %1 / %2</translation>
+        <translation>API zahtjevi dostupni: %1 / %2</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="643"/>
         <source>You are low on X-RATE requests</source>
-        <translation>Hai poche richieste X-RATE</translation>
+        <translation>Niska razina X-RATE zahtjeva</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="648"/>
         <source>DEBUG</source>
-        <translation>DEBUG</translation>
+        <translation>ISPRAVLJANJE POGREŠAKA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="651"/>
         <source>Enable debug</source>
-        <translation>Abilita debug</translation>
+        <translation>Omogući ispravljanje pogrešaka  </translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="665"/>
         <source>Options will be available soon</source>
-        <translation>Le opzioni saranno presto disponibili</translation>
+        <translation>Opcije će biti dostupne uskoro</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="680"/>
         <source>General</source>
-        <translation>Generale</translation>
+        <translation>Općenito</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="681"/>
@@ -763,12 +762,12 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="682"/>
         <source>Service</source>
-        <translation>Servizio</translation>
+        <translation>Usluga</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="683"/>
         <source>Debug</source>
-        <translation>Debug</translation>
+        <translation>Ispravljanje pogrešaka</translation>
     </message>
 </context>
 <context>
@@ -776,12 +775,12 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="13"/>
         <source>VENUE SPECIALS</source>
-        <translation>PROMOZIONI DEI LUOGHI</translation>
+        <translation>POSEBNOSTI MJESTA</translation>
     </message>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="31"/>
         <source>Unlocked!</source>
-        <translation>Sbloccato!</translation>
+        <translation>Otključan!</translation>
     </message>
 </context>
 <context>
@@ -789,17 +788,17 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="40"/>
         <source>Write some cool tip here</source>
-        <translation>Scrivi un consiglio qui</translation>
+        <translation>Napiši neki dobar savjet ovdje</translation>
     </message>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="71"/>
         <source>ADD</source>
-        <translation>AGGIUNGI</translation>
+        <translation>DODAJ</translation>
     </message>
     <message>
         <location filename="../qml/components/TipDialog.qml" line="79"/>
         <source>Cancel</source>
-        <translation>Annulla</translation>
+        <translation>Odustani</translation>
     </message>
 </context>
 <context>
@@ -807,22 +806,22 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/TipPage.qml" line="22"/>
         <source>Usefull tip</source>
-        <translation>Consiglio utile</translation>
+        <translation>Koristan savjet</translation>
     </message>
     <message>
         <location filename="../qml/pages/TipPage.qml" line="148"/>
         <source>TIP PHOTO</source>
-        <translation>FOTO DEL CONSIGLIO</translation>
+        <translation>SLIKA UZ SAVJET</translation>
     </message>
     <message>
         <location filename="../qml/pages/TipPage.qml" line="170"/>
         <source>Save tip</source>
-        <translation>Salva consiglio</translation>
+        <translation>Spremi savjet</translation>
     </message>
     <message>
         <location filename="../qml/pages/TipPage.qml" line="178"/>
         <source>Mark as done</source>
-        <translation>Segna come fatto</translation>
+        <translation>Označi kao obavljeno</translation>
     </message>
 </context>
 <context>
@@ -830,7 +829,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/TipsList.qml" line="18"/>
         <source>TIPS LIST</source>
-        <translation>LISTA CONSIGLI</translation>
+        <translation>LISTA SAVJETA</translation>
     </message>
 </context>
 <context>
@@ -838,22 +837,22 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/UpdateDialog.qml" line="12"/>
         <source>New update available</source>
-        <translation>Nuovo aggiornamento disponibile</translation>
+        <translation>Dostupna nova ažuriranja</translation>
     </message>
     <message>
         <location filename="../qml/components/UpdateDialog.qml" line="13"/>
         <source>Version: %1&lt;br&gt;Type: %2&lt;br&gt;Build: %3&lt;br&gt;&lt;br&gt;Changelog: &lt;br&gt;%4</source>
-        <translation>Versione: %1&lt;br&gt;Tipo: %2&lt;br&gt;Build: %3&lt;br&gt;&lt;br&gt;Changelog: &lt;br&gt;%4</translation>
+        <translation>Verzija: %1&lt;br&gt;Tip: %2&lt;br&gt;Verzija inačice: %3&lt;br&gt;&lt;br&gt;Changelog: &lt;br&gt;%4</translation>
     </message>
     <message>
         <location filename="../qml/components/UpdateDialog.qml" line="19"/>
         <source>Update!</source>
-        <translation>Aggiorna!</translation>
+        <translation>Ažuriraj!</translation>
     </message>
     <message>
         <location filename="../qml/components/UpdateDialog.qml" line="20"/>
         <source>No, thanks</source>
-        <translation>No, grazie</translation>
+        <translation>Ne, hvala</translation>
     </message>
 </context>
 <context>
@@ -861,97 +860,97 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/User.qml" line="60"/>
         <source>USER DETAILS</source>
-        <translation>DETTAGLI UTENTE</translation>
+        <translation>DETALJI KORISNIKA</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="69"/>
         <source>Change avatar</source>
-        <translation type="unfinished"/>
+        <translation>Promjena avatara</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="77"/>
         <source>User lists</source>
-        <translation type="unfinished"/>
+        <translation>Popis korisnika</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="85"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Postavke</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="91"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Izlaz</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="303"/>
         <source>Add Friend</source>
-        <translation>Aggiungi Amico</translation>
+        <translation>Dodaj prijatelja</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="315"/>
         <source>Approve Friend</source>
-        <translation>Approva amicizia</translation>
+        <translation>Odobri prijatelja</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="322"/>
         <source>Deny friend</source>
-        <translation>Nega amicizia</translation>
+        <translation> Odbij prijatelja</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="334"/>
         <source>Remove Friend</source>
-        <translation>Rimuovi Amico</translation>
+        <translation>Obriši prijatelja</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="347"/>
         <source>&lt;b&gt;SCORES&lt;/b&gt; (LAST 7 DAYS)</source>
-        <translation>&lt;br&gt;PUNTEGGI&lt;/b&gt; (ULTIMI 7 GIORNI)</translation>
+        <translation>&lt;b&gt;BODOVI&lt;/b&gt; (ZADNJIH 7 DANA)</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="352"/>
         <source>BEST SCORE</source>
-        <translation>MIGLIOR PUNTEGGIO</translation>
+        <translation>NAJBOLJI REZULTAT</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="410"/>
         <source>Badges</source>
-        <translation>Badge</translation>
+        <translation>Bedževi</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="445"/>
         <source>Checkins</source>
-        <translation>Check-in</translation>
+        <translation>Prijave</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="480"/>
         <source>Mayorships</source>
-        <translation>Mayorship</translation>
+        <translation>Načelništva</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="515"/>
         <source>Friends</source>
-        <translation>Amici</translation>
+        <translation>Prijatelji</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="550"/>
         <source>Photos</source>
-        <translation>Foto</translation>
+        <translation>Slike</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="586"/>
         <source>Tips</source>
-        <translation>Consigli</translation>
+        <translation>Savjeti</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="602"/>
         <source>YOU ARE #%1</source>
-        <translation type="unfinished"/>
+        <translation>VI STE #%1</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="627"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation>&lt;b&gt;%1punti&lt;/b&gt; %2 check-in</translation>
+        <translation>&lt;b&gt;%1 bodovi&lt;/b&gt; %2 prijave</translation>
     </message>
 </context>
 <context>
@@ -959,17 +958,17 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/UsersList.qml" line="21"/>
         <source>Loading...</source>
-        <translation>Caricamento...</translation>
+        <translation>Učitavanje...</translation>
     </message>
     <message>
         <location filename="../qml/pages/UsersList.qml" line="30"/>
         <source>USER FRIENDS</source>
-        <translation>AMICI DELL&apos;UTENTE</translation>
+        <translation>PRIJATELJI KORISNIKA</translation>
     </message>
     <message>
         <location filename="../qml/pages/UsersList.qml" line="33"/>
         <source>LIKERS LIST</source>
-        <translation>LISTA DEI LIKE</translation>
+        <translation>LISTA KORISNIKA KOJIMA SE SVIĐA</translation>
     </message>
 </context>
 <context>
@@ -977,37 +976,37 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Venue.qml" line="142"/>
         <source>VENUE PHOTOS</source>
-        <translation>FOTO DEL LUOGO</translation>
+        <translation>SLIKE MJESTA</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="250"/>
         <source>CHECK-IN HERE!</source>
-        <translation>FAI CHECK-IN QUI!</translation>
+        <translation>PRIJAVI SE OVDJE!</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="272"/>
         <source>Venue doesn&apos;t have mayor yet!</source>
-        <translation>Questo luogo ancora non ha un sindaco!</translation>
+        <translation>Mjesto još nema načelnika!</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="273"/>
         <source>is the mayor.</source>
-        <translation>è il sindaco.</translation>
+        <translation>je načelnik.</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="273"/>
         <source>It could be you!</source>
-        <translation>Potresti essere tu!</translation>
+        <translation>Možes biti ti!</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="274"/>
         <source>%1 checkins</source>
-        <translation>%1 check-in</translation>
+        <translation>%1 prijave</translation>
     </message>
     <message>
         <location filename="../qml/pages/Venue.qml" line="317"/>
         <source>BEST TIPS</source>
-        <translation>MIGLIORI CONSIGLI</translation>
+        <translation>NAJBOLJI SAVJETI</translation>
     </message>
 </context>
 <context>
@@ -1015,82 +1014,82 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="32"/>
         <source>ADD NEW VENUE</source>
-        <translation type="unfinished"/>
+        <translation>DODAJ NOVO MJESTO</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="74"/>
         <source>Select category</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi kategoriju</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="94"/>
         <source>Select sub-category</source>
-        <translation type="unfinished"/>
+        <translation>Odaberi podkategoriju</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="131"/>
         <source>VENUE NAME</source>
-        <translation type="unfinished"/>
+        <translation>NAZIV MJESTA</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="136"/>
         <source>Venue name required</source>
-        <translation type="unfinished"/>
+        <translation>Unesite ime mjesta</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="145"/>
         <source>VENUE ADDRESS</source>
-        <translation type="unfinished"/>
+        <translation>ADRESA MJESTA</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="150"/>
         <source>Street address is optional</source>
-        <translation type="unfinished"/>
+        <translation>Adresa je neobavezna</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="159"/>
         <source>VENUE CATEGORY</source>
-        <translation type="unfinished"/>
+        <translation>KATEGORIJA MJESTA</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="164"/>
         <source>Not selected</source>
-        <translation type="unfinished"/>
+        <translation>Nije odabrano</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="165"/>
         <source>Tap to select category</source>
-        <translation type="unfinished"/>
+        <translation>Dodirni za odabir kategorije</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="172"/>
         <source>Venue categories are not loaded yet</source>
-        <translation type="unfinished"/>
+        <translation>Kategorije mjesta još nisu učitane</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="182"/>
         <source>VENUE LOCATION</source>
-        <translation type="unfinished"/>
+        <translation>LOKACIJA MJESTA</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="209"/>
         <source>CREATE VENUE</source>
-        <translation type="unfinished"/>
+        <translation>NAPRAVI MJESTO</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="212"/>
         <source>You should specify venue name</source>
-        <translation type="unfinished"/>
+        <translation>Morate navesti ime mjesta</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="216"/>
         <source>You should select category</source>
-        <translation type="unfinished"/>
+        <translation>Morate odabrati kategoriju</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="220"/>
         <source>Can&apos;t get GPS position for venue</source>
-        <translation type="unfinished"/>
+        <translation>Nemoguće odrediti GPS položaj mjesta</translation>
     </message>
 </context>
 <context>
@@ -1098,7 +1097,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/VenueMap.qml" line="213"/>
         <source>GET ROUTE</source>
-        <translation>OTTIENI INDICAZIONI</translation>
+        <translation>DOBAVI RUTU</translation>
     </message>
 </context>
 <context>
@@ -1106,32 +1105,32 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="23"/>
         <source>NEARBY VENUES</source>
-        <translation>LUOGHI NELLE VICINANZE</translation>
+        <translation>OBLIŽNJA MJESTA</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="38"/>
         <source>GPS signal is fuzzy, cannot get your location</source>
-        <translation>Segnale GPS disturbato, impossibile ottenere posizione</translation>
+        <translation>GPS signal je nejasan, ne mogu dobiti Vašu lokaciju</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="125"/>
         <source>Locking GPS, please wait</source>
-        <translation type="unfinished"/>
+        <translation>Traženje GPS signala, molimo pričekajte</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="141"/>
         <source>Tap to search place...</source>
-        <translation>Tocca per cercare un luogo...</translation>
+        <translation>Dodirni za pretragu mjesta...</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="157"/>
         <source>SEARCH</source>
-        <translation>CERCA</translation>
+        <translation>PRETRAGA</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="198"/>
         <source>ADD NEW VENUE</source>
-        <translation type="unfinished"/>
+        <translation>DODAJ NOVO MJESTO</translation>
     </message>
 </context>
 <context>
@@ -1139,27 +1138,27 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="29"/>
         <source>Welcome!</source>
-        <translation>Benvenuto!</translation>
+        <translation>Dobrodošli!</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="46"/>
         <source>Please, login with Foursquare!</source>
-        <translation>Per favore, accedi a Foursquare</translation>
+        <translation>Molim, prijavite se s Foursquareom!</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="53"/>
         <source>Login</source>
-        <translation>Accedi</translation>
+        <translation>Prijava</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="67"/>
         <source>Foursquare privacy policy</source>
-        <translation>Informativa sulla privacy di Foursquare</translation>
+        <translation>Foursquare pravila o zaštiti privatnosti</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="81"/>
         <source>Nelisquare privacy policy</source>
-        <translation>Informativa sulla privacy di Nelisquare</translation>
+        <translation>Nelisquare pravila o zaštiti privatnosti</translation>
     </message>
 </context>
 <context>
@@ -1167,52 +1166,52 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/main.qml" line="387"/>
         <source>Location data</source>
-        <translation>Dati sulla posizione</translation>
+        <translation>Podaci o lokaciji</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="388"/>
         <source>Nelisquare requires use of user location data. Data is needed to make geo-location services work properly.</source>
-        <translation>Nelisquare ha bisogno di utilizzare i dati sulla posizione dell&apos;utente. Questi dati sono necessari per il Chieti funzionamento dei servizi di geo-localizzazione.</translation>
+        <translation>Nelisquare zahtjeva korištenje podataka o lokaciji. Podaci su potrebna da bi geo-lokacijeske usluge radile ispravno.</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="389"/>
         <source>Allow</source>
-        <translation>Permetti</translation>
+        <translation>Dopusti</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="390"/>
         <source>Deny</source>
-        <translation>Nega</translation>
+        <translation>Odbij</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="402"/>
         <source>Push notifications</source>
-        <translation>Notifiche push</translation>
+        <translation>Push obavijesti</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="403"/>
         <source>Incoming push notifications are not supported at this version and are disabled by default.&lt;br/&gt;&lt;br/&gt;You will be promted again when they will be available at future versions.</source>
-        <translation>Le notifiche push non sono supportate in questa versione e sono disattivate. &lt;br/&gt;&lt;br/&gt;Ti verrà chiesto se vuoi attivarle quando saranno abilitate in una futura versione.</translation>
+        <translation>Dolazne push obavijesti nisu podržane u ovoj verziji, a po početnoj vrijednosti su isključene.&lt;br/&gt;&lt;br/&gt; Bit ćete obaviješteni opet kad će biti dostupne u budućim verzijama.</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="407"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation>U REDU</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="124"/>
         <source>Check updates</source>
-        <translation>Controlla aggiornamenti</translation>
+        <translation>Provjeri ažuriranja</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="130"/>
         <source>Settings</source>
-        <translation>Impostazioni</translation>
+        <translation>Postavke</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="136"/>
         <source>Exit</source>
-        <translation>Esci</translation>
+        <translation>Izlaz</translation>
     </message>
 </context>
 </TS>

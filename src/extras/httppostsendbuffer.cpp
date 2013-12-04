@@ -243,7 +243,8 @@ bool HttpPostSendbuffer::waitForReadyRead(int msecs)
 
 QByteArray HttpPostSendbuffer::readAll()
 {
-    return QByteArray();
+    //return QByteArray();
+    return internalBuffer;
 }
 
 QByteArray HttpPostSendbuffer::read(qint64 maxSize)

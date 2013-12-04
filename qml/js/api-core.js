@@ -11,7 +11,7 @@ api.MAX_FEED_SIZE = 40;
 
 api.DEBUG_URL = "http://thecust.net/debug-nelisquare.php?content="
 
-var API_VERSION = "20120910";
+var API_VERSION = "20130101";
 /*
 //Nelisquare V1
 var CLIENT_ID = "4IFSW3ZXR4BRBXT3IIZMB13YPNGSIOK4ANEM0PP3T2CQQFWI";
@@ -101,6 +101,10 @@ api.process = function(response, page) {
             page.show_error("<span>API Error: " + meta.code
                             + "<br/>Error type: " + meta.errorType
                             + "<br/>" + meta.errorDetail + "<br/></span>");
+        } else {
+            api.log("API Error: " + meta.code
+                    + "\nError type: " + meta.errorType
+                    + "\n" + meta.errorDetail);
         }
     }
     //console.log("DATA: " + JSON.stringify(data));

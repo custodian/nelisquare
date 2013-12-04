@@ -36,7 +36,7 @@ class FormPost: public QObject
   Q_OBJECT
 
   public:
-    FormPost(const QByteArray& userAgent);
+    FormPost(const QString userAgent);
     void setNetworkAccessManager(QNetworkAccessManager * networkAccessManager);        
     void addField(const QString& name, const QString& value);
     void setFile(const QString& fieldName, const QString& fileName, const QString& mime);
@@ -45,7 +45,7 @@ class FormPost: public QObject
   private:
     QNetworkAccessManager * networkAccessManager;    
     HttpPostSendbuffer postSendBuffer;
-    const QByteArray& m_userAgent;
+    QString m_userAgent;
     //QByteArray& m_httpReferer;
 };
 

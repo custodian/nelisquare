@@ -595,10 +595,7 @@ PageWrapper {
                 }
             }
 
-            LineGreen {
-                height: 30
-                width: details.width
-                anchors.horizontalCenter: parent.horizontalCenter
+            SectionHeader{
                 text: qsTr("YOU ARE #%1").arg(userLeadersboardRank)
                 visible: userRelationship == "self" && userLeadersboardRank > 0
             }
@@ -608,7 +605,6 @@ PageWrapper {
                 model: boardModel
                 width: parent.width
                 delegate: leaderBoardDelegate
-                //DBG clip: true
                 visible: userRelationship == "self" && userLeadersboardRank > 0
             }
 

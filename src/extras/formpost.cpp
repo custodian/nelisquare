@@ -20,7 +20,7 @@
 #include <QDebug>
 
 FormPost::FormPost(
-    const QByteArray& userAgent)
+    const QString userAgent)
       :QObject(0),
       m_userAgent(userAgent)
 {
@@ -62,7 +62,7 @@ QNetworkReply * FormPost::postData(const QString& url)
     request.setRawHeader("Host", host.toAscii());
     if (m_userAgent.length() > 0)
     {
-        request.setRawHeader("User-Agent", m_userAgent);
+        request.setRawHeader("User-Agent", m_userAgent.toAscii());
     }
     /*
     if (m_httpReferer.length() > 0)

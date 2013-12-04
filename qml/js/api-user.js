@@ -39,7 +39,8 @@ users.parseUser = function(response, page) {
     //page.userID = user.id; //already filled
     page.userMayorshipsCount = user.mayorships.count;
 
-    if(user.checkins.items!==undefined) {
+    if(user.checkins.items!==undefined
+            && user.checkins.items[0] !== undefined) {
         page.lastVenueID = user.checkins.items[0].venue.id;
         page.lastVenue = user.checkins.items[0].venue.name;
         page.lastTime = makeTime(user.checkins.items[0].createdAt);

@@ -92,10 +92,10 @@ maemo5 {
 # Add more folders to ship with the application, here
 maemo5 {
     qmlresources.source = $$PWD/qml
-    qmli18n.source = $$PWD/i18n/nelisquare_*.qm
+    qmli18n.source = $$PWD/i18n/*.qm
 } else {
     qmlresources.source = qml
-    qmli18n.source = i18n/nelisquare_*.qm
+    qmli18n.source = i18n/*.qm
 }
 qmlresources.target = .
 qmli18n.target = i18n

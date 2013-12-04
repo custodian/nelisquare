@@ -1,3 +1,14 @@
+nelisquare (0.5.3) stable; urgency=low
+  * Photo upload fix
+  * Language pack update
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 04 Dec 2013 22:03:27 +0400
+
+nelisquare (0.5.2.1) stable; urgency=low
+  * Friend-page bug fixed
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Fri, 27 Sep 2013 15:24:40 +0400
+
 nelisquare (0.5.2.0) stable; urgency=low
   * Minor ui improvements
   * Aggregated like, install, save events added

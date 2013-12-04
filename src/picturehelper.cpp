@@ -49,6 +49,12 @@ QVariant PictureHelper::upload(QVariant url, QVariant path, QVariant window, QVa
 }
 
 void PictureHelper::onFinished(QNetworkReply * reply){
+    if (reply->error() != QNetworkReply::NoError) {
+        qDebug() << "Error uploading photo!";
+        qDebug() << reply->errorString();
+        qDebug() << reply->rawHeaderPairs();
+        qDebug() << reply->readAll();
+    }
     QByteArray data = reply->readAll();
     emit pictureUploaded(QVariant(QString(data)), m_window);
 }

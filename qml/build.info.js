@@ -1,3 +1,3 @@
-var build = '201307052305';
-var version = "0.5.2";
-var changelog = " - Minor ui improvements  - Aggregated like, install, save events added ";
+var build = '201312042235';
+var version = "0.5.3";
+var changelog = " - Photo upload fix  - Language pack update ";
