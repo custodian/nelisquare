@@ -11,7 +11,7 @@ api.MAX_FEED_SIZE = 40;
 
 api.DEBUG_URL = "http://thecust.net/debug-nelisquare.php?content="
 
-var API_VERSION = "20130101";
+var API_VERSION = "20120901";
 /*
 //Nelisquare V1
 var CLIENT_ID = "4IFSW3ZXR4BRBXT3IIZMB13YPNGSIOK4ANEM0PP3T2CQQFWI";

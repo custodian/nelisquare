@@ -1,3 +1,8 @@
+nelisquare (0.5.4) stable; urgency=low
+  * Venue photo gallery fix
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Thu, 05 Dec 2013 11:38:53 +0400
+
 nelisquare (0.5.3) stable; urgency=low
   * Photo upload fix
   * Language pack update

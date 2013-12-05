@@ -1,3 +1,3 @@
-var build = '201312042235';
-var version = "0.5.3";
-var changelog = " - Photo upload fix  - Language pack update ";
+var build = '201312051219';
+var version = "0.5.4";
+var changelog = " - Venue photo gallery fix ";
