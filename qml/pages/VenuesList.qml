@@ -16,6 +16,8 @@ PageWrapper {
 
     property alias placesModel: placesModel
 
+    property bool isPortrait: screen.orientationString === "Portrait"
+
     width: parent.width
     height: parent.height
     color: mytheme.colors.backgroundMain
@@ -88,8 +90,8 @@ PageWrapper {
             top: pagetop
             left: parent.left
         }
-        height: configuration.isPortrait ? 100 : parent.height
-        width: configuration.isPortrait ? parent.width : parent.width * 2/5
+        height: venuesList.isPortrait ? 100 : parent.height
+        width: venuesList.isPortrait ? parent.width : parent.width * 2/5
         Plugin {
             property string provider: configuration.mapprovider
             onProviderChanged: {
@@ -130,8 +132,8 @@ PageWrapper {
     Item {
         id: searchBox
         anchors {
-            top: configuration.isPortrait? mapArea.bottom : pagetop
-            left: configuration.isPortrait ? parent.left : mapArea.right
+            top: venuesList.isPortrait? mapArea.bottom : pagetop
+            left: venuesList.isPortrait ? parent.left : mapArea.right
             right: parent.right
         }
         height: 70
@@ -170,7 +172,7 @@ PageWrapper {
         id: placesView
         anchors {
             top: searchBox.bottom
-            left: configuration.isPortrait ? parent.left : mapArea.right
+            left: venuesList.isPortrait ? parent.left : mapArea.right
             right: parent.right
         }
         height: parent.height - y

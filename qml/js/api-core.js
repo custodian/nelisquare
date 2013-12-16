@@ -9,9 +9,10 @@ api.log("loading api-core...");
 api.MAX_NEARBY_DISTANCE = 100000; //100km
 api.MAX_FEED_SIZE = 40;
 
-api.DEBUG_URL = "http://thecust.net/debug-nelisquare.php?content="
+api.DEBUG_URL = "http://thecust.net/debug-nelisquare.php"
 
-var API_VERSION = "20120901";
+api.ratelimit = {};
+
 /*
 //Nelisquare V1
 var CLIENT_ID = "4IFSW3ZXR4BRBXT3IIZMB13YPNGSIOK4ANEM0PP3T2CQQFWI";
@@ -31,6 +32,7 @@ var AUTHENTICATE_URL = "https://foursquare.com/oauth2/authenticate" +
 
 var API_URL = "https://api.foursquare.com/v2/";
 
+var API_VERSION = "20131201";
 
 
 var defaultVenueIcon = {"prefix":"https://foursquare.com/img/categories_v2/none_","suffix":".png"}
@@ -74,8 +76,9 @@ api.request = function(method, url, page, callback) {
                     "limit": doc.getResponseHeader("x-ratelimit-limit"),
                     "remaining": doc.getResponseHeader("x-ratelimit-remaining")
                 }
-                if (ratelimit.limit !== "0")
-                    page.updateRateLimit(ratelimit);
+                if (ratelimit.limit !== "0") {
+                    api.ratelimit = ratelimit;
+                }
                 data = doc.responseText;
                 callback(data,page);
             } else {

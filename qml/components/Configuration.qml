@@ -33,6 +33,13 @@ Item {
     property variant ratelimit: {}
 
     property string debugEnabled: "0"
+    property string debugTips: "0"
+    property string debugUsers: "0"
+    property string debugVenues: "0"
+    property string debugPhotos: "0"
+    property string debugCheckins: "0"
+    property string debugFeed: "0"
+    property string debugNotis: "0"
 
     property string sharePhotoPublic: "0"
     property string sharePhotoFacebook: "0"
@@ -92,7 +99,7 @@ Item {
         } else if (key === "settings.orientation") {
             if (value === "") value = "auto";
             configuration.orientationType = value;
-            appWindow.onLockOrientation(value);
+            appWindow.lockWindowOrientation(value);
         } else if (key === "settings.mapprovider") {
             if (value === "") value = "google";
             configuration.mapprovider = value;
@@ -155,7 +162,35 @@ Item {
         } else if (key === "settings.debug.enabled") {
             if (value === "") value = "0";
             configuration.debugEnabled = value;
-            Api.api.debugenabled = (value === "1");
+            Api.api.debugenabled = (value === "1") ? 2 : 1;
+        } else if (key === "settings.debug.feed") {
+            if (value === "") value = "0";
+            configuration.debugFeed = value;
+            Api.feed.debuglevel = (value === "1") ? 2 : 1;
+        } else if (key === "settings.debug.checkins") {
+            if (value === "") value = "0";
+            configuration.debugCheckins = value;
+            Api.checkin.debuglevel = (value === "1") ? 2 : 1;
+        } else if (key === "settings.debug.notis") {
+            if (value === "") value = "0";
+            configuration.debugNotis = value;
+            Api.notifications.debuglevel = (value === "1") ? 2 : 1;
+        } else if (key === "settings.debug.photos") {
+            if (value === "") value = "0";
+            configuration.debugPhotos = value;
+            Api.photos.debuglevel = (value === "1") ? 2 : 1;
+        } else if (key === "settings.debug.tips") {
+            if (value === "") value = "0";
+            configuration.debugTips = value;
+            Api.tips.debuglevel = (value === "1") ? 2 : 1;
+        } else if (key === "settings.debug.users") {
+            if (value === "") value = "0";
+            configuration.debugUsers = value;
+            Api.users.debuglevel = (value === "1") ? 2 : 1;
+        } else if (key === "settings.debug.venues") {
+            if (value === "") value = "0";
+            configuration.debugVenues = value;
+            Api.venues.debuglevel = (value === "1") ? 2 : 1;
         } else {
             console.log("Unknown setting: " + key + "=" + value);
         }
@@ -186,6 +221,13 @@ Item {
         Storage.getKeyValue("settings.molome", settingLoaded);
 
         Storage.getKeyValue("settings.debug.enabled", settingLoaded);
+        Storage.getKeyValue("settings.debug.feed", settingLoaded);
+        Storage.getKeyValue("settings.debug.checkins", settingLoaded);
+        Storage.getKeyValue("settings.debug.notis", settingLoaded);
+        Storage.getKeyValue("settings.debug.photos", settingLoaded);
+        Storage.getKeyValue("settings.debug.tips", settingLoaded);
+        Storage.getKeyValue("settings.debug.users", settingLoaded);
+        Storage.getKeyValue("settings.debug.venues", settingLoaded);
 
         //Ask dialogs on first start
         Storage.getKeyValue("settings.push.enabled",settingLoaded);

@@ -6,7 +6,7 @@
 api.log("loading api-user...");
 
 var users = new ApiObject();
-//users.debuglevel = 1;
+//users.debuglevel = 2;
 
 users.loadUser = function (page, user) {
     var url = "users/" + user + "?" + getAccessTokenParameter();

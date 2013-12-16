@@ -18,7 +18,7 @@ function makeUserName(user) {
     var username = parse(user.firstName);
     var lastname = parse(user.lastName);
     if(lastname.length>0) {
-        username += " " + lastname;// + ".";
+        username += " " + lastname;
     }
     return username;
 }

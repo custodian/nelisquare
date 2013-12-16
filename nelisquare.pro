@@ -54,8 +54,10 @@ SOURCES += $$PWD/src/main.cpp \
     $$PWD/src/cache.cpp \
     $$PWD/src/molome.cpp \
     $$PWD/src/apptranslator.cpp \
+    $$PWD/src/httpuploader.cpp \
     $$PWD/src/extras/formpost.cpp \
-    $$PWD/src/extras/httppostsendbuffer.cpp
+    $$PWD/src/extras/httppostsendbuffer.cpp \
+    $$PWD/src/debuglogger.cpp
 
 HEADERS += \
     $$PWD/src/windowhelper.h \
@@ -63,8 +65,10 @@ HEADERS += \
     $$PWD/src/cache.h \
     $$PWD/src/molome.h \
     $$PWD/src/apptranslator.h \
+    $$PWD/src/httpuploader.h \
     $$PWD/src/extras/formpost.h \
-    $$PWD/src/extras/httppostsendbuffer.h
+    $$PWD/src/extras/httppostsendbuffer.h \
+    $$PWD/src/debuglogger.h
 
 maemo5|simulator|contains(MEEGO_EDITION,harmattan){
     HEADERS += $$PWD/src/platform_utils.h
@@ -101,7 +105,14 @@ qmlresources.target = .
 qmli18n.target = i18n
 DEPLOYMENTFOLDERS += qmlresources qmli18n
 
-#Geoservices providers
+#AUI Framework
+unix {
+    qmlaui.source = $$PWD/aui/harmattan
+    geoservices.target = qml/aui
+    DEPLOYMENTFOLDERS += qmlaui
+}
+
+#Geoservices providers and AUI framework
 unix {
     maemo5 {
         geoservices.source = $$PWD/plugins/maemo/geoservices

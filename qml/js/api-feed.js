@@ -30,8 +30,8 @@ feed.loadFriendsFeed = function(page, history) {
 
     url += "limit=" + page.batchSize + "&" +getAccessTokenParameter();
     api.request("GET", url, page, function(response,page) {
-                     feed.parseFriendsFeed(response,page,history);
-                 });
+        feed.parseFriendsFeed(response,page,history);
+    });
 
     if (history===undefined && page.lastUpdateTime!=="0") {
         //activities/updates ?afterTimestamp=0 & updatesAfterMarker=50ade891e4b0892bb7343597
@@ -149,7 +149,7 @@ feed.parseFriendsFeed = function(response, page, history) {
     var updating = (updateTime !== "0");
 
     if (history !== undefined || !updating) {
-        feed.debug(function(){return"MORE DATA: Updated: "+ activities.moreData});
+        feed.debug(function(){return "MORE DATA: Updated: "+ activities.moreData});
         page.moreData = activities.moreData;
     }
     if (activities.leadingMarker > page.leadingMarker)

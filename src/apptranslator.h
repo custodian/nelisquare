@@ -14,6 +14,7 @@ class AppTranslator : public QObject
 private:
     QApplication * m_app;
     QString m_langdir;
+    QString m_lang;
     QTranslator m_translator;
     QVariantMap m_languages;
 

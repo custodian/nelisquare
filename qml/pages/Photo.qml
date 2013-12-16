@@ -1,6 +1,9 @@
 import Qt 4.7
 import com.nokia.meego 1.0
 import QtQuick 1.1
+
+import net.thecust.utils 1.0
+
 import "../components"
 
 import "../js/api.js" as Api
@@ -23,6 +26,10 @@ PageWrapper {
     property string photoID: ""
     property string photoUrl: ""
     property alias owner: photoOwner
+
+    PictureHelper {
+        id: pictureHelper
+    }
 
     tools: ToolBarLayout{
         ToolIcon{

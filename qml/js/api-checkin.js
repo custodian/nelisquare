@@ -7,7 +7,7 @@
 api.log("loading api-checkin...");
 
 var checkin = new ApiObject();
-//checkin.debuglevel = 1;
+//checkin.debuglevel = 2;
 
 
 checkin.loadCheckin = function(page,id) {

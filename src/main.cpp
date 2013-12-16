@@ -11,6 +11,8 @@
 #include "cache.h"
 #include "molome.h"
 #include "apptranslator.h"
+#include "httpuploader.h"
+#include "debuglogger.h"
 
 #include <qplatformdefs.h>
 
@@ -60,6 +62,8 @@ private:
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
+    DebugLogger::installLogger();
+
 #if defined(Q_WS_SIMULATOR)
     QSslConfiguration config = QSslConfiguration::defaultConfiguration();
     config.setProtocol(QSsl::SslV3);
@@ -70,10 +74,10 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     AppTranslator *appTranslator = new AppTranslator(app);
 
-    //TODO: Enable before stable release, after remastering settings
+    //Enable before stable release, after remastering settings
     //Also check if app hangs on new install without database
-    //app->setApplicationName("Nelisquare");
-    //app->setOrganizationName("Nelisquare");
+    app->setApplicationName("Nelisquare");
+    app->setOrganizationName("net.thecust");
 
     QmlApplicationViewer viewer;
 
@@ -91,7 +95,22 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.engine()->addPluginPath(QString("/opt/qtm12/plugins"));
 #endif
 
+#if defined(Q_WS_SIMULATOR)
+    viewer.engine()->addImportPath(QString("aui/harmattan"));
+#elif defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
+    viewer.engine()->addImportPath(QString("/opt/nelisquare/qml/aui"));
+#endif
+
     QCoreApplication::addLibraryPath(QString("/opt/nelisquare/plugins"));
+
+    qmlRegisterType<DebugLogger>("net.thecust.utils", 1, 0, "DebugLogger");
+    qmlRegisterType<Molome>("net.thecust.utils", 1, 0, "MoloMe");
+    qmlRegisterType<PictureHelper>("net.thecust.utils", 1, 0, "PictureHelper");
+
+    qmlRegisterUncreatableType<HttpPostField>("HttpUp", 1, 0, "HttpPostField", "Can't touch this");
+    qmlRegisterType<HttpPostFieldValue>("HttpUp", 1, 0, "HttpPostFieldValue");
+    qmlRegisterType<HttpPostFieldFile>("HttpUp", 1, 0, "HttpPostFieldFile");
+    qmlRegisterType<HttpUploader>("HttpUp", 1, 0, "HttpUploader");
 
     viewer.setAttribute(Qt::WA_OpaquePaintEvent);
     viewer.setAttribute(Qt::WA_NoSystemBackground);
@@ -99,17 +118,13 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     viewer.viewport()->setAttribute(Qt::WA_NoSystemBackground);
 
     WindowHelper *windowHelper = new WindowHelper(&viewer);
-    PictureHelper *pictureHelper = new PictureHelper();
     Cache *cache = new Cache();
     viewer.rootContext()->setContextProperty("windowHelper", windowHelper);
-    viewer.rootContext()->setContextProperty("pictureHelper", pictureHelper);
     viewer.rootContext()->setContextProperty("cache", cache);
     viewer.rootContext()->setContextProperty("translator", appTranslator);
 
-    Molome *molome = new Molome();
-    viewer.rootContext()->setContextProperty("molome", molome);
-
 #if defined(Q_OS_HARMATTAN) || defined(Q_WS_SIMULATOR) || defined(Q_OS_MAEMO)
+    //TODO: mo to qmlRegisterType
     PlatformUtils platformUtils(app,cache);
     viewer.rootContext()->setContextProperty("platformUtils", &platformUtils);
 #endif
@@ -119,22 +134,20 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #endif
 
     viewer.setMainQmlFile(QLatin1String("qml/main.qml"));
+    /*
     QObject *rootObject = qobject_cast<QObject*>(viewer.rootObject());
-    rootObject->connect(pictureHelper,SIGNAL(pictureUploaded(QVariant, QVariant)),SLOT(onPictureUploaded(QVariant, QVariant)));
     rootObject->connect(cache,SIGNAL(cacheUpdated(QVariant,QVariant,QVariant)),SLOT(onCacheUpdated(QVariant,QVariant,QVariant)));
-    rootObject->connect(appTranslator,SIGNAL(languageChanged(QVariant)),SLOT(onLanguageChanged(QVariant)));
+    */
 
 #if defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
+    //TODO: move to qmlRegisterType
     new NelisquareDbus(app, &viewer);
 #endif
 
 #if defined(Q_OS_MAEMO)
     viewer.showFullScreen();
 #elif defined(Q_OS_HARMATTAN)
-    rootObject->connect(molome,SIGNAL(infoUpdated(QVariant,QVariant)),SLOT(onMolomeInfoUpdate(QVariant,QVariant)));
-    rootObject->connect(molome,SIGNAL(photoRecieved(QVariant,QVariant)),SLOT(onMolomePhoto(QVariant,QVariant)));
     viewer.showExpanded();
-    molome->updateinfo();
 #else
     viewer.showExpanded();
 #endif

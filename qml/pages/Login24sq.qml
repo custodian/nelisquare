@@ -25,7 +25,12 @@ PageWrapper {
             onClicked: {
                 reset();
             }
+            //TODO ??? visible: !pagebusy
         }
+        /*BusyIndicator{
+            running: pagebusy
+            visible: pagebusy
+        }*/
         ToolIcon {
             platformIconId: "toolbar-view-menu"
             onClicked: {
@@ -51,7 +56,7 @@ PageWrapper {
         loginDialog.finished.connect(function(url) {
             var token = Api.parseAuth(url, "access_token");
             if (token!==undefined) {
-                configuration.setAccessToken(token);
+                appConfig.foursquareAccessToken = token;
             }
         });
         loginDialog.loadFailed.connect(function() {

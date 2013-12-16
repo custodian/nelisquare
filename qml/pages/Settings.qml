@@ -2,13 +2,14 @@ import Qt 4.7
 import com.nokia.meego 1.0
 import "../build.info.js" as BuildInfo
 import "../components"
+import "../js/api.js" as API
+
+import net.thecust.utils 1.0
 
 //TODO: dont forget about PAGESTACK:
 
 PageWrapper {
     signal authDeleted()
-
-    signal settingsChanged(string type, string value);
 
     property string cacheSize: qsTr("updating...")
 
@@ -46,6 +47,10 @@ PageWrapper {
         }
     }
 
+    DebugLogger {
+        id: debuglogger
+    }
+
     QueryDialog  {
         id: infoDialog
 
@@ -81,9 +86,7 @@ PageWrapper {
     SelectionDialog {
         id: translationSelector
         titleText: qsTr("Language")
-        onAccepted: {
-            settingsChanged("language",languageNamesModel.get(selectedIndex).code);
-        }
+        onAccepted: appConfig.interfaceLanguage = languageNamesModel.get(selectedIndex).code;
     }
 
     ListModel {
@@ -125,10 +128,7 @@ PageWrapper {
     function load() {
         var page = settings;
         page.authDeleted.connect(function(){
-            configuration.settingChanged("accesstoken","");
-        });
-        page.settingsChanged.connect(function(type,value) {
-            configuration.settingChanged("settings."+type,value);
+            appConfig.foursquareAccessToken = "";
         });
         cacheUpdater.start();
     }
@@ -167,7 +167,7 @@ PageWrapper {
                     //width: parent.width
                     onVisibleChanged: {
                         if (visible) {
-                            switch(configuration.checkupdates) {
+                            switch(appConfig.updatesCheck) {
                             case "none":
                                 checkedButton = btnUpdateNone;
                                 break;
@@ -186,24 +186,24 @@ PageWrapper {
                     Button{
                         id: btnUpdateNone
                         text: qsTr("None")
-                        onClicked: settingsChanged("checkupdates","none")
+                        onClicked: appConfig.updatesCheck = "none"
                     }
 
                     Button{
                         id: btnUpdateStable
                         text: qsTr("Stable")
-                        onClicked: settingsChanged("checkupdates","stable")
+                        onClicked: appConfig.updatesCheck = "stable"
                     }
                     Button{
                         id: btnUpdateBeta
                         text: qsTr("Beta")
-                        onClicked: settingsChanged("checkupdates","beta")
+                        onClicked: appConfig.updatesCheck = "beta"
                     }
 
                     Button{
                         id: btnUpdateAlpha
                         text: qsTr("Alpha")
-                        onClicked: settingsChanged("checkupdates","alpha")
+                        onClicked: appConfig.updatesCheck = "alpha"
                     }
                 }
 
@@ -216,8 +216,8 @@ PageWrapper {
                           (enabled ? (value === 0 ? qsTr("Instant") : qsTr("%1 secs(s)").arg(value)) : qsTr("Disabled"))
                     maximumValue: 120
                     stepSize: 10
-                    value: configuration.gpsUplockTime
-                    onReleased: settingsChanged("gpsunlock",value)
+                    value: appConfig.gpsUnlockTime
+                    onReleased: appConfig.gpsUnlockTime = value
                 }
                 SettingSlider{
                     enabled: true//!streamingSwitch.checked
@@ -225,8 +225,8 @@ PageWrapper {
                           (enabled ? (value === 0 ? qsTr("Off") : qsTr("%1 min(s)").arg(value)) : qsTr("Disabled"))
                     maximumValue: 60
                     stepSize: 1
-                    value: configuration.feedAutoUpdate/60
-                    onReleased: settingsChanged("feedupdate",value * 60)
+                    value: appConfig.feedUpdateInterval/60
+                    onReleased: appConfig.feedUpdateInterval = value * 60
                 }
 
                 SectionHeader{
@@ -234,46 +234,33 @@ PageWrapper {
                 }
                 SettingSwitch{
                     text: qsTr("Allow use of Location Data")
-                    checked: configuration.gpsAllow === "1" //TODO: make some variable for it
-                    onCheckedChanged: {
-                        var value = (checked)?"1":"0";
-                        settingsChanged("gpsallow",value);
-                    }
+                    checked: appConfig.gpsAllow === "1" //TODO: make some variable for it
+                    onCheckedChanged: appConfig.gpsAllow = (checked)?"1":"0";
                 }
                 SettingSwitch {
                     text: qsTr("Always run in background")
-                    checked: configuration.disableSwypedown === "1"
-                    onCheckedChanged: {
-                        var value = (checked)?"1":"0";
-                        settingsChanged("disableswypedown",value);
-                    }
+                    checked: appConfig.interfaceDisableSwypeDown === "1"
+                    onCheckedChanged: appConfig.interfaceDisableSwypeDown = (checked)?"1":"0";
                 }
                 SettingSwitch{
                     text: qsTr("Enable notifications")
-                    checked: configuration.feedNotification === "1"
-                    onCheckedChanged: {
-                        var value = (checked)?"1":"0";
-                        settingsChanged("feed.notification",value);
-                    }
+                    checked: appConfig.integrationNotification === "1"
+                    onCheckedChanged: appConfig.integrationNotification = (checked)?"1":"0";
                 }
                 SettingSwitch{
                     text: qsTr("Feed at Home screen")
-                    checked: configuration.feedIntegration === "1"
-                    onCheckedChanged: {
-                        var value = (checked)?"1":"0";
-                        settingsChanged("feed.integration",value);
-                    }
+                    checked: appConfig.integrationHomeFeed === "1"
+                    onCheckedChanged: appConfig.integrationHomeFeed = (checked)?"1":"0";
                 }
                 SettingSwitch{
                     text: qsTr("Push notifications")
-                    //checked: configuration. === "1" //TODO: make some variable for it
+                    //checked: appConfig.pushEnable === "1" //TODO: make some variable for it
                     onCheckedChanged: {
                         if (checked) {
                             pushNotificationDialog.open();
-                        }
-                        checked = false;
-                        var value = "0";
-                        settingsChanged("push.enabled",value);
+                            checked = false;
+                        }                        
+                        appConfig.pushEnable = "0"
                     }
                 }
 
@@ -337,7 +324,7 @@ PageWrapper {
                         id: btnThemeLight
                         text: qsTr("Light")
                         onClicked: {
-                            settingsChanged("theme","light");
+                            appConfig.interfaceTheme = "light";
                             appWindow.reloadUI();
                         }
                     }
@@ -346,7 +333,7 @@ PageWrapper {
                         id: btnThemeDark
                         text: qsTr("Dark")
                         onClicked: {
-                            settingsChanged("theme","dark");
+                            appConfig.interfaceTheme = "dark";
                             appWindow.reloadUI();
                         }
                     }
@@ -360,7 +347,7 @@ PageWrapper {
                     //width: parent.width
                     onVisibleChanged: {
                         if (visible) {
-                            switch(configuration.orientationType) {
+                            switch(appConfig.interfaceOrientation) {
                             case "auto":
                                 checkedButton = btnOrientationAuto;
                                 break;
@@ -376,18 +363,18 @@ PageWrapper {
                     Button{
                         id: btnOrientationAuto
                         text: qsTr("Auto")
-                        onClicked: settingsChanged("orientation","auto")
+                        onClicked: appConfig.interfaceOrientation = "auto"
                     }
 
                     Button{
                         id: btnOrientationLandscape
                         text: qsTr("Landscape")
-                        onClicked: settingsChanged("orientation","landscape")
+                        onClicked: appConfig.interfaceOrientation = "landscape"
                     }
                     Button{
                         id: btnOrientationPortrait
                         text: qsTr("Portrait")
-                        onClicked: settingsChanged("orientation","portrait")
+                        onClicked: appConfig.interfaceOrientation = "portrait"
                     }
                 }
 
@@ -399,7 +386,7 @@ PageWrapper {
                     //width: parent.width
                     onVisibleChanged: {
                         if (visible) {
-                            switch(configuration.startPage) {
+                            switch(appConfig.interfaceStartPage) {
                             case "feed":
                                 checkedButton = btnPageFeed;
                                 break;
@@ -415,18 +402,18 @@ PageWrapper {
                     Button{
                         id: btnPageFeed
                         text: qsTr("Feed")
-                        onClicked: settingsChanged("startpage","feed")
+                        onClicked: appConfig.interfaceStartPage = "feed"
                     }
 
                     Button{
                         id: btnPageVenues
                         text: qsTr("Venues")
-                        onClicked: settingsChanged("startpage","venues")
+                        onClicked: appConfig.interfaceStartPage = "venues"
                     }
                     Button{
                         id: btnPageMe
                         text: qsTr("Self")
-                        onClicked: settingsChanged("startpage","self")
+                        onClicked: appConfig.interfaceStartPage = "self"
                     }
                 }
 
@@ -434,7 +421,7 @@ PageWrapper {
                     text: qsTr("LANGUAGE")
                 }
                 Button{
-                    text: translator.getLanguageName(configuration.interfaceLanguage) //"Default"
+                    text: translator.getLanguageName(appConfig.interfaceLanguage) //"Default"
                     anchors.horizontalCenter: parent.horizontalCenter
                     onClicked: {
                         translationSelector.open();
@@ -450,7 +437,7 @@ PageWrapper {
                     //width: parent.width
                     onVisibleChanged: {
                         if (visible) {
-                            switch(configuration.mapprovider) {
+                            switch(appConfig.mapProvider) {
                             case "nokia":
                                 checkedButton = btnMapsNokia;
                                 break;
@@ -466,18 +453,18 @@ PageWrapper {
                     Button{
                         id: btnMapsNokia
                         text: qsTr("Nokia")
-                        onClicked: settingsChanged("mapprovider","nokia")
+                        onClicked: appConfig.mapProvider = "nokia"
                     }
 
                     Button{
                         id: btnMapsGoogle
                         text: qsTr("Google")
-                        onClicked: settingsChanged("mapprovider","google")
+                        onClicked: appConfig.mapProvider = "google"
                     }
                     Button{
                         id: btnMapsOsm
                         text: qsTr("OSM")
-                        onClicked: settingsChanged("mapprovider","openstreetmap")
+                        onClicked: appConfig.mapProvider = "openstreetmap"
                     }
                 }
             }
@@ -501,7 +488,7 @@ PageWrapper {
                     //width: parent.width
                     onVisibleChanged: {
                         if (visible) {
-                            switch(configuration.imageLoadType) {
+                            switch(appConfig.interfaceImageLoad) {
                             case "cached":
                                 checkedButton = btnImageCache;
                                 break;
@@ -514,12 +501,12 @@ PageWrapper {
                     Button{
                         id: btnImageAll
                         text: qsTr("All")
-                        onClicked: settingsChanged("imageload","all")
+                        onClicked: appConfig.interfaceImageLoad = "all"
                     }
                     Button{
                         id: btnImageCache
                         text: qsTr("Cached")
-                        onClicked: settingsChanged("imageload","cached")
+                        onClicked: appConfig.interfaceImageLoad = "cached"
                     }
                 }
 
@@ -534,11 +521,11 @@ PageWrapper {
                         onClicked: {
                             Qt.openUrlExternally("http://molo.me/meego");
                         }
-                        visible: !configuration.molome_present
+                        visible: !molome.molome_present
                     }
 
                     SettingSwitch{
-                        property bool internalEnabled: configuration.molome_installed
+                        property bool internalEnabled: molome.molome_installed
                         property bool __active: true
 
                         onInternalEnabledChanged: {
@@ -550,7 +537,7 @@ PageWrapper {
                         }
 
                         text: qsTr("MOLO.ME Photos")
-                        checked: configuration.molome_installed
+                        checked: molome.molome_installed
                         onCheckedChanged: {
                             var value = (checked)?"1":"0";
                             if (!__active) return;
@@ -562,10 +549,10 @@ PageWrapper {
                                 molome.uninstall();
                             }
                         }
-                        visible: configuration.molome_present
+                        visible: molome.molome_present
                     }
 
-                    visible: configuration.platform === "meego"
+                    visible: appConfig.platform === "meego"
                 }
 
                 SectionHeader{
@@ -634,14 +621,14 @@ PageWrapper {
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: mytheme.fontSizeLarge
                     color: mytheme.colors.textColorOptions
-                    text: qsTr("API requests available: %1 / %2").arg(configuration.ratelimit.remaining).arg(configuration.ratelimit.limit)
+                    text: qsTr("API requests available: %1 / %2").arg(API.api.ratelimit.remaining).arg(API.api.ratelimit.limit)
                 }
                 Text{
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: mytheme.fontSizeLarge
                     color: mytheme.colors.textColorOptions
                     text: qsTr("You are low on X-RATE requests")
-                    visible: configuration.ratelimit.remaining < 10
+                    visible: API.api.ratelimit.remaining < 10
                 }
 
                 SectionHeader{
@@ -649,22 +636,67 @@ PageWrapper {
                 }
                 SettingSwitch{
                     text: qsTr("Enable debug")
-                    checked: configuration.debugEnabled === "1"
-                    onCheckedChanged: {
-                        var value = (checked)?"1":"0";
-                        settingsChanged("debug.enabled",value);
+                    checked: appConfig.debugEnabled === "1"
+                    onCheckedChanged: appConfig.debugEnabled = (checked)?"1":"0";
+                }
+                SectionHeader {
+                    text: qsTr("DATA SUBMISSION")
+                }
+                Button {
+                    text: qsTr("Send debug log")
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    onClicked: {
+                        stack.push(Qt.resolvedUrl("../pages/DebugSubmit.qml"), {"content": { "DebugLogger": debuglogger.getData()}});
                     }
                 }
 
                 Column {
                     width: parent.width
+                    SectionHeader {
+                        text: qsTr("DEBUG INFO RECORD")
+                    }
                     Text{
                         anchors.horizontalCenter: parent.horizontalCenter
                         font.pixelSize: mytheme.fontSizeLarge
                         color: mytheme.colors.textColorOptions
-                        text: qsTr("Options will be available soon")
+                        text: qsTr("More options will be available soon")
                     }
-                    visible: configuration.debugEnabled === "1"
+                    SettingSwitch {
+                        text: qsTr("Feed API data");
+                        checked: appConfig.debugFeed === "1"
+                        onCheckedChanged: appConfig.debugFeed = (checked)?"1":"0";
+                    }
+                    SettingSwitch {
+                        text: qsTr("Checkins API data");
+                        checked: appConfig.debugCheckins === "1"
+                        onCheckedChanged: appConfig.debugCheckins = (checked)?"1":"0";
+                    }
+                    SettingSwitch {
+                        text: qsTr("Notifications API data");
+                        checked: appConfig.debugNotis === "1"
+                        onCheckedChanged: appConfig.debugNotis = (checked)?"1":"0";
+                    }
+                    SettingSwitch {
+                        text: qsTr("Photos API data");
+                        checked: appConfig.debugPhotos === "1"
+                        onCheckedChanged: appConfig.debugPhotos = (checked)?"1":"0";
+                    }
+                    SettingSwitch {
+                        text: qsTr("Tips API data");
+                        checked: appConfig.debugTips === "1"
+                        onCheckedChanged: appConfig.debugTips = (checked)?"1":"0";
+                    }
+                    SettingSwitch {
+                        text: qsTr("Users API data");
+                        checked: appConfig.debugUsers === "1"
+                        onCheckedChanged: appConfig.debugUsers = (checked)?"1":"0";
+                    }
+                    SettingSwitch {
+                        text: qsTr("Venues API data");
+                        checked: appConfig.debugVenues === "1"
+                        onCheckedChanged: appConfig.debugVenues = (checked)?"1":"0";
+                    }
+                    visible: appConfig.debugEnabled === "1"
                 }
             }
         }

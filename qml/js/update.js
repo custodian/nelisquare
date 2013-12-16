@@ -8,6 +8,7 @@ var UPDATE_BASE = "http://thecust.net/nelisquare/";
 
 function getUpdateInfo(platform, updatetype, callback) {
     var url = UPDATE_BASE + platform + "/build." + updatetype
+    console.log("UPDATE URL: " + url);
 
     var doc = new XMLHttpRequest();
     doc.onreadystatechange = function() {

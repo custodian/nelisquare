@@ -72,8 +72,8 @@ PageWrapper {
         friendsCheckinsModel.insert(loaded,item);
         loaded += 1;
 
-        if (configuration.feedAutoUpdate !== "0"
-                && configuration.feedIntegration !=="0") {
+        if (appConfig.feedUpdateInterval !== "0"
+                && appConfig.integrationHomeFeed !=="0") {
 
             item.content.photoCached = "";
             item.content.venuePhotoCached = "";
@@ -143,8 +143,9 @@ PageWrapper {
 
     function load() {
         var page = friendsFeed;
+
         page.update.connect(function(lastupdate) {
-            if (configuration.feedAutoUpdate === 0) {
+            if (appConfig.feedUpdateInterval === 0) {
                 page.reset();
             }
             loaded = 0;
@@ -184,7 +185,7 @@ PageWrapper {
 
     Timer {
         id: timerFeedUpdate
-        interval: configuration.feedAutoUpdate * 1000
+        interval: appConfig.feedUpdateInterval * 1000
         repeat: true
         onTriggered: {
             friendsFeed.update()

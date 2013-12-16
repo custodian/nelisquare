@@ -39,6 +39,7 @@ void AppTranslator::changeLanguage(QVariant language)
 {
     m_app->removeTranslator(&m_translator);
     QString lang = language.toString();
+    if (m_lang == lang) return;
     qDebug("Loading \"%s\" translation", qPrintable(lang));
     m_translator.load(lang, m_langdir);
     m_app->installTranslator(&m_translator);

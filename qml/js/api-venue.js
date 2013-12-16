@@ -6,7 +6,7 @@
 api.log("loading api-venues...");
 
 var venues = new ApiObject();
-//venues.debuglevel = 1;
+//venues.debuglevel = 2;
 
 venues.loadVenues = function(page, query) {
     var url = "venues/search?" +

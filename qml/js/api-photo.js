@@ -7,7 +7,7 @@
 api.log("loading api-photo...");
 
 var photos = new ApiObject();
-photos.debuglevel = 2;
+//photos.debuglevel = 2;
 
 photos.loadPhoto = function(page, photoid) {
     var url = "photos/" + photoid + "?" + getAccessTokenParameter();

@@ -109,7 +109,7 @@ PageWrapper {
                 font.pixelSize: mytheme.fontSizeMedium
 
                 onTextChanged: {
-                    if (text.length>15000) {
+                    if (text.length>64000) {
                         errorHighlight = true;
                     } else {
                         errorHighlight = false;
@@ -124,9 +124,10 @@ PageWrapper {
                     }
                     font.pixelSize: mytheme.fontSizeMedium
                     color: mytheme.colors.textColorTimestamp
-                    text: 16000 - shoutText.text.length
+                    text: shoutText.text.length
                 }
             }
         }
     }
+    ScrollDecorator{ flickableItem: flickableArea }
 }

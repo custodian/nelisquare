@@ -3,8 +3,14 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import QtMobility.location 1.2
 
+import net.thecust.utils 1.0
+
+//import AUI 1.0
+
 import "components"
 import "js/api.js" as Api
+import "js/update.js" as Updater
+import "build.info.js" as BuildInfo
 
 PageStackWindow {
     id: appWindow
@@ -20,7 +26,7 @@ PageStackWindow {
     onWindowActiveChanged: {
         console.log("active: " + windowActive);
 
-        if (configuration.gpsAllow !== "1") {
+        if (appConfig.gpsAllow !== "1") {
             positionSource.active = false;
             return;
         }
@@ -37,10 +43,11 @@ PageStackWindow {
     }    
 
     Component.onCompleted: {
-        if ( configuration.platform === "maemo") {
+        if ( appConfig.platform === "maemo") {
             appWindow.allowSwitch  = false;
             appWindow.allowClose = false;
         }
+        Api.setPositionSource(positionSource);
     }
 
     initialPage: mainPage
@@ -59,12 +66,7 @@ PageStackWindow {
             id: tabgroup
             currentTab: tabLogin
             anchors.fill: parent
-            /*anchors {
-                top: pageHeader.bottom;
-                left: parent.left;
-                right: parent.right;
-                bottom: parent.bottom;
-            }*/
+
             property variant lastTab
 
             onCurrentTabChanged: {
@@ -109,14 +111,6 @@ PageStackWindow {
             width: parent.width
             state: "hidden"
             onClose: {
-                /* TODO: this doesnt work atm. Should be deleted
-                if (objectID != "") {
-                    objectType = "";
-                    objectID = "";
-                    if(objectType=="checkin") {
-                        stack.push(Qt.resolvedUrl("pages/Checkin.qml"),{"checkinID":objectID});
-                    }
-                }*/
                 notificationDialog.state = "hidden";
             }
         }
@@ -130,7 +124,7 @@ PageStackWindow {
                 MenuItem {
                     text: qsTr("Check updates")
                     onClicked: {
-                        configuration.getupdates();
+                        appConfig.getupdates();
                     }
                 }
                 MenuItem {
@@ -193,14 +187,69 @@ PageStackWindow {
         }
     }
 
-    Configuration {
-        id: configuration
+    Timer {
+        id: updateTimer
+        repeat: true
+        interval: 600 * 1000
+        onTriggered: {
+            appConfig.checkUpdates();
+        }
 
-        onAccessTokenChanged: {
-            if(accessToken.length>0) {
+    }
+
+    AppConfig {
+        id: appConfig
+
+        onSettingsLoaded: {
+            //CheckUpdates, RunUpdateTimer
+            mytheme.loadTheme(interfaceTheme);
+            if (interfaceLanguage === "") {
+                interfaceLanguage = translator.getDefaultLanguage();
+            }
+            if (gpsAllow === "") {
+                locationAllowDialog.open();
+            }
+            if (pushEnable === "") {
+                pushNotificationDialog.open();
+            }
+        }
+        onSettingsReseted: {
+            cache.reset()
+        }
+
+        onInterfaceOrientationChanged: appWindow.lockWindowOrientation(interfaceOrientation)
+        onInterfaceImageLoadChanged: cache.loadtype(interfaceImageLoad)
+        onInterfaceThemeChanged: mytheme.loadTheme(interfaceTheme)
+        onInterfaceDisableSwypeDownChanged: windowHelper.disableSwype(interfaceDisableSwypeDown === "1")
+        onInterfaceLanguageChanged: {
+            Api.setLocale(interfaceLanguage.substring(0,2));
+            translator.changeLanguage(interfaceLanguage);
+        }
+
+        onDebugEnabledChanged: Api.api.debugenabled = debugEnabled;
+        onDebugFeedChanged: Api.feed.debuglevel = debugEnabled && debugFeed;
+        onDebugCheckinsChanged: Api.checkin.debuglevel = debugEnabled && debugCheckins
+        onDebugNotisChanged: Api.notifications.debuglevel = debugEnabled && debugNotis
+        onDebugPhotosChanged: Api.photos.debuglevel = debugEnabled && debugPhotos
+        onDebugTipsChanged: Api.tips.debuglevel = debugEnabled && debugTips
+        onDebugUsersChanged: Api.users.debuglevel = debugEnabled && debugUsers
+        onDebugVenuesChanged: Api.venues.debuglevel = debugEnabled && debugVenues
+
+        onUpdatesCheckChanged: {
+            if (updatesCheck!="none") {
+                updateTimer.restart();
+                checkUpdates();
+            } else {
+                updateTimer.stop();
+            }
+        }
+
+        onFoursquareAccessTokenChanged: {
+            Api.setAccessToken(foursquareAccessToken)
+            if(foursquareAccessToken.length>0) {
                 openStartPage();
                 tabLogin.clear();
-                windowHelper.disableSwype(configuration.disableSwypedown === "1");
+                windowHelper.disableSwype(appConfig.interfaceDisableSwypeDown === "1");
             } else {
                 tabFeed.clear();
                 tabVenues.clear();
@@ -209,6 +258,65 @@ PageStackWindow {
                 tabgroup.currentTab = tabLogin;
                 windowHelper.disableSwype(false);
             }
+        }
+
+        function checkUpdates() {
+            Updater.getUpdateInfo(appConfig.platform,appConfig.updatesCheck,onUpdateAvailable);
+        }
+
+        function onUpdateAvailable(build, version, changelog, url) {
+            var update = false;
+            switch(appConfig.updatesCheck) {
+            case "beta":
+                if (build > BuildInfo.build) {
+                    update = true;
+                }
+                break;
+            case "alpha":
+                if (build > BuildInfo.build) {
+                    update = true;
+                }
+                break;
+            case "stable":
+                if (version !== BuildInfo.version || build !== BuildInfo.build) {
+                    update = true;
+                }
+                break;
+            }
+
+            if (update){
+                console.log("UPDATE IS AVAILABLE: " + build);
+                updateDialog.build = build;
+                updateDialog.version = version;
+                updateDialog.url = url;
+                updateDialog.changelog = changelog;
+                updateDialog.updatetype = appConfig.updatesCheck;
+                if (appConfig.foursquareAccessToken.length > 0) {
+                    updateDialog.open();
+                }
+            }
+        }
+    }
+
+    MoloMe {
+        id: molome
+
+        property bool molome_present: false
+        property bool molome_installed: false
+        //TODO: update make Connections for photo update
+        /*
+        onPhotoRecieved: {
+            if (stack.currentPage.molomePhoto !== undefined) {
+                stack.currentPage.molomePhoto(state, photoUrl);
+            }
+        }
+        */
+        Component.onCompleted: {
+            molome.updateinfo();
+        }
+        onInfoUpdated: {
+            molome.molome_present = present;
+            molome.molome_installed = installed;
         }
     }
 
@@ -222,7 +330,7 @@ PageStackWindow {
 
     Timer {
         id: timerGPSUnlock
-        interval: configuration.gpsUplockTime * 1000;
+        interval: appConfig.gpsUnlockTime * 1000;
         repeat: false
         onTriggered: {
             positionSource.active = appWindow.windowActive;
@@ -236,11 +344,11 @@ PageStackWindow {
     }
 
     function sendDebugInfo(object) {
-        stack.push(Qt.resolvedUrl("pages/DebugSubmit.qml"), {"content": object});
+        stack.push(Qt.resolvedUrl("pages/DebugSubmit.qml"), {"content": {"DebugWidget":object}});
     }
 
     function openStartPage() {
-        switch(configuration.startPage) {
+        switch(appConfig.interfaceStartPage) {
         case "self":
             tabgroup.currentTab = tabMe;
             break;
@@ -272,6 +380,7 @@ PageStackWindow {
         stack.push(Qt.resolvedUrl("pages/Notifications.qml"));
     }
 
+    //TODO: move to object and make part of DBusServer object
     function processURI(url) {
         console.log("uri: " + url);
         var params = url.split("/");
@@ -314,33 +423,36 @@ PageStackWindow {
 
     }
 
-    function onCacheUpdated(callbackObject, status, url) {
-        //console.log("Cache update callback: type: " + typeof(callbackObject) + " status: " + status + " url: " + url );
-        try {
-            if (typeof(callbackObject) === "function") {
-                //console.log("funtion!");
-                callbackObject(status,url);
-            } else if (typeof(callbackObject) === "object") {
-                //console.log("object!");
-                if (callbackObject.cacheCallback !== undefined) {
-                    callbackObject.cacheCallback(status,url);
+    Connections {
+        target: cache
+        onCacheUpdated: {
+            //console.log("Cache update callback: type: " + typeof(callbackObject) + " status: " + status + " url: " + url );
+            try {
+                if (typeof(callback) === "function") {
+                    //console.log("funtion!");
+                    callback(status,url);
+                } else if (typeof(callbackObject) === "object") {
+                    //console.log("object!");
+                    if (callback.cacheCallback !== undefined) {
+                        callback.cacheCallback(status,url);
+                    } else {
+                        console.log("object callback is undefined!");
+                    }
+                } else if (typeof(callback) === "string") {
+                    //console.log("string!");
+                    var obj = Api.objs.get(callback);
+                    if (obj.cacheCallback !== undefined) {
+                        obj.cacheCallback(status,url);
+                    } else {
+                        console.log("object callback is undefined!");
+                    }
+                    Api.objs.remove(callback);
                 } else {
-                    console.log("object callback is undefined!");
+                    console.log("type is: " + typeof(callback));
                 }
-            } else if (typeof(callbackObject) === "string") {
-                //console.log("string!");
-                var obj = Api.objs.get(callbackObject);
-                if (obj.cacheCallback !== undefined) {
-                    obj.cacheCallback(status,url);
-                } else {
-                    console.log("object callback is undefined!");
-                }
-                Api.objs.remove(callbackObject);
-            } else {
-                console.log("type is: " + typeof(callbackObject));
+            } catch (err) {
+                console.log("Cache callback error: " + err + " type: " + typeof(callback) + " value: " + JSON.stringify(callback) );
             }
-        } catch (err) {
-            console.log("Cache callback error: " + err + " type: " + typeof(callbackObject) + " value: " + JSON.stringify(callbackObject) );
         }
     }
 
@@ -353,26 +465,19 @@ PageStackWindow {
         tabgroup.currentTab.load();
     }
 
-    function onLanguageChanged(language) {
-        reloadUI();
-    }
-
-    function onPictureUploaded(response, page) {
+    //TODO: Move to HttpUpload with parsing
+    /*function onPictureUploaded(response, page) {
         Api.photos.parseAddPhoto(response, page);
-    }
+    }*/
 
-    function onMolomeInfoUpdate(present,installed) {
-        configuration.molome_present = present;
-        configuration.molome_installed = installed;
-    }
-
-    function onMolomePhoto(state, photoUrl) {
-        if (stack.currentPage.molomePhoto !== undefined) {
-            stack.currentPage.molomePhoto(state, photoUrl);
+    Connections {
+        target: translator
+        onLanguageChanged: {
+            reloadUI();
         }
     }
 
-    function onLockOrientation(value) {
+    function lockWindowOrientation(value) {
         if (value === "auto") {
             mainPage.orientationLock = PageOrientation.Automatic
         } else if (value === "landscape") {
@@ -396,10 +501,10 @@ PageStackWindow {
         acceptButtonText: qsTr("Allow")
         rejectButtonText: qsTr("Deny")
         onAccepted: {
-            configuration.settingChanged("settings.gpsallow","1");
+            appConfig.gpsAllow = "1";
         }
         onRejected: {
-            configuration.settingChanged("settings.gpsallow","0");
+            appConfig.gpsAllow = "0";
         }
     }
 
@@ -409,7 +514,7 @@ PageStackWindow {
         titleText: qsTr("Push notifications")
         message: qsTr("Incoming push notifications are not supported at this version and are disabled by default.<br/><br/>You will be promted again when they will be available at future versions.")
         onAccepted: {
-            configuration.settingChanged("settings.push.enabled","0");
+            appConfig.pushEnable = "0";
         }
         acceptButtonText: qsTr("OK")
         /*buttons: ButtonRow {

@@ -1,3 +1,13 @@
+nelisquare (0.6.0) stable; urgency=low
+  * Early API adaptation
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Tue, 17 Dec 2013 22:12:40 +0400
+
+nelisquare (0.5.5) stable; urgency=low
+  * <Add change description here>
+
+ -- Basil Semuonov <basil.semuonov@gmail.com>  Wed, 11 Dec 2013 00:05:27 +0400
+
 nelisquare (0.5.4) stable; urgency=low
   * Venue photo gallery fix
 

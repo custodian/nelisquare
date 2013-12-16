@@ -4,7 +4,7 @@
 
 .pragma library
 
-api.log( qsTr("loading debug...") );
+api.log( "loading debug..." );
 
 api.debugenabled = false;
 

@@ -12,6 +12,7 @@ Page {
 
     property string color
     property alias pagetop: pageHeader.bottom
+    property alias pagebusy: pageHeader.busy
 
     tools : commonTools
     property QtObject pageMenu: defaultMenu
@@ -76,14 +77,10 @@ Page {
         notificationDialog.state = "shown";
     }
 
-    function updateRateLimit(value) {
-        configuration.ratelimit = value;
-    }
-
     function updateNotificationCount(value) {
         appWindow.notificationsCount = value
         //console.log("last: " + lastNotiCount + " new: " + value);
-        if (configuration.feedNotification!=="0") {
+        if (appConfig.integrationNotification!=="0") {
             if (value != appWindow.lastNotiCount) {
                 platformUtils.removeNotification("nelisquare.notification");
                 if (value != "0") {
@@ -100,7 +97,7 @@ Page {
             MenuItem {
                 text: qsTr("Check updates")
                 onClicked: {
-                    configuration.getupdates();
+                    appConfig.checkUpdates();
                 }
             }
             MenuItem {

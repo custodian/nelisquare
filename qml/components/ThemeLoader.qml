@@ -44,7 +44,7 @@ Item {
         id: font;
         source: "../fonts/TitilliumText25L001.otf"
         property int sizeDefault: 24
-        property int sizeToolbar: sizeDefault + (configuration.platform === "maemo"?(-1):(1))
+        property int sizeToolbar: sizeDefault + (appConfig.platform === "maemo"?(-1):(1))
         property int sizeSettigs: sizeDefault + 4
         property int sizeSigns: sizeDefault - 2
         property int sizeHelp: sizeDefault - 4

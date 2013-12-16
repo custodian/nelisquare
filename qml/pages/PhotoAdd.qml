@@ -52,6 +52,7 @@ PageWrapper {
             Api.photos.addPhoto(params, options.owner,
                 function(url) {
                     waiting_hide();
+                    //TODO: change to HttpUpload + add comment
                     var result = pictureHelper.upload(url, params.path, params.owner, maxPhotoSize);
                     if (result === true) {
                         //photo selection
