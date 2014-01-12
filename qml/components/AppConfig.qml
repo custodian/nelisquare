@@ -50,12 +50,12 @@ QtObject {
         debugFeed = "0"
         debugNotis = "0"
         foursquareAccessToken = ""
-        settingsReset()
+        settingsReseted()
     }
 
     function settingChanged(name, value) {
         if (config.hasOwnProperty(name)) {
-            console.log("Loaded setting: %1 = %2".arg(name).arg(value))
+            //console.log("Loaded setting: %1 = %2".arg(name).arg(value))
             config[name] = value;
         }
     }
@@ -63,7 +63,7 @@ QtObject {
     function save(name) {
         if (config.hasOwnProperty(name)) {
             var data = JSON.parse("{ \"%1\" : \"%2\" }".arg(name).arg(config[name]));
-            console.log("Saved setting: " + JSON.stringify(data));
+            //console.log("Saved setting: " + JSON.stringify(data));
             Database.setSetting(data);
         }
     }

@@ -16,51 +16,6 @@
 #include "httpuploader.h"
 #include <QDebug>
 
-class HttpUploaderDevice : public QIODevice
-{
-    Q_OBJECT
-public:
-    HttpUploaderDevice(HttpUploader * uploader):
-        QIODevice(uploader),
-        totalSize(0),
-        ioIndex(0),
-        lastIndex(0)
-    {
-        setup();
-    }   
-
-    ~HttpUploaderDevice()
-    {
-        for(int i = 0 ; i < ioDevices.count() ; ++i)
-            delete ioDevices[i].second;
-    }
-
-    virtual qint64 size() const;
-    virtual bool seek(qint64 pos);
-
-private:
-    virtual qint64 readData(char *data, qint64 maxlen);
-    virtual qint64 writeData(const char *data, qint64 len);
-
-private:
-    void setup();
-
-public:
-    struct Range {
-        int start;
-        int end;
-    };
-
-    void appendData(const QByteArray& data);
-    void appendField(HttpPostField * field);
-
-    QVector< QPair<Range, QIODevice *> > ioDevices;
-    int totalSize;
-    qint64 ioIndex;
-    int lastIndex;
-    QByteArray contentType;
-};
-
 qint64 HttpUploaderDevice::size() const
 {
     return totalSize;
@@ -720,4 +675,4 @@ void HttpUploader::uploadProgress(qint64 bytesSent, qint64 bytesTotal)
     }
 }
 
-#include "httpuploader.moc"
+//#include "httpuploader.moc"

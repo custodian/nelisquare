@@ -204,6 +204,7 @@ PageStackWindow {
             //CheckUpdates, RunUpdateTimer
             mytheme.loadTheme(interfaceTheme);
             if (interfaceLanguage === "") {
+                console.log("Loading default language");
                 interfaceLanguage = translator.getDefaultLanguage();
             }
             if (gpsAllow === "") {
@@ -227,13 +228,13 @@ PageStackWindow {
         }
 
         onDebugEnabledChanged: Api.api.debugenabled = debugEnabled;
-        onDebugFeedChanged: Api.feed.debuglevel = debugEnabled && debugFeed;
-        onDebugCheckinsChanged: Api.checkin.debuglevel = debugEnabled && debugCheckins
-        onDebugNotisChanged: Api.notifications.debuglevel = debugEnabled && debugNotis
-        onDebugPhotosChanged: Api.photos.debuglevel = debugEnabled && debugPhotos
-        onDebugTipsChanged: Api.tips.debuglevel = debugEnabled && debugTips
-        onDebugUsersChanged: Api.users.debuglevel = debugEnabled && debugUsers
-        onDebugVenuesChanged: Api.venues.debuglevel = debugEnabled && debugVenues
+        onDebugFeedChanged: Api.feed.debuglevel = debugFeed;
+        onDebugCheckinsChanged: Api.checkin.debuglevel = debugCheckins
+        onDebugNotisChanged: Api.notifications.debuglevel = debugNotis
+        onDebugPhotosChanged: Api.photos.debuglevel = debugPhotos
+        onDebugTipsChanged: Api.tips.debuglevel = debugTips
+        onDebugUsersChanged: Api.users.debuglevel = debugUsers
+        onDebugVenuesChanged: Api.venues.debuglevel = debugVenues
 
         onUpdatesCheckChanged: {
             if (updatesCheck!="none") {

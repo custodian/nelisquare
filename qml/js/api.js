@@ -7,15 +7,15 @@ console.log("loading api...");
 
 function ApiObject() {
     this.name = "4SQ JS API for QML";
-    this.debuglevel = 1; //1 = log, 2 = debug
+    this.debuglevel = 0; //0 = log, 1 = debug
     this.log = function(msg) {
-        if (this.debuglevel > 0) {
+        if (this.debuglevel >= 0) {
             //console.log("LOG: " + msg)
             console.log(msg)
         }
     }
     this.debug = function(callback) {
-        if (this.debuglevel > 1 && api.debugenabled) {
+        if (this.debuglevel > 0 && api.debugenabled) {
             console.debug(callback());
         }
     }

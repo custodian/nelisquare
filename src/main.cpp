@@ -97,6 +97,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
 #if defined(Q_WS_SIMULATOR)
     viewer.engine()->addImportPath(QString("aui/harmattan"));
+    viewer.engine()->addImportPath(QString("c:/source/nelisquare/nelisquare/aui/harmattan"));
+
 #elif defined(Q_OS_HARMATTAN) || defined(Q_OS_MAEMO)
     viewer.engine()->addImportPath(QString("/opt/nelisquare/qml/aui"));
 #endif

@@ -83,5 +83,3 @@ QVariant DebugLogger::getData() {
 void DebugLogger::dataRecieved(QString msg) {
     emit dataLogged(msg);
 }
-
-

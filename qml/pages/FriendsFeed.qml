@@ -5,6 +5,8 @@ import "../components"
 
 import "../js/api.js" as Api
 
+import org.flyingsheep.abstractui 1.0
+
 PageWrapper {
     id: friendsFeed
     signal update()
@@ -72,7 +74,7 @@ PageWrapper {
         friendsCheckinsModel.insert(loaded,item);
         loaded += 1;
 
-        if (appConfig.feedUpdateInterval !== "0"
+        /*if (appConfig.feedUpdateInterval !== "0"
                 && appConfig.integrationHomeFeed !=="0") {
 
             item.content.photoCached = "";
@@ -102,7 +104,7 @@ PageWrapper {
                 feedphotoobj.cacheCallback(true, "");
                 Api.objs.remove(feedphoto);
             }
-        }
+        }*/
     }
 
     function updateItem(position, update) {
@@ -259,7 +261,8 @@ PageWrapper {
 
         footer: Column{
             width: parent.width
-            ToolButton {
+            AUIButton {
+                primaryColor: "gray"
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("Load More")
                 visible: moreData
@@ -284,7 +287,7 @@ PageWrapper {
         Loader {
             width: friendsCheckinsView.width
             function getComponentByType(type) {
-                if (type === "checkin")
+                /*if (type === "checkin")
                     return friendsFeedDelegateEvent
                 else if (type === "friend")
                     return friendsFeedDelegateFriend
@@ -308,7 +311,7 @@ PageWrapper {
                     return friendsFeedDelegatePage
                 else if (type === "awardbadge")
                     return friendsFeedDelegateAward
-                else
+                else*/
                     return friendsFeedDelegateUnknown
             }
             property variant content: model.content
@@ -320,194 +323,9 @@ PageWrapper {
         id: friendsFeedDelegateUnknown
 
         DebugWidget {
-            debugType: content.debugType
+            debugType: content.debugType ? content.debugType : content.type ? content.type : "unknown"
             debugContent: content
         }
     }
 
-    Component {
-        id: friendsFeedDelegateInstallPlugin
-
-        EventBox {
-            id: eventbox
-            activeWhole: true
-
-            userName: content.userName
-            venueName: content.venueName
-            userShout: content.shout
-            venuePhoto: content.venuePhoto
-            createdAt: content.createdAt
-
-            Component.onCompleted: {
-                userPhoto.photoUrl = content.photo
-            }
-
-            onAreaClicked: {
-                Qt.openUrlExternally(content.url);
-            }
-        }
-    }
-
-    Component {
-        id: friendsFeedDelegateFriend
-
-        EventBox {
-            id: eventbox
-            activeWhole: true
-
-            userName: content.userName
-            createdAt: content.createdAt
-
-            Component.onCompleted: {
-                userPhoto.photoUrl = "https://ss0.4sqi.net/img/icon-friendrequests-1c69ce8a7660d4c9bdd0a4395c72753c.png";
-            }
-
-            onAreaClicked: {
-                friendsFeed.user( content.id );
-            }
-        }
-    }
-
-    Component {
-        id: friendsFeedDelegateVenue
-
-        EventBox {
-            activeWhole: true
-
-            userName: content.userName
-            venueName: content.venueCity
-            likesCount: content.likesCount
-            createdAt: content.createdAt
-
-            Component.onCompleted: {
-                userPhoto.photoUrl = content.photo
-            }
-
-            onAreaClicked: {
-                friendsFeed.venue( content.id );
-            }
-        }
-    }
-
-    Component {
-        id: friendsFeedDelegatePage
-
-        EventBox {
-            activeWhole: true
-
-            userName: content.userName
-            userShout: content.shout
-            venuePhoto: content.venuePhoto
-            likesCount: content.likesCount
-            commentsCount: content.commentsCount
-            peoplesCount: content.peoplesCount
-            createdAt: content.createdAt //TODO: does this needed here?
-
-            Component.onCompleted: {
-                userPhoto.photoUrl = content.photo
-            }
-
-            onAreaClicked: {
-                show_error(qsTr("Sorry, Pages are not supported yet :("));
-            }
-        }
-    }
-
-    Component {
-        id: friendsFeedDelegateAward
-
-        EventBox {
-            activeWhole: true
-
-            userName: content.userName
-            userShout: content.shout
-            venuePhoto: content.venuePhoto
-            createdAt: content.createdAt
-
-            Component.onCompleted: {
-                userPhoto.photoUrl = content.photo
-            }
-
-            onAreaClicked: {
-                friendsFeed.badge(content.badge)
-            }
-        }
-    }
-
-    Component {
-        id: friendsFeedDelegateTip
-
-        EventBox {
-            //id: eventbox
-            activeWhole: true
-
-            userName: content.userName
-            venueName: content.venueName
-            userShout: content.shout
-            venuePhoto: content.venuePhoto
-            createdAt: content.createdAt
-            likesCount: content.likesCount
-
-            Component.onCompleted: {
-                userPhoto.photoUrl = content.photo
-            }
-
-            onAreaClicked: {
-                friendsFeed.tip( content.id );
-            }
-        }
-    }
-
-    Component {
-        id: friendsFeedDelegateSaveList
-
-        EventBox {
-            //id: eventbox
-            activeWhole: true
-
-            userName: content.userName
-            venueName: content.listName
-            userShout: content.shout
-            venuePhoto: content.venuePhoto
-            createdAt: content.createdAt
-            likesCount: content.likesCount
-
-            Component.onCompleted: {
-                userPhoto.photoUrl = content.photo
-            }
-
-            onAreaClicked: {
-                //friendsFeed.list( content.id );
-                show_error(qsTr("Sorry, no lists support yet :("));
-            }
-        }
-    }
-
-    Component {
-        id: friendsFeedDelegateEvent
-
-        EventBox {
-            //id: eventbox
-            activeWhole: true
-
-            userName: content.userName
-            userShout: content.shout
-            userMayor: content.mayor
-            venueName: content.venueName
-            venuePhoto: content.venuePhoto
-            createdAt: content.createdAt
-            commentsCount: content.commentsCount
-            photosCount: content.photosCount
-            likesCount: content.likesCount
-            comments: content.comments
-
-            Component.onCompleted: {
-                userPhoto.photoUrl = content.photo
-            }
-
-            onAreaClicked: {
-                friendsFeed.checkin( content );
-            }
-        }
-    }
 }

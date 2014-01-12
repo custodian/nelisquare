@@ -4,9 +4,7 @@
 .pragma library
 
 api.log("loading api-feed...");
-
 var feed = new ApiObject();
-//feed.debuglevel = 2;
 
 feed.loadFriendsFeed = function(page, history) {
     //activities/recent activities/recent?afterMarker=50ade891e4b0892bb7343597
@@ -29,7 +27,7 @@ feed.loadFriendsFeed = function(page, history) {
     }
 
     url += "limit=" + page.batchSize + "&" +getAccessTokenParameter();
-    api.request("GET", url, page, function(response,page) {
+    api.request("GET", url, page, function(response, page2) {
         feed.parseFriendsFeed(response,page,history);
     });
 
@@ -39,7 +37,6 @@ feed.loadFriendsFeed = function(page, history) {
         url2 += "&updatesAfterMarker=" + page.trailingMarker; //page.leadingMarker;
         url2 += "&" +getAccessTokenParameter()
         api.request("GET", url2, page, feed.parseFriendsFeedUpdate);
-        //TODO: page.friendsCheckinsView.positionViewAtBeginning();
     }
 }
 
@@ -306,7 +303,7 @@ feed.parseFriendsFeed = function(response, page, history) {
         feedObjParser(loaddebugobject());
         api.debugobject = false;
     }
-    activities.items.forEach(feedObjParser);
+    activities.items.forEach(page.addItem);
 
     if (!updating) {
         page.timerFeedUpdate.restart();
@@ -321,6 +318,8 @@ feed.parseFriendsFeed = function(response, page, history) {
             if (currentsize>(api.MAX_FEED_SIZE-1))
                 page.trailingMarker = page.friendsCheckinsModel.get(api.MAX_FEED_SIZE-1).content.id;
         }
+
+        //TODO: remove update time to timer at form
         //rotate times and dates
         //get content, replace, put back
         for (var i=0;i<page.friendsCheckinsModel.count;i++){
@@ -359,6 +358,9 @@ feed.feedObjParserCheckin = function(page, object) {
         venuePhoto = thumbnailPhoto(checkin.photos.items[0], 300, 300);
     }
     if (venueDistance === undefined || venueDistance < api.MAX_NEARBY_DISTANCE) {
+        if (checkin.comments === undefined) {
+            checkin.comments = {};
+        }
         var item = {
             "type": "checkin",
             "content": {

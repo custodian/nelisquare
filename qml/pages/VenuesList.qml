@@ -93,13 +93,13 @@ PageWrapper {
         height: venuesList.isPortrait ? 100 : parent.height
         width: venuesList.isPortrait ? parent.width : parent.width * 2/5
         Plugin {
-            property string provider: configuration.mapprovider
+            property string provider: appConfig.mapProvider
             onProviderChanged: {
                 mapProvider.name = provider;
                 map.plugin = mapProvider;
             }
             id: mapProvider
-            name : configuration.mapprovider
+            name : appConfig.mapProvider
         }
         Map {
             id: map

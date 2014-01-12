@@ -85,9 +85,9 @@ venues.loadVenue = function(page, venueID) {
 
 venues.parseVenue = function(response, page) {
     var data = api.process(response, page);
-    //console.log("VENUE: "+ JSON.stringify(data));
     page.waiting_hide();
     var venue = data.venue;
+    //venues.debug(function(){return "VENUE: "+ JSON.stringify(venue)});
     var icon = "";
     if(venue.categories!=null && venue.categories[0]!==undefined) {
         icon = venue.categories[0].icon;
@@ -129,7 +129,8 @@ venues.parseVenue = function(response, page) {
             });
     }
     if(venue.photos.count>0) {
-        page.photosBox.caption = venue.photos.summary;
+        venues.debug(function(){return "VENUE PHOTOS: "+ JSON.stringify(venue.photos)});
+        //TODO: page.photosBox.caption = venue.photos.summary;
         venue.photos.groups.forEach(function(group) {
             if (group.count>0) {
                 group.items.forEach(function(photo){
