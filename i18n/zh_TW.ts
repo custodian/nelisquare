@@ -1168,7 +1168,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/main.qml" line="387"/>
         <source>Location data</source>
-        <translation定位資料</translation>
+        <translation>定位資料</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="388"/>
