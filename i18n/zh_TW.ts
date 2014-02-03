@@ -215,12 +215,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="9"/>
         <source>Pull and hold to refresh...</source>
-        <translation>下拉即可更新...</translation>
+        <translation>下拉即可更新⋯⋯</translation>
     </message>
     <message>
         <location filename="../qml/components/ListViewEx.qml" line="10"/>
         <source>Release to refresh...</source>
-        <translation>釋放立即更新...</translation>
+        <translation>釋放立即更新⋯⋯</translation>
     </message>
 </context>
 <context>
@@ -267,7 +267,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Notifications.qml" line="51"/>
         <source>Mark all as read</source>
-        <translation>全部標示為以獨</translation>
+        <translation>全部標示為已讀</translation>
     </message>
     <message>
         <location filename="../qml/pages/Notifications.qml" line="61"/>
@@ -308,7 +308,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Photo.qml" line="49"/>
         <source>Image saved to %1</source>
-        <translation>影像以儲存至 %1</translation>
+        <translation>影像已儲存至 %1</translation>
     </message>
     <message>
         <location filename="../qml/pages/Photo.qml" line="51"/>
@@ -397,7 +397,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Settings.qml" line="13"/>
         <source>updating...</source>
-        <translation>更新中...</translation>
+        <translation>更新中⋯⋯</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="21"/>
@@ -887,7 +887,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/User.qml" line="303"/>
         <source>Add Friend</source>
-        <translation>家為朋友</translation>
+        <translation>加為朋友</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="315"/>
@@ -970,7 +970,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/UsersList.qml" line="33"/>
         <source>LIKERS LIST</source>
-        <translation>案讚名單</translation>
+        <translation>按讚名單</translation>
     </message>
 </context>
 <context>
@@ -1036,7 +1036,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="136"/>
         <source>Venue name required</source>
-        <translation>地盤名稱危壁填</translation>
+        <translation>地盤名稱為必填</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="145"/>
@@ -1117,12 +1117,12 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="125"/>
         <source>Locking GPS, please wait</source>
-        <translation>搜尋 GPS 中，請稍後</translation>
+        <translation>搜尋 GPS 中，請稍候</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="141"/>
         <source>Tap to search place...</source>
-        <translation>點擊以搜尋地點...</translation>
+        <translation>點擊以搜尋地點⋯⋯</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="157"/>
@@ -1145,7 +1145,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="46"/>
         <source>Please, login with Foursquare!</source>
-        <translation>請登入 Foursquare ！</translation>
+        <translation>請登入 Foursquare！</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="53"/>
@@ -1168,7 +1168,7 @@ You can help with resolution.</source>
     <message>
         <location filename="../qml/main.qml" line="387"/>
         <source>Location data</source>
-        <translation>訂位資料</translation>
+        <translation定位資料</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="388"/>
