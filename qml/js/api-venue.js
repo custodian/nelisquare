@@ -49,6 +49,58 @@ venues.parseVenues = function(response, page) {
     });
 }
 
+venues.loadVenuesExplore = function(page, query, section, specialsOnly) {
+    var url = "venues/explore?" +
+        getLocationParameter();
+    if(query!=null && query.length>0) {
+        url += "&query=" + encodeURIComponent(query);
+    }
+    if(section != null && section.length > 0) {
+        url += "&section=" + encodeURIComponent(section)
+    }
+    url += "&specials=" + specialsOnly
+    url += "&" + getAccessTokenParameter();
+
+    console.log("Venue URL: " + url);
+    api.request("GET", url, page, venues.parseVenuesExplore);
+    page.waiting_show();
+}
+
+venues.parseVenuesExplore = function(response, page) {
+    var data = api.process(response, page);
+    console.log("response: " + response);
+    var count = 0;
+    page.placesModel.clear();
+    page.waiting_hide();
+    data.groups.forEach(function(group) {
+        group.items.forEach(function(item) {
+            //console.log("PLACE: " + JSON.stringify(place));
+            var place = item.venue
+            var icon = "";
+            if(place.categories!=null && place.categories[0]!==undefined) {
+                icon = parseIcon(place.categories[0].icon);
+            } else {
+                icon = parseIcon(defaultVenueIcon);
+            }
+            page.placesModel.append({
+                               "id": place.id,
+                               "name": place.name,
+                               "todoComment": "",
+                               "distance": place.location.distance,
+                               "address": parse(place.location.address),
+                               "city": parse(place.location.city),
+                               "lat": place.location.lat,
+                               "lng": place.location.lng,
+                               "icon": icon,
+                               "peoplesCount": parse(place.hereNow.count),
+                               "specialsCount": parse(place.specials.count),
+                               "group": group.type
+            });
+            count++;
+        })
+    })
+}
+
 venues.likeVenue = function(page, id, state) {
     console.log("LIKE VENUE: " + id + " STATE: " + state);
     var url = "venues/"+id+"/like?set="

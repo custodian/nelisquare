@@ -7,12 +7,10 @@ import "../components"
 import "../js/api.js" as Api
 
 PageWrapper {
-    id: venuesList
+    id: explore
     signal checkin(string venueid, string venuename)
     signal clicked(string venueid)
-    signal search(string query)
-    signal explore()
-    signal addVenue()
+    signal search(string query, string section, bool specialsOnly)
 
     property alias placesModel: placesModel
 
@@ -20,29 +18,24 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
-    headerText: qsTr("NEARBY VENUES")
+    headerText: qsTr("EXPLORE VENUES")
     headerIcon: "../icons/icon-header-venueslist.png"
 
     function load() {
-        var page = venuesList;
+        var page = explore;
         page.checkin.connect(function(venueID, venueName) {
             stack.push(Qt.resolvedUrl("CheckinDialog.qml"),{ "venueID": venueID, "venueName": venueName});
         });
         page.clicked.connect(function(venueid) {
             stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
         });
-        page.search.connect(function(query) {
+        page.search.connect(function(query, section, specialsOnly) {
             if (positionSource.position.latitudeValid) {
-                Api.venues.loadVenues(page, query);
+                pageStack.pop()
+                Api.venues.loadVenuesExplore(page, query, section, specialsOnly ? "1" : "0");
             } else {
                 page.show_error(qsTr("GPS signal is fuzzy, cannot get your location"));
             }
-        });
-        page.explore.connect(function() {
-            stack.push(Qt.resolvedUrl("Explore.qml"));
-        });
-        page.addVenue.connect(function(){
-            stack.push(Qt.resolvedUrl("VenueAdd.qml"),{"venueID":""});
         });
         updateView();
     }
@@ -60,7 +53,8 @@ PageWrapper {
                 updateTimer.interval = 50;
                 waiting_hide();
                 infoBanner.shown = false;
-                search("");
+                // TODO update
+                // search("");
             } else {
                 updateTimer.interval = 1000;
                 if (!infoBanner.shown) {
@@ -87,8 +81,8 @@ PageWrapper {
             top: pagetop
             left: parent.left
         }
-        height: configuration.isPortrait ? 100 : parent.height
-        width: configuration.isPortrait ? parent.width : parent.width * 2/5
+        height: configuration.isPortrait ? 300 : parent.height
+        width: configuration.isPortrait ? parent.width : parent.width * 3/5
         Plugin {
             property string provider: configuration.mapprovider
             onProviderChanged: {
@@ -102,12 +96,11 @@ PageWrapper {
             id: map
             anchors.fill: parent
 
-            zoomLevel: 15
+            zoomLevel: 14
 
             center: positionSource.position.coordinate
             MapMouseArea {
                 onClicked: {
-                    venuesList.explore();
                 }
             }
             MapImage{
@@ -135,29 +128,14 @@ PageWrapper {
         }
         height: 70
 
-        TextField {
-            id: searchText
-            placeholderText: qsTr("Tap to search place...")
-            width: parent.width - 180
-            x: 10
-            y: 10
-
-            Keys.onReturnPressed: {
-                searchBox.forceActiveFocus();
-                venuesList.search(searchText.text);
-            }
-        }
-
         Button {
             id: searchButton
-            x: parent.width - width - 10
-            y: 10
-            height: searchText.height
-            text: qsTr("SEARCH")
-            width: 150
+            anchors.centerIn: parent
+            width: parent.width - 130
+            text: qsTr("SEARCH OPTIONS")
 
             onClicked: {
-                venuesList.search(searchText.text);
+                stack.push(Qt.resolvedUrl("ExploreOptions.qml"), { "searchAction": explore })
             }
         }
         SectionHeader {
@@ -180,29 +158,14 @@ PageWrapper {
         cacheBuffer: 400
         spacing: 5
 
-        onPulledDown: {
-            updateView();
+        section.property: "group"
+        section.criteria: ViewSection.FullString
+        section.delegate: SectionHeader {
+            text: section
         }
 
-        //Add new venue functionality
-        footer: Column {
-            width: placesView.width
-            Item {
-                width: placesView.width
-                height: 10
-            }
-            Button {
-                width: placesView.width * 0.7
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("ADD NEW VENUE")
-                onClicked: {
-                    venuesList.addVenue();
-                }
-            }
-            Item {
-                width: placesView.width
-                height: 30
-            }
+        onPulledDown: {
+            updateView();
         }
     }
 
@@ -221,17 +184,18 @@ PageWrapper {
             createdAt: model.distance + " meters"
             peoplesCount: model.peoplesCount
             specialsCount: model.specialsCount
+            group: model.group
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.icon
             }
 
             onAreaClicked: {
-                venuesList.clicked( model.id );
+                explore.clicked( model.id );
             }
 
             onAreaPressAndHold: {
-                venuesList.checkin( model.id, model.name);
+                explore.checkin( model.id, model.name);
             }
         }
     }

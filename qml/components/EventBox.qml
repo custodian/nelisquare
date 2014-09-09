@@ -38,6 +38,8 @@ Rectangle {
 
     property variant comments: []
 
+    property string group: ""
+
     id: eventItem
     //width: parent.width
     //height: titleContainer.height
