@@ -49,7 +49,7 @@ venues.parseVenues = function(response, page) {
     });
 }
 
-venues.loadVenuesExplore = function(page, query, section, specialsOnly) {
+venues.loadVenuesExplore = function(page, query, section, specialsOnly, openNow, saved, sortByDistance, price, novelty) {
     var url = "venues/explore?" +
         getLocationParameter();
     if(query!=null && query.length>0) {
@@ -59,6 +59,15 @@ venues.loadVenuesExplore = function(page, query, section, specialsOnly) {
         url += "&section=" + encodeURIComponent(section)
     }
     url += "&specials=" + specialsOnly
+    url += "&openNow=" + openNow
+    url += "&saved=" + saved
+    url += "&sortByDistance=" + sortByDistance
+    if(price > 0) {
+        url += "&price=" + price
+    }
+    if(novelty === "new" || novelty === "old") {
+        url += "&novelty=" + novelty
+    }
     url += "&" + getAccessTokenParameter();
 
     console.log("Venue URL: " + url);
@@ -68,7 +77,7 @@ venues.loadVenuesExplore = function(page, query, section, specialsOnly) {
 
 venues.parseVenuesExplore = function(response, page) {
     var data = api.process(response, page);
-    console.log("response: " + response);
+    // console.log("response: " + response);
     var count = 0;
     page.placesModel.clear();
     page.waiting_hide();

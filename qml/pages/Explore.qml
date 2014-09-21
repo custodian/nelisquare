@@ -10,7 +10,7 @@ PageWrapper {
     id: explore
     signal checkin(string venueid, string venuename)
     signal clicked(string venueid)
-    signal search(string query, string section, bool specialsOnly)
+    signal search()
 
     property alias placesModel: placesModel
 
@@ -21,6 +21,16 @@ PageWrapper {
     headerText: qsTr("EXPLORE VENUES")
     headerIcon: "../icons/icon-header-venueslist.png"
 
+    // search options
+    property string query: ""
+    property string section: ""
+    property bool specialsOnly: false
+    property bool openNow: false
+    property bool savedOnly: false
+    property bool sortByDistance: false
+    property int price: 0
+    property string novelty: ""
+
     function load() {
         var page = explore;
         page.checkin.connect(function(venueID, venueName) {
@@ -29,18 +39,24 @@ PageWrapper {
         page.clicked.connect(function(venueid) {
             stack.push(Qt.resolvedUrl("Venue.qml"),{"venueID":venueid});
         });
-        page.search.connect(function(query, section, specialsOnly) {
+        page.search.connect(function() {
             if (positionSource.position.latitudeValid) {
                 pageStack.pop()
-                Api.venues.loadVenuesExplore(page, query, section, specialsOnly ? "1" : "0");
+                Api.venues.loadVenuesExplore(page, query, section, formatBoolean(specialsOnly),
+                    formatBoolean(openNow), formatBoolean(savedOnly), formatBoolean(sortByDistance),
+                    price, novelty);
             } else {
                 page.show_error(qsTr("GPS signal is fuzzy, cannot get your location"));
             }
         });
-        updateView();
+        //updateView();
     }
     function updateView() {
         updateTimer.start();
+    }
+
+    function formatBoolean(v) {
+        return v ? "1" : "0"
     }
 
     Timer{
@@ -53,8 +69,7 @@ PageWrapper {
                 updateTimer.interval = 50;
                 waiting_hide();
                 infoBanner.shown = false;
-                // TODO update
-                // search("");
+                search();
             } else {
                 updateTimer.interval = 1000;
                 if (!infoBanner.shown) {
@@ -96,7 +111,7 @@ PageWrapper {
             id: map
             anchors.fill: parent
 
-            zoomLevel: 14
+            zoomLevel: 14.5
 
             center: positionSource.position.coordinate
             MapMouseArea {
