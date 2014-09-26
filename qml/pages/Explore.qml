@@ -28,7 +28,7 @@ PageWrapper {
     property bool openNow: false
     property bool savedOnly: false
     property bool sortByDistance: false
-    property int price: 0
+    property variant price
     property string novelty: ""
 
     function load() {
@@ -41,10 +41,16 @@ PageWrapper {
         });
         page.search.connect(function() {
             if (positionSource.position.latitudeValid) {
+                var prices = []
+                if(price)
+                    for(var p = 0; p < price.length; p++)
+                        if(price[p])
+                            prices.push(p + 1)
+
                 pageStack.pop()
                 Api.venues.loadVenuesExplore(page, query, section, formatBoolean(specialsOnly),
                     formatBoolean(openNow), formatBoolean(savedOnly), formatBoolean(sortByDistance),
-                    price, novelty);
+                    prices.join(','), novelty);
             } else {
                 page.show_error(qsTr("GPS signal is fuzzy, cannot get your location"));
             }

@@ -16,6 +16,21 @@ PageWrapper {
     headerText: qsTr("EXPLORE OPTIONS")
     headerIcon: "../icons/icon-header-venueslist.png"
 
+    function load() {
+        var sectionIndex = sectionSelection.sectionIndexById(exploreOptions.searchAction.section)
+
+        queryText.text = exploreOptions.searchAction.query
+        sectionText.text = sectionModel.get(sectionIndex).name
+
+        p1.checked = prices.containsPrice(0)
+        p2.checked = prices.containsPrice(1)
+        p3.checked = prices.containsPrice(2)
+        p4.checked = prices.containsPrice(3)
+
+        novelty.checkedButton = novelty.getButton(exploreOptions.searchAction.novelty)
+        sectionSelection.selectedIndex = sectionIndex
+    }
+
     tools: ToolBarLayout {
         parent: exploreOptions
 
@@ -44,7 +59,7 @@ PageWrapper {
                 margins: mytheme.paddingXLarge
             }
             placeholderText: qsTr("Search query...")
-            text: exploreOptions.searchAction.query
+
             onTextChanged: exploreOptions.searchAction.query = text
             Keys.onReturnPressed: exploreOptions.searchAction.search()
         }
@@ -79,8 +94,6 @@ PageWrapper {
                 id: sectionText
                 anchors.top: title.bottom
                 anchors.left: title.left
-
-                text: sectionModel.get(sectionIndexById(exploreOptions.searchAction.section)).name
 
                 font.pixelSize: mytheme.fontSizeLarge
                 color: mytheme.colors.textColorOptions
@@ -145,32 +158,71 @@ PageWrapper {
             onCheckedChanged: exploreOptions.searchAction.savedOnly = checked
         }
 
-        // TODO multi selection list? (e.g. 2,3)
-//        Slider {
-//            id: priceSlider
-//            anchors {
-//                left: parent.left
-//                right: parent.right
-//                margins: mytheme.paddingXLarge
-//            }
-//            minimumValue: 0
-//            maximumValue: 4
-//            stepSize: 1
-
-////            function formatValue(val) {
-////                if(val === 0)
-////                    return "Any"
-////                else
-////                    return val
-////            }
-//            valueIndicatorText: value
-//            value: exploreOptions.searchAction.price
-//            // onValueChanged: exploreOptions.searchAction.price = value
-//        }
-
-        // novelty: new, old or `omit`
+        // price
         Item {
-            height: 120
+            height: 100
+            anchors {
+                left: parent.left
+                right: parent.right
+                margins: mytheme.paddingXLarge
+            }
+
+            Text {
+                id: priceTitle
+
+                anchors.leftMargin: mytheme.paddingMedium
+                anchors.topMargin: mytheme.paddingMedium
+                anchors.left: parent.left
+                anchors.top: parent.top
+
+                text: qsTr("Price")
+
+                font.bold: true
+                font.pixelSize: mytheme.fontSizeLarge
+                color: mytheme.colors.textColorOptions
+                wrapMode: Text.Wrap
+                elide: Text.ElideRight
+            }
+
+            ButtonRow {
+                id: prices
+                anchors.leftMargin: mytheme.paddingMedium
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: priceTitle.bottom
+
+                Button {
+                    id: p1; text: "$"; checkable: true
+                    onCheckedChanged: prices.updatePrice()
+                }
+                Button {
+                    id: p2; text: "$$"; checkable: true
+                    onCheckedChanged: prices.updatePrice()
+                }
+                Button {
+                    id: p3; text: "$$$"; checkable: true
+                    onCheckedChanged: prices.updatePrice()
+                }
+                Button {
+                    id: p4; text: "$$$$"; checkable: true
+                    onCheckedChanged: prices.updatePrice()
+                }
+
+                exclusive: false
+
+                function containsPrice(n) {
+                    return exploreOptions.searchAction.price ?
+                        exploreOptions.searchAction.price[n] : false
+                }
+                function updatePrice() {
+                    exploreOptions.searchAction.price = [ p1.checked, p2.checked, p3.checked, p4.checked ]
+                }
+            }
+        }
+
+        // novelty: new, old or omit
+        Item {
+            height: 100
             anchors {
                 left: parent.left
                 right: parent.right
@@ -195,28 +247,19 @@ PageWrapper {
             }
 
             ButtonRow {
+                id: novelty
                 anchors.leftMargin: mytheme.paddingMedium
-                anchors.topMargin: mytheme.paddingMedium
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: noveltyTitle.bottom
 
-                Button { id: nov1; text: "All" }
-                Button { id: nov2; text: "New" }
-                Button { id: nov3; text: "Old" }
-
-                checkedButton: getButton(exploreOptions.searchAction.novelty)
-                onCheckedButtonChanged: {
-                    var val = checkedButton.text.toLowerCase()
-                    if(exploreOptions.searchAction.novelty !== val)
-                        exploreOptions.searchAction.novelty = val
-                }
+                Button { id: nov1; text: "All"; onClicked: exploreOptions.searchAction.novelty = "" }
+                Button { id: nov2; text: "New"; onClicked: exploreOptions.searchAction.novelty = "new" }
+                Button { id: nov3; text: "Old"; onClicked: exploreOptions.searchAction.novelty = "old" }
 
                 function getButton(val) {
-                    if(val === "new")
-                        return nov2
-                    if(val === "old")
-                        return nov3
+                    if(val === "new") return nov2
+                    if(val === "old") return nov3
                     return nov1
                 }
             }
@@ -226,7 +269,6 @@ PageWrapper {
     SelectionDialog {
         id: sectionSelection
         titleText: qsTr("Section")
-        selectedIndex: sectionIndexById(exploreOptions.searchAction.section)
 
         model: ListModel {
             id: sectionModel
@@ -250,13 +292,13 @@ PageWrapper {
             sectionText.text = selectedItem.name
             exploreOptions.searchAction.section = selectedItem.section
         }
-    }
 
-    function sectionIndexById (sectionId) {
-        for(var i = 0; i < sectionModel.count; i++) {
-            var item = sectionModel.get(i)
-            if(item.section === sectionId)
-                return i
+        function sectionIndexById (sectionId) {
+            for(var i = 0; i < sectionModel.count; i++) {
+                var item = sectionModel.get(i)
+                if(item.section === sectionId)
+                    return i
+            }
         }
     }
 }

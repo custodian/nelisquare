@@ -52,20 +52,20 @@ venues.parseVenues = function(response, page) {
 venues.loadVenuesExplore = function(page, query, section, specialsOnly, openNow, saved, sortByDistance, price, novelty) {
     var url = "venues/explore?" +
         getLocationParameter();
-    if(query!=null && query.length>0) {
+    if(query) {
         url += "&query=" + encodeURIComponent(query);
     }
-    if(section != null && section.length > 0) {
+    if(section) {
         url += "&section=" + encodeURIComponent(section)
     }
     url += "&specials=" + specialsOnly
     url += "&openNow=" + openNow
     url += "&saved=" + saved
     url += "&sortByDistance=" + sortByDistance
-    if(price > 0) {
+    if(price) {
         url += "&price=" + price
     }
-    if(novelty === "new" || novelty === "old") {
+    if(novelty) {
         url += "&novelty=" + novelty
     }
     url += "&" + getAccessTokenParameter();
@@ -81,6 +81,10 @@ venues.parseVenuesExplore = function(response, page) {
     var count = 0;
     page.placesModel.clear();
     page.waiting_hide();
+
+    if(data.warning)
+        page.show_info(data.warning.text)
+
     data.groups.forEach(function(group) {
         group.items.forEach(function(item) {
             //console.log("PLACE: " + JSON.stringify(place));
