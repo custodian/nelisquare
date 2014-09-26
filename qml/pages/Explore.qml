@@ -30,6 +30,7 @@ PageWrapper {
     property bool sortByDistance: false
     property variant price
     property string novelty: ""
+    // TODO Must have: radius, near. Optional: friendVisits, time, day
 
     function load() {
         var page = explore;
@@ -41,28 +42,32 @@ PageWrapper {
         });
         page.search.connect(function() {
             if (positionSource.position.latitudeValid) {
-                var prices = []
-                if(price)
-                    for(var p = 0; p < price.length; p++)
-                        if(price[p])
-                            prices.push(p + 1)
-
                 pageStack.pop()
                 Api.venues.loadVenuesExplore(page, query, section, formatBoolean(specialsOnly),
                     formatBoolean(openNow), formatBoolean(savedOnly), formatBoolean(sortByDistance),
-                    prices.join(','), novelty);
+                    getPrices(), novelty);
             } else {
                 page.show_error(qsTr("GPS signal is fuzzy, cannot get your location"));
             }
         });
+        // TODO fix update on page load
         //updateView();
     }
     function updateView() {
         updateTimer.start();
     }
-
     function formatBoolean(v) {
         return v ? "1" : "0"
+    }
+    function getPrices() {
+        if(!price)
+            return ''
+
+        var prices = []
+        for(var p = 0; p < price.length; p++)
+            if(price[p])
+                prices.push(p + 1)
+        return prices.join(',')
     }
 
     Timer{
@@ -117,11 +122,13 @@ PageWrapper {
             id: map
             anchors.fill: parent
 
+            // TODO zoom contols
             zoomLevel: 14.5
 
             center: positionSource.position.coordinate
             MapMouseArea {
                 onClicked: {
+                    // TODO select venue in list
                 }
             }
             MapImage{

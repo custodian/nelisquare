@@ -109,6 +109,7 @@ venues.parseVenuesExplore = function(response, page) {
                                "specialsCount": parse(place.specials.count),
                                "group": group.type
             });
+            // TODO plot venues on map
             count++;
         })
     })
