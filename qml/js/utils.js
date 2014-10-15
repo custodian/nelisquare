@@ -10,7 +10,7 @@ function submitDebugInfo(content, callback) {
     var data = encodeURIComponent(JSON.stringify(content));
     api.debug(function(){return "SUBMIT DEBUG: " + data});
 
-    var url = api.DEBUG_URL + data;
+    var url = api.DEBUG_URL;
 
     var doc = new XMLHttpRequest();
     doc.onreadystatechange = function() {
@@ -27,8 +27,13 @@ function submitDebugInfo(content, callback) {
         }
     }
 
-    doc.open("GET", url);
-    doc.send();
+    var params = "content="+data;
+
+    doc.open("POST", url);
+    doc.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    doc.setRequestHeader("Content-length", params.length);
+    doc.setRequestHeader("Connection", "close");
+    doc.send(params);
 }
 
 function getRoutePoints(pointA,pointB,callback) {

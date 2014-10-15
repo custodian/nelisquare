@@ -9,7 +9,7 @@ api.log("loading api-core...");
 api.MAX_NEARBY_DISTANCE = 100000; //100km
 api.MAX_FEED_SIZE = 40;
 
-api.DEBUG_URL = "http://thecust.net/debug-nelisquare.php?content="
+api.DEBUG_URL = "http://thecust.net/debug-nelisquare.php"
 
 var API_VERSION = "20120901";
 /*

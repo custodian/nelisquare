@@ -55,7 +55,8 @@ SOURCES += $$PWD/src/main.cpp \
     $$PWD/src/molome.cpp \
     $$PWD/src/apptranslator.cpp \
     $$PWD/src/extras/formpost.cpp \
-    $$PWD/src/extras/httppostsendbuffer.cpp
+    $$PWD/src/extras/httppostsendbuffer.cpp \
+    $$PWD/src/debuglogger.cpp
 
 HEADERS += \
     $$PWD/src/windowhelper.h \
@@ -64,7 +65,8 @@ HEADERS += \
     $$PWD/src/molome.h \
     $$PWD/src/apptranslator.h \
     $$PWD/src/extras/formpost.h \
-    $$PWD/src/extras/httppostsendbuffer.h
+    $$PWD/src/extras/httppostsendbuffer.h \
+    $$PWD/src/debuglogger.h
 
 maemo5|simulator|contains(MEEGO_EDITION,harmattan){
     HEADERS += $$PWD/src/platform_utils.h

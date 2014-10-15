@@ -199,7 +199,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="63"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation>&lt;b&gt;%1punti&lt;/b&gt; %2 check-in</translation>
+        <translation>&lt;b&gt;%1 punti&lt;/b&gt; %2 check-in</translation>
     </message>
 </context>
 <context>
@@ -522,7 +522,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Settings.qml" line="216"/>
         <source>%1 secs(s)</source>
-        <translation>%1 secwazapp/language/it/</translation>
+        <translation>%1 sec</translation>
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="216"/>
@@ -776,7 +776,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="13"/>
         <source>VENUE SPECIALS</source>
-        <translation>PROMOZIONI DEI LUOGHI</translation>
+        <translation>PROMOZIONI</translation>
     </message>
     <message>
         <location filename="../qml/components/SpecialsList.qml" line="31"/>
@@ -951,7 +951,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/User.qml" line="627"/>
         <source>&lt;b&gt;%1 points&lt;/b&gt; %2 checkins</source>
-        <translation>&lt;b&gt;%1punti&lt;/b&gt; %2 check-in</translation>
+        <translation>&lt;b&gt;%1 punti&lt;/b&gt; %2 check-in</translation>
     </message>
 </context>
 <context>
@@ -969,7 +969,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/UsersList.qml" line="33"/>
         <source>LIKERS LIST</source>
-        <translation>LISTA DEI LIKE</translation>
+        <translation>A CHI PIACE</translation>
     </message>
 </context>
 <context>
@@ -1035,7 +1035,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="136"/>
         <source>Venue name required</source>
-        <translation>Nome luogo richiesto</translation>
+        <translation>Nome luogo obbligatorio</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="145"/>
@@ -1144,7 +1144,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="46"/>
         <source>Please, login with Foursquare!</source>
-        <translation>Per favore, accedi a Foursquare</translation>
+        <translation>Per favore, accedi a Foursquare!</translation>
     </message>
     <message>
         <location filename="../qml/pages/Welcome.qml" line="53"/>
@@ -1172,7 +1172,7 @@ Puoi aiutare fornendo dettagli.</translation>
     <message>
         <location filename="../qml/main.qml" line="388"/>
         <source>Nelisquare requires use of user location data. Data is needed to make geo-location services work properly.</source>
-        <translation>Nelisquare ha bisogno di utilizzare i dati sulla posizione dell&apos;utente. Questi dati sono necessari per il Chieti funzionamento dei servizi di geo-localizzazione.</translation>
+        <translation>Nelisquare ha bisogno di utilizzare i dati sulla posizione dell&apos;utente. Questi dati sono necessari per il corretto funzionamento dei servizi di geo-localizzazione.</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="389"/>

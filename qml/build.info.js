@@ -1,3 +1,3 @@
-var build = '201312051219';
-var version = "0.5.4";
-var changelog = " - Venue photo gallery fix ";
+var build = '201410160057';
+var version = "0.5.5";
+var changelog = " - SSLv3/POODLE issue fix. Debug system update.";

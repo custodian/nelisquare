@@ -149,7 +149,7 @@ feed.parseFriendsFeed = function(response, page, history) {
     var updating = (updateTime !== "0");
 
     if (history !== undefined || !updating) {
-        feed.debug(function(){return"MORE DATA: Updated: "+ activities.moreData});
+        feed.debug(function(){return "MORE DATA: Updated: "+ activities.moreData});
         page.moreData = activities.moreData;
     }
     if (activities.leadingMarker > page.leadingMarker)

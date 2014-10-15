@@ -194,7 +194,7 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="19"/>
         <source>YOU ARE #%1</source>
-        <translation type="unfinished"/>
+        <translation>VY JSTE #%1</translation>
     </message>
     <message>
         <location filename="../qml/pages/LeaderBoard.qml" line="63"/>
@@ -233,12 +233,12 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/Login24sq.qml" line="41"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Ukončit</translation>
     </message>
     <message>
         <location filename="../qml/pages/Login24sq.qml" line="59"/>
         <source>Error connecting to Foursquare site</source>
-        <translation type="unfinished"/>
+        <translation>Nastala chyba při připojování k Foursquare</translation>
     </message>
 </context>
 <context>
@@ -303,17 +303,17 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/Photo.qml" line="45"/>
         <source>You cannot save image until download is finished</source>
-        <translation type="unfinished"/>
+        <translation>Obrázek lze uložit až po dokončení stahování</translation>
     </message>
     <message>
         <location filename="../qml/pages/Photo.qml" line="49"/>
         <source>Image saved to %1</source>
-        <translation type="unfinished"/>
+        <translation>Obrázek uložen do %1</translation>
     </message>
     <message>
         <location filename="../qml/pages/Photo.qml" line="51"/>
         <source>Failed to save image</source>
-        <translation type="unfinished"/>
+        <translation>Ukládání se nezdařilo</translation>
     </message>
 </context>
 <context>
@@ -326,7 +326,7 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/PhotoAdd.qml" line="60"/>
         <source>Error uploading photo!&lt;br&gt;Photo size should be less than %1KB</source>
-        <translation type="unfinished"/>
+        <translation>Chyba v nahrávání fotografie&lt;br&gt;Velikost fotografie by měla být menší než %1KB</translation>
     </message>
 </context>
 <context>
@@ -866,22 +866,22 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/User.qml" line="69"/>
         <source>Change avatar</source>
-        <translation type="unfinished"/>
+        <translation>Změnit avatar</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="77"/>
         <source>User lists</source>
-        <translation type="unfinished"/>
+        <translation>Uživatelské seznamy</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="85"/>
         <source>Settings</source>
-        <translation type="unfinished"/>
+        <translation>Nastavení</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="91"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Ukončit</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="303"/>
@@ -946,7 +946,7 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/User.qml" line="602"/>
         <source>YOU ARE #%1</source>
-        <translation type="unfinished"/>
+        <translation>VY JSTE #%1</translation>
     </message>
     <message>
         <location filename="../qml/pages/User.qml" line="627"/>
@@ -1015,82 +1015,82 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="32"/>
         <source>ADD NEW VENUE</source>
-        <translation type="unfinished"/>
+        <translation>PŘIDAT NOVÝ PODNIK</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="74"/>
         <source>Select category</source>
-        <translation type="unfinished"/>
+        <translation>Vybrat kategorii</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="94"/>
         <source>Select sub-category</source>
-        <translation type="unfinished"/>
+        <translation>Vybrat podkategorii</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="131"/>
         <source>VENUE NAME</source>
-        <translation type="unfinished"/>
+        <translation>NÁZEV PODNIKU</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="136"/>
         <source>Venue name required</source>
-        <translation type="unfinished"/>
+        <translation>Je nutné vyplnit jméno podniku </translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="145"/>
         <source>VENUE ADDRESS</source>
-        <translation type="unfinished"/>
+        <translation>ADRESA PODNIKU</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="150"/>
         <source>Street address is optional</source>
-        <translation type="unfinished"/>
+        <translation>Adresa je volitelná</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="159"/>
         <source>VENUE CATEGORY</source>
-        <translation type="unfinished"/>
+        <translation>KATEGORIE</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="164"/>
         <source>Not selected</source>
-        <translation type="unfinished"/>
+        <translation>Není vybrána</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="165"/>
         <source>Tap to select category</source>
-        <translation type="unfinished"/>
+        <translation>Zvolte pro výběr kategorie</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="172"/>
         <source>Venue categories are not loaded yet</source>
-        <translation type="unfinished"/>
+        <translation>Kategorie podniků nejsou dosud načtené</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="182"/>
         <source>VENUE LOCATION</source>
-        <translation type="unfinished"/>
+        <translation>UMÍSTĚNÍ PODNIKU</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="209"/>
         <source>CREATE VENUE</source>
-        <translation type="unfinished"/>
+        <translation>VYTVOŘIT PODNIK</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="212"/>
         <source>You should specify venue name</source>
-        <translation type="unfinished"/>
+        <translation>Měli byste zadat jméno podniku</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="216"/>
         <source>You should select category</source>
-        <translation type="unfinished"/>
+        <translation>Měli byste zadat kategorii</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenueAdd.qml" line="220"/>
         <source>Can&apos;t get GPS position for venue</source>
-        <translation type="unfinished"/>
+        <translation>Nelze získat GPS pozici podniku</translation>
     </message>
 </context>
 <context>
@@ -1116,7 +1116,7 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="125"/>
         <source>Locking GPS, please wait</source>
-        <translation type="unfinished"/>
+        <translation>Získávám údaje GPS, vyčkejte</translation>
     </message>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="141"/>
@@ -1131,7 +1131,7 @@ Můžete pomoci s řešením.</translation>
     <message>
         <location filename="../qml/pages/VenuesList.qml" line="198"/>
         <source>ADD NEW VENUE</source>
-        <translation type="unfinished"/>
+        <translation>PŘIDAT NOVÝ PODNIK</translation>
     </message>
 </context>
 <context>

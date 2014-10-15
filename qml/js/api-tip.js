@@ -6,7 +6,7 @@
 api.log("loading api-tip...");
 
 var tips = new ApiObject();
-//tips.debuglevel = 1;
+//tips.debuglevel = 2;
 
 tips.loadTipsList = function(page, objectid) {
     //page baseType == "venue" baseType == "user"

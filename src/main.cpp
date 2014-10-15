@@ -11,6 +11,7 @@
 #include "cache.h"
 #include "molome.h"
 #include "apptranslator.h"
+#include "debuglogger.h"
 
 #include <qplatformdefs.h>
 
@@ -60,9 +61,15 @@ private:
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
+    DebugLogger::installLogger();
+
 #if defined(Q_WS_SIMULATOR)
     QSslConfiguration config = QSslConfiguration::defaultConfiguration();
     config.setProtocol(QSsl::SslV3);
+    QSslConfiguration::setDefaultConfiguration(config);
+#elif defined(Q_OS_MAEMO)
+    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
+    config.setProtocol(QSsl::TlsV1);
     QSslConfiguration::setDefaultConfiguration(config);
 #endif
 
@@ -92,6 +99,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 #endif
 
     QCoreApplication::addLibraryPath(QString("/opt/nelisquare/plugins"));
+
+    qmlRegisterType<DebugLogger>("net.thecust.utils", 1, 0, "DebugLogger");
 
     viewer.setAttribute(Qt::WA_OpaquePaintEvent);
     viewer.setAttribute(Qt::WA_NoSystemBackground);

@@ -3,6 +3,8 @@ import com.nokia.meego 1.0
 import "../build.info.js" as BuildInfo
 import "../components"
 
+import net.thecust.utils 1.0
+
 //TODO: dont forget about PAGESTACK:
 
 PageWrapper {
@@ -658,11 +660,83 @@ PageWrapper {
 
                 Column {
                     width: parent.width
+                    SectionHeader {
+                        text: qsTr("DEBUG INFO RECORD")
+                    }
                     Text{
                         anchors.horizontalCenter: parent.horizontalCenter
                         font.pixelSize: mytheme.fontSizeLarge
                         color: mytheme.colors.textColorOptions
-                        text: qsTr("Options will be available soon")
+                        text: qsTr("More options will be available soon")
+                    }
+                    SettingSwitch {
+                        text: qsTr("Feed API data");
+                        checked: configuration.debugFeed === "1"
+                        onCheckedChanged: {
+                            var value = (checked)?"1":"0";
+                            settingsChanged("debug.feed",value);
+                        }
+                    }
+                    SettingSwitch {
+                        text: qsTr("Checkins API data");
+                        checked: configuration.debugCheckins === "1"
+                        onCheckedChanged: {
+                            var value = (checked)?"1":"0";
+                            settingsChanged("debug.checkins",value);
+                        }
+                    }
+                    SettingSwitch {
+                        text: qsTr("Notifications API data");
+                        checked: configuration.debugNotis === "1"
+                        onCheckedChanged: {
+                            var value = (checked)?"1":"0";
+                            settingsChanged("debug.notis",value);
+                        }
+                    }
+                    SettingSwitch {
+                        text: qsTr("Photos API data");
+                        checked: configuration.debugPhotos === "1"
+                        onCheckedChanged: {
+                            var value = (checked)?"1":"0";
+                            settingsChanged("debug.photos",value);
+                        }
+                    }
+                    SettingSwitch {
+                        text: qsTr("Tips API data");
+                        checked: configuration.debugTips === "1"
+                        onCheckedChanged: {
+                            var value = (checked)?"1":"0";
+                            settingsChanged("debug.tips",value);
+                        }
+                    }
+                    SettingSwitch {
+                        text: qsTr("Users API data");
+                        checked: configuration.debugUsers === "1"
+                        onCheckedChanged: {
+                            var value = (checked)?"1":"0";
+                            settingsChanged("debug.users",value);
+                        }
+                    }
+                    SettingSwitch {
+                        text: qsTr("Venues API data");
+                        checked: configuration.debugVenues === "1"
+                        onCheckedChanged: {
+                            var value = (checked)?"1":"0";
+                            settingsChanged("debug.venues",value);
+                        }
+                    }
+                    SectionHeader {
+                        text: qsTr("DATA SUBMISSION")
+                    }
+                    DebugLogger {
+                        id: debuglogger
+                    }
+                    Button {
+                        text: qsTr("Send debug info")
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        onClicked: {
+                            stack.push(Qt.resolvedUrl("../pages/DebugSubmit.qml"), {"content": debuglogger.getData()});
+                        }
                     }
                     visible: configuration.debugEnabled === "1"
                 }

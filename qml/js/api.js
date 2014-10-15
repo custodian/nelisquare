@@ -15,7 +15,7 @@ function ApiObject() {
         }
     }
     this.debug = function(callback) {
-        if (this.debuglevel > 1) {
+        if (this.debuglevel > 1 && api.debugenabled) {
             console.debug(callback());
         }
     }
@@ -26,6 +26,8 @@ api.inverted = false; //TODO: have to move this somewhere to make common functio
 api.locale = "en";
 
 Qt.include("qmlprivate.js")
+Qt.include("debug.js")
+
 Qt.include("api-core.js")
 Qt.include("api-common.js")
 
@@ -38,6 +40,5 @@ Qt.include("api-user.js")
 Qt.include("api-venue.js")
 
 Qt.include("utils.js")
-Qt.include("debug.js")
 
 console.log("api loaded.");

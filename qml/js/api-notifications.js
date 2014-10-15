@@ -7,7 +7,7 @@
 api.log("loading api-notifications...");
 
 var notifications = new ApiObject();
-//notifications.debuglevel = 1;
+//notifications.debuglevel = 2;
 
 notifications.loadNotifications = function(page) {
     var url = "updates/notifications?limit=100&" + getAccessTokenParameter();
