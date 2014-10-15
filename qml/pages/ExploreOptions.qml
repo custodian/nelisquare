@@ -58,7 +58,7 @@ PageWrapper {
                 right: parent.right
                 margins: mytheme.paddingXLarge
             }
-            placeholderText: qsTr("Search query...")
+            placeholderText: qsTr("I'm looking for...")
 
             onTextChanged: exploreOptions.searchAction.query = text
             Keys.onReturnPressed: exploreOptions.searchAction.search()
