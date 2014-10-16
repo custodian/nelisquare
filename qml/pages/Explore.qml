@@ -2,6 +2,7 @@ import Qt 4.7
 import QtMobility.location 1.2
 import com.nokia.meego 1.0
 import com.nokia.extras 1.1
+import QtQuick 1.1
 import "../components"
 
 import "../js/api.js" as Api
@@ -42,7 +43,6 @@ PageWrapper {
         });
         page.search.connect(function() {
             if (positionSource.position.latitudeValid) {
-                pageStack.pop()
                 Api.venues.loadVenuesExplore(page, query, section, formatBoolean(specialsOnly),
                     formatBoolean(openNow), formatBoolean(savedOnly), formatBoolean(sortByDistance),
                     getPrices(), novelty);
@@ -50,8 +50,7 @@ PageWrapper {
                 page.show_error(qsTr("GPS signal is fuzzy, cannot get your location"));
             }
         });
-        // TODO fix update on page load
-        //updateView();
+        updateView();
     }
     function updateView() {
         updateTimer.start();
@@ -122,7 +121,6 @@ PageWrapper {
             id: map
             anchors.fill: parent
 
-            // TODO zoom contols
             zoomLevel: 14.5
 
             center: positionSource.position.coordinate
@@ -138,6 +136,23 @@ PageWrapper {
                 coordinate: positionSource.position.coordinate
                 source: "../pics/pin_user.png"
             }
+        }
+        PinchArea {
+            property double __oldZoom;
+            anchors.fill: mapArea;
+            function calcZoomDelta(zoom, percent) {
+                return zoom + Math.log(percent)/Math.log(2);
+            }
+            onPinchStarted: {
+                __oldZoom = map.zoomLevel;
+            }
+            onPinchUpdated: {
+                map.zoomLevel = calcZoomDelta(__oldZoom, pinch.scale);
+            }
+            onPinchFinished: {
+                map.zoomLevel = calcZoomDelta(__oldZoom, pinch.scale);
+            }
+            enabled: configuration.platform !== "maemo"
         }
         InfoBanner {
             id: infoBanner
@@ -213,6 +228,9 @@ PageWrapper {
             peoplesCount: model.peoplesCount
             specialsCount: model.specialsCount
             group: model.group
+
+            property double lat: model.lat
+            property double lng: model.lng
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.icon

@@ -11,6 +11,8 @@ PageWrapper {
     height: parent.height
     color: mytheme.colors.backgroundMain
 
+    signal search()
+
     property PageWrapper searchAction
 
     headerText: qsTr("EXPLORE OPTIONS")
@@ -29,6 +31,11 @@ PageWrapper {
 
         novelty.checkedButton = novelty.getButton(exploreOptions.searchAction.novelty)
         sectionSelection.selectedIndex = sectionIndex
+
+        exploreOptions.search.connect(function() {
+            pageStack.pop()
+            searchAction.search()
+        })
     }
 
     tools: ToolBarLayout {
@@ -42,7 +49,7 @@ PageWrapper {
         ToolIcon {
             iconId: "toolbar-search"
             anchors.horizontalCenter: parent.horizontalCenter
-            onClicked: exploreOptions.searchAction.search()
+            onClicked: exploreOptions.search()
         }
     }
 
@@ -61,7 +68,7 @@ PageWrapper {
             placeholderText: qsTr("I'm looking for...")
 
             onTextChanged: exploreOptions.searchAction.query = text
-            Keys.onReturnPressed: exploreOptions.searchAction.search()
+            Keys.onReturnPressed: exploreOptions.search()
         }
 
         Rectangle {
