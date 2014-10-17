@@ -200,29 +200,31 @@ PageWrapper {
 
                 Button {
                     id: p1; text: "$"; checkable: true
-                    onCheckedChanged: prices.updatePrice()
+                    onCheckedChanged: prices.updatePrice(0, checked)
                 }
                 Button {
                     id: p2; text: "$$"; checkable: true
-                    onCheckedChanged: prices.updatePrice()
+                    onCheckedChanged: prices.updatePrice(1, checked)
                 }
                 Button {
                     id: p3; text: "$$$"; checkable: true
-                    onCheckedChanged: prices.updatePrice()
+                    onCheckedChanged: prices.updatePrice(2, checked)
                 }
                 Button {
                     id: p4; text: "$$$$"; checkable: true
-                    onCheckedChanged: prices.updatePrice()
+                    onCheckedChanged: prices.updatePrice(3, checked)
                 }
 
                 exclusive: false
 
                 function containsPrice(n) {
-                    return exploreOptions.searchAction.price ?
-                        exploreOptions.searchAction.price[n] : false
+                    return exploreOptions.searchAction.price & (1 << n)
                 }
-                function updatePrice() {
-                    exploreOptions.searchAction.price = [ p1.checked, p2.checked, p3.checked, p4.checked ]
+                function updatePrice(n, checked) {
+                    if(checked)
+                        exploreOptions.searchAction.price |= 1 << n
+                    else
+                        exploreOptions.searchAction.price &= ~(1 << n)
                 }
             }
         }

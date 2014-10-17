@@ -29,7 +29,7 @@ PageWrapper {
     property bool openNow: false
     property bool savedOnly: false
     property bool sortByDistance: false
-    property variant price
+    property int price: 0
     property string novelty: ""
     // TODO Must have: radius, near. Optional: friendVisits, time, day
 
@@ -59,12 +59,12 @@ PageWrapper {
         return v ? "1" : "0"
     }
     function getPrices() {
-        if(!price)
+        if(price === 0)
             return ''
 
         var prices = []
-        for(var p = 0; p < price.length; p++)
-            if(price[p])
+        for(var p = 0; p < 4; p++)
+            if(price & (1 << p))
                 prices.push(p + 1)
         return prices.join(',')
     }
