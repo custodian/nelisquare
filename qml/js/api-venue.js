@@ -70,7 +70,7 @@ venues.loadVenuesExplore = function(page, query, section, specialsOnly, openNow,
     }
     url += "&" + getAccessTokenParameter();
 
-    console.log("Venue URL: " + url);
+    // console.log("Venue URL: " + url);
     api.request("GET", url, page, venues.parseVenuesExplore);
     page.waiting_show();
 }
@@ -107,9 +107,9 @@ venues.parseVenuesExplore = function(response, page) {
                                "icon": icon,
                                "peoplesCount": parse(place.hereNow.count),
                                "specialsCount": parse(place.specials.count),
-                               "group": group.type
+                               "group": group.type,
+                               "index": count
             });
-            // TODO plot venues on map
             count++;
         })
     })

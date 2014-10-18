@@ -79,6 +79,8 @@ PageWrapper {
                 updateTimer.interval = 50;
                 waiting_hide();
                 infoBanner.shown = false;
+                map.center.latitude = positionSource.position.coordinate.latitude;
+                map.center.longitude = positionSource.position.coordinate.longitude;
                 search();
             } else {
                 updateTimer.interval = 1000;
@@ -95,11 +97,6 @@ PageWrapper {
         id: placesModel
     }
 
-    MouseArea {
-        anchors.fill: parent
-        onClicked: { }
-    }
-
     Item {
         id: mapArea
         anchors {
@@ -108,6 +105,8 @@ PageWrapper {
         }
         height: configuration.isPortrait ? 300 : parent.height
         width: configuration.isPortrait ? parent.width : parent.width * 3/5
+        focus: true
+
         Plugin {
             property string provider: configuration.mapprovider
             onProviderChanged: {
@@ -117,26 +116,7 @@ PageWrapper {
             id: mapProvider
             name : configuration.mapprovider
         }
-        Map {
-            id: map
-            anchors.fill: parent
 
-            zoomLevel: 14.5
-
-            center: positionSource.position.coordinate
-            MapMouseArea {
-                onClicked: {
-                    // TODO select venue in list
-                }
-            }
-            MapImage{
-                id: markerUser
-                offset.x: -24
-                offset.y: -24
-                coordinate: positionSource.position.coordinate
-                source: "../pics/pin_user.png"
-            }
-        }
         PinchArea {
             property double __oldZoom;
             anchors.fill: mapArea;
@@ -154,6 +134,50 @@ PageWrapper {
             }
             enabled: configuration.platform !== "maemo"
         }
+
+        MouseArea {
+            property bool __isPanning: false;
+            property int __lastX: -1;
+            property int __lastY: -1;
+            anchors.fill : mapArea;
+
+            onPressed: {
+                __isPanning = true;
+                __lastX = mouse.x;
+                __lastY = mouse.y;
+            }
+            onReleased: {
+                __isPanning = false;
+            }
+            onPositionChanged: {
+                if (__isPanning) {
+                    var dx = mouse.x - __lastX;
+                    var dy = mouse.y - __lastY;
+                    map.pan(-dx, -dy);
+                    __lastX = mouse.x;
+                    __lastY = mouse.y;
+                }
+            }
+            onCanceled: {
+                __isPanning = false;
+            }
+        }
+
+        Map {
+            id: map
+            anchors.fill: parent
+            zoomLevel: 14.5
+            center: Coordinate {}
+
+            MapImage{
+                id: markerUser
+                offset.x: -24
+                offset.y: -24
+                coordinate: positionSource.position.coordinate
+                source: "../pics/pin_user.png"
+            }
+        }
+
         InfoBanner {
             id: infoBanner
             property bool shown: false
@@ -229,6 +253,7 @@ PageWrapper {
             specialsCount: model.specialsCount
             group: model.group
 
+            property int index: model.index
             property double lat: model.lat
             property double lng: model.lng
 
@@ -242,6 +267,17 @@ PageWrapper {
 
             onAreaPressAndHold: {
                 explore.checkin( model.id, model.name);
+            }
+
+            ListView.onAdd: {
+                var component = Qt.createComponent('../components/VenueMapImage.qml')
+                if (component.status === Component.Ready) {
+                    var img = component.createObject(map)
+                    img.coordinate.latitude = lat
+                    img.coordinate.longitude = lng
+                    img.onClicked.connect(function() { placesView.currentIndex = index })
+                    map.addMapObject(img)
+                }
             }
         }
     }
