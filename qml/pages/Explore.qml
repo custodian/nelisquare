@@ -31,7 +31,7 @@ PageWrapper {
     property bool sortByDistance: false
     property int price: 0
     property string novelty: ""
-    // TODO Must have: radius, near. Optional: friendVisits, time, day
+    // TODO Must have: radius, near. Optional: friendVisits, time, day, lastVenue
 
     function load() {
         var page = explore;
@@ -199,7 +199,7 @@ PageWrapper {
             id: searchButton
             anchors.centerIn: parent
             width: parent.width - 130
-            text: qsTr("SEARCH OPTIONS")
+            text: qsTr("EXPLORE OPTIONS")
 
             onClicked: {
                 stack.push(Qt.resolvedUrl("ExploreOptions.qml"), { "searchAction": explore })
@@ -220,7 +220,7 @@ PageWrapper {
         height: parent.height - y
         model: placesModel
         delegate: venuesListDelegate
-        //highlightFollowsCurrentItem: true
+        highlightFollowsCurrentItem: true
         clip: true
         cacheBuffer: 400
         spacing: 5
@@ -256,6 +256,7 @@ PageWrapper {
             property int index: model.index
             property double lat: model.lat
             property double lng: model.lng
+            property VenueLandmark landmark
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.icon
@@ -270,14 +271,24 @@ PageWrapper {
             }
 
             ListView.onAdd: {
-                var component = Qt.createComponent('../components/VenueMapImage.qml')
+                var component = Qt.createComponent('../components/VenueLandmark.qml')
                 if (component.status === Component.Ready) {
                     var img = component.createObject(map)
                     img.coordinate.latitude = lat
                     img.coordinate.longitude = lng
+                    img.label.text = index + 1
                     img.onClicked.connect(function() { placesView.currentIndex = index })
+
                     map.addMapObject(img)
+                    map.addMapObject(img.label)
+
+                    landmark = img
                 }
+            }
+
+            ListView.onRemove: {
+                map.removeMapObject(landmark.label) // TypeError: Result of expression 'image' [null] is not an object.
+                map.removeMapObject(landmark)
             }
         }
     }

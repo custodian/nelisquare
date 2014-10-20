@@ -167,8 +167,8 @@ PageWrapper {
             }
             MapImage{
                 id: markerVenue
-                offset.x: -24
-                offset.y: -24
+                offset.x: -14
+                offset.y: -14
                 coordinate: Coordinate{
                 }
                 source: "../pics/pin_venue.png"
