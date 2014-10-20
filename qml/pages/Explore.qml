@@ -252,6 +252,7 @@ PageWrapper {
             peoplesCount: model.peoplesCount
             specialsCount: model.specialsCount
             group: model.group
+            namePrefix: (model.index + 1) + ". "
 
             property int index: model.index
             property double lat: model.lat
@@ -273,21 +274,18 @@ PageWrapper {
             ListView.onAdd: {
                 var component = Qt.createComponent('../components/VenueLandmark.qml')
                 if (component.status === Component.Ready) {
-                    var img = component.createObject(map)
-                    img.coordinate.latitude = lat
-                    img.coordinate.longitude = lng
-                    img.label.text = index + 1
-                    img.onClicked.connect(function() { placesView.currentIndex = index })
+                    var lnd = component.createObject(map)
+                    lnd.coordinate.latitude = lat
+                    lnd.coordinate.longitude = lng
+                    lnd.text = index + 1
+                    lnd.onClicked.connect(function() { placesView.currentIndex = index })
 
-                    map.addMapObject(img)
-                    map.addMapObject(img.label)
-
-                    landmark = img
+                    map.addMapObject(lnd)
+                    landmark = lnd
                 }
             }
 
             ListView.onRemove: {
-                map.removeMapObject(landmark.label) // TypeError: Result of expression 'image' [null] is not an object.
                 map.removeMapObject(landmark)
             }
         }

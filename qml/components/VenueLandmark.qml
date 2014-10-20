@@ -1,29 +1,31 @@
 import QtQuick 1.1
 import QtMobility.location 1.2
 
-MapImage {
-    property alias label: label
+MapGroup {
+    property Coordinate coordinate: Coordinate {}
+    property string text: ""
 
     signal onClicked()
 
-    offset.x: -14
-    offset.y: -14
-    source: "../pics/pin_venue.png"
-
-    coordinate: Coordinate {}
+    MapImage {
+        id: image
+        offset.x: -14
+        offset.y: -14
+        source: "../pics/pin_venue.png" // TODO better image
+        coordinate: parent.coordinate
+    }
 
     MapText {
-        id: label
-
-        coordinate: parent.coordinate
-
         font.bold: true
         font.pixelSize: mytheme.fontSizeLarge
         color: "black"
+        text: parent.text
+        coordinate: parent.coordinate
     }
 
     MapMouseArea {
-        anchors.fill: parent
+        // FIXME
+        anchors.fill: image
         onClicked: parent.onClicked()
     }
 }

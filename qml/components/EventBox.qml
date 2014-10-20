@@ -19,6 +19,7 @@ Rectangle {
     property string venueAddress: ""
     property string createdAt: ""
     property string eventOwner: ""
+    property string namePrefix: ""
 
     property int fontSize: mytheme.font.sizeSigns
 
@@ -89,7 +90,7 @@ Rectangle {
                     font.pixelSize: fontSize
                     font.bold: true
                     width: (parent.width - (userMayor?mayorImage.width+5:0))
-                    text: (userName + (venueName !="" ? ( (userName != "" ? "<span style='color:"+mytheme.colors.textColorTimestamp+"'> @ </span>": "") + venueName):""))
+                    text: namePrefix + (userName + (venueName !="" ? ( (userName != "" ? "<span style='color:"+mytheme.colors.textColorTimestamp+"'> @ </span>": "") + venueName):""))
                     wrapMode: Text.Wrap
                     visible: messageText.text != ""
                 }

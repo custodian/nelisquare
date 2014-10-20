@@ -281,7 +281,7 @@ PageWrapper {
 
         model: ListModel {
             id: sectionModel
-
+            // TODO add icons
             ListElement { section: ""; name: "All" }
             ListElement { section: "food"; name: "Food" }
             ListElement { section: "drinks"; name: "Drinks" }
