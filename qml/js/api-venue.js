@@ -111,6 +111,7 @@ venues.parseVenuesExplore = function(response, page) {
                                "index": count
             });
             count++;
+            console.log("appended " + count)
         })
     })
 }

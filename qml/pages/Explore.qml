@@ -253,6 +253,7 @@ PageWrapper {
             specialsCount: model.specialsCount
             group: model.group
             namePrefix: (model.index + 1) + ". "
+            highlight: placesView.currentIndex === index
 
             property int index: model.index
             property double lat: model.lat
@@ -264,7 +265,11 @@ PageWrapper {
             }
 
             onAreaClicked: {
-                explore.clicked( model.id );
+                if(placesView.currentIndex === index) {
+                    explore.clicked( model.id );
+                } else {
+                    select()
+                }
             }
 
             onAreaPressAndHold: {
@@ -272,21 +277,34 @@ PageWrapper {
             }
 
             ListView.onAdd: {
+                console.log("add entry " + (index + 1))
+                createLandmark()
+            }
+
+            ListView.onRemove: {
+                map.removeMapObject(landmark)
+            }
+
+            function select() {
+                if(!landmark) {
+                    createLandmark() // FIXME WTF: automatically called for the first 7 entries only
+                }
+                placesView.currentIndex = index
+                map.center = landmark.coordinate
+            }
+
+            function createLandmark() {
                 var component = Qt.createComponent('../components/VenueLandmark.qml')
                 if (component.status === Component.Ready) {
                     var lnd = component.createObject(map)
                     lnd.coordinate.latitude = lat
                     lnd.coordinate.longitude = lng
                     lnd.text = index + 1
-                    lnd.onClicked.connect(function() { placesView.currentIndex = index })
+                    lnd.onClicked.connect(function() { select() })
 
-                    map.addMapObject(lnd)
                     landmark = lnd
+                    map.addMapObject(lnd)
                 }
-            }
-
-            ListView.onRemove: {
-                map.removeMapObject(landmark)
             }
         }
     }
