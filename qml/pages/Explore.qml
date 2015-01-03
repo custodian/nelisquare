@@ -289,8 +289,10 @@ PageWrapper {
                 if(!landmark) {
                     createLandmark() // FIXME WTF: automatically called for the first 7 entries only
                 }
+                placesView.currentItem.landmark.selected = false
                 placesView.currentIndex = index
                 map.center = landmark.coordinate
+                landmark.selected = true
             }
 
             function createLandmark() {
@@ -300,6 +302,8 @@ PageWrapper {
                     lnd.coordinate.latitude = lat
                     lnd.coordinate.longitude = lng
                     lnd.text = index + 1
+                    lnd.special = specialsCount > 0
+                    lnd.selected = highlight
                     lnd.onClicked.connect(function() { select() })
 
                     landmark = lnd
