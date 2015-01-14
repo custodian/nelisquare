@@ -14,6 +14,7 @@ PageWrapper {
     signal search()
 
     property alias placesModel: placesModel
+    property variant landmarks: []
 
     width: parent.width
     height: parent.height
@@ -256,9 +257,6 @@ PageWrapper {
             highlight: placesView.currentIndex === index
 
             property int index: model.index
-            property double lat: model.lat
-            property double lng: model.lng
-            property VenueLandmark landmark
 
             Component.onCompleted: {
                 userPhoto.photoUrl = model.icon
@@ -268,48 +266,46 @@ PageWrapper {
                 if(placesView.currentIndex === index) {
                     explore.clicked( model.id );
                 } else {
-                    select()
+                    selectVenue(index)
                 }
             }
 
             onAreaPressAndHold: {
                 explore.checkin( model.id, model.name);
             }
-
-            ListView.onAdd: {
-                console.log("add entry " + (index + 1))
-                createLandmark()
-            }
-
-            ListView.onRemove: {
-                map.removeMapObject(landmark)
-            }
-
-            function select() {
-                if(!landmark) {
-                    createLandmark() // FIXME WTF: automatically called for the first 7 entries only
-                }
-                placesView.currentItem.landmark.selected = false
-                placesView.currentIndex = index
-                map.center = landmark.coordinate
-                landmark.selected = true
-            }
-
-            function createLandmark() {
-                var component = Qt.createComponent('../components/VenueLandmark.qml')
-                if (component.status === Component.Ready) {
-                    var lnd = component.createObject(map)
-                    lnd.coordinate.latitude = lat
-                    lnd.coordinate.longitude = lng
-                    lnd.text = index + 1
-                    lnd.special = specialsCount > 0
-                    lnd.selected = highlight
-                    lnd.onClicked.connect(function() { select() })
-
-                    landmark = lnd
-                    map.addMapObject(lnd)
-                }
-            }
         }
+    }
+
+    function addLandmark(lat, lng, index, specialsCount) {
+        var component = Qt.createComponent('../components/VenueLandmark.qml')
+        if (component.status === Component.Ready) {
+            var lnd = component.createObject(map)
+            lnd.coordinate.latitude = lat
+            lnd.coordinate.longitude = lng
+            lnd.index = index
+            lnd.special = specialsCount > 0
+            lnd.selected = index === placesView.currentIndex
+            lnd.onClicked.connect(function() { selectVenue(index) })
+
+            map.addMapObject(lnd)
+
+            var t = landmarks
+            t.push(lnd)
+            landmarks = t
+        }
+    }
+
+    function clearLandmarks() {
+        for(var i = 0; i < landmarks.length; i++)
+            map.removeMapObject(landmarks[i])
+        landmarks = []
+    }
+
+    function selectVenue(index) {
+        landmarks[placesView.currentIndex].selected = false
+
+        placesView.currentIndex = index
+        landmarks[placesView.currentIndex].selected = true
+        map.center = landmarks[placesView.currentIndex].coordinate
     }
 }

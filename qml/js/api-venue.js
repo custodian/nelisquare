@@ -80,6 +80,7 @@ venues.parseVenuesExplore = function(response, page) {
     // console.log("response: " + response);
     var count = 0;
     page.placesModel.clear();
+    page.clearLandmarks();
     page.waiting_hide();
 
     if(data.warning)
@@ -110,8 +111,12 @@ venues.parseVenuesExplore = function(response, page) {
                                "group": group.type,
                                "index": count
             });
+            page.addLandmark(
+                        place.location.lat,
+                        place.location.lng,
+                        count,
+                        parse(place.specials.count));
             count++;
-            console.log("appended " + count)
         })
     })
 }

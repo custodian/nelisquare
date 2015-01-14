@@ -3,7 +3,7 @@ import QtMobility.location 1.2
 
 MapGroup {
     property Coordinate coordinate: Coordinate {}
-    property string text: ""
+    property int index: -1
     property bool special: false
     property bool selected: false
 
@@ -22,7 +22,7 @@ MapGroup {
         font.bold: true
         font.pixelSize: 18
         color: selected ? (special ? "#ff850b" : "#008ab9") : "#ffffff"
-        text: parent.text
+        text: parent.index + 1
         coordinate: parent.coordinate
     }
 
