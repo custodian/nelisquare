@@ -1,8 +1,3 @@
-nelisquare (0.5.5) stable; urgency=low
-  * Venue exploring mode
-
- -- Constantine Nosovsky <knosovskyi@gmail.com>  Thu, 05 Dec 2013 11:38:53 +0400
-
 nelisquare (0.5.4) stable; urgency=low
   * Venue photo gallery fix
 
