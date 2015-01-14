@@ -41,7 +41,6 @@ PageWrapper {
             }
         });
         page.explore.connect(function() {
-            //TODO: explorer mode
             stack.push(Qt.resolvedUrl("Explore.qml"));
         });
         page.addVenue.connect(function(){
