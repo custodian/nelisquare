@@ -104,8 +104,6 @@ venues.parseVenuesExplore = function(response, page) {
                                "distance": place.location.distance,
                                "address": parse(place.location.address),
                                "city": parse(place.location.city),
-                               "lat": place.location.lat,
-                               "lng": place.location.lng,
                                "icon": icon,
                                "peoplesCount": parse(place.hereNow.count),
                                "specialsCount": parse(place.specials.count),
