@@ -276,23 +276,26 @@ PageWrapper {
         }
     }
 
-    function addLandmark(lat, lng, index, specialsCount) {
-        var component = Qt.createComponent('../components/VenueLandmark.qml')
-        if (component.status === Component.Ready) {
-            var lnd = component.createObject(map)
-            lnd.coordinate.latitude = lat
-            lnd.coordinate.longitude = lng
-            lnd.index = index
-            lnd.special = specialsCount > 0
-            lnd.selected = index === placesView.currentIndex
-            lnd.onClicked.connect(function() { selectVenue(index) })
+    function createLandmarks(landmarksProps) {
+        var lnds = []
+        for(var i = 0; i < landmarksProps.length; i++) {
+            var prop = landmarksProps[i]
 
-            map.addMapObject(lnd)
+            var component = Qt.createComponent('../components/VenueLandmark.qml')
+            if (component.status === Component.Ready) {
+                var lnd = component.createObject(map)
+                lnd.coordinate.latitude = prop.lat
+                lnd.coordinate.longitude = prop.lng
+                lnd.index = prop.index
+                lnd.special = prop.specialsCount > 0
+                lnd.selected = prop.index === placesView.currentIndex
+                // lnd.onClicked.connect(function() { selectVenue(prop.index) })
 
-            var t = landmarks
-            t.push(lnd)
-            landmarks = t
+                map.addMapObject(lnd)
+                lnds.push(lnd)
+            }
         }
+        landmarks = lnds
     }
 
     function clearLandmarks() {

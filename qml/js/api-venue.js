@@ -79,6 +79,7 @@ venues.parseVenuesExplore = function(response, page) {
     var data = api.process(response, page);
     // console.log("response: " + response);
     var count = 0;
+    var landmarksProps = [];
     page.placesModel.clear();
     page.clearLandmarks();
     page.waiting_hide();
@@ -111,14 +112,16 @@ venues.parseVenuesExplore = function(response, page) {
                                "group": group.type,
                                "index": count
             });
-            page.addLandmark(
-                        place.location.lat,
-                        place.location.lng,
-                        count,
-                        parse(place.specials.count));
+            landmarksProps.push({
+                        "lat": place.location.lat,
+                        "lng": place.location.lng,
+                        "index": count,
+                        "specialsCount": parse(place.specials.count)
+            });
             count++;
         })
-    })
+    });
+    page.createLandmarks(landmarksProps);
 }
 
 venues.likeVenue = function(page, id, state) {
